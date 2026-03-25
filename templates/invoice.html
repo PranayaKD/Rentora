@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-12 px-6">
+    <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 printable-area">
+        <!-- Invoice Header -->
+        <div class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 p-8 sm:p-12 flex flex-col sm:row justify-between items-start sm:items-center gap-6">
+            <div>
+                <h1 class="text-4xl font-black tracking-tighter mb-2">TAX INVOICE</h1>
+                <p class="text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest text-xs">Rentora Technologies India Pvt Ltd</p>
+            </div>
+            <div class="text-right sm:text-left">
+                <p class="font-bold text-lg">#{{ booking.booking_reference }}</p>
+                <p class="text-xs opacity-60 uppercase tracking-widest">{{ booking.created_at|date:"d M, Y" }}</p>
+            </div>
+        </div>
+
+        <div class="p-8 sm:p-12">
+            <!-- Addresses -->
+            <div class="grid sm:grid-cols-2 gap-12 mb-12">
+                <div>
+                    <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Issuer</h3>
+                    <p class="font-bold text-lg mb-1">Rentora India</p>
+                    <p class="text-slate-500 text-sm leading-relaxed">
+                        12, MG Road, Prestige Tower,<br>
+                        Bengaluru, Karnataka - 560001<br>
+                        GSTIN: 29AAACR1234A1Z1
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Bill To</h3>
+                    <p class="font-bold text-lg mb-1">{{ booking.user.get_full_name|default:booking.user.username }}</p>
+                    <p class="text-slate-500 text-sm leading-relaxed">
+                        Phone: {{ booking.user.profile.phone }}<br>
+                        Email: {{ booking.user.email }}<br>
+                        {% if booking.gst_number %}GSTIN: {{ booking.gst_number }}{% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Booking Details Table -->
+            <div class="overflow-hidden rounded-2xl border border-slate-100 dark:border-slate-800 mb-8">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 dark:bg-slate-800/50">
+                            <th class="px-6 py-4 text-xs font-black text-slate-400 uppercase tracking-widest">Description</th>
+                            <th class="px-6 py-4 text-xs font-black text-slate-400 uppercase tracking-widest text-right">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                        <tr>
+                            <td class="px-6 py-4">
+                                <p class="font-bold text-slate-900 dark:text-white">{{ booking.car.brand }} {{ booking.car.name }}</p>
+                                <p class="text-xs text-slate-500">Vehicle Rental Period: {{ booking.pickup_date }} to {{ booking.dropoff_date }}</p>
+                            </td>
+                            <td class="px-6 py-4 text-right font-bold text-slate-900 dark:text-white">
+                                {{ booking.duration_days }} Days
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4">
+                                <p class="font-bold text-slate-900 dark:text-white">Trip Type</p>
+                            </td>
+                            <td class="px-6 py-4 text-right font-bold text-slate-900 dark:text-white">
+                                {% if booking.is_outstation %}Outstation Outstation{% else %}Local Trip{% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4">
+                                <p class="font-bold text-slate-900 dark:text-white">Pickup Location</p>
+                            </td>
+                            <td class="px-6 py-4 text-right text-sm text-slate-500">
+                                {{ booking.pickup_location }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Totals -->
+            <div class="flex justify-end">
+                <div class="w-full sm:w-72 space-y-4">
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-slate-500 font-bold">Subtotal</span>
+                        <span class="font-black text-slate-900 dark:text-white">₹{{ booking.total_price|floatformat:2 }}</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-slate-500 font-bold">GST (18%)</span>
+                        <span class="font-black text-slate-900 dark:text-white">+ ₹{{ booking.gst_amount|floatformat:2 }}</span>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+                        <span class="font-black text-lg text-slate-900 dark:text-white">Total Amount</span>
+                        <span class="font-black text-2xl text-accent">₹{{ booking.total_with_gst|floatformat:2 }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Notes -->
+            <div class="mt-16 pt-8 border-t border-slate-50 dark:border-slate-800/50">
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-2">Terms & Conditions</p>
+                <p class="text-[10px] text-slate-400 leading-relaxed">
+                    This is a computer-generated invoice and does not require a physical signature. 
+                    All disputes are subject to Bengaluru jurisdiction. 
+                    Rental is subject to our terms of service available at rentora.in/terms.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="mt-8 flex justify-center gap-4 no-print text-white">
+        <button onclick="window.print()" class="bg-primary hover:bg-slate-800 px-8 py-3 rounded-full font-bold flex items-center gap-2 transition-all transform hover:scale-105 shadow-lg">
+            <span class="material-symbols-outlined">print</span> Print Invoice
+        </button>
+        <a href="{% url 'confirmation' booking.id %}" class="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white px-8 py-3 rounded-full font-bold transition-colors">
+            Back to Booking
+        </a>
+    </div>
+</div>
+
+<style>
+    @media print {
+        .no-print, nav, footer, .material-symbols-outlined {
+            display: none !important;
+        }
+        body {
+            background: white !important;
+        }
+        .max-w-4xl {
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .printable-area {
+            box-shadow: none !important;
+            border: none !important;
+            border-radius: 0 !important;
+        }
+        .bg-slate-900 {
+            background-color: #0f172a !important;
+            -webkit-print-color-adjust: exact;
+        }
+    }
+</style>
+{% endblock %}

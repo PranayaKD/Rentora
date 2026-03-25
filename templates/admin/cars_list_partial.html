@@ -1,0 +1,61 @@
+<div>
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-black">Manage Cars</h2>
+        <a href="{% url 'admin_car_add' %}" class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 rounded-xl font-bold flex items-center gap-2 hover:bg-slate-800 transition-colors">
+            <span class="material-symbols-outlined text-sm">add</span> New Car
+        </a>
+    </div>
+
+    <div class="bg-white dark:bg-slate-900 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800 text-slate-500 text-xs uppercase tracking-widest">
+                        <th class="p-4 font-bold">Car</th>
+                        <th class="p-4 font-bold">Rate</th>
+                        <th class="p-4 font-bold">Status</th>
+                        <th class="p-4 font-bold text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for car in cars %}
+                    <tr class="border-b border-slate-50 dark:border-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                        <td class="p-4">
+                            <div class="flex items-center gap-3">
+                                {% if car.image %}
+                                <img src="{{ car.image.url }}" class="w-12 h-8 object-contain bg-slate-100 dark:bg-slate-800 rounded">
+                                {% else %}
+                                <div class="w-12 h-8 bg-slate-100 dark:bg-slate-800 rounded flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-sm text-slate-400">directions_car</span>
+                                </div>
+                                {% endif %}
+                                <div>
+                                    <p class="font-bold text-sm">{{ car.name }}</p>
+                                    <p class="text-[0.65rem] text-slate-500 uppercase">{{ car.brand }}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="p-4 font-bold text-sm">${{ car.price_per_day }}/d</td>
+                        <td class="p-4">
+                            <span class="px-2 py-1 text-[0.65rem] font-bold rounded-full {% if car.is_available %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
+                                {% if car.is_available %}Available{% else %}Unlisted{% endif %}
+                            </span>
+                        </td>
+                        <td class="p-4 text-right space-x-2">
+                            <a href="{% url 'admin_car_edit' car.id %}" class="inline-flex w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 items-center justify-center text-slate-500 hover:text-accent transition-colors"><span class="material-symbols-outlined text-sm">edit</span></a>
+                            <form method="post" action="{% url 'admin_car_delete' car.id %}" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this car?');">
+                                {% csrf_token %}
+                                <button type="submit" class="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-900/20 items-center justify-center text-red-500 hover:bg-red-100 transition-colors"><span class="material-symbols-outlined text-sm leading-none">delete</span></button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="p-8 text-center text-slate-500">No cars in the fleet yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

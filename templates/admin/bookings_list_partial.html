@@ -1,0 +1,44 @@
+<div>
+    <h2 class="text-2xl font-black mb-6">Booking Management</h2>
+    <div class="bg-white dark:bg-slate-900 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800 text-slate-500 text-xs uppercase tracking-widest">
+                        <th class="p-4 font-bold">Ref / User</th>
+                        <th class="p-4 font-bold">Car</th>
+                        <th class="p-4 font-bold">Amount</th>
+                        <th class="p-4 font-bold text-right pl-6">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="text-sm">
+                    {% for booking in bookings %}
+                    <tr class="border-b border-slate-50 dark:border-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                        <td class="p-4">
+                            <div class="font-bold text-accent">{{ booking.booking_reference }}</div>
+                            <div class="text-xs text-slate-500 truncate max-w-[120px]">{{ booking.user.email }}</div>
+                        </td>
+                        <td class="p-4 font-bold">{{ booking.car.name }}</td>
+                        <td class="p-4 font-bold">${{ booking.total_price }}</td>
+                        <td class="p-4 text-right">
+                            <form method="post" action="{% url 'admin_booking_status' booking.id %}" class="flex items-center justify-end gap-2">
+                                {% csrf_token %}
+                                <select name="status" class="bg-slate-50 dark:bg-slate-800 border-none rounded text-xs font-bold py-1 pl-2 pr-6 focus:ring-0" onchange="this.form.submit()">
+                                    <option value="Pending" {% if booking.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                    <option value="Active" {% if booking.status == 'Active' %}selected{% endif %}>Active</option>
+                                    <option value="Completed" {% if booking.status == 'Completed' %}selected{% endif %}>Completed</option>
+                                    <option value="Cancelled" {% if booking.status == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+                                </select>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="p-8 text-center text-slate-500">No bookings recorded yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

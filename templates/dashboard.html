@@ -1,0 +1,512 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}User Dashboard - Rentora{% endblock %}
+
+{% block meta_description %}Manage your car bookings, wishlist, and profile settings on the Rentora dashboard. Track your rewards and referral balance conveniently.{% endblock %}
+
+{% block content %}
+<!-- Dashboard Layout -->
+<div class="bg-primary pt-16 pb-48"></div>
+
+<div class="max-w-7xl mx-auto px-6 -mt-44 relative z-10 pb-20">
+    <div class="grid lg:grid-cols-4 gap-8">
+        
+        <!-- Sidebar Navigation -->
+        <div class="lg:col-span-1">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl p-4 shadow-sm border border-slate-100 dark:border-slate-800 flex overflow-x-auto lg:flex-col lg:overflow-visible gap-2 hide-scrollbar">
+                
+                <a href="{% url 'dashboard' %}" class="flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold transition-all whitespace-nowrap lg:whitespace-normal {% if request.resolver_match.url_name == 'dashboard' %}bg-primary text-white shadow-md{% else %}text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary dark:hover:text-white{% endif %}">
+                    <span class="material-symbols-outlined text-[1.25rem]">grid_view</span>
+                    Overview
+                </a>
+                
+                <a href="{% url 'dashboard_bookings' %}" class="flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold transition-all whitespace-nowrap lg:whitespace-normal {% if request.resolver_match.url_name == 'dashboard_bookings' %}bg-primary text-white shadow-md{% else %}text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary dark:hover:text-white{% endif %}">
+                    <span class="material-symbols-outlined text-[1.25rem]">calendar_month</span>
+                    Bookings
+                </a>
+                
+                <a href="{% url 'wishlist' %}" class="flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold transition-all whitespace-nowrap lg:whitespace-normal {% if request.resolver_match.url_name == 'wishlist' %}bg-primary text-white shadow-md{% else %}text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary dark:hover:text-white{% endif %}">
+                    <span class="material-symbols-outlined text-[1.25rem]">favorite</span>
+                    Wishlist
+                </a>
+                
+                <div class="h-px bg-slate-100 dark:bg-slate-800 my-2 hidden lg:block"></div>
+                
+                <a href="{% url 'profile' %}" class="flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold transition-all whitespace-nowrap lg:whitespace-normal {% if request.resolver_match.url_name == 'profile' %}bg-primary text-white shadow-md{% else %}text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary dark:hover:text-white{% endif %}">
+                    <span class="material-symbols-outlined text-[1.25rem]">person</span>
+                    Profile Settings
+                </a>
+
+                {% if request.user.is_staff %}
+                <a href="{% url 'admin_dashboard' %}" class="flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold transition-all whitespace-nowrap lg:whitespace-normal text-accent hover:bg-slate-50 dark:hover:bg-slate-800">
+                    <span class="material-symbols-outlined text-[1.25rem]">admin_panel_settings</span>
+                    Admin Panel
+                </a>
+                {% endif %}
+                
+                <a href="{% url 'logout' %}" class="flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all whitespace-nowrap lg:whitespace-normal lg:mt-6">
+                    <span class="material-symbols-outlined text-[1.25rem]">logout</span>
+                    Logout
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="lg:col-span-3 space-y-8">
+            
+            {% if request.resolver_match.url_name == 'dashboard' %}
+            <!-- ================= OVERVIEW ================= -->
+            <div>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                    <h2 class="text-2xl font-black text-white">Welcome back, {{ request.user.first_name|default:request.user.username }}!</h2>
+                    {% if profile.is_verified %}
+                    <div class="flex items-center gap-2 bg-green-50 dark:bg-green-900/20 text-green-600 px-4 py-2 rounded-2xl border border-green-100 dark:border-green-800/50">
+                        <span class="material-symbols-outlined text-[1.25rem]">verified</span>
+                        <span class="text-sm font-bold uppercase tracking-wider">Verified Driver</span>
+                    </div>
+                    {% else %}
+                    <a href="{% url 'profile' %}" class="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 text-slate-500 px-4 py-2 rounded-2xl border border-slate-100 dark:border-slate-800/50 group hover:border-accent transition-all">
+                        <span class="material-symbols-outlined text-[1.25rem]">mode_edit</span>
+                        <span class="text-sm font-bold uppercase tracking-wider">Complete Profile</span>
+                        <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                    </a>
+                    {% endif %}
+                </div>
+                
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 mb-8">
+                    <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-6 shadow-sm group hover:border-primary/30 transition-all">
+                        <div class="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
+                            <span class="material-symbols-outlined text-primary text-2xl">directions_car</span>
+                        </div>
+                        <p class="text-slate-500 font-bold mb-1 text-sm">Active Bookings</p>
+                        <h3 class="text-3xl font-black text-slate-900 dark:text-white">{{ active_bookings.count }}</h3>
+                    </div>
+                    <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-6 shadow-sm group hover:border-accent/30 transition-all">
+                        <div class="w-12 h-12 bg-accent/10 rounded-2xl flex items-center justify-center mb-4">
+                            <span class="material-symbols-outlined text-accent text-2xl">account_balance_wallet</span>
+                        </div>
+                        <p class="text-slate-500 font-bold mb-1 text-sm">Wallet Balance</p>
+                        <h3 class="text-3xl font-black text-slate-900 dark:text-white">₹{{ profile.wallet_balance|floatformat:2 }}</h3>
+                    </div>
+                    <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-6 shadow-sm group hover:border-blue-500/30 transition-all sm:col-span-2 lg:col-span-1">
+                        <div class="w-12 h-12 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-4">
+                            <span class="material-symbols-outlined text-blue-500 text-2xl">history</span>
+                        </div>
+                        <p class="text-slate-500 font-bold mb-1 text-sm">Total Trips</p>
+                        <h3 class="text-3xl font-black text-slate-900 dark:text-white">{{ total_bookings }}</h3>
+                    </div>
+                </div>
+
+
+                <div class="bg-white dark:bg-slate-900 rounded-[2rem] p-6 sm:p-8 border border-slate-100 dark:border-slate-800 shadow-sm">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-bold">Recent Bookings</h3>
+                        <a href="{% url 'dashboard_bookings' %}" class="text-sm font-bold text-accent">View All</a>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        {% for booking in recent_bookings %}
+                        <div class="flex flex-col p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border {% if booking.status == 'Active' %}border-accent/30 shadow-sm shadow-accent/5{% else %}border-slate-100 dark:border-slate-700{% endif %} gap-4 relative overflow-hidden">
+                            {% if booking.status == 'Active' %}
+                            <div class="absolute top-0 left-0 w-1 h-full bg-accent"></div>
+                            {% endif %}
+                            
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                                <div class="flex items-center gap-4">
+                                    {% if booking.car.image %}
+                                    <img src="{{ booking.car.image.url }}" class="w-16 h-12 rounded object-contain bg-white dark:bg-slate-900">
+                                    {% endif %}
+                                    <div>
+                                        <p class="font-bold mb-0.5">{{ booking.car.brand }} {{ booking.car.name }}</p>
+                                        <p class="text-xs font-bold text-slate-500">{{ booking.pickup_date|date:"M d" }} - {{ booking.dropoff_date|date:"M d, Y" }}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between w-full sm:w-auto sm:gap-6">
+                                    <span class="px-3 py-1 text-xs font-bold rounded-full 
+                                        {% if booking.status == 'Completed' %}bg-green-100 text-green-700
+                                        {% elif booking.status == 'Active' %}bg-accent/10 text-accent
+                                        {% elif booking.status == 'Cancelled' %}bg-red-100 text-red-700
+                                        {% else %}bg-yellow-100 text-yellow-700{% endif %}">
+                                        {{ booking.status }}
+                                    </span>
+                                    <a href="{% url 'confirmation' booking.id %}" class="text-sm font-bold text-slate-500 hover:text-primary transition-colors">Details</a>
+                                </div>
+                            </div>
+                            
+                            {% if booking.status == 'Active' or booking.status == 'Pending' %}
+                            <div class="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700 flex flex-col gap-5">
+                                <!-- Doorstep Delivery Tracking -->
+                                <div>
+                                    <div class="flex justify-between items-end mb-2">
+                                        <p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Doorstep Delivery Status</p>
+                                        <p class="text-xs font-bold text-primary dark:text-white">Arriving in 15 mins</p>
+                                    </div>
+                                    <div class="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-accent w-3/4 rounded-full relative">
+                                            <div class="absolute inset-0 bg-white/20 w-full h-full animate-[shimmer_2s_infinite]"></div>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between mt-2 text-[10px] font-bold text-slate-400">
+                                        <span>Confirmed</span>
+                                        <span>Cleaning</span>
+                                        <span class="text-accent">On the Way</span>
+                                        <span>Delivered</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Safety Actions -->
+                                <div class="flex items-center gap-3">
+                                    <button onclick="alert('Trip tracking link generated! Sharing intent triggered.')" class="flex-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors">
+                                        <span class="material-symbols-outlined text-sm">share</span> Live Share Trip
+                                    </button>
+                                    <button onclick="alert('Emergency SOS triggered! Our 24/7 safety response team is contacting you immediately.')" class="bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/40 text-red-600 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-colors border border-red-100 dark:border-red-800">
+                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">emergency</span> SOS
+                                    </button>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% empty %}
+                        <div class="text-center py-8">
+                            <p class="text-slate-500">You don't have any bookings yet.</p>
+                            <a href="{% url 'cars' %}" class="inline-block mt-4 bg-accent text-white px-6 py-2 rounded-full font-bold text-sm">Rent a car</a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                </div>
+
+                <!-- Referral Section -->
+                <div class="mt-8 bg-gradient-to-r from-accent/10 to-transparent rounded-[2rem] p-6 sm:p-8 border border-accent/20 flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden relative">
+                    <div class="relative z-10">
+                        <div class="inline-flex items-center gap-2 bg-accent text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest mb-3">Limited Offer</div>
+                        <h3 class="text-2xl font-black mb-2">Refer and Earn ₹500!</h3>
+                        <p class="text-slate-600 dark:text-slate-400 text-sm max-w-sm">Spread the joy of driving. When your friend completes their first ride, both of you get ₹500 in your wallet.</p>
+                    </div>
+                    <div class="flex flex-col items-center gap-3 shrink-0 relative z-10">
+                        <div class="bg-white dark:bg-slate-800 border-2 border-dashed border-accent px-6 py-3 rounded-2xl font-mono text-xl font-black text-accent select-all cursor-copy" title="Click to copy">
+                            {{ profile.referral_code }}
+                        </div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Your Unique Code</p>
+                    </div>
+                    <!-- Decorative element -->
+                    <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-[10rem] text-accent/5 select-none pointer-events-none">redeem</span>
+                </div>
+            </div>
+
+            
+            {% elif request.resolver_match.url_name == 'dashboard_bookings' %}
+            <!-- ================= BOOKINGS HISTORY ================= -->
+            <div>
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+                    <h2 class="text-2xl font-black text-slate-900 dark:text-white">Booking History</h2>
+                    <form action="{% url 'dashboard_bookings' %}" method="get">
+                        <select name="status" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2 font-semibold text-sm focus:ring-accent" onchange="this.form.submit()">
+                            <option value="">All Statuses</option>
+                            <option value="Pending" {% if current_status == 'Pending' %}selected{% endif %}>Pending</option>
+                            <option value="Active" {% if current_status == 'Active' %}selected{% endif %}>Active</option>
+                            <option value="Completed" {% if current_status == 'Completed' %}selected{% endif %}>Completed</option>
+                            <option value="Cancelled" {% if current_status == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+                        </select>
+                    </form>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    {% for booking in bookings %}
+                    <div class="bg-white dark:bg-slate-900 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-sm p-6 flex flex-col hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+                            <div>
+                                <p class="text-xs font-bold text-slate-400 mb-1">REF: {{ booking.booking_reference }}</p>
+                                <h3 class="text-lg font-bold leading-tight">{{ booking.car.name }}</h3>
+                            </div>
+                            <span class="px-3 py-1 text-xs font-bold rounded-full whitespace-nowrap
+                                {% if booking.status == 'Completed' %}bg-green-100 text-green-700
+                                {% elif booking.status == 'Active' %}bg-blue-100 text-blue-700
+                                {% elif booking.status == 'Cancelled' %}bg-red-100 text-red-700
+                                {% else %}bg-yellow-100 text-yellow-700{% endif %}">
+                                {{ booking.status }}
+                            </span>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-6 relative">
+                            <div class="absolute left-1/2 top-2 bottom-2 w-px border-l border-dashed border-slate-200 dark:border-slate-700"></div>
+                            <div>
+                                <p class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-widest mb-1">Pickup</p>
+                                <p class="text-sm font-bold">{{ booking.pickup_date|date:"d M, Y" }}</p>
+                                <p class="text-xs text-slate-500 truncate mt-1">{{ booking.pickup_location }}</p>
+                            </div>
+                            <div class="pl-2">
+                                <p class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-widest mb-1">Drop-off</p>
+                                <p class="text-sm font-bold">{{ booking.dropoff_date|date:"d M, Y" }}</p>
+                                <p class="text-xs text-slate-500 truncate mt-1">{{ booking.dropoff_location }}</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-auto flex justify-between items-center pt-4">
+                            <p class="font-black text-lg">₹{{ booking.total_price }}</p>
+                            <div class="flex gap-2">
+                                {% if booking.status == 'Completed' and not booking.review %}
+                                <button onclick="document.getElementById('review-modal-{{ booking.id }}').classList.remove('hidden')" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-800 text-xs font-bold px-4 py-2 rounded-full transition-colors flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span> Review
+                                </button>
+                                {% endif %}
+                                <a href="{% url 'confirmation' booking.id %}" class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 py-2 px-4 rounded-full text-xs font-bold transition-colors">Details</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review Modal -->
+                    {% if booking.status == 'Completed' and not booking.review %}
+                    <div id="review-modal-{{ booking.id }}" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4">
+                        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="this.parentElement.classList.add('hidden')"></div>
+                        <div class="bg-white dark:bg-slate-900 rounded-[2rem] p-8 w-full max-w-md relative z-10">
+                            <h3 class="text-2xl font-black mb-2">Rate your experience</h3>
+                            <p class="text-slate-500 text-sm mb-6">How was your trip with the {{ booking.car.name }}?</p>
+                            
+                            <form action="{% url 'add_review' booking.car.id %}" method="post" class="space-y-4">
+                                {% csrf_token %}
+                                <input type="hidden" name="booking_id" value="{{ booking.id }}">
+                                
+                                <div>
+                                    <label class="block text-sm font-bold mb-2">Rating</label>
+                                    <select name="rating" class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:ring-accent outline-none">
+                                        <option value="5">5 - Excellent</option>
+                                        <option value="4">4 - Very Good</option>
+                                        <option value="3">3 - Average</option>
+                                        <option value="2">2 - Poor</option>
+                                        <option value="1">1 - Terrible</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold mb-2">Comment</label>
+                                    <textarea name="comment" rows="4" class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:ring-accent outline-none" required></textarea>
+                                </div>
+                                
+                                <div class="flex gap-3 pt-4">
+                                    <button type="button" onclick="document.getElementById('review-modal-{{ booking.id }}').classList.add('hidden')" class="flex-1 py-3 bg-slate-100 dark:bg-slate-800 rounded-xl font-bold">Cancel</button>
+                                    <button type="submit" class="flex-1 py-3 bg-accent text-white rounded-xl font-bold">Submit Review</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% empty %}
+                    <div class="md:col-span-2 text-center py-16 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800">
+                        <span class="material-symbols-outlined text-6xl text-slate-300 mb-4">calendar_month</span>
+                        <h3 class="text-xl font-bold mb-2">No bookings found</h3>
+                        <p class="text-slate-500 mb-6">We couldn't find any bookings matching your criteria.</p>
+                        <a href="{% url 'cars' %}" class="bg-primary text-white px-6 py-2 rounded-full font-bold">Browse Cars</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            {% elif request.resolver_match.url_name == 'wishlist' %}
+            <!-- ================= WISHLIST ================= -->
+            <div>
+                <h2 class="text-2xl font-black mb-8 text-slate-900 dark:text-white">Your Wishlist</h2>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {% for item in wishlisted_cars %}
+                    <div class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-sm border border-slate-100 dark:border-slate-800 flex flex-col">
+                        <div class="relative h-40 bg-slate-50 dark:bg-slate-800 p-4 flex items-center justify-center">
+                            <button onclick="toggleWishlist({{ item.car.id }}, this)" class="absolute top-4 right-4 text-red-500 z-10">
+                                <span class="material-symbols-outlined filled-heart">favorite</span>
+                            </button>
+                            {% if item.car.image %}
+                            <img src="{{ item.car.image.url }}" class="w-full h-full object-contain drop-shadow">
+                            {% endif %}
+                        </div>
+                        <div class="p-5 flex flex-col flex-1">
+                            <p class="text-xs font-bold text-slate-400 uppercase">{{ item.car.brand }}</p>
+                            <h3 class="text-lg font-bold mb-2">{{ item.car.name }}</h3>
+                            <p class="font-black text-lg mb-4 mt-auto">₹{{ item.car.price_per_day }}<span class="text-xs text-slate-500 font-medium tracking-wide">/day</span></p>
+                            <a href="{% url 'car_detail' item.car.id %}" class="block text-center bg-primary text-white py-2 rounded-xl text-sm font-bold hover:bg-slate-800 w-full transition-colors">Book Now</a>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="md:col-span-2 lg:col-span-3 text-center py-20 bg-white dark:bg-slate-900 rounded-3xl border border-dashed border-slate-200 dark:border-slate-800">
+                        <span class="material-symbols-outlined text-6xl text-slate-300 mb-4">favorite_border</span>
+                        <h3 class="text-xl font-bold mb-2">Wishlist is empty</h3>
+                        <p class="text-slate-500 mb-6">Save your favorite cars here to book them later.</p>
+                        <a href="{% url 'cars' %}" class="bg-primary text-white px-6 py-2 rounded-full font-bold">Browse Cars</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            {% elif request.resolver_match.url_name == 'profile' %}
+            <!-- ================= PROFILE ================= -->
+            <div>
+                <h2 class="text-2xl font-black mb-8 text-slate-900 dark:text-white">Profile Settings</h2>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Basic Info -->
+                    <div class="bg-white dark:bg-slate-900 rounded-[2rem] p-6 lg:p-8 border border-slate-100 dark:border-slate-800 shadow-sm">
+                        <h3 class="font-bold text-lg mb-6 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">person</span> Personal Information
+                        </h3>
+                        <form method="post" enctype="multipart/form-data" class="space-y-4">
+                            {% csrf_token %}
+                            <!-- Avatar upload styling -->
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 overflow-hidden relative group shrink-0">
+                                    {% if request.user.profile.profile_photo %}
+                                    <img src="{{ request.user.profile.profile_photo.url }}" class="w-full h-full object-cover">
+                                    {% else %}
+                                    <span class="material-symbols-outlined text-3xl text-slate-400 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">person</span>
+                                    {% endif %}
+                                    <label class="absolute inset-0 bg-black/50 hidden group-hover:flex items-center justify-center cursor-pointer">
+                                        <span class="material-symbols-outlined text-white text-xl">photo_camera</span>
+                                        {{ profile_form.profile_photo }}
+                                    </label>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold">Profile Photo</p>
+                                    <p class="text-xs text-slate-500">Click image to upload new</p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest pl-2">Full Name</label>
+                                {{ profile_form.full_name }}
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest pl-2">Phone Number</label>
+                                {{ profile_form.phone }}
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest pl-2">Email</label>
+                                <input type="email" value="{{ request.user.email }}" disabled class="w-full h-12 px-5 rounded-2xl bg-slate-100 dark:bg-slate-800/50 border border-transparent text-slate-500 cursor-not-allowed font-medium">
+                                <p class="text-[0.65rem] text-slate-400 pl-2">Email cannot be changed.</p>
+                            </div>
+
+                            <button type="submit" class="w-full bg-primary text-white h-12 rounded-xl font-bold mt-4 hover:bg-slate-800 transition-colors">Save Changes</button>
+                        </form>
+                    </div>
+
+                    <!-- Identity Verification (KYC) -->
+                    <div class="bg-white dark:bg-slate-900 rounded-[2rem] p-6 lg:p-8 border border-slate-100 dark:border-slate-800 shadow-sm">
+                        <div class="flex justify-between items-start mb-6">
+                        <h3 class="font-bold text-lg flex items-center gap-2">
+                            <span class="material-symbols-outlined text-blue-500">verified_user</span> Account Verification (Optional)
+                        </h3>
+                            {% if profile.is_verified %}
+                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Verified</span>
+                            {% else %}
+                            <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Pending</span>
+                            {% endif %}
+                        </div>
+
+                        <form method="post" enctype="multipart/form-data" class="space-y-5">
+                            {% csrf_token %}
+                            <div class="grid sm:grid-cols-2 gap-4">
+                                <div class="space-y-1.5">
+                                    <label class="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest pl-2">Date of Birth</label>
+                                    {{ profile_form.date_of_birth }}
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label class="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest pl-2">Driving License Number</label>
+                                    {{ profile_form.license_number }}
+                                </div>
+                            </div>
+
+                            <div class="grid sm:grid-cols-2 gap-4">
+                                <div class="space-y-1.5">
+                                    <label class="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest pl-2">Aadhaar Number</label>
+                                    {{ profile_form.aadhaar_number }}
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label class="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest pl-2">PAN Number</label>
+                                    {{ profile_form.pan_number }}
+                                </div>
+                            </div>
+
+
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest pl-2">License Front Photo</label>
+                                <div class="mt-1 p-6 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl text-center">
+                                    {% if profile.license_image %}
+                                    <img src="{{ profile.license_image.url }}" class="mx-auto h-32 w-full object-cover rounded-xl mb-4 shadow-sm">
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase">Change Document:</p>
+                                    {% else %}
+                                    <span class="material-symbols-outlined text-4xl text-slate-300 mb-2">upload_file</span>
+                                    <p class="text-xs text-slate-500 mb-4">Upload a clear photo of your driving license</p>
+                                    {% endif %}
+                                    {{ profile_form.license_image }}
+                                </div>
+                            </div>
+
+                            <button type="submit" class="w-full bg-slate-900 dark:bg-white dark:text-slate-900 text-white h-12 rounded-xl font-bold mt-4 hover:bg-slate-800 transition-colors">
+                                {% if profile.license_number %}Update Documents{% else %}Submit for Verification{% endif %}
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Change Password -->
+                    <div class="bg-white dark:bg-slate-900 rounded-[2rem] p-6 lg:p-8 border border-slate-100 dark:border-slate-800 shadow-sm h-fit">
+                        <h3 class="font-bold text-lg mb-6 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-accent">lock</span> Security
+                        </h3>
+                        <form method="post" action="{% url 'profile' %}" class="space-y-4">
+                            {% csrf_token %}
+                            {% if password_form.non_field_errors %}
+                            <div class="bg-red-50 text-red-600 p-3 rounded-xl text-sm font-bold mb-4">
+                                {{ password_form.non_field_errors.0 }}
+                            </div>
+                            {% endif %}
+                            
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest pl-2">Current Password</label>
+                                {{ password_form.old_password }}
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest pl-2">New Password</label>
+                                {{ password_form.new_password }}
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest pl-2">Confirm New Password</label>
+                                {{ password_form.confirm_password }}
+                            </div>
+
+                            <button type="submit" class="w-full bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white h-12 rounded-xl font-bold mt-4 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">Update Password</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+        </div>
+    </div>
+</div>
+
+<!-- Wishlist Script -->
+<script>
+    function toggleWishlist(carId, btn) {
+        fetch(`/api/wishlist/toggle/${carId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            // Remove the card if un-wishlisted from the wishlist page
+            if (!data.wishlisted) {
+                const card = btn.closest('.bg-white, .dark\\:bg-slate-900');
+                if (card) {
+                    card.style.opacity = '0';
+                    setTimeout(() => card.remove(), 300);
+                }
+            }
+        });
+    }
+</script>
+<style>
+    .filled-heart { font-variation-settings: 'FILL' 1; }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
+{% endblock %}

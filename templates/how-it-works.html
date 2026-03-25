@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}How it Works | Rentora Car Rentals{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative pt-32 pb-20 bg-[#050811] overflow-hidden">
+    <div class="absolute inset-0 opacity-20">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,#1e293b,transparent)]"></div>
+        <div class="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
+    </div>
+    
+    <div class="relative z-10 max-w-7xl mx-auto px-6 text-center">
+        <h1 class="text-white font-black text-5xl md:text-7xl mb-6 tracking-tight">The Rentora <span class="text-accent">Way</span>.</h1>
+        <p class="text-slate-400 text-lg max-w-2xl mx-auto font-medium">From browsing to blooming miles – discover how we've simplified premium car rentals in India.</p>
+    </div>
+</section>
+
+<!-- The Process -->
+<section class="py-24 bg-white dark:bg-slate-900">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-20 items-center mb-32">
+            <div>
+                <span class="text-accent font-bold tracking-widest uppercase text-xs mb-4 block">Step 01</span>
+                <h2 class="text-4xl font-black mb-6">Find Your Perfect Match</h2>
+                <p class="text-slate-500 text-lg mb-8 leading-relaxed">Whether you need a swift hatchback for city zipping, a rugged SUV for the mountains, or an ultra-luxury sedan for a grand arrival – our curated fleet has it all. Use our smart filters to find cars available for your exact dates.</p>
+                <ul class="space-y-4">
+                    <li class="flex items-center gap-3 text-slate-700 dark:text-slate-300 font-bold">
+                        <span class="material-symbols-outlined text-accent">check_circle</span>
+                        Verified Car Conditions
+                    </li>
+                    <li class="flex items-center gap-3 text-slate-700 dark:text-slate-300 font-bold">
+                        <span class="material-symbols-outlined text-accent">check_circle</span>
+                        Real-time Availability
+                    </li>
+                </ul>
+            </div>
+            <div class="step-image opacity-0 translate-y-12 bg-slate-50 dark:bg-slate-800 rounded-[3rem] overflow-hidden aspect-square flex items-center justify-center shadow-2xl transition-all duration-700">
+                <img src="{% static 'images/how-it-works/step1.png' %}" alt="Find Your Car" loading="lazy" class="w-full h-full object-cover">
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-20 items-center mb-32 md:flex-row-reverse">
+            <div class="step-content opacity-0 -translate-x-12 md:order-2">
+                <span class="text-blue-500 font-bold tracking-widest uppercase text-xs mb-4 block">Step 02</span>
+                <h2 class="text-4xl font-black mb-6">Book & Verify</h2>
+                <p class="text-slate-500 text-lg mb-8 leading-relaxed">Once you've made your choice, booking is a breeze. Provide your basic details and complete our lightning-fast 1-minute KYC process. We value your time as much as your journey.</p>
+                <div class="bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/30 p-6 rounded-2xl">
+                    <p class="text-blue-600 dark:text-blue-400 font-bold text-sm flex items-center gap-2">
+                        <span class="material-symbols-outlined">info</span>
+                        KYC requires only a valid DL and Aadhar card.
+                    </p>
+                </div>
+            </div>
+            <div class="step-image opacity-0 -translate-x-12 bg-slate-50 dark:bg-slate-800 rounded-[3rem] overflow-hidden aspect-square flex items-center justify-center shadow-2xl md:order-1 transition-all duration-700">
+                <img src="{% static 'images/how-it-works/step2.png' %}" alt="Verify Identity" loading="lazy" class="w-full h-full object-cover">
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
+            <div class="step-content opacity-0 translate-x-12">
+                <span class="text-purple-500 font-bold tracking-widest uppercase text-xs mb-4 block">Step 03</span>
+                <h2 class="text-4xl font-black mb-6">Drive Your Story</h2>
+                <p class="text-slate-500 text-lg mb-8 leading-relaxed">Meet our friendly concierge at the pick-up point or have the car delivered to your doorstep. Get a quick walkthrough, grab the keys, and the road is yours. No hidden charges, no surprises.</p>
+                <a href="{% url 'cars' %}" class="inline-flex items-center gap-3 bg-primary text-white px-8 py-4 rounded-full font-bold hover:bg-accent hover:text-primary transition-all group">
+                    Start Your Search 
+                    <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                </a>
+            </div>
+            <div class="step-image opacity-0 translate-y-12 bg-slate-50 dark:bg-slate-800 rounded-[3rem] overflow-hidden aspect-square flex items-center justify-center shadow-2xl transition-all duration-700">
+                <img src="{% static 'images/how-it-works/step3.png' %}" alt="Start Driving" loading="lazy" class="w-full h-full object-cover">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Safety Section -->
+<section class="py-24 bg-slate-50 dark:bg-slate-900/50">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="bg-primary dark:bg-slate-800 rounded-[3rem] p-8 md:p-20 text-white overflow-hidden relative">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-accent/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
+            
+            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-4xl font-black mb-8 leading-tight">Your Safety is Our <span class="text-accent">Priority</span>.</h2>
+                    <div class="space-y-6">
+                        <div class="flex gap-6">
+                            <div class="w-12 h-12 shrink-0 rounded-2xl bg-white/10 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-accent">sanitizer</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-1">Deep Cleaned</h4>
+                                <p class="text-white/60 text-sm">Every car undergoes a 50-point sanitization process before delivery.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-6">
+                            <div class="w-12 h-12 shrink-0 rounded-2xl bg-white/10 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-accent">support_agent</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-1">24/7 RSA</h4>
+                                <p class="text-white/60 text-sm">On-road assistance available nationwide, any time of the day.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10 text-center">
+                        <p class="text-3xl font-black text-accent mb-2">10k+</p>
+                        <p class="text-white/60 text-xs font-bold uppercase tracking-widest">Happy Clients</p>
+                    </div>
+                    <div class="bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10 text-center">
+                        <p class="text-3xl font-black text-accent mb-2">500+</p>
+                        <p class="text-white/60 text-xs font-bold uppercase tracking-widest">Premium Cars</p>
+                    </div>
+                    <div class="bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10 text-center">
+                        <p class="text-3xl font-black text-accent mb-2">15+</p>
+                        <p class="text-white/60 text-xs font-bold uppercase tracking-widest">Major Cities</p>
+                    </div>
+                    <div class="bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10 text-center">
+                        <p class="text-3xl font-black text-accent mb-2">4.9/5</p>
+                        <p class="text-white/60 text-xs font-bold uppercase tracking-widest">Average Rating</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Fade in sections
+    gsap.utils.toArray('.step-content').forEach(content => {
+        gsap.to(content, {
+            opacity: 1,
+            x: 0,
+            duration: 1,
+            scrollTrigger: {
+                trigger: content,
+                start: "top 80%",
+            }
+        });
+    });
+
+    gsap.utils.toArray('.step-image').forEach(image => {
+        gsap.to(image, {
+            opacity: 1,
+            y: 0,
+            x: 0,
+            duration: 1.2,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: image,
+                start: "top 80%",
+            }
+        });
+    });
+</script>
+{% endblock %}

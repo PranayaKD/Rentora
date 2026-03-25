@@ -1,0 +1,889 @@
+{% extends "base.html" %}
+{% load static cache %}
+
+{% block title %}Rentora | Premium Car Rentals India{% endblock %}
+
+{% block meta_description %}Rent premium and budget cars in India with Rentora. Self-drive or with a driver, doorstep delivery, and 24/7 support. Book your luxury ride today.{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* Compact Calendar Styling */
+    .flatpickr-calendar {
+        transform: scale(0.85) !important;
+        transform-origin: top center !important;
+    }
+    .flatpickr-day {
+        height: 32px !important;
+        line-height: 32px !important;
+        max-width: 32px !important;
+    }
+    .flatpickr-months .flatpickr-month {
+        height: 30px !important;
+    }
+    
+</style>
+{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CarRentalBusiness",
+  "name": "Rentora",
+  "image": "https://rentora.in/static/images/hero/hero-main.webp",
+  "@id": "https://rentora.in",
+  "url": "https://rentora.in",
+  "telephone": "+91-XXXXXXXXXX",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Connaught Place",
+    "addressLocality": "New Delhi",
+    "postalCode": "110001",
+    "addressCountry": "IN"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 28.6139,
+    "longitude": 77.2090
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+    ],
+    "opens": "00:00",
+    "closes": "23:59"
+  },
+  "sameAs": [
+    "https://www.facebook.com/rentora",
+    "https://www.instagram.com/rentora",
+    "https://www.linkedin.com/company/rentora"
+  ],
+  "priceRange": "₹₹",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "reviewCount": "1280"
+  }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<!-- Page content starts below -->
+
+<!-- Hero Section -->
+{% cache 3600 hero_section %}
+<section id="hero" class="relative min-h-screen flex flex-col items-center justify-start overflow-hidden bg-[#09090b] pt-40 pb-20">
+    <!-- Clean Dark Overlay & Hero Background -->
+    <div class="absolute inset-0">
+        <div class="absolute inset-0 bg-black/60 z-[1]"></div>
+        <div class="hero-car absolute inset-0 bg-cover bg-center" style="background-image: url('{% static 'images/hero/hero-main.webp' %}');"></div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="relative z-10 max-w-7xl mx-auto px-6 w-full flex flex-col items-center text-center">
+        <!-- Badge -->
+        <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-12 shadow-2xl">
+            <span class="flex h-2.5 w-2.5 rounded-full bg-accent shadow-[0_0_10px_#00c9a7]"></span>
+            <span class="text-white/90 text-[11px] font-black uppercase tracking-[0.3em]">Premium Rental Experience</span>
+        </div>
+
+        <!-- Heading -->
+        <h1 id="hero-title" class="text-white font-[900] text-[3.5rem] md:text-[6rem] lg:text-[8rem] leading-[0.85] tracking-[-0.05em] mb-16 drop-shadow-2xl uppercase">
+            <span class="hero-line block">RIDE <span class="text-accent">SMARTER</span>.</span>
+            <span class="hero-line block">EXPLORE MORE.</span>
+        </h1>
+
+        <!-- Driver Toggle -->
+        <div class="flex items-center gap-1 bg-white/5 backdrop-blur-2xl p-1.5 rounded-full border border-white/10 mb-16 shadow-lg">
+            <button type="button" onclick="toggleDriver('without')" id="btn-without-driver" class="px-10 py-3 rounded-full text-xs font-black uppercase tracking-widest transition-all bg-accent text-primary shadow-xl shadow-accent/20">Self Drive</button>
+            <button type="button" onclick="toggleDriver('with')" id="btn-with-driver" class="px-10 py-3 rounded-full text-xs font-black uppercase tracking-widest transition-all text-white/50 hover:text-white">With Driver</button>
+        </div>
+
+        <!-- The Search Pill (Capsule) -->
+        <div id="hero-pill" class="booking-bar w-full max-w-[1200px] mt-auto">
+            <form action="{% url 'cars' %}" method="get" class="bg-white rounded-[4rem] p-4 md:p-6 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.6)] border border-white/20">
+                <div class="flex flex-col md:flex-row items-center">
+                    <!-- Segment 1: Location -->
+                    <div class="flex-[1.2] w-full px-8 py-4 text-left group cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-[2rem] transition-colors relative">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center text-accent">
+                                <span class="material-symbols-outlined font-bold">location_on</span>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">City / Location</p>
+                                <input name="q" id="location-input" type="text" placeholder="Enter City or Location" autocomplete="off" class="w-full bg-transparent border-none p-0 text-slate-900 dark:text-white text-lg font-bold placeholder:text-slate-300 focus:ring-0" value="">
+                            </div>
+                        </div>
+                        
+                        <!-- Modern Location Suggestions Dropdown -->
+                        <div id="location-suggestions" class="absolute top-[calc(100%+1rem)] left-0 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl rounded-[2rem] border border-white/20 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] p-6 z-[100] opacity-0 invisible translate-y-4 transition-all duration-300 max-h-[400px] overflow-y-auto custom-scrollbar">
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">Popular Cities</p>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                                <button type="button" onclick="selectLocation('New Delhi')" class="flex items-center gap-3 p-3 rounded-2xl hover:bg-accent/5 transition-colors text-left group">
+                                    <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-colors">
+                                        <span class="material-symbols-outlined text-sm">home_pin</span>
+                                    </div>
+                                    <span class="font-bold text-sm">New Delhi</span>
+                                </button>
+                                <button type="button" onclick="selectLocation('Mumbai')" class="flex items-center gap-3 p-3 rounded-2xl hover:bg-accent/5 transition-colors text-left group">
+                                    <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-colors">
+                                        <span class="material-symbols-outlined text-sm">apartment</span>
+                                    </div>
+                                    <span class="font-bold text-sm">Mumbai</span>
+                                </button>
+                                <button type="button" onclick="selectLocation('Goa')" class="flex items-center gap-3 p-3 rounded-2xl hover:bg-accent/5 transition-colors text-left group">
+                                    <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-colors">
+                                        <span class="material-symbols-outlined text-sm">beach_access</span>
+                                    </div>
+                                    <span class="font-bold text-sm">Goa</span>
+                                </button>
+                                <button type="button" onclick="selectLocation('Dubai')" class="flex items-center gap-3 p-3 rounded-2xl hover:bg-accent/5 transition-colors text-left group">
+                                    <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-colors">
+                                        <span class="material-symbols-outlined text-sm">location_city</span>
+                                    </div>
+                                    <span class="font-bold text-sm">Dubai</span>
+                                </button>
+                                <button type="button" onclick="selectLocation('Bangalore')" class="flex items-center gap-3 p-3 rounded-2xl hover:bg-accent/5 transition-colors text-left group">
+                                    <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-colors">
+                                        <span class="material-symbols-outlined text-sm">rocket_launch</span>
+                                    </div>
+                                    <span class="font-bold text-sm">Bangalore</span>
+                                </button>
+                                <button type="button" onclick="selectLocation('Hyderabad')" class="flex items-center gap-3 p-3 rounded-2xl hover:bg-accent/5 transition-colors text-left group">
+                                    <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-colors">
+                                        <span class="material-symbols-outlined text-sm">castle</span>
+                                    </div>
+                                    <span class="font-bold text-sm">Hyderabad</span>
+                                </button>
+                                <button type="button" onclick="selectLocation('Pune')" class="flex items-center gap-3 p-3 rounded-2xl hover:bg-accent/5 transition-colors text-left group">
+                                    <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-colors">
+                                        <span class="material-symbols-outlined text-sm">history_edu</span>
+                                    </div>
+                                    <span class="font-bold text-sm">Pune</span>
+                                </button>
+                                <button type="button" onclick="selectLocation('Chennai')" class="flex items-center gap-3 p-3 rounded-2xl hover:bg-accent/5 transition-colors text-left group">
+                                    <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-colors">
+                                        <span class="material-symbols-outlined text-sm">water</span>
+                                    </div>
+                                    <span class="font-bold text-sm">Chennai</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Divider -->
+                    <div class="hidden md:block w-px h-12 bg-slate-100 dark:bg-slate-800 shrink-0 mx-2"></div>
+
+                    <!-- Segment 2: Pick UP -->
+                    <div id="segment-pickup" class="flex-1 w-full px-8 py-4 text-left group cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-[2rem] transition-colors relative h-full">
+                        <div class="flex items-center gap-4 h-full">
+                            <div class="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center text-accent">
+                                <span class="material-symbols-outlined font-bold">calendar_today</span>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Pick-up</p>
+                                <div class="relative min-h-[1.75rem] flex items-center">
+                                    <span class="text-lg font-bold text-slate-900 dark:text-white block pointer-events-none" id="display-pickup">Select Date & Time</span>
+                                    <input name="pickup_date" id="pickup_picker" type="text" required class="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Divider -->
+                    <div class="hidden md:block w-px h-12 bg-slate-100 dark:bg-slate-800 shrink-0 mx-2"></div>
+
+                    <!-- Segment 3: Return -->
+                    <div id="segment-return" class="flex-1 w-full px-8 py-4 text-left group cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-[2rem] transition-colors relative h-full">
+                        <div class="flex items-center gap-4 h-full">
+                            <div class="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center text-accent">
+                                <span class="material-symbols-outlined font-bold">event</span>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Return</p>
+                                <div class="relative min-h-[1.75rem] flex items-center">
+                                    <span class="text-lg font-bold text-slate-900 dark:text-white block pointer-events-none" id="display-return">Select Date & Time</span>
+                                    <input name="return_date" id="return_picker" type="text" required class="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Button -->
+                    <div class="w-full md:w-auto p-2">
+                        <button type="submit" class="w-full md:w-[220px] h-16 md:h-20 bg-accent hover:bg-black hover:text-white text-black font-black text-xl rounded-full transition-all flex items-center justify-center gap-4 group/btn shadow-2xl shadow-accent/40">
+                            <span>Find Cars</span>
+                            <span class="material-symbols-outlined font-black group-hover:translate-x-1 transition-transform text-2xl">search</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endcache %}
+
+
+
+<!-- Custom Flatpickr Styling (White Theme) -->
+<style>
+    .flatpickr-calendar {
+        background: #ffffff !important;
+        border-radius: 1.5rem !important;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+        border: 1px solid rgba(0,0,0,0.05) !important;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
+        padding: 0.8rem !important;
+        transform: scale(1);
+        transform-origin: top center;
+    }
+    .flatpickr-day.selected {
+        background: #00c9a7 !important;
+        border-color: #00c9a7 !important;
+        color: #fff !important;
+        border-radius: 0.75rem !important;
+    }
+    .flatpickr-day:hover {
+        background: rgba(0,201,167,0.1) !important;
+    }
+    .flatpickr-time {
+        border-top: 1px solid rgba(0,0,0,0.05) !important;
+        padding-top: 0.5rem !important;
+    }
+    .flatpickr-current-month .flatpickr-monthDropdown-months {
+        font-weight: 800 !important;
+    }
+    .flatpickr-calendar.arrowTop:before, .flatpickr-calendar.arrowTop:after {
+        border-bottom-color: #ffffff !important;
+    }
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Encapsulate Flatpickr and GSAP logic tightly to avoid global window pollution
+    const initBookingBar = () => {
+        const config = {
+            enableTime: true,
+            dateFormat: "Y-m-d H:i",
+            minDate: "today",
+            time_24hr: true,
+            monthSelectorType: "static",
+            animate: true,
+            position: "auto",
+            onChange: function(selectedDates, dateStr, instance) {
+                const displayId = instance.element.id === 'pickup_picker' ? 'display-pickup' : 'display-return';
+                const display = document.getElementById(displayId);
+                if (selectedDates.length > 0) {
+                    const date = selectedDates[0];
+                    display.innerText = date.toLocaleDateString('en-IN', { 
+                        day: 'numeric', 
+                        month: 'short', 
+                        hour: '2-digit', 
+                        minute: '2-digit' 
+                    });
+                    display.classList.remove('text-red-500');
+                }
+            }
+        };
+
+        const pickupPicker = flatpickr("#pickup_picker", {
+            ...config,
+            placeholder: "Select Pick-up",
+        });
+
+        const returnPicker = flatpickr("#return_picker", {
+            ...config,
+            placeholder: "Select Return",
+            onOpen: function(selectedDates, dateStr, instance) {
+                const pickupDate = pickupPicker.selectedDates[0];
+                if (pickupDate) {
+                    instance.set('minDate', pickupDate);
+                }
+            }
+        });
+
+        // Lexical scope hover triggers instead of global window bindings
+        const triggerHover = (segId, inputId, pickerInstance) => {
+            const seg = document.getElementById(segId);
+            const input = document.getElementById(inputId);
+            if (seg && input) {
+                [seg, input].forEach(el => {
+                    el.addEventListener('mouseenter', () => {
+                        pickerInstance.input.focus();
+                        pickerInstance.open();
+                    });
+                });
+            }
+        };
+        
+        triggerHover('segment-pickup', 'pickup_picker', pickupPicker);
+        triggerHover('segment-return', 'return_picker', returnPicker);
+    };
+
+    initBookingBar();
+
+    // GSAP Animations (Nike style entry + ScrollTriggers)
+    gsap.from(".navbar-logo", {
+        opacity: 0,
+        y: -30,
+        duration: 0.8,
+        delay: 0.2
+    });
+
+    gsap.from(".hero-line", {
+        opacity: 0,
+        y: 80,
+        duration: 1,
+        stagger: 0.15,
+        delay: 0.6,
+        ease: "power4.out"
+    });
+
+    gsap.from(".hero-car", {
+        opacity: 0,
+        scale: 1.1,
+        duration: 1.5,
+        delay: 0.3,
+        ease: "power2.out"
+    });
+
+    gsap.from(".booking-bar", {
+        opacity: 0,
+        y: 60,
+        duration: 0.8,
+        delay: 1.0,
+        ease: "power2.out"
+    });
+
+
+
+    // Location Suggestion Logic
+    const locationInput = document.getElementById('location-input');
+    const suggestions = document.getElementById('location-suggestions');
+
+    if (locationInput && suggestions) {
+        locationInput.addEventListener('focus', () => {
+            suggestions.classList.remove('invisible', 'opacity-0', 'translate-y-4');
+            suggestions.classList.add('visible', 'opacity-100', 'translate-y-0');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!locationInput.contains(e.target) && !suggestions.contains(e.target)) {
+                suggestions.classList.add('invisible', 'opacity-0', 'translate-y-4');
+                suggestions.classList.remove('visible', 'opacity-100', 'translate-y-0');
+            }
+        });
+    }
+
+    // Scroll to Top Button Logic
+    const scrollBtn = document.getElementById('scroll-to-hero');
+    if (scrollBtn) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                gsap.to(scrollBtn, { opacity: 1, y: 0, pointerEvents: 'auto', duration: 0.4, ease: "back.out(1.7)" });
+            } else {
+                gsap.to(scrollBtn, { opacity: 0, y: 20, pointerEvents: 'none', duration: 0.3 });
+            }
+        });
+
+        scrollBtn.addEventListener('click', () => {
+            gsap.to(window, { duration: 1, scrollTo: "#hero", ease: "power4.inOut" });
+        });
+    }
+
+    gsap.utils.toArray(".section-title").forEach(title => {
+        gsap.from(title, {
+            opacity: 0,
+            x: -80,
+            duration: 1,
+            scrollTrigger: {
+                trigger: title,
+                start: "top 85%"
+            }
+        });
+    });
+});
+
+function toggleDriver(type) {
+    const btnWith = document.getElementById('btn-with-driver');
+    const btnWithout = document.getElementById('btn-without-driver');
+    const input = document.getElementById('driver-type-input');
+    
+    if (type === 'with') {
+        btnWith.className = 'px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all bg-accent text-primary shadow-lg shadow-accent/20';
+        btnWithout.className = 'px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all text-white/60 hover:text-white';
+        input.value = 'with';
+    } else {
+        btnWithout.className = 'px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all bg-accent text-primary shadow-lg shadow-accent/20';
+        btnWith.className = 'px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all text-white/60 hover:text-white';
+        input.value = 'without';
+    }
+}
+</script>
+
+<style>
+/* Global Shimmer Animation */
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+}
+.dark .skeleton {
+    background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+    background-size: 200% 100%;
+}
+
+@keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-reverse {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
+}
+
+.animate-marquee {
+    animation: marquee 40s linear infinite;
+}
+
+.animate-marquee-reverse {
+    animation: marquee-reverse 40s linear infinite;
+}
+</style>
+
+
+
+<!-- How it Works Section -->
+{% cache 86400 how_it_works %}
+<section id="how-it-works" class="py-24 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16">
+            <span class="text-accent font-bold tracking-[0.2em] uppercase text-[10px] mb-4 block">Process</span>
+            <h2 class="text-4xl lg:text-5xl font-black mb-4">How Rentora Works</h2>
+            <p class="text-slate-500 font-medium max-w-xl mx-auto">Three simple steps to get you on the road with India's most premium car rental fleet.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-16">
+            <!-- Step 1 -->
+            <div class="flex flex-col items-center text-center group">
+                <div class="relative w-24 h-24 mb-10">
+                    <div class="absolute inset-0 bg-accent/10 rounded-[2rem] rotate-6 group-hover:rotate-12 transition-transform duration-500"></div>
+                    <div class="absolute inset-0 bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 flex items-center justify-center shadow-sm group-hover:shadow-2xl transition-all duration-500">
+                        <span class="material-symbols-outlined text-4xl text-accent font-black">search</span>
+                    </div>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">1. Select a Car</h3>
+                <p class="text-slate-500 font-medium leading-relaxed">Browse our curated collection of 84+ premium vehicles across India.</p>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="flex flex-col items-center text-center group">
+                <div class="relative w-24 h-24 mb-10">
+                    <div class="absolute inset-0 bg-accent/10 rounded-[2rem] -rotate-3 group-hover:-rotate-6 transition-transform duration-500"></div>
+                    <div class="absolute inset-0 bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 flex items-center justify-center shadow-sm group-hover:shadow-2xl transition-all duration-500">
+                        <span class="material-symbols-outlined text-4xl text-accent font-black">event_available</span>
+                    </div>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">2. Book Instantly</h3>
+                <p class="text-slate-500 font-medium leading-relaxed">Pick your dates, complete KYC, and secure your ride in minutes.</p>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="flex flex-col items-center text-center group">
+                <div class="relative w-24 h-24 mb-10">
+                    <div class="absolute inset-0 bg-accent/10 rounded-[2rem] rotate-12 group-hover:rotate-45 transition-transform duration-500"></div>
+                    <div class="absolute inset-0 bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 flex items-center justify-center shadow-sm group-hover:shadow-2xl transition-all duration-500">
+                        <span class="material-symbols-outlined text-4xl text-accent font-black">key</span>
+                    </div>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">3. Drive Away</h3>
+                <p class="text-slate-500 font-medium leading-relaxed">Doorstep delivery or easy pickup. Grab the keys and explore.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endcache %}
+
+<!-- Brand Logo Carousel -->
+<section class="py-20 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 mb-12 text-center">
+        <span class="text-accent font-bold tracking-[0.2em] uppercase text-[10px] mb-4 block">Our Partners</span>
+        <h2 class="text-3xl font-black">Browse by Brand</h2>
+    </div>
+
+    {% cache 86400 brand_carousel %}
+    <!-- Row 1: Luxury (Right to Left) -->
+    <div class="relative flex items-center mb-12">
+        <div class="flex animate-marquee whitespace-nowrap py-6">
+            <!-- Set 1 -->
+            <div class="flex items-center gap-12 md:gap-20 px-12">
+                <a href="{% url 'cars' %}?brand=Audi" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
+                    <img src="{% static 'images/brands/audi.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Audi" loading="lazy" decoding="async">
+                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Audi</span>
+                </a>
+                <a href="{% url 'cars' %}?brand=BMW" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
+                    <img src="{% static 'images/brands/bmw.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="BMW" loading="lazy" decoding="async">
+                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">BMW</span>
+                </a>
+                <a href="{% url 'cars' %}?brand=Mercedes-Benz" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
+                    <img src="{% static 'images/brands/mercedes.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Mercedes" loading="lazy" decoding="async">
+                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Mercedes</span>
+                </a>
+                <a href="{% url 'cars' %}?brand=Porsche" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
+                    <img src="{% static 'images/brands/porsche.jpg' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Porsche" loading="lazy" decoding="async">
+                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Porsche</span>
+                </a>
+                <a href="{% url 'cars' %}?brand=Bentley" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
+                    <img src="{% static 'images/brands/bentley.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Bentley" loading="lazy" decoding="async">
+                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Bentley</span>
+                </a>
+                <a href="{% url 'cars' %}?brand=Rolls Royce" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
+                    <img src="{% static 'images/brands/rollsroyce.jpg' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Rolls Royce" loading="lazy" decoding="async">
+                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Rolls Royce</span>
+                </a>
+                <a href="{% url 'cars' %}?brand=Range Rover" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
+                    <img src="{% static 'images/brands/landrover.jpg' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Range Rover" loading="lazy" decoding="async">
+                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Range Rover</span>
+                </a>
+                <a href="{% url 'cars' %}?brand=Tesla" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
+                    <img src="{% static 'images/brands/tesla.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Tesla" loading="lazy" decoding="async">
+                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Tesla</span>
+                </a>
+            </div>
+            <!-- Set 2 -->
+            <div class="flex items-center gap-12 md:gap-20 px-12">
+                <a href="{% url 'cars' %}?brand=Audi" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
+                    <img src="{% static 'images/brands/audi.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Audi" loading="lazy" decoding="async">
+                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Audi</span>
+                </a>
+                <a href="{% url 'cars' %}?brand=BMW" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
+                    <img src="{% static 'images/brands/bmw.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="BMW" loading="lazy" decoding="async">
+                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">BMW</span>
+                </a>
+                <a href="{% url 'cars' %}?brand=Mercedes-Benz" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
+                    <img src="{% static 'images/brands/mercedes.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Mercedes" loading="lazy" decoding="async">
+                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Mercedes</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row 2: Indian/Budget (Left to Right) -->
+    <div class="relative flex items-center">
+        <div class="flex animate-marquee-reverse whitespace-nowrap py-6">
+            <!-- Set 1 -->
+            <div class="flex items-center gap-12 md:gap-20 px-12">
+                <a href="{% url 'cars' %}?brand=Maruti Suzuki" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
+                    <img src="{% static 'images/brands/maruti.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Maruti Suzuki" loading="lazy" decoding="async">
+                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Maruti</span>
+                </a>
+                <a href="{% url 'cars' %}?brand=Tata" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
+                    <img src="{% static 'images/brands/tata.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Tata" loading="lazy" decoding="async">
+                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Tata</span>
+                </a>
+                <a href="{% url 'cars' %}?brand=Mahindra" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
+                    <img src="{% static 'images/brands/mahindra.jpg' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Mahindra" loading="lazy" decoding="async">
+                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Mahindra</span>
+                </a>
+                <a href="{% url 'cars' %}?brand=Hyundai" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
+                    <img src="{% static 'images/brands/hyundai.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Hyundai" loading="lazy" decoding="async">
+                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Hyundai</span>
+                </a>
+                <a href="{% url 'cars' %}?brand=Kia" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
+                    <img src="{% static 'images/brands/kia.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Kia" loading="lazy" decoding="async">
+                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Kia</span>
+                </a>
+                <a href="{% url 'cars' %}?brand=Toyota" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
+                    <img src="{% static 'images/brands/toyota.jpg' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Toyota" loading="lazy" decoding="async">
+                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Toyota</span>
+                </a>
+                <a href="{% url 'cars' %}?brand=Honda" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
+                    <img src="{% static 'images/brands/honda.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Honda" loading="lazy" decoding="async">
+                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Honda</span>
+                </a>
+            </div>
+            <!-- Set 2 -->
+            <div class="flex items-center gap-12 md:gap-20 px-12">
+                <a href="{% url 'cars' %}?brand=Maruti Suzuki" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
+                    <img src="{% static 'images/brands/maruti.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Maruti Suzuki" loading="lazy" decoding="async">
+                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Maruti</span>
+                </a>
+                <a href="{% url 'cars' %}?brand=Tata" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
+                    <img src="{% static 'images/brands/tata.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Tata" loading="lazy" decoding="async">
+                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Tata</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endcache %}
+</section>
+
+<style>
+.brand-logo-item {
+    opacity: 0.8;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 12px 24px;
+}
+.brand-logo-item:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+</style>
+
+<!-- Budget Cars Section -->
+<section class="py-24 bg-background-light dark:bg-slate-900/50">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 text-center md:text-left">
+            <div>
+                <span class="text-accent font-bold tracking-[0.2em] uppercase text-[10px] mb-4 block">Everyday Value</span>
+                <h2 class="section-title text-4xl lg:text-5xl font-bold text-primary dark:text-white mb-4">Budget Selection</h2>
+                <p class="text-slate-500 font-medium max-w-xl">Reliable, efficient, and pocket-friendly daily drivers for your everyday needs starting from ₹999/day.</p>
+            </div>
+            <a href="{% url 'cars' %}?budget=under_1500" class="group flex items-center gap-2 text-primary dark:text-white font-bold hover:text-accent transition-all">
+                View All Budget <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform font-bold">arrow_forward</span>
+            </a>
+        </div>
+        
+        <div class="cars-section grid md:grid-cols-2 lg:grid-cols-3 gap-12">
+{% for car in budget_cars %}
+    {% include 'components/car_card.html' with car=car %}
+{% endfor %}
+</div>
+    </div>
+</section>
+
+
+<!-- Mid Range Section -->
+<section class="py-24 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 text-center md:text-left">
+            <div>
+                <span class="text-accent font-bold tracking-[0.2em] uppercase text-[10px] mb-4 block">The Sweet Spot</span>
+                <h2 class="section-title text-4xl lg:text-5xl font-bold text-primary dark:text-white mb-4">Mid-Range Selection</h2>
+                <p class="text-slate-500 font-medium max-w-xl">The perfect balance of comfort, performance, and price. From ₹1,500 to ₹5,000/day.</p>
+            </div>
+            <a href="{% url 'cars' %}?budget=1500_3000" class="group flex items-center gap-2 text-primary dark:text-white font-bold hover:text-accent transition-all">
+                View Mid-Range <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform font-bold">arrow_forward</span>
+            </a>
+        </div>
+        
+        <div class="cars-section grid md:grid-cols-2 lg:grid-cols-3 gap-12">
+            {% for car in mid_range_cars %}
+                {% include 'components/car_card.html' with car=car %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Luxury Section -->
+<section class="py-32 bg-slate-900 text-white relative overflow-hidden">
+    <!-- Premium Accents -->
+    <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-[#00c9a71a] rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
+    <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#00c9a733] rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2"></div>
+    
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+            <div class="max-w-2xl">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent text-primary text-[10px] font-bold uppercase tracking-widest mb-6 shadow-xl shadow-accent/20">
+                    The Elite Fleet
+                </div>
+                <h2 class="section-title text-5xl lg:text-7xl font-black mb-6 tracking-tight">Luxury Collection</h2>
+                <p class="text-slate-400 text-lg font-medium leading-relaxed">Make every arrival an event. Experience the pinnacle of automotive engineering and comfort with our curated selection of high-end vehicles.</p>
+            </div>
+            <a href="{% url 'cars' %}?fleet=premium" class="group h-14 px-8 rounded-2xl border border-white/10 flex items-center gap-3 hover:bg-white hover:text-primary transition-all font-bold">
+                View Premium Fleet <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            </a>
+        </div>
+        
+        <div class="cars-section grid md:grid-cols-3 gap-12">
+            {% for car in luxury_cars %}
+                {% include 'components/car_card.html' with car=car %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+<!-- Trip Types Section -->
+{% cache 86400 trip_types %}
+<section class="py-32 bg-slate-50 dark:bg-slate-900/40">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-3xl mx-auto mb-20">
+            <h2 class="text-5xl lg:text-7xl font-black mb-8 tracking-tight">Built for every journey</h2>
+            <p class="text-slate-500 font-medium text-lg leading-relaxed">Whether it's a quick city hop or an epic interstate road trip, we have the perfect ride waiting for you.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Local City -->
+            <div class="group bg-white dark:bg-slate-800 p-8 rounded-[3rem] border border-white hover:border-accent/10 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+                <div class="w-16 h-16 bg-accent/10 dark:bg-accent/20 rounded-3xl flex items-center justify-center text-accent mb-8 group-hover:scale-110 transition-transform">
+                    <span class="material-symbols-outlined text-3xl font-bold">location_city</span>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Local Rental</h3>
+                <p class="text-slate-500 text-sm leading-relaxed mb-8">Perfect for errands, meetings, or a night out. Flexible hourly and daily plans tailored for urban commute.</p>
+                <div class="flex gap-2 opacity-20 group-hover:opacity-100 transition-opacity">
+                    <span class="material-symbols-outlined text-xl">directions_car</span>
+                    <span class="material-symbols-outlined text-xl">electric_car</span>
+                </div>
+            </div>
+
+            <!-- Outstation -->
+            <div class="group bg-white dark:bg-slate-800 p-8 rounded-[3rem] border border-white hover:border-accent/10 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+                <div class="w-16 h-16 bg-green-50 dark:bg-green-900/20 rounded-3xl flex items-center justify-center text-green-600 mb-8 group-hover:scale-110 transition-transform">
+                    <span class="material-symbols-outlined text-3xl font-bold">distance</span>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Outstation</h3>
+                <p class="text-slate-500 text-sm leading-relaxed mb-8">Take the highway. Our long-distance fleet comes with 24/7 roadside assistance and unlimited kilometers.</p>
+                <div class="flex gap-2 opacity-20 group-hover:opacity-100 transition-opacity">
+                    <span class="material-symbols-outlined text-xl">minor_crash</span>
+                    <span class="material-symbols-outlined text-xl">speed</span>
+                </div>
+            </div>
+
+            <!-- Airport -->
+            <div class="group bg-white dark:bg-slate-800 p-8 rounded-[3rem] border border-white hover:border-accent/10 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+                <div class="w-16 h-16 bg-purple-50 dark:bg-purple-900/20 rounded-3xl flex items-center justify-center text-purple-600 mb-8 group-hover:scale-110 transition-transform">
+                    <span class="material-symbols-outlined text-3xl font-bold">flight_takeoff</span>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Airport Transfer</h3>
+                <p class="text-slate-500 text-sm leading-relaxed mb-8">Skip the cab line. Have a car waiting at the terminal when you land. Reliable 24/7 airport luxury.</p>
+                <div class="flex gap-2 opacity-20 group-hover:opacity-100 transition-opacity">
+                    <span class="material-symbols-outlined text-xl">luggage</span>
+                    <span class="material-symbols-outlined text-xl">airplane_ticket</span>
+                </div>
+            </div>
+
+            <!-- Monthly -->
+            <div class="group bg-white dark:bg-slate-800 p-8 rounded-[3rem] border border-white hover:border-accent/10 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+                <div class="w-16 h-16 bg-orange-50 dark:bg-orange-900/20 rounded-3xl flex items-center justify-center text-orange-600 mb-8 group-hover:scale-110 transition-transform">
+                    <span class="material-symbols-outlined text-3xl font-bold">event_repeat</span>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Subscriptions</h3>
+                <p class="text-slate-500 text-sm leading-relaxed mb-8">All the perks of owning without the headache. Zero downpayment plans with doorstep maintenance.</p>
+                <div class="flex gap-2 opacity-20 group-hover:opacity-100 transition-opacity">
+                    <span class="material-symbols-outlined text-xl">key</span>
+                    <span class="material-symbols-outlined text-xl">calendar_month</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endcache %}
+
+<!-- Electric Section -->
+<section class="py-24 bg-background-dark text-white relative overflow-hidden">
+    <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 20% 30%, #00c9a7 0%, transparent 50%);"></div>
+    
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+            <div>
+                <span class="text-accent font-bold tracking-[0.2em] uppercase text-[10px] mb-4 block">Sustainable Mobility</span>
+                <h2 class="text-4xl lg:text-5xl font-black mb-4">Electric Future</h2>
+                <p class="text-slate-400 font-medium max-w-xl">Silent, powerful, and clean. Explore our range of EVs with free charging across our network.</p>
+            </div>
+            <a href="{% url 'cars' %}?fuel=Electric" class="group flex items-center gap-2 text-accent font-bold hover:text-white transition-all">
+                The EV Fleet <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform font-bold">bolt</span>
+            </a>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for car in electric_cars %}
+                {% include 'components/car_card.html' with car=car %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+<!-- Why Choose Us / Contact -->
+{% cache 86400 contact_section %}
+<section id="contact" class="py-24 bg-white dark:bg-background-dark">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="grid lg:grid-cols-2 gap-20 items-center">
+            <div>
+                <h2 class="text-4xl lg:text-6xl font-black text-primary dark:text-white mb-8 leading-tight">Why the world loves <span class="text-accent">Rentora</span></h2>
+                <div class="space-y-10">
+                    <div class="flex gap-6">
+                        <div class="size-16 shrink-0 bg-slate-50 dark:bg-slate-800 rounded-3xl flex items-center justify-center text-accent">
+                            <span class="material-symbols-outlined text-3xl">verified_user</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">Completely Insured</h3>
+                            <p class="text-slate-500 leading-relaxed">Every rental includes comprehensive insurance and 24/7 roadside assistance as standard.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-6">
+                        <div class="size-16 shrink-0 bg-slate-50 dark:bg-slate-800 rounded-3xl flex items-center justify-center text-accent">
+                            <span class="material-symbols-outlined text-3xl">key</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">Home Delivery</h3>
+                            <p class="text-slate-500 leading-relaxed">Book a car and have it delivered and picked up from your doorstep in as little as 4 hours.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-6">
+                        <div class="size-16 shrink-0 bg-slate-50 dark:bg-slate-800 rounded-3xl flex items-center justify-center text-accent">
+                            <span class="material-symbols-outlined text-3xl">payments</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-2">Transparent Pricing</h3>
+                            <p class="text-slate-500 leading-relaxed">No hidden charges, no platform fees. What you see is exactly what you pay.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="relative">
+                <div class="absolute inset-0 bg-accent rounded-full blur-[120px] opacity-10"></div>
+                <div class="bg-slate-100 dark:bg-slate-900 p-8 rounded-[3rem] relative z-10 border border-slate-200 dark:border-slate-800">
+                    <div class="bg-white dark:bg-background-dark p-10 rounded-[2.5rem] shadow-xl">
+                        <h4 class="text-2xl font-black mb-6">Need a custom plan?</h4>
+                        <p class="text-slate-500 mb-8">Our concierge team is available 24/7 to help you find the perfect vehicle for your wedding, shoot, or corporate event.</p>
+                        <form action="{% url 'contact' %}" method="post" class="space-y-4">
+                            {% csrf_token %}
+                            <input type="text" placeholder="Your Name" class="w-full bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-2xl px-6 py-4 focus:ring-accent font-bold">
+                            <input type="email" placeholder="Email Address" class="w-full bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-2xl px-6 py-4 focus:ring-accent font-bold">
+                            <textarea placeholder="How can we help?" rows="3" class="w-full bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-2xl px-6 py-4 focus:ring-accent font-bold"></textarea>
+                            <button type="submit" class="w-full bg-accent text-white py-4 rounded-2xl font-black text-lg hover:bg-primary transition-all shadow-lg shadow-accent/20">Send Request</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endcache %}
+
+<!-- Floating Scroll Top Button -->
+<button id="scroll-to-hero" class="fixed bottom-8 right-8 z-[90] w-14 h-14 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl shadow-2xl flex items-center justify-center text-primary dark:text-white hover:bg-accent hover:text-white transition-all opacity-0 translate-y-10 pointer-events-none group">
+    <span class="material-symbols-outlined font-black group-hover:-translate-y-1 transition-transform">keyboard_double_arrow_up</span>
+</button>
+
+<script>
+function selectLocation(city) {
+    const input = document.getElementById('location-input');
+    const suggestions = document.getElementById('location-suggestions');
+    if (input) {
+        input.value = city;
+        if (suggestions) {
+            suggestions.classList.add('invisible', 'opacity-0', 'translate-y-4');
+            suggestions.classList.remove('visible', 'opacity-100', 'translate-y-0');
+        }
+    }
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,43 @@
+{% load static %}
+<footer class="bg-primary dark:bg-background-dark text-white pt-24 pb-12 relative">
+    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent/20 to-transparent"></div>
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="grid md:grid-cols-4 gap-12 mb-20">
+            <div class="col-span-2">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="size-10">
+                        <img src="{% static 'images/icon-512.png' %}" alt="Rentora Logo" class="w-full h-full object-contain">
+                    </div>
+                    <span class="text-2xl font-black tracking-tighter">Rentora</span>
+                </div>
+                <p class="text-slate-400 max-w-sm mb-8">India's largest premium car rental ecosystem. Redefining how India drives.</p>
+                <div class="flex gap-4">
+                    <a href="#" class="size-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all font-bold">In</a>
+                    <a href="#" class="size-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all font-bold">Tw</a>
+                    <a href="#" class="size-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all font-bold">Ig</a>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-bold mb-8 uppercase tracking-widest text-xs text-slate-500">Fleet</h4>
+                <ul class="space-y-4 text-slate-400 font-bold">
+                    <li><a href="{% url 'cars' %}" class="hover:text-accent transition-colors">Budget Cars</a></li>
+                    <li><a href="{% url 'cars' %}?fleet=premium" class="hover:text-accent transition-colors">Premium SUVs</a></li>
+                    <li><a href="{% url 'cars' %}?fuel=Electric" class="hover:text-accent transition-colors">Electric Future</a></li>
+                    <li><a href="{% url 'cars' %}" class="hover:text-accent transition-colors">Monthly Rent</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-8 uppercase tracking-widest text-xs text-slate-500">Support</h4>
+                <ul class="space-y-4 text-slate-400 font-bold">
+                    <li><a href="{% url 'how_it_works' %}" class="hover:text-accent transition-colors">How it Works</a></li>
+                    <li><a href="{% url 'index' %}#contact" class="hover:text-accent transition-colors">Contact Us</a></li>
+                    <li><a href="#" class="hover:text-accent transition-colors">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-accent transition-colors">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="pt-12 border-t border-white/5 text-center text-slate-500 text-sm">
+            <p>&copy; 2026 Rentora Technologies. All rights reserved.</p>
+        </div>
+    </div>
+</footer>

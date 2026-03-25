@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% trans "Sign Up" %} - Rentora{% endblock %}
+
+{% block content %}
+<div class="min-h-[80vh] flex items-center justify-center bg-background-light dark:bg-background-dark py-12 px-6">
+    <div class="max-w-md w-full">
+        <div class="text-center mb-10">
+            <div class="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                <span class="material-symbols-outlined text-4xl text-primary">person_add</span>
+            </div>
+            <h1 class="text-3xl font-black mb-3">Almost There!</h1>
+            <p class="text-slate-500 font-medium">{% blocktrans with provider_name=account.get_provider.name site_name=site.name %}You are about to use your {{provider_name}} account to login to {{site_name}}. As a final step, please complete the following form:{% endblocktrans %}</p>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 sm:p-10 border border-slate-100 dark:border-slate-800 shadow-xl">
+            <form class="signup space-y-6" id="signup_form" method="post" action="{% url 'socialaccount_signup' %}">
+                {% csrf_token %}
+                
+                <div class="space-y-4">
+                    {{ form|crispy }}
+                </div>
+
+                {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                {% endif %}
+
+                <button type="submit" class="w-full bg-primary text-white h-14 rounded-2xl font-bold text-base hover:bg-slate-800 transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2 mt-4">
+                    {% trans "Complete Sign Up" %}
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Booking Confirmed - Rentora{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-6 py-12 text-center">
+    
+    <!-- Success Animation / Icon -->
+    <div class="w-24 h-24 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-8 relative">
+        <div class="absolute inset-0 bg-green-400/20 rounded-full animate-ping"></div>
+        <span class="material-symbols-outlined text-[3rem] relative z-10">check_circle</span>
+    </div>
+
+    <h1 class="text-4xl font-black mb-4">Booking Confirmed!</h1>
+    <p class="text-slate-500 text-lg mb-8 max-w-lg mx-auto">Your trip with the <strong>{{ booking.car.name }}</strong> has been confirmed. A confirmation email has been sent to <strong>{{ booking.user.email }}</strong>.</p>
+    
+    <!-- Ticket / Receipt Card -->
+    <div class="bg-white dark:bg-slate-900 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-xl overflow-hidden mb-10 text-left relative">
+        <!-- Ticket notches -->
+        <div class="absolute -left-4 top-[5.5rem] w-8 h-8 bg-slate-50 dark:bg-background-dark rounded-full border border-slate-100 dark:border-slate-800 border-l-transparent z-10 -rotate-45"></div>
+        <div class="absolute -right-4 top-[5.5rem] w-8 h-8 bg-slate-50 dark:bg-background-dark rounded-full border border-slate-100 dark:border-slate-800 border-r-transparent z-10 rotate-45"></div>
+        
+        <!-- Header -->
+        <div class="p-6 sm:p-8 bg-slate-900 text-white relative flex justify-between items-center border-b border-dashed border-slate-700">
+            <div>
+                <p class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-widest mb-1">Booking Reference</p>
+                <p class="text-xl font-bold font-mono tracking-wider">{{ booking.booking_reference }}</p>
+            </div>
+            
+            <a href="{% url 'invoice' booking.id %}" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 transition-colors flex items-center justify-center border border-white/10 text-white shadow-sm" title="View & Print Tax Invoice">
+                <span class="material-symbols-outlined text-[1.25rem]">receipt_long</span>
+            </a>
+        </div>
+
+        
+        <!-- Body -->
+        <div class="p-6 sm:p-8">
+            <div class="flex gap-4 mb-8">
+                <div class="w-24 h-16 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-center justify-center p-2 shrink-0">
+                    {% if booking.car.image %}
+                    <img src="{{ booking.car.image.url }}" class="w-full h-full object-contain">
+                    {% else %}
+                    <span class="material-symbols-outlined text-3xl text-slate-300">directions_car</span>
+                    {% endif %}
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold leading-tight">{{ booking.car.name }}</h3>
+                    <p class="text-sm font-bold text-accent">{{ booking.car.brand }}</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-6 relative mb-8">
+                <div class="absolute left-1/2 top-2 bottom-2 w-px border-l border-dashed border-slate-200 dark:border-slate-700"></div>
+                <div>
+                    <p class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-widest mb-1">Pickup</p>
+                    <p class="font-bold mb-1">{{ booking.pickup_date|date:"l, M d, Y" }}</p>
+                    <p class="text-sm text-slate-500 mb-2">10:00 AM</p>
+                    <p class="text-xs text-slate-500 truncate max-w-full" title="{{ booking.pickup_location }}">{{ booking.pickup_location }}</p>
+                    {% if booking.is_outstation %}
+                    <span class="mt-2 text-[10px] font-bold text-blue-500 uppercase tracking-widest flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[12px]">distance</span> Outstation
+                    </span>
+                    {% endif %}
+                </div>
+                <div class="pl-4">
+                    <p class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-widest mb-1">Drop-off</p>
+                    <p class="font-bold mb-1">{{ booking.dropoff_date|date:"l, M d, Y" }}</p>
+                    <p class="text-sm text-slate-500 mb-2">10:00 AM</p>
+                    <p class="text-xs text-slate-500 truncate max-w-full" title="{{ booking.dropoff_location }}">{{ booking.dropoff_location }}</p>
+                </div>
+            </div>
+
+
+            <div class="flex justify-between items-end pt-6 border-t border-slate-100 dark:border-slate-700">
+                <div>
+                    <p class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-widest mb-1">Total (Incl. GST)</p>
+                    <span class="px-2 py-0.5 bg-green-100 text-green-700 rounded text-xs font-bold inline-flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[0.8rem]">check</span> Paid
+                    </span>
+                </div>
+                <p class="text-3xl font-black">₹{{ booking.total_with_gst }}</p>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="{% url 'dashboard_bookings' %}" class="bg-primary text-white px-8 py-4 rounded-xl font-bold shadow-lg hover:bg-slate-800 transition-colors">View My Bookings</a>
+        <a href="{% url 'index' %}" class="bg-white dark:bg-slate-900 text-slate-900 border border-slate-200 dark:border-slate-700 dark:text-white px-8 py-4 rounded-xl font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Back to Home</a>
+    </div>
+
+</div>
+{% endblock %}

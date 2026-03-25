@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Notifications - Rentora{% endblock %}
+
+{% block content %}
+<main class="flex flex-1 justify-center py-8 px-4 md:px-10">
+    <div class="layout-content-container flex flex-col max-w-4xl flex-1 gap-6">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <h2 class="text-3xl font-bold text-primary dark:text-white">Notifications</h2>
+                <p class="text-slate-500 mt-1">Stay updated with your bookings and payments</p>
+            </div>
+            <button class="flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-sm font-semibold hover:bg-slate-200 transition-colors">
+                <span class="material-symbols-outlined text-lg">settings</span>
+                Preferences
+            </button>
+        </div>
+
+        <!-- Notification Tabs + List -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+            <!-- Tabs -->
+            <div class="flex border-b border-slate-100 dark:border-slate-800">
+                <button class="notif-tab flex-1 py-4 text-sm font-bold border-b-2 border-primary text-primary dark:text-white dark:border-accent" data-tab="all" onclick="switchTab('all')">
+                    All Notifications
+                </button>
+                <button class="notif-tab flex-1 py-4 text-sm font-medium text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors border-b-2 border-transparent" data-tab="unread" onclick="switchTab('unread')">
+                    Unread
+                    {% if unread_count > 0 %}
+                    <span class="ml-2 inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold leading-none text-white bg-accent rounded-full">{{ unread_count }}</span>
+                    {% endif %}
+                </button>
+                <button class="notif-tab flex-1 py-4 text-sm font-medium text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors border-b-2 border-transparent" data-tab="archived" onclick="switchTab('archived')">
+                    Archived
+                </button>
+            </div>
+
+            <!-- Mark All Read -->
+            {% if unread_count > 0 %}
+            <div class="px-6 py-3 bg-slate-50 dark:bg-slate-800/30 flex justify-end">
+                <button onclick="markAllRead()" class="text-xs font-bold text-accent hover:underline">Mark all as read</button>
+            </div>
+            {% endif %}
+
+            <!-- Notification Items -->
+            <div class="divide-y divide-slate-100 dark:divide-slate-800" id="notifications-list">
+                {% for notif in notifications %}
+                <div class="notification-item flex gap-4 p-6 transition-colors
+                    {% if not notif.is_read %}bg-accent/5 border-l-4 border-accent{% else %}hover:bg-slate-50 dark:hover:bg-slate-800/50{% endif %}
+                    {% if notif.is_archived %}archived-item{% endif %}"
+                    data-read="{{ notif.is_read|yesno:'true,false' }}" data-archived="{{ notif.is_archived|yesno:'true,false' }}" data-id="{{ notif.id }}">
+                    <div class="flex-shrink-0">
+                        <div class="flex items-center justify-center size-12 rounded-xl
+                            {% if notif.notification_type == 'booking' %}bg-accent/10 text-accent
+                            {% elif notif.notification_type == 'payment' %}bg-accent/10 text-accent
+                            {% elif notif.notification_type == 'reminder' %}bg-slate-100 dark:bg-slate-800 text-slate-500
+                            {% elif notif.notification_type == 'review' %}bg-slate-100 dark:bg-slate-800 text-slate-500
+                            {% elif notif.notification_type == 'kyc' %}bg-blue-100 text-blue-600
+                            {% elif notif.notification_type == 'promo' %}bg-yellow-100 text-yellow-600
+                            {% else %}bg-slate-100 dark:bg-slate-800 text-slate-500{% endif %}">
+                            <span class="material-symbols-outlined {% if not notif.is_read %}filled-icon{% endif %}">
+                                {% if notif.notification_type == 'booking' %}check_circle
+                                {% elif notif.notification_type == 'payment' %}payments
+                                {% elif notif.notification_type == 'reminder' %}event_upcoming
+                                {% elif notif.notification_type == 'review' %}star
+                                {% elif notif.notification_type == 'kyc' %}verified_user
+                                {% elif notif.notification_type == 'promo' %}local_offer
+                                {% else %}notifications{% endif %}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex flex-1 flex-col">
+                        <div class="flex items-center justify-between mb-1">
+                            <h3 class="{% if not notif.is_read %}text-primary dark:text-white font-bold{% else %}text-slate-500 dark:text-slate-300 font-semibold{% endif %} text-base">{{ notif.title }}</h3>
+                            <span class="text-xs font-medium text-slate-400">{{ notif.created_at|timesince }} ago</span>
+                        </div>
+                        <p class="{% if not notif.is_read %}text-slate-600 dark:text-slate-400{% else %}text-slate-500 dark:text-slate-500{% endif %} text-sm leading-relaxed mb-3">
+                            {{ notif.message }}
+                        </p>
+                        {% if not notif.is_read %}
+                        <div class="flex gap-2">
+                            {% if notif.action_url %}
+                            <a href="{{ notif.action_url }}" class="px-4 py-1.5 bg-primary text-white text-xs font-bold rounded-full hover:bg-primary/90 transition-opacity">View Details</a>
+                            {% endif %}
+                            <button onclick="markRead({{ notif.id }}, this)" class="px-4 py-1.5 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-xs font-bold rounded-full hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Mark as read</button>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% if not notif.is_read %}
+                    <div class="size-2 rounded-full bg-accent mt-2"></div>
+                    {% endif %}
+                </div>
+                {% empty %}
+                <div class="p-12 text-center">
+                    <span class="material-symbols-outlined text-5xl text-slate-300 mb-4">notifications_off</span>
+                    <p class="text-slate-400 font-semibold">No notifications yet</p>
+                    <p class="text-slate-400 text-sm mt-1">We'll notify you when something important happens</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Info Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+            <div class="bg-primary p-6 rounded-2xl flex flex-col justify-between min-h-[160px] shadow-xl">
+                <span class="material-symbols-outlined text-white text-3xl mb-4">support_agent</span>
+                <div>
+                    <p class="text-white font-bold text-lg leading-tight">Need assistance?</p>
+                    <p class="text-slate-400 text-xs mt-1">Our premium support team is available 24/7 for you.</p>
+                </div>
+            </div>
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl flex flex-col justify-between min-h-[160px]">
+                <span class="material-symbols-outlined text-accent text-3xl mb-4">verified_user</span>
+                <div>
+                    <p class="text-primary dark:text-white font-bold text-lg leading-tight">Insurance Active</p>
+                    <p class="text-slate-500 text-xs mt-1">All your active trips are covered by our Platinum protection.</p>
+                </div>
+            </div>
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl flex flex-col justify-between min-h-[160px] relative overflow-hidden">
+                <div class="absolute -right-4 -top-4 size-24 bg-accent/10 rounded-full blur-2xl"></div>
+                <span class="material-symbols-outlined text-primary dark:text-slate-300 text-3xl mb-4">card_membership</span>
+                <div>
+                    <p class="text-primary dark:text-white font-bold text-lg leading-tight">Elite Member</p>
+                    <p class="text-slate-500 text-xs mt-1">You are 2 bookings away from Diamond status rewards.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="border-t border-slate-200 dark:border-slate-800 py-8 px-6 md:px-20 bg-white dark:bg-background-dark">
+    <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="flex items-center gap-2">
+            <div class="flex items-center justify-center size-8 rounded-lg bg-primary text-white">
+                <span class="material-symbols-outlined text-sm">directions_car</span>
+            </div>
+            <span class="font-bold text-primary dark:text-white">Rentora</span>
+        </div>
+        <nav class="flex gap-8 text-sm font-medium text-slate-500 dark:text-slate-400">
+            <a class="hover:text-primary dark:hover:text-white transition-colors" href="#">Privacy</a>
+            <a class="hover:text-primary dark:hover:text-white transition-colors" href="#">Terms</a>
+            <a class="hover:text-primary dark:hover:text-white transition-colors" href="#">Help Center</a>
+            <a class="hover:text-primary dark:hover:text-white transition-colors" href="#">Safety</a>
+        </nav>
+        <div class="text-slate-400 text-xs">© 2025 Rentora Inc. All rights reserved.</div>
+    </div>
+</footer>
+{% endblock %}
+
+{% block extra_scripts %}
+<style>
+    .material-symbols-outlined.filled-icon {
+        font-variation-settings: 'FILL' 1;
+    }
+</style>
+<script>
+function switchTab(tab) {
+    document.querySelectorAll('.notif-tab').forEach(t => {
+        t.classList.remove('font-bold', 'border-primary', 'text-primary', 'dark:text-white', 'dark:border-accent');
+        t.classList.add('font-medium', 'text-slate-400', 'border-transparent');
+    });
+    const activeTab = document.querySelector(`.notif-tab[data-tab="${tab}"]`);
+    activeTab.classList.add('font-bold', 'border-primary', 'text-primary', 'dark:text-white', 'dark:border-accent');
+    activeTab.classList.remove('font-medium', 'text-slate-400', 'border-transparent');
+
+    document.querySelectorAll('.notification-item').forEach(item => {
+        const isRead = item.dataset.read === 'true';
+        const isArchived = item.dataset.archived === 'true';
+        if (tab === 'all') item.style.display = isArchived ? 'none' : '';
+        else if (tab === 'unread') item.style.display = (!isRead && !isArchived) ? '' : 'none';
+        else if (tab === 'archived') item.style.display = isArchived ? '' : 'none';
+    });
+}
+
+function markRead(id, btn) {
+    fetch(`/api/notifications/mark-read/${id}/`, {
+        method: 'POST',
+        headers: {'X-CSRFToken': getCookie('csrftoken')}
+    }).then(r => r.json()).then(data => {
+        if (data.success) {
+            const item = btn.closest('.notification-item');
+            item.dataset.read = 'true';
+            item.classList.remove('bg-accent/5', 'border-l-4', 'border-accent');
+            item.classList.add('hover:bg-slate-50', 'dark:hover:bg-slate-800/50');
+            const dot = item.querySelector('.size-2');
+            if (dot) dot.remove();
+            const btns = item.querySelector('.flex.gap-2');
+            if (btns) btns.remove();
+            location.reload();
+        }
+    });
+}
+
+function markAllRead() {
+    fetch('/api/notifications/mark-all-read/', {
+        method: 'POST',
+        headers: {'X-CSRFToken': getCookie('csrftoken')}
+    }).then(r => r.json()).then(data => {
+        if (data.success) location.reload();
+    });
+}
+
+function getCookie(name) {
+    let c = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+    return c ? c.pop() : '';
+}
+
+// Default: show non-archived
+switchTab('all');
+</script>
+{% endblock %}

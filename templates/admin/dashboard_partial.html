@@ -1,0 +1,40 @@
+<div>
+    <h2 class="text-2xl font-black mb-6">Overview</h2>
+    
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div class="bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-sm">
+            <p class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-2">Total Revenue</p>
+            <h3 class="text-3xl font-black text-green-500">${{ total_revenue|floatformat:0 }}</h3>
+        </div>
+        <div class="bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-sm">
+            <p class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-2">Total Bookings</p>
+            <h3 class="text-3xl font-black">{{ total_bookings }}</h3>
+        </div>
+        <div class="bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-sm">
+            <p class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-2">Cars Available</p>
+            <h3 class="text-3xl font-black">{{ total_cars }}</h3>
+        </div>
+        <div class="bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-sm">
+            <p class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-2">Total Users</p>
+            <h3 class="text-3xl font-black">{{ total_users }}</h3>
+        </div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-sm mb-8">
+        <h3 class="font-bold text-lg mb-6">Revenue Overview (Last 7 Days)</h3>
+        <div class="h-64 flex items-end justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-2 relative">
+            {% for item in chart_data %}
+            <div class="w-full bg-accent rounded-t-xl relative group transition-all" style="height: {{ item.height_percent }}%;">
+                <div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs font-bold py-1.5 px-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 shadow-lg">
+                    ${{ item.revenue|floatformat:0 }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="flex justify-between text-xs text-slate-500 font-bold mt-4 uppercase tracking-wider px-2">
+            {% for item in chart_data %}
+            <span class="text-center w-full">{{ item.day }}</span>
+            {% endfor %}
+        </div>
+    </div>
+</div>

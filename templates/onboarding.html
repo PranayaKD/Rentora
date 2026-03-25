@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Rentora - Onboarding</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00ced1", // Teal accent
+                        "navy-dark": "#0a0f1f",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#0a0f1f",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-dark font-display antialiased text-slate-100">
+<div class="relative flex h-screen w-full flex-col bg-navy-dark overflow-hidden">
+<!-- Layout Container -->
+<div class="layout-container flex h-full grow flex-col">
+<!-- Header Section -->
+<header class="flex items-center justify-between px-6 py-6 lg:px-20">
+<div class="flex items-center gap-3">
+<div class="size-8 text-primary">
+<svg class="w-full h-full" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-white text-2xl font-extrabold tracking-tight">Rentora</h2>
+</div>
+<a href="{% url 'skip_onboarding' %}" class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-full h-10 px-6 bg-slate-800/50 hover:bg-slate-800 text-slate-300 text-sm font-semibold transition-colors">
+                    Skip
+                </a>
+</header>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col lg:flex-row lg:items-center px-6 lg:px-20 gap-10">
+<!-- Image Section -->
+<div class="flex-1 @container">
+<div class="w-full h-[409px] lg:h-[614px] bg-center bg-no-repeat bg-cover rounded-xl shadow-2xl shadow-primary/10 border border-slate-800" data-alt="Side profile of a sleek black luxury electric sports car" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC50sjhhKzfhFMpEj3v6nrq0c0kcDAkXksWb9BddabIObQh9d5S_bZWJLo5UY8IbPlKXdmYchFbZrnEWSLXLItt-1V4XjdiF8TrbD6X3XDhTtL7SM_Gq6Hi2hzP64kWSXPxQdbnsy5w0aBEnUCjDfk8zofoR5OGCAxrAj1rHRP6GpGQXQ3FqgcW7msk8q9TaAFgiV6E18fSXwitzX1oK5wT5X2Z9t_czDGokz1zVROrv0l_aerw1UeNbUj1MOyuNfHevHNOsqD_8yYm");'>
+</div>
+</div>
+<!-- Text & Actions Section -->
+<div class="flex-1 flex flex-col justify-center space-y-8 max-w-xl">
+<div class="space-y-4">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest">
+                            Premium Selection
+                        </div>
+<h1 class="text-white text-5xl lg:text-7xl font-black leading-[1.1] tracking-tight">
+                            Drive the <span class="text-primary">Future</span> of Luxury
+                        </h1>
+<p class="text-slate-400 text-lg lg:text-xl font-medium leading-relaxed max-w-lg">
+                            Experience unparalleled comfort and performance with Rentora's exclusive fleet of high-end, next-generation vehicles.
+                        </p>
+</div>
+<!-- Progress Indicator -->
+<div class="flex items-center gap-3">
+<div class="h-1.5 w-12 rounded-full bg-primary"></div>
+<div class="h-1.5 w-3 rounded-full bg-slate-700"></div>
+<div class="h-1.5 w-3 rounded-full bg-slate-700"></div>
+<span class="ml-4 text-slate-500 font-bold text-sm">Step 01 / 03</span>
+</div>
+<!-- Footer Action -->
+<div class="flex items-center gap-4 pt-4">
+<a href="{% url 'skip_onboarding' %}" class="group flex min-w-[180px] cursor-pointer items-center justify-center gap-2 rounded-full h-14 px-8 bg-primary text-navy-dark text-lg font-bold transition-all hover:scale-105 active:scale-95">
+<span>Next</span>
+<span class="material-symbols-outlined font-bold group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+</main>
+<!-- Bottom Gradient Decor -->
+<div class="h-2 w-full bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
+</div>
+</div>
+</body></html>

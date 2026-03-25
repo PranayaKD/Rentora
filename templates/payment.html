@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Checkout - Rentora{% endblock %}
+
+{% block content %}
+<!-- Sub-Navigation / Checkout Status -->
+<div class="bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border-b border-slate-200 dark:border-slate-800 py-3 mb-8">
+    <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+        <a href="{% url 'booking_dates' %}" class="flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-accent font-bold transition-colors">
+            <span class="material-symbols-outlined text-xl">arrow_back</span>
+            <span class="text-sm">Edit Booking</span>
+        </a>
+        <div class="flex items-center gap-2 text-primary dark:text-white bg-slate-100 dark:bg-slate-800 px-4 py-1.5 rounded-full border border-slate-200 dark:border-slate-700">
+            <span class="material-symbols-outlined text-sm text-accent">lock</span>
+            <span class="font-black text-[10px] tracking-widest uppercase">Secure Checkout</span>
+        </div>
+    </div>
+</div>
+
+<div class="max-w-7xl mx-auto px-6 py-10">
+    <div class="grid lg:grid-cols-12 gap-10">
+        
+        <!-- Booking & Payment Details (Left) -->
+        <div class="lg:col-span-7 space-y-8">
+            <h1 class="text-3xl font-black mb-6">Payment Details</h1>
+            
+            <!-- Dates & Locations Summary -->
+            <div class="bg-white dark:bg-slate-900 rounded-[2rem] p-6 sm:p-8 border border-slate-100 dark:border-slate-800 shadow-sm relative">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-bold text-lg">Trip Details</h3>
+                    <div class="bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-lg text-xs font-bold text-slate-500">{{ days }} Days</div>
+                </div>
+                
+                <div class="grid sm:grid-cols-2 gap-8 relative">
+                    <!-- Decorator Line -->
+                    <div class="hidden sm:block absolute left-1/2 top-4 bottom-4 w-px border-l border-dashed border-slate-200 dark:border-slate-700"></div>
+                    
+                    <div>
+                        <div class="flex items-center gap-2 text-accent mb-2">
+                            <span class="material-symbols-outlined text-sm">flight_land</span>
+                            <span class="text-xs font-bold uppercase tracking-widest">Pickup</span>
+                        </div>
+                        <p class="font-bold text-lg mb-1">{{ pickup_date|date:"D, M d Y" }}</p>
+                        <p class="text-sm text-slate-500 mb-4">10:00 AM</p>
+                        <div class="text-sm font-medium border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 p-3 rounded-xl line-clamp-2">
+                            {{ pickup_location }}
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="flex items-center gap-2 text-accent mb-2">
+                            <span class="material-symbols-outlined text-sm">flight_takeoff</span>
+                            <span class="text-xs font-bold uppercase tracking-widest">Drop-off</span>
+                        </div>
+                        <p class="font-bold text-lg mb-1">{{ dropoff_date|date:"D, M d Y" }}</p>
+                        <p class="text-sm text-slate-500 mb-4">10:00 AM</p>
+                        <div class="text-sm font-medium border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800 p-3 rounded-xl line-clamp-2">
+                            {{ dropoff_location }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Method Selection -->
+            <div class="bg-white dark:bg-slate-900 rounded-[2rem] p-6 sm:p-8 border border-slate-100 dark:border-slate-800 shadow-sm">
+                <h3 class="font-bold text-lg mb-6">Payment Method</h3>
+                
+                <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                    <label class="cursor-pointer group">
+                        <input type="radio" name="payment_method" value="card" class="peer sr-only" checked>
+                        <div class="border-2 border-slate-100 dark:border-slate-800 rounded-2xl p-4 flex flex-col items-center gap-2 peer-checked:border-accent peer-checked:bg-accent/5 transition-all text-center h-full justify-center text-slate-500 peer-checked:text-accent">
+                            <span class="material-symbols-outlined text-3xl">credit_card</span>
+                            <span class="text-sm font-bold text-slate-900 dark:text-white">Credit Card</span>
+                        </div>
+                    </label>
+                    <label class="cursor-pointer group">
+                        <input type="radio" name="payment_method" value="paypal" class="peer sr-only">
+                        <div class="border-2 border-slate-100 dark:border-slate-800 rounded-2xl p-4 flex flex-col items-center gap-2 peer-checked:border-accent peer-checked:bg-accent/5 transition-all text-center h-full justify-center text-slate-500 peer-checked:text-accent">
+                            <svg class="w-8 h-8 fill-current text-[#00457C]" viewBox="0 0 24 24"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106z"/></svg>
+                            <span class="text-sm font-bold text-slate-900 dark:text-white">PayPal</span>
+                        </div>
+                    </label>
+                    <label class="cursor-pointer group col-span-2 lg:col-span-1">
+                        <input type="radio" name="payment_method" value="apple" class="peer sr-only">
+                        <div class="border-2 border-slate-100 dark:border-slate-800 rounded-2xl p-4 flex flex-col items-center gap-2 peer-checked:border-accent peer-checked:bg-accent/5 transition-all text-center h-full justify-center text-slate-500 peer-checked:text-accent">
+                            <svg class="w-8 h-8 fill-current text-slate-900 dark:text-white" viewBox="0 0 24 24"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.15 2.95.97 3.83 2.14-3.12 1.93-2.6 6.31.57 7.58-.72 1.78-1.57 3.33-3.05 3.29zm-4.7-18.06c1.1-.96 1.72-2.21 1.56-3.41-1.35.08-2.67.75-3.53 1.63-1.06 1.09-1.8 2.34-1.55 3.63 1.33.15 2.52-.75 3.52-1.85z"/></svg>
+                            <span class="text-sm font-bold text-slate-900 dark:text-white">Apple Pay</span>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- Fake Card form -->
+                <div class="space-y-4">
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-widest pl-2">Card Number</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">credit_card</span>
+                            <input type="text" placeholder="0000 0000 0000 0000" class="w-full h-14 pl-12 pr-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-accent outline-none" autocomplete="cc-number">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-widest pl-2">Expiry Date</label>
+                            <input type="text" placeholder="MM/YY" class="w-full h-14 px-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-accent outline-none" autocomplete="cc-exp">
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-widest pl-2">CVC/CVV</label>
+                            <input type="text" placeholder="123" class="w-full h-14 px-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-accent outline-none" autocomplete="cc-csc">
+                        </div>
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-widest pl-2">Name on Card</label>
+                        <input type="text" placeholder="Alex Morgan" class="w-full h-14 px-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-accent outline-none" autocomplete="cc-name">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Summary (Right) -->
+        <div class="lg:col-span-5 relative mt-4 lg:mt-0">
+            <div class="bg-white dark:bg-slate-900 rounded-[2rem] p-6 sm:p-8 border border-slate-100 dark:border-slate-800 shadow-xl lg:sticky lg:top-24">
+                <h2 class="text-xl font-black mb-6 border-b border-slate-100 dark:border-slate-800 pb-4">Order Summary</h2>
+                
+                <div class="flex gap-4 mb-8">
+                    <div class="w-24 h-24 bg-slate-50 dark:bg-slate-800 rounded-2xl flex items-center justify-center p-2 shrink-0">
+                        {% if car.image %}
+                        <img src="{{ car.image.url }}" class="w-full h-full object-contain drop-shadow">
+                        {% else %}
+                        <span class="material-symbols-outlined text-4xl text-slate-300">directions_car</span>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">{{ car.brand }}</p>
+                        <h3 class="text-lg font-bold leading-tight mb-2">{{ car.name }}</h3>
+                        <div class="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded text-xs font-bold w-fit">
+                            <span class="material-symbols-outlined text-[1rem] text-yellow-400" style="font-variation-settings: 'FILL' 1;">star</span>
+                            {{ car.rating|floatformat:1 }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Price Breakdown -->
+                <div class="space-y-3 text-sm text-slate-600 dark:text-slate-400 mb-6">
+                    <div class="flex justify-between">
+                        <span>₹{{ car.price_per_day }} x {{ days }} days</span>
+                        <span class="font-bold text-slate-900 dark:text-white" id="summary-subtotal">₹{{ subtotal|floatformat:2 }}</span>
+                    </div>
+                    {% if is_outstation %}
+                    <div class="flex justify-between text-blue-600 font-bold">
+                        <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">distance</span> Outstation Trip</span>
+                        <span>Included</span>
+                    </div>
+                    {% endif %}
+                    <div class="flex justify-between">
+                        <span>GST (18%)</span>
+                        <span class="font-bold text-slate-900 dark:text-white" id="summary-tax">₹{{ tax|floatformat:2 }}</span>
+                    </div>
+
+                    <div class="flex justify-between text-accent font-bold" id="discount-row" style="display: {% if discount_amount > 0 %}flex{% else %}none{% endif %};">
+                        <span id="discount-label">Promo code ({{ request.session.applied_promo }})</span>
+                        <span id="summary-discount">-₹{{ discount_amount|floatformat:2 }}</span>
+                    </div>
+                </div>
+
+                <!-- Promo Code -->
+                <div class="flex gap-2 mb-6">
+                    <input type="text" id="promo-input" placeholder="Promo code" value="{{ request.session.applied_promo|default:'' }}" class="flex-1 h-12 px-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-accent outline-none text-sm uppercase">
+                    <button type="button" onclick="applyPromo()" class="h-12 px-6 bg-slate-900 dark:bg-slate-700 text-white rounded-xl font-bold text-sm hover:bg-slate-800 transition-colors shrink-0">Apply</button>
+                </div>
+                <p id="promo-msg" class="text-xs font-bold mt-[-1rem] mb-4 h-4 text-accent"></p>
+
+                <!-- Total -->
+                <div class="flex justify-between items-end pt-4 border-t border-slate-100 dark:border-slate-800 mb-8">
+                    <span class="font-bold text-slate-500">Total (Incl. GST)</span>
+                    <span class="text-3xl font-black text-primary dark:text-white" id="summary-total">₹{{ final_total|floatformat:2 }}</span>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="w-full bg-accent text-white py-4 rounded-2xl font-bold text-lg hover:bg-accent/90 transition-all shadow-lg shadow-accent/20 flex justify-center items-center gap-2">
+                        <span class="material-symbols-outlined">lock</span> Confirm & Pay
+                    </button>
+                </form>
+
+                <p class="text-center text-xs text-slate-400 mt-4 leading-relaxed">By clicking Confirm & Pay, you agree to Rentora's Terms of Service and Privacy Policy.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function applyPromo() {
+        const code = document.getElementById('promo-input').value;
+        if (!code) return;
+        
+        const msgEl = document.getElementById('promo-msg');
+        msgEl.className = 'text-xs font-bold mt-[-1rem] mb-4 h-4 text-slate-500';
+        msgEl.textContent = 'Checking...';
+        
+        fetch("{% url 'api_apply_promo' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: `code=${encodeURIComponent(code)}`
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.valid) {
+                msgEl.className = 'text-xs font-bold mt-[-1rem] mb-4 h-4 text-green-500';
+                msgEl.textContent = data.message;
+                
+                // Reload page to recalculate everything properly via backend
+                setTimeout(() => window.location.reload(), 1000);
+            } else {
+                msgEl.className = 'text-xs font-bold mt-[-1rem] mb-4 h-4 text-red-500';
+                msgEl.textContent = data.message;
+            }
+        });
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,273 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    
+    <!-- Primary Meta Tags -->
+    <title>{% block title %}Rentora - Premium Car Rental India{% endblock %}</title>
+    <meta name="title" content="Rentora - Premium Car Rental India">
+    <meta name="description" content="{% block meta_description %}Experience the luxury of freedom with Rentora. Premium car rentals across India with flexible plans and doorstep delivery.{% endblock %}">
+    <meta name="keywords" content="car rental, luxury cars, self drive, rent car india, electric car rental">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:title" content="Rentora - Premium Car Rental">
+    <meta property="og:description" content="Rent luxury and budget cars with ease. Doorstep delivery, fully insured, and premium service.">
+    <meta property="og:image" content="{% static 'images/og-banner.jpg' %}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ request.build_absolute_uri }}">
+    <meta property="twitter:title" content="Rentora - Premium Car Rental">
+    <meta property="twitter:description" content="Rent luxury and budget cars with ease. Doorstep delivery, fully insured, and premium service.">
+    <meta property="twitter:image" content="{% static 'images/og-banner.jpg' %}">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{% static 'images/icon-512.png' %}">
+
+    {% block meta %}{% endblock %}
+    <!-- Performance Hints -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    
+    <link rel="stylesheet" href="{% static 'css/tailwind_built.css' %}">
+    
+    <!-- Optimized Font Loading: Pruned unused weights for speed -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <!-- Flatpickr for Modern Calendar -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>
+    
+    <!-- GSAP & Lenis for Premium Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js" defer></script>
+
+    <link rel="stylesheet" href="{% static 'css/rentora.css' %}"/>
+    
+    <script>
+        window.VAPID_PUBLIC_KEY = "{{ vapid_public_key|default:'' }}";
+    </script>
+    
+    {% block extra_head %}{% endblock %}
+    
+    <style>
+        /* Premium Preloader Styles */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #050811;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        /* Hide preloader via class on HTML or Body */
+        .hide-preloader #preloader {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+        }
+        .loader-logo {
+            width: 80px;
+            height: 80px;
+            color: #00c9a7;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite ease-in-out;
+        }
+        .loader-bar {
+            width: 200px;
+            height: 2px;
+            background: rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+            border-radius: 1px;
+        }
+        .loader-progress {
+            position: absolute;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #00c9a7;
+            animation: loading 2s infinite ease-in-out;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+        @keyframes loading {
+            0% { left: -100%; }
+            50% { left: 0; }
+            100% { left: 100%; }
+        }
+        body.loaded #preloader {
+            opacity: 0;
+            visibility: hidden;
+        }
+    </style>
+    <script>
+        // Single consolidated preloader check to prevent flash of content
+        if (sessionStorage.getItem('preloader_shown') === 'true') {
+            document.documentElement.classList.add('hide-preloader');
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display antialiased">
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader-logo flex items-center justify-center">
+            <img src="{% static 'images/icon-512.png' %}" alt="Rentora Logo" class="w-full h-full object-contain">
+        </div>
+        <div class="loader-bar">
+            <div class="loader-progress"></div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    {% if messages %}
+    <div id="toast-container" class="fixed top-4 right-4 z-[100] flex flex-col gap-3 max-w-sm">
+        {% for message in messages %}
+        <div class="toast border shadow-lg backdrop-blur-md flex items-center gap-3 px-5 py-3 rounded-xl transform translate-x-full opacity-0 transition-all duration-300
+            {% if message.tags == 'success' %}bg-green-50 border-green-200 text-green-800
+            {% elif message.tags == 'error' %}bg-red-50 border-red-200 text-red-800
+            {% elif message.tags == 'warning' %}bg-yellow-50 border-yellow-200 text-yellow-800
+            {% else %}bg-blue-50 border-blue-200 text-blue-800{% endif %}" data-toast>
+            <span class="material-symbols-outlined text-lg">
+                {% if message.tags == 'success' %}check_circle
+                {% elif message.tags == 'error' %}error
+                {% elif message.tags == 'warning' %}warning
+                {% else %}info{% endif %}
+            </span>
+            <p class="text-sm font-semibold flex-1">{{ message }}</p>
+            <button onclick="dismissToast(this.parentElement)" class="text-current opacity-60 hover:opacity-100">
+                <span class="material-symbols-outlined text-sm">close</span>
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Top Navigation -->
+    {% include 'components/navbar.html' %}
+
+    {% block content %}{% endblock %}
+
+    <!-- Bottom Navigation (Mobile) -->
+    <nav class="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 md:hidden safe-area-bottom">
+        <div class="flex items-center justify-around h-16 max-w-md mx-auto">
+            <a href="{% url 'index' %}" class="flex flex-col items-center gap-0.5 text-xs font-semibold {% if request.resolver_match.url_name == 'index' %}text-accent{% else %}text-slate-400{% endif %} min-w-[44px] min-h-[44px] justify-center">
+                <span class="material-symbols-outlined text-xl">home</span>
+                <span>Home</span>
+            </a>
+            <a href="{% url 'cars' %}" class="flex flex-col items-center gap-0.5 text-xs font-semibold {% if request.resolver_match.url_name == 'cars' %}text-accent{% else %}text-slate-400{% endif %} min-w-[44px] min-h-[44px] justify-center">
+                <span class="material-symbols-outlined text-xl">search</span>
+                <span>Search</span>
+            </a>
+            <a href="{% url 'dashboard_bookings' %}" class="flex flex-col items-center gap-0.5 text-xs font-semibold {% if 'booking' in request.resolver_match.url_name %}text-accent{% else %}text-slate-400{% endif %} min-w-[44px] min-h-[44px] justify-center">
+                <span class="material-symbols-outlined text-xl">calendar_month</span>
+                <span>Bookings</span>
+            </a>
+            <a href="{% url 'notifications' %}" class="relative flex flex-col items-center gap-0.5 text-xs font-semibold {% if request.resolver_match.url_name == 'notifications' %}text-accent{% else %}text-slate-400{% endif %} min-w-[44px] min-h-[44px] justify-center">
+                <span class="material-symbols-outlined text-xl">notifications</span>
+                <span>Alerts</span>
+                <span id="mobile-bell-badge" class="hidden absolute -top-0.5 right-1 size-4 bg-accent text-white text-[10px] font-bold rounded-full flex items-center justify-center"></span>
+            </a>
+            <a href="{% url 'dashboard' %}" class="flex flex-col items-center gap-0.5 text-xs font-semibold {% if request.resolver_match.url_name == 'dashboard' %}text-accent{% else %}text-slate-400{% endif %} min-w-[44px] min-h-[44px] justify-center">
+                <span class="material-symbols-outlined text-xl">person</span>
+                <span>Profile</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Bottom nav spacer for mobile -->
+    <div class="h-16 md:hidden"></div>
+
+    <!-- EMI Calculator Global Modal -->
+    {% include 'components/emi_calculator.html' %}
+
+    <!-- Global Footer -->
+    {% include 'components/footer.html' %}
+
+    <script>
+        // High-Performance Preloader & Lenis Handler
+        (function() {
+            const hidePreloader = () => {
+                document.body.classList.add('loaded');
+                sessionStorage.setItem('preloader_shown', 'true');
+            };
+
+            if (!sessionStorage.getItem('preloader_shown')) {
+                document.addEventListener('DOMContentLoaded', hidePreloader);
+                window.addEventListener('load', hidePreloader);
+            }
+
+            // Deferred Lenis Init
+            window.addEventListener('DOMContentLoaded', () => {
+                if (typeof Lenis !== 'undefined') {
+                    const lenis = new Lenis({
+                        duration: 1.2,
+                        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                        smooth: true,
+                        smoothTouch: false,
+                    });
+                    
+                    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                        lenis.on('scroll', ScrollTrigger.update);
+                        gsap.ticker.add((time) => {
+                            lenis.raf(time * 1000);
+                        });
+                        gsap.ticker.lagSmoothing(0);
+                    } else {
+                        function raf(time) {
+                            lenis.raf(time);
+                            requestAnimationFrame(raf);
+                        }
+                        requestAnimationFrame(raf);
+                    }
+                }
+            });
+
+            // Ensure triggers recalculate properly after massive images load
+            window.addEventListener('load', () => {
+                if (typeof ScrollTrigger !== 'undefined') {
+                    ScrollTrigger.refresh();
+                }
+            });
+        })();
+    </script>
+
+    <script src="{% static 'js/rentora.js' %}"></script>
+    <script src="{% static 'js/push_notifications.js' %}"></script>
+    
+    <!-- Notification Bell Badge -->
+    <script>
+    (function() {
+        fetch('/api/notifications/count/')
+            .then(r => r.json())
+            .then(data => {
+                if (data.count > 0) {
+                    const badges = document.querySelectorAll('#navbar-bell-badge, #mobile-bell-badge');
+                    badges.forEach(b => {
+                        b.textContent = data.count > 9 ? '9+' : data.count;
+                        b.classList.remove('hidden');
+                    });
+                }
+            }).catch(() => {});
+    })();
+    </script>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

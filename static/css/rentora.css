@@ -1,0 +1,120 @@
+/* Rentora Core Styles - Optimized */
+
+:root {
+  --primary: #050811;
+  --accent: #00c9a7;
+  --accent-glow: rgba(0, 201, 167, 0.3);
+  --background: #f8fafc;
+  --text: #050811;
+  --background-dark: #09090b;
+  --text-dark: #f8fafc;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--background);
+  color: var(--text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--background-dark);
+    color: var(--text-dark);
+  }
+}
+
+/* Base Material Symbols styles */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Map specific symbol overrides */
+.material-symbols-outlined[class*="icon-home"]::before { content: "home"; }
+.material-symbols-outlined[class*="icon-search"]::before { content: "search"; }
+.material-symbols-outlined[class*="icon-directions_car"]::before { content: "directions_car"; }
+.material-symbols-outlined[class*="icon-person"]::before { content: "person"; }
+.material-symbols-outlined[class*="icon-calendar_month"]::before { content: "calendar_month"; }
+.material-symbols-outlined[class*="icon-bookmark"]::before { content: "bookmark"; }
+.material-symbols-outlined[class*="icon-menu"]::before { content: "menu"; }
+.material-symbols-outlined[class*="icon-close"]::before { content: "close"; }
+
+/* Hide scrollbar for select elements but keep functionality */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Glassmorphism helpers */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+@media (prefers-color-scheme: dark) {
+  .glass {
+    background: rgba(5, 8, 17, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+}
+
+/* Premium Card Hover Effects */
+.premium-card {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.premium-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.3);
+}
+
+/* Custom Selection Color */
+::selection {
+  background: var(--accent);
+  color: #050811;
+}
+
+/* Smooth Image Loading */
+img.loading {
+  opacity: 0;
+}
+img.loaded {
+  opacity: 1;
+}
+
+/* Safe area bottom for mobile PWA support */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 20px);
+}
+
+.bottom-nav-safe {
+  padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 1rem));
+}
+
+/* Date picker color overrides */
+::-webkit-calendar-picker-indicator {
+  filter: invert(0.5);
+  cursor: pointer;
+}
+@media (prefers-color-scheme: dark) {
+  ::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+  }
+}

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rentora.in/static/sitemap.xml

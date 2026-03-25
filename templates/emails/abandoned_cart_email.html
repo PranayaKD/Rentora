@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finish Your Booking - Rentora</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; background-color: #f8fafc; }
+        .container { max-width: 600px; mx-auto; padding: 20px; background-color: #ffffff; border-radius: 12px; margin: 20px auto; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .header { text-align: center; padding: 20px 0; }
+        .logo { font-size: 28px; font-weight: 900; color: #0f172a; text-decoration: none; }
+        .accent { color: #00c9a7; }
+        .car-card { background-color: #f1f5f9; border-radius: 12px; padding: 20px; margin: 20px 0; text-align: center; }
+        .car-img { max-width: 100%; height: auto; border-radius: 8px; }
+        .btn { display: inline-block; padding: 16px 32px; background-color: #00c9a7; color: #ffffff; text-decoration: none; border-radius: 12px; font-weight: bold; margin-top: 20px; font-size: 18px; }
+        .footer { text-align: center; padding: 20px; font-size: 12px; color: #94a3b8; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="https://rentora.in" class="logo">REN<span class="accent">TORA</span></a>
+        </div>
+        
+        <h2 style="text-align: center; color: #0f172a;">Wait, you forgot something...</h2>
+        <p>Hello <strong>{{ booking.user.username }}</strong>,</p>
+        <p>We noticed you were looking at the <strong>{{ booking.car.brand }} {{ booking.car.name }}</strong> but didn't finish your booking. Don't let someone else grab your ride!</p>
+        
+        <div class="car-card">
+            <h3 style="margin-top: 0;">{{ booking.car.brand }} {{ booking.car.name }}</h3>
+            <p style="color: #64748b;">Starting from ₹{{ booking.car.price_per_day }}/day</p>
+            <p><strong>Pickup:</strong> {{ booking.pickup_location }}</p>
+        </div>
+
+        <div style="text-align: center;">
+            <p>Your dates are held for a limited time. Click below to secure your ride instantly.</p>
+            <a href="https://rentora.in/booking/payment/" class="btn">Finish Booking Now</a>
+        </div>
+
+        <p style="text-align: center; margin-top: 40px; color: #64748b; font-size: 14px;">Questions? Our concierge team is ready to help you 24/7. Just reply to this email!</p>
+        
+        <div class="footer">
+            &copy; 2026 Rentora Car Rentals. All rights reserved.<br>
+            If you didn't intend to book, please ignore this email.
+        </div>
+    </div>
+</body>
+</html>

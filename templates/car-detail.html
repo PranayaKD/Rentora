@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ car.brand }} {{ car.name }} - Rentora Premium Car Rental{% endblock %}
+
+{% block meta_description %}Rent the {{ car.brand }} {{ car.name }} from Rentora. {{ car.category }} with {{ car.seats }} seats, {{ car.fuel_type }} engine, and premium features. Book now for ₹{{ car.price_per_day }}/day.{% endblock %}
+
+{% block meta %}
+    <meta property="og:title" content="Rent {{ car.brand }} {{ car.name }} | Rentora">
+    <meta property="og:description" content="Experience the {{ car.name }} with Rentora. Premium service, doorstep delivery.">
+    {% if car.image %}<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ car.image.url }}">{% endif %}
+{% endblock %}
+
+{% block content %}
+<!-- Sub-Navigation Bar -->
+<div class="bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border-b border-slate-200 dark:border-slate-800 py-4">
+    <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+        <a href="{% url 'cars' %}" class="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-accent font-bold transition-colors">
+            <span class="material-symbols-outlined text-xl">arrow_back</span>
+            <span class="text-sm">Back to Results</span>
+        </a>
+        <div class="flex items-center gap-4">
+            <button onclick="toggleWishlist({{ car.id }}, this)" class="w-10 h-10 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full flex items-center justify-center hover:bg-slate-50 transition-colors shadow-sm">
+                <span class="material-symbols-outlined text-xl {% if is_wishlisted %}filled-heart text-red-500{% else %}text-slate-500{% endif %}">favorite</span>
+            </button>
+            <button class="w-10 h-10 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-50 transition-colors shadow-sm">
+                <span class="material-symbols-outlined text-xl">share</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="max-w-7xl mx-auto px-6 py-8">
+    <div class="grid lg:grid-cols-3 gap-12">
+        <!-- Main Content -->
+        <div class="lg:col-span-2 space-y-10">
+            <!-- Image Gallery Banner -->
+                <img alt="{{ car.name }}" 
+                     class="w-full max-w-2xl h-auto object-contain drop-shadow-2xl relative z-10 group-hover:scale-105 transition-transform duration-700" 
+                     src="{{ car.image.url }}"
+                     onerror="this.src='{% static 'images/ui/car-placeholder.jpg' %}'" />
+
+            <!-- Title & Basic Info -->
+            <div>
+                <div class="flex items-start justify-between mb-4">
+                    <div>
+                        <p class="text-sm font-bold text-accent uppercase tracking-widest mb-1">{{ car.brand }}</p>
+                        <h1 class="text-4xl md:text-5xl font-black text-primary dark:text-white tracking-tight">{{ car.name }}</h1>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 flex-wrap">
+                    <div class="flex items-center gap-1 bg-yellow-100 text-yellow-800 px-3 py-1.5 rounded-lg">
+                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="font-bold">{{ car.rating|floatformat:1 }}</span>
+                        <span class="text-xs opacity-70">({{ reviews.count }} Reviews)</span>
+                    </div>
+                    <span class="text-sm font-bold bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-lg">{{ car.category }}</span>
+                </div>
+            </div>
+
+            <!-- Features Grid -->
+            <div>
+                <h3 class="text-xl font-bold mb-6">Car Specifications</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2 shadow-sm">
+                        <span class="material-symbols-outlined text-3xl text-accent">airline_seat_recline_extra</span>
+                        <p class="text-xs text-slate-500 font-medium tracking-wide text-center">SEATS</p>
+                        <p class="font-bold">{{ car.seats }}</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2 shadow-sm">
+                        <span class="material-symbols-outlined text-3xl text-accent">local_gas_station</span>
+                        <p class="text-xs text-slate-500 font-medium tracking-wide text-center">FUEL</p>
+                        <p class="font-bold">{{ car.fuel_type }}</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2 shadow-sm">
+                        <span class="material-symbols-outlined text-3xl text-accent">speed</span>
+                        <p class="text-xs text-slate-500 font-medium tracking-wide text-center">MILEAGE</p>
+                        <p class="font-bold text-sm">{{ car.mileage }}</p>
+                    </div>
+                    <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2 shadow-sm">
+                        <span class="material-symbols-outlined text-3xl text-accent">settings</span>
+                        <p class="text-xs text-slate-500 font-medium tracking-wide text-center">GEAR</p>
+                        <p class="font-bold text-sm">{{ car.transmission }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Engine & Performance -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-6 rounded-3xl shadow-sm">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-accent">bolt</span>
+                    Engine & Performance
+                </h3>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                    Powered by a {{ car.engine }} engine, providing exceptional performance and smooth driving experience. 
+                    This {{ car.category|lower }} model by {{ car.brand }} offers top-tier reliability for your journey.
+                </p>
+            </div>
+
+            <!-- Reviews Section -->
+            <div class="pt-8 border-t border-slate-200 dark:border-slate-800">
+                <h3 class="text-2xl font-bold mb-8">Customer Reviews ({{ reviews.count }})</h3>
+                
+                <div class="space-y-6">
+                    {% for review in reviews %}
+                    <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800">
+                        <div class="flex items-center gap-4 mb-4">
+                            {% if review.user.profile.profile_photo %}
+                            <img src="{{ review.user.profile.profile_photo.url }}" class="w-12 h-12 rounded-full object-cover">
+                            {% else %}
+                            <div class="w-12 h-12 bg-accent/20 text-accent rounded-full flex items-center justify-center font-bold text-lg">
+                                {{ review.user.first_name|first|default:review.user.username|first|upper }}
+                            </div>
+                            {% endif %}
+                            <div>
+                                <h4 class="font-bold">{{ review.user.first_name|default:review.user.username }}</h4>
+                                <p class="text-xs text-slate-500">{{ review.created_at|date:"M d, Y" }}</p>
+                            </div>
+                            <div class="ml-auto flex items-center gap-1 bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded">
+                                <span class="material-symbols-outlined text-sm text-yellow-500" style="font-variation-settings: 'FILL' 1;">star</span>
+                                <span class="font-bold text-sm text-yellow-700 dark:text-yellow-500">{{ review.rating }}.0</span>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
+                            "{{ review.comment }}"
+                        </p>
+                    </div>
+                    {% empty %}
+                    <div class="text-center py-12 bg-slate-50 dark:bg-slate-900/50 rounded-3xl border border-slate-100 dark:border-slate-800 border-dashed">
+                        <span class="material-symbols-outlined text-4xl text-slate-300 mb-2">forum</span>
+                        <p class="text-slate-500">No reviews yet for this car.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Sticky Booking Panel -->
+        <div class="lg:col-span-1">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-xl lg:sticky lg:top-24">
+                <div class="flex items-end justify-between mb-8 pb-6 border-b border-slate-100 dark:border-slate-800">
+                    <div>
+                        <p class="text-slate-500 text-sm font-medium mb-1">Daily Rate</p>
+                        <h2 class="text-3xl font-black text-primary dark:text-white">₹{{ car.price_per_day }}</h2>
+                    </div>
+                    <div class="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center">
+                        <span class="material-symbols-outlined text-accent text-2xl">local_taxi</span>
+                    </div>
+                </div>
+
+                <!-- Premium Specs Grid -->
+                {% if car.features %}
+                <div class="grid grid-cols-2 gap-4 mb-8">
+                    {% for key, value in car.features.items %}
+                    <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl flex flex-col gap-1 border border-slate-100 dark:border-slate-700/50">
+                        <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">{{ key }}</span>
+                        <span class="text-sm font-semibold text-slate-700 dark:text-slate-200">{{ value }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div class="space-y-4 mb-8">
+                    <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl">
+                        <span class="material-symbols-outlined text-accent">check_circle</span>
+                        <span>Free cancellation up to 24h before</span>
+                    </div>
+                    <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl">
+                        <span class="material-symbols-outlined text-accent">verified_user</span>
+                        <span>Full insurance included</span>
+                    </div>
+                </div>
+
+                <form action="{% url 'booking_location' %}" method="get" class="w-full">
+                    <button type="submit" class="w-full bg-primary text-white py-4 rounded-2xl font-bold text-lg hover:bg-slate-800 transition-colors shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
+                        Start Booking
+                        <span class="material-symbols-outlined text-xl">arrow_forward</span>
+                    </button>
+                    <!-- Quick set car id in session to shortcut the flow -->
+                    <input type="hidden" name="preselect_car" value="{{ car.id }}">
+                </form>
+                
+                <p class="text-center text-xs text-slate-400 mt-4">You won't be charged yet</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .filled-heart {
+        font-variation-settings: 'FILL' 1;
+    }
+</style>
+<script>
+    function toggleWishlist(carId, btn) {
+        if ('{{ request.user.is_authenticated }}' !== 'True') {
+            window.location.href = "{% url 'login' %}?next={{ request.path }}";
+            return;
+        }
+        
+        const icon = btn.querySelector('.material-symbols-outlined');
+        
+        fetch(`/api/wishlist/toggle/${carId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.wishlisted) {
+                icon.classList.add('filled-heart', 'text-red-500');
+            } else {
+                icon.classList.remove('filled-heart', 'text-red-500');
+            }
+            
+            // Show toast
+            const toastHtml = `
+            <div class="toast toast-success flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg border backdrop-blur-md bg-green-50 border-green-200 text-green-800 transform translate-x-full opacity-0 transition-all duration-300">
+                <span class="material-symbols-outlined text-lg">check_circle</span>
+                <p class="text-sm font-semibold flex-1">${data.message}</p>
+                <button onclick="this.parentElement.remove()" class="text-current opacity-60 hover:opacity-100">
+                    <span class="material-symbols-outlined text-sm">close</span>
+                </button>
+            </div>`;
+            const container = document.getElementById('toast-container') || createToastContainer();
+            container.insertAdjacentHTML('beforeend', toastHtml);
+            const toast = container.lastElementChild;
+            setTimeout(() => {
+                toast.classList.remove('translate-x-full', 'opacity-0');
+            }, 10);
+            setTimeout(() => {
+                toast.classList.add('translate-x-full', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        });
+    }
+
+    function createToastContainer() {
+        const div = document.createElement('div');
+        div.id = 'toast-container';
+        div.className = 'fixed top-4 right-4 z-[100] flex flex-col gap-3 max-w-sm';
+        document.body.appendChild(div);
+        return div;
+    }
+</script>
+{% endblock %}

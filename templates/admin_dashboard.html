@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Rentora HQ - Executive Dashboard{% endblock %}
+
+{% block extra_head %}
+<!-- ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<style>
+    .hq-card {
+        @apply bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-6 shadow-sm hover:shadow-md transition-all duration-300;
+    }
+    .metric-value {
+        @apply text-3xl font-black text-primary dark:text-white tracking-tight;
+    }
+    .metric-label {
+        @apply text-xs font-bold text-slate-400 uppercase tracking-widest mb-1;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="bg-slate-50 dark:bg-slate-950 min-h-screen pb-20">
+    <!-- Header -->
+    <div class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 py-8 mb-8">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div>
+                <div class="flex items-center gap-2 text-accent font-bold text-sm uppercase tracking-widest mb-1">
+                    <span class="material-symbols-outlined text-sm">shield_person</span>
+                    Admin Control
+                </div>
+                <h1 class="text-4xl font-black text-primary dark:text-white tracking-tight">Rentora HQ</h1>
+                <p class="text-slate-500">Executive business intelligence and fleet monitoring.</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="text-right hidden md:block">
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">System Status</p>
+                    <p class="text-sm font-bold text-green-500 flex items-center justify-end gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                        All Systems Operational
+                    </p>
+                </div>
+                <div class="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-2xl flex items-center justify-center text-primary dark:text-white">
+                    <span class="material-symbols-outlined">settings</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6">
+        <!-- Top Benchmarks -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="hq-card border-l-4 border-l-accent">
+                <p class="metric-label">Total Revenue</p>
+                <h3 class="metric-value">₹{{ total_revenue|floatformat:0 }}</h3>
+                <p class="text-[10px] text-green-500 font-bold mt-2 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-xs">trending_up</span>
+                    +12% from last month
+                </p>
+            </div>
+            <div class="hq-card">
+                <p class="metric-label">Active Rentals</p>
+                <h3 class="metric-value">{{ active_bookings }}</h3>
+                <p class="text-[10px] text-slate-400 font-bold mt-2 uppercase tracking-wider">Currently on road</p>
+            </div>
+            <div class="hq-card">
+                <p class="metric-label">Fleet Size</p>
+                <h3 class="metric-value">{{ fleet_size }}</h3>
+                <p class="text-[10px] text-slate-400 font-bold mt-2 uppercase tracking-wider">Total Vehicles</p>
+            </div>
+            <div class="hq-card border-l-4 border-l-red-500">
+                <p class="metric-label">Abandoned Carts</p>
+                <h3 class="metric-value">{{ abandoned_count }}</h3>
+                <p class="text-[10px] text-red-500 font-bold mt-2 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-xs">warning</span>
+                    Needs attention
+                </p>
+            </div>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-8">
+            <!-- Revenue Chart -->
+            <div class="lg:col-span-2 hq-card">
+                <div class="flex items-center justify-between mb-8">
+                    <h3 class="text-xl font-black">Revenue Analytics</h3>
+                    <select class="bg-slate-50 dark:bg-slate-800 border-none rounded-xl text-xs font-bold px-4 py-2 ring-1 ring-slate-200 dark:ring-slate-700">
+                        <option>Last 7 Days</option>
+                        <option>Last 30 Days</option>
+                    </select>
+                </div>
+                <div id="revenueChart" style="min-height: 350px;"></div>
+            </div>
+
+            <!-- Popular Cars -->
+            <div class="hq-card">
+                <h3 class="text-xl font-black mb-8">Top Performers</h3>
+                <div class="space-y-6">
+                    {% for car in popular_cars %}
+                    <div class="flex items-center gap-4">
+                        <div class="w-16 h-12 bg-slate-50 dark:bg-slate-800 rounded-xl overflow-hidden p-1 flex items-center justify-center">
+                            {% if car.image %}
+                            <img src="{{ car.image.url }}" class="w-full h-full object-contain">
+                            {% else %}
+                            <span class="material-symbols-outlined text-slate-300">directions_car</span>
+                            {% endif %}
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-bold">{{ car.name }}</h4>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase">{{ car.brand }}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm font-black text-accent">{{ car.booking_count }}</p>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase">Trips</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="w-full mt-10 py-3 rounded-2xl border-2 border-slate-100 dark:border-slate-800 text-xs font-black uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                    View Full Fleet
+                </button>
+            </div>
+        </div>
+
+        <!-- Recent Transactions -->
+        <div class="mt-8 hq-card overflow-hidden !p-0">
+            <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <h3 class="text-xl font-black">Recent Transactions</h3>
+                <a href="#" class="text-xs font-bold text-accent hover:underline uppercase tracking-widest">View All</a>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="bg-slate-50 dark:bg-slate-800/50">
+                            <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">User</th>
+                            <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Vehicle</th>
+                            <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Dates</th>
+                            <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Amount</th>
+                            <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                        {% for booking in recent_bookings %}
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-accent/20 text-accent flex items-center justify-center font-bold text-xs">
+                                        {{ booking.user.username|first|upper }}
+                                    </div>
+                                    <div class="text-sm font-bold">{{ booking.user.username }}</div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-sm font-medium">{{ booking.car.name }}</td>
+                            <td class="px-6 py-4 text-xs text-slate-500 font-bold uppercase tracking-tighter">{{ booking.pickup_date|date:"d M" }} - {{ booking.dropoff_date|date:"d M" }}</td>
+                            <td class="px-6 py-4 text-sm font-black">₹{{ booking.total_price|floatformat:0 }}</td>
+                            <td class="px-6 py-4">
+                                <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider
+                                    {% if booking.status == 'Confirmed' or booking.status == 'CONFIRMED' %}bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-500
+                                    {% elif booking.status == 'Pending' or booking.status == 'PENDING' %}bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-500
+                                    {% else %}bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400{% endif %}">
+                                    {{ booking.status }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const isDark = document.documentElement.classList.contains('dark') || 
+                       window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        var options = {
+            series: [{
+                name: 'Revenue',
+                data: {{ revenue_data|safe }}
+            }],
+            chart: {
+                height: 350,
+                type: 'area',
+                toolbar: { show: false },
+                background: 'transparent',
+                foreColor: isDark ? '#94a3b8' : '#64748b'
+            },
+            colors: ['#00c9a7'],
+            dataLabels: { enabled: false },
+            stroke: {
+                curve: 'smooth',
+                width: 3
+            },
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shadeIntensity: 1,
+                    opacityFrom: 0.45,
+                    opacityTo: 0.05,
+                    stops: [20, 100, 100, 100]
+                }
+            },
+            xaxis: {
+                categories: {{ revenue_labels|safe }},
+                axisBorder: { show: false },
+                axisTicks: { show: false }
+            },
+            yaxis: {
+                labels: {
+                    formatter: function(val) {
+                        return "₹" + (val / 1000).toFixed(1) + "k";
+                    }
+                }
+            },
+            grid: {
+                borderColor: isDark ? '#1e293b' : '#f1f5f9',
+                strokeDashArray: 4
+            },
+            tooltip: {
+                theme: isDark ? 'dark' : 'light',
+                x: { show: true }
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#revenueChart"), options);
+        chart.render();
+    });
+</script>
+{% endblock %}
