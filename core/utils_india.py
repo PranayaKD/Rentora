@@ -1,6 +1,9 @@
 import requests
+import logging
 from django.conf import settings
 from .constants import GST_PERCENTAGE
+
+logger = logging.getLogger(__name__)
 
 def send_otp_msg91(phone_number, otp):
     """
@@ -11,7 +14,7 @@ def send_otp_msg91(phone_number, otp):
     template_id = getattr(settings, 'MSG91_TEMPLATE_ID', None)
     
     if not auth_key or not template_id:
-        print(f"[MOCK] Sending MSG91 OTP {otp} to {phone_number}")
+        logger.info(f"[MOCK] Sending MSG91 OTP {otp} to {phone_number}")
         return True
         
     url = "https://api.msg91.com/api/v5/otp"
@@ -25,7 +28,8 @@ def send_otp_msg91(phone_number, otp):
         response = requests.get(url, params=payload)
         return response.json().get('type') == 'success'
     except Exception as e:
-        print(f"MSG91 Error: {e}")
+        logger.error(f"MSG91 Error: {e}")
+        return False
         return False
 
 def send_whatsapp_confirmation(booking):
@@ -67,9 +71,9 @@ def send_whatsapp_confirmation(booking):
 
     if not account_sid or not auth_token:
         if user_phone:
-            print(f"[MOCK] Sending WhatsApp to {user_phone}:\n{user_message}")
+            logger.info(f"[MOCK] Sending WhatsApp to {user_phone}:\n{user_message}")
         if admin_phone:
-            print(f"[MOCK] Sending WhatsApp to Admin whatsapp:{admin_phone}:\n{admin_message}")
+            logger.info(f"[MOCK] Sending WhatsApp to Admin whatsapp:{admin_phone}:\n{admin_message}")
         return True
 
     from twilio.rest import Client

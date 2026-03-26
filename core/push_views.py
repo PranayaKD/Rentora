@@ -1,4 +1,5 @@
 import json
+import logging
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
@@ -6,6 +7,8 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 # from .models import PushSubscription <-- Moved inside
 from pywebpush import webpush, WebPushException
+
+logger = logging.getLogger(__name__)
 
 @login_required
 @csrf_exempt
@@ -55,6 +58,6 @@ def send_push_notification(user, title, body, url='/dashboard/'):
             if ex.response and ex.response.status_code in [404, 410]:
                 sub.delete()
             results.append(False)
-            print(f"WebPush Error: {ex}")
+            logger.error(f"WebPush Error: {ex}")
             
     return results

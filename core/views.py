@@ -216,7 +216,7 @@ def cars_view(request):
                 
                 cars = cars.exclude(id__in=booked_car_ids)
         except Exception as e:
-            print(f"Availability Query Error: {e}")
+            logger.error(f"Availability Query Error: {e}")
             pass
     
     # Pre-optimize results
@@ -808,7 +808,7 @@ def stripe_webhook(request):
                     from .utils_india import send_whatsapp_confirmation
                     send_whatsapp_confirmation(booking)
                 except Exception as e:
-                    print(f"WhatsApp Error: {e}")
+                    logger.error(f"WhatsApp Error: {e}")
             except Booking.DoesNotExist:
 
                 pass
