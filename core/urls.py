@@ -1,10 +1,7 @@
 from django.urls import path
-from . import views, dashboard_views
+from . import views
 
 urlpatterns = [
-    # Admin Dashboard (Executive HQ)
-    path('hq-admin/', dashboard_views.dashboard_hq, name='dashboard_hq'),
-    
     # Landing
     path('', views.index_view, name='index'),
     path('how-it-works/', views.how_it_works_view, name='how_it_works'),
@@ -15,6 +12,7 @@ urlpatterns = [
 
     # Booking flow
     path('booking/', views.booking_location_view, name='booking_location'),
+    path('booking/<int:car_id>/', views.booking_location_direct, name='booking_location_direct'),
     path('booking/dates/', views.booking_dates_view, name='booking_dates'),
     path('booking/select/', views.booking_select_view, name='booking_select'),
     path('booking/payment/', views.payment_view, name='payment'),
@@ -38,6 +36,7 @@ urlpatterns = [
     path('api/wishlist/toggle/<int:car_id>/', views.api_wishlist_toggle, name='api_wishlist_toggle'),
     path('api/cars/<int:car_id>/booked-dates/', views.get_booked_dates, name='car_booked_dates'),
     path('api/stripe/webhook/', views.stripe_webhook, name='stripe_webhook'),
+    path('api/razorpay/callback/', views.razorpay_callback, name='razorpay_callback'),
 
     # Notifications
     path('notifications/', views.notifications_view, name='notifications'),

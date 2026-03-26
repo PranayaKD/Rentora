@@ -30,15 +30,19 @@ def send_otp_msg91(phone_number, otp):
 
 def send_whatsapp_confirmation(booking):
     """
-    Send booking confirmation via Twilio WhatsApp API.
+    Send booking confirmation via Twilio WhatsApp API to BOTH User and Admin.
     Required settings: TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_WHATSAPP_NUMBER
     """
     account_sid = getattr(settings, 'TWILIO_ACCOUNT_SID', None)
     auth_token = getattr(settings, 'TWILIO_AUTH_TOKEN', None)
     from_number = getattr(settings, 'TWILIO_WHATSAPP_NUMBER', 'whatsapp:+14155238886') # Sandbox number
+    admin_phone = getattr(settings, 'ADMIN_PHONE', None)
     
-    to_number = f"whatsapp:{booking.user.profile.phone}"
-    message_body = (
+    # --- User Message ---
+    user_phone = getattr(booking.user, 'profile', None)
+    user_phone = f"whatsapp:{user_phone.phone}" if user_phone and user_phone.phone else None
+    
+    user_message = (
         f"🚗 *Rentora Booking Confirmed!*\n\n"
         f"Hi {booking.user.first_name or booking.user.username},\n"
         f"Your booking for *{booking.car.brand} {booking.car.name}* is confirmed.\n"
@@ -48,23 +52,45 @@ def send_whatsapp_confirmation(booking):
         f"💰 Total: ₹{booking.total_with_gst}\n\n"
         f"Happy Driving! 🏁"
     )
+    
+    # --- Admin Message ---
+    admin_message = (
+        f"🔔 *New Booking Alert — Rentora*\n\n"
+        f"🆔 Ref: {booking.booking_reference}\n"
+        f"👤 Customer: {booking.user.get_full_name() or booking.user.username}\n"
+        f"📧 Email: {booking.user.email}\n"
+        f"🚗 Vehicle: {booking.car.brand} {booking.car.name}\n"
+        f"📅 {booking.pickup_date} → {booking.dropoff_date}\n"
+        f"📍 Pickup: {booking.pickup_location}\n"
+        f"💰 Total: ₹{booking.total_with_gst}\n"
+        f"✅ Status: PAID"
+    )
 
     if not account_sid or not auth_token:
-        print(f"[MOCK] Sending WhatsApp to {to_number}:\n{message_body}")
+        if user_phone:
+            print(f"[MOCK] Sending WhatsApp to {user_phone}:\n{user_message}")
+        if admin_phone:
+            print(f"[MOCK] Sending WhatsApp to Admin whatsapp:{admin_phone}:\n{admin_message}")
         return True
 
     from twilio.rest import Client
-    try:
-        client = Client(account_sid, auth_token)
-        message = client.messages.create(
-            body=message_body,
-            from_=from_number,
-            to=to_number
-        )
-        return message.sid
-    except Exception as e:
-        print(f"Twilio WhatsApp Error: {e}")
-        return False
+    client = Client(account_sid, auth_token)
+    
+    # Send to User
+    if user_phone:
+        try:
+            client.messages.create(body=user_message, from_=from_number, to=user_phone)
+        except Exception as e:
+            print(f"Twilio WhatsApp Error (User): {e}")
+    
+    # Send to Admin
+    if admin_phone:
+        try:
+            client.messages.create(body=admin_message, from_=from_number, to=f"whatsapp:{admin_phone}")
+        except Exception as e:
+            print(f"Twilio WhatsApp Error (Admin): {e}")
+    
+    return True
 
 def calculate_india_gst(amount):
     """Calculate GST amount for Indian transactions."""

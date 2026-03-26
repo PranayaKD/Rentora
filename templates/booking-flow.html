@@ -221,24 +221,24 @@
         {% endif %}
 
         <div class="grid md:grid-cols-2 gap-6">
-            <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-100 dark:border-slate-800 shadow-sm">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-100 dark:border-slate-800 shadow-sm transition-all hover:border-accent/30 group">
                 <label class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
                     <span class="material-symbols-outlined text-accent">flight_land</span> Pickup Date & Time
                 </label>
                 <div class="relative">
-                    {{ form.pickup_date|add_class:"w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 font-bold text-lg focus:ring-2 focus:ring-accent outline-none cursor-pointer" }}
+                    <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 group-hover:text-accent transition-colors">calendar_month</span>
+                    {{ form.pickup_date|add_class:"w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 pr-12 font-bold text-lg focus:ring-2 focus:ring-accent outline-none cursor-pointer" }}
                 </div>
-                <div id="pickup-calendar-inline" class="mt-4"></div>
             </div>
             
-            <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-100 dark:border-slate-800 shadow-sm">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-100 dark:border-slate-800 shadow-sm transition-all hover:border-accent/30 group">
                 <label class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
                     <span class="material-symbols-outlined text-accent">flight_takeoff</span> Drop-off Date & Time
                 </label>
                 <div class="relative">
-                    {{ form.dropoff_date|add_class:"w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 font-bold text-lg focus:ring-2 focus:ring-accent outline-none cursor-pointer" }}
+                    <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 group-hover:text-accent transition-colors">calendar_month</span>
+                    {{ form.dropoff_date|add_class:"w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 pr-12 font-bold text-lg focus:ring-2 focus:ring-accent outline-none cursor-pointer" }}
                 </div>
-                <div id="dropoff-calendar-inline" class="mt-4"></div>
             </div>
         </div>
         
@@ -283,14 +283,13 @@
                     minDate: "today",
                     time_24hr: true,
                     animate: true,
-                    inline: true,
+                    inline: false, // Changed to hover/popup as requested
                     disableMobile: "true",
                     disable: disabledDates,
                 };
 
                 const pickupPicker = flatpickr("#pickup_picker", {
                     ...config,
-                    appendTo: document.getElementById('pickup-calendar-inline'),
                     onChange: function(selectedDates) {
                         if (selectedDates[0]) {
                             dropoffPicker.set('minDate', selectedDates[0]);
@@ -300,7 +299,6 @@
 
                 const dropoffPicker = flatpickr("#dropoff_picker", {
                     ...config,
-                    appendTo: document.getElementById('dropoff-calendar-inline'),
                 });
             };
 

@@ -151,8 +151,10 @@ class Booking(models.Model):
     booking_reference = models.CharField(max_length=12, editable=False, null=True, blank=True, default='')
     pickup_date = models.DateField()
     dropoff_date = models.DateField()
-    pickup_time = models.TimeField()
-    dropoff_time = models.TimeField()
+    pickup_time = models.TimeField(null=True, blank=True)
+    dropoff_time = models.TimeField(null=True, blank=True)
+    pickup_location = models.CharField(max_length=255, default='Main Office')
+    dropoff_location = models.CharField(max_length=255, default='Main Office')
     total_price = models.DecimalField(max_digits=12, decimal_places=2)
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
     stripe_session_id = models.CharField(max_length=255, blank=True, null=True)
@@ -161,7 +163,11 @@ class Booking(models.Model):
     is_paid = models.BooleanField(default=False)
     payment_intent_id = models.CharField(max_length=255, blank=True, null=True)
     
+    promo_code = models.CharField(max_length=50, blank=True, null=True)
+    discount_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    
     is_outstation = models.BooleanField(default=False)
+    security_deposit = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     gst_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     total_with_gst = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     gst_number = models.CharField(max_length=15, blank=True, null=True) # For commercial bookings
@@ -173,11 +179,44 @@ class Booking(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
+        self.clean()
+        
         if not self.booking_reference:
+            # Robust 10-char alphanumeric reference (RNT-XXXXXXXX)
             import uuid
-            # Generate a short unique reference (e.g. RT-A1B2C3)
-            uid = str(uuid.uuid4()).upper()[:6]
-            self.booking_reference = f"RT-{uid}"
+            uid = str(uuid.uuid4()).upper().replace('-', '')
+            ref = str(uid)[:8]
+            self.booking_reference = f"RNT-{ref}"
+        
+        # Calculate GST flawlessly via Decimal math (Do not tax the security deposit!)
+        if not self.pk and self.car:
+            self.security_deposit = self.security_deposit or self.car.security_deposit
+            
+        rental_amount = Decimal(str(self.total_price))
+        gst_fraction = Decimal(str(GST_PERCENTAGE)) / Decimal('100')
+        self.gst_amount = (rental_amount * gst_fraction).quantize(Decimal('0.01'))
+        self.total_with_gst = rental_amount + self.gst_amount + Decimal(str(self.security_deposit))
+        
+        # Referral Reward Logic (Robust & Atomic)
+        if self.pk:
+            from django.db import transaction
+            try:
+                old_status = Booking.objects.get(pk=self.pk).status
+                if old_status != 'Completed' and self.status == 'Completed':
+                    with transaction.atomic():
+                        # Select for update to prevent concurrent balance issues
+                        from .models import Profile
+                        user_profile = Profile.objects.select_for_update().get(user=self.user)
+                        user_profile.wallet_balance += REFERRAL_REWARD_INR
+                        user_profile.save()
+                        
+                        if user_profile.referred_by:
+                            referrer_profile = Profile.objects.select_for_update().get(id=user_profile.referred_by.id)
+                            referrer_profile.wallet_balance += REFERRAL_REWARD_INR
+                            referrer_profile.save()
+            except Exception as e:
+                logger.error(f"Referral Reward Payment Error during booking save: {str(e)}", exc_info=True)
+        
         super().save(*args, **kwargs)
 
     class Meta:
@@ -213,42 +252,6 @@ class Booking(models.Model):
             if self.check_overlap():
                 raise ValidationError(f"The {self.car.name} is already reserved for these dates. Please choose different dates.")
 
-    def save(self, *args, **kwargs):
-        self.clean()
-        
-        if not hasattr(self, 'booking_reference') or not self.booking_reference:
-            # Robust 10-char alphanumeric reference (RNT-XXXXXXXX)
-            import uuid
-            uid = str(uuid.uuid4()).upper().replace('-', '')
-            ref = str(uid)[:8]
-            self.booking_reference = f"RNT-{ref}"
-        
-        # Calculate GST flawlessly via Decimal math
-        gst_fraction = Decimal(str(GST_PERCENTAGE)) / Decimal('100')
-        self.gst_amount = Decimal(str(self.total_price)) * gst_fraction
-        self.total_with_gst = Decimal(str(self.total_price)) + self.gst_amount
-        
-        # Referral Reward Logic (Robust & Atomic)
-        if self.pk:
-            from django.db import transaction
-            try:
-                old_status = Booking.objects.get(pk=self.pk).status
-                if old_status != 'Completed' and self.status == 'Completed':
-                    with transaction.atomic():
-                        # Select for update to prevent concurrent balance issues
-                        from .models import Profile
-                        user_profile = Profile.objects.select_for_update().get(user=self.user)
-                        user_profile.wallet_balance += REFERRAL_REWARD_INR
-                        user_profile.save()
-                        
-                        if user_profile.referred_by:
-                            referrer_profile = Profile.objects.select_for_update().get(id=user_profile.referred_by.id)
-                            referrer_profile.wallet_balance += REFERRAL_REWARD_INR
-                            referrer_profile.save()
-            except Exception as e:
-                logger.error(f"Referral Reward Payment Error during booking save: {str(e)}", exc_info=True)
-        
-        super().save(*args, **kwargs)
 
     @property
     def duration_days(self):

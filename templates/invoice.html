@@ -89,6 +89,14 @@
                         <span class="text-slate-500 font-bold">GST (18%)</span>
                         <span class="font-black text-slate-900 dark:text-white">+ ₹{{ booking.gst_amount|floatformat:2 }}</span>
                     </div>
+                    {% if booking.security_deposit > 0 %}
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-slate-500 font-bold flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs">shield</span> Refundable Deposit
+                        </span>
+                        <span class="font-black text-slate-900 dark:text-white">+ ₹{{ booking.security_deposit|floatformat:2 }}</span>
+                    </div>
+                    {% endif %}
                     <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
                         <span class="font-black text-lg text-slate-900 dark:text-white">Total Amount</span>
                         <span class="font-black text-2xl text-accent">₹{{ booking.total_with_gst|floatformat:2 }}</span>

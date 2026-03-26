@@ -55,8 +55,9 @@ def parse_session_date(date_str):
 
 
 def send_booking_email(booking, request=None):
-    """Enhanced helper to send professional HTML booking confirmation/invoice to User and Admin."""
+    """Send professional HTML booking confirmation with PDF invoice to User and Admin."""
     subject = f'Booking Confirmed: {booking.booking_reference}'
+    admin_email = getattr(settings, 'ADMIN_EMAIL', settings.DEFAULT_FROM_EMAIL)
     
     # Context for template
     context = {
@@ -68,22 +69,68 @@ def send_booking_email(booking, request=None):
     html_content = render_to_string('emails/booking_confirmation_email.html', context)
     text_content = strip_tags(html_content)
     
-    # Recipient List: User + Admin
-    recipient_list = [booking.user.email, settings.DEFAULT_FROM_EMAIL]
-    
+    # Generate PDF Invoice
+    pdf_buffer = None
     try:
-        email = EmailMultiAlternatives(
+        from .utils_pdf import render_invoice_pdf
+        pdf_buffer, pdf_ok = render_invoice_pdf(booking)
+        if not pdf_ok:
+            logger.warning(f"PDF generation failed for {booking.booking_reference}, sending email without attachment")
+            pdf_buffer = None
+    except Exception as e:
+        logger.error(f"PDF generation error: {e}", exc_info=True)
+    
+    # --- 1. Send to USER ---
+    try:
+        user_email = EmailMultiAlternatives(
             subject=subject,
             body=text_content,
             from_email=settings.DEFAULT_FROM_EMAIL,
             to=[booking.user.email],
-            bcc=[settings.DEFAULT_FROM_EMAIL], # Send a copy to Admin (BCC for privacy)
         )
-        email.attach_alternative(html_content, "text/html")
-        email.send()
-        logger.info(f"Professional confirmation email sent for {booking.booking_reference}")
+        user_email.attach_alternative(html_content, "text/html")
+        if pdf_buffer:
+            user_email.attach(
+                f'Invoice_{booking.booking_reference}.pdf',
+                pdf_buffer.read(),
+                'application/pdf'
+            )
+            pdf_buffer.seek(0)  # Reset for admin email
+        user_email.send()
+        logger.info(f"Confirmation email sent to USER {booking.user.email} for {booking.booking_reference}")
     except Exception as e:
-        logger.error(f"Failed to send enhanced booking email: {e}", exc_info=True)
+        logger.error(f"Failed to send user booking email: {e}", exc_info=True)
+    
+    # --- 2. Send to ADMIN ---
+    try:
+        admin_subject = f'[ADMIN] New Booking: {booking.booking_reference} — {booking.car.brand} {booking.car.name}'
+        admin_text = (
+            f"New booking received!\n\n"
+            f"Reference: {booking.booking_reference}\n"
+            f"Customer: {booking.user.get_full_name() or booking.user.username} ({booking.user.email})\n"
+            f"Vehicle: {booking.car.brand} {booking.car.name}\n"
+            f"Pickup: {booking.pickup_location} on {booking.pickup_date}\n"
+            f"Drop-off: {booking.dropoff_location} on {booking.dropoff_date}\n"
+            f"Total: ₹{booking.total_with_gst}\n"
+            f"Status: PAID\n"
+        )
+        admin_msg = EmailMultiAlternatives(
+            subject=admin_subject,
+            body=admin_text,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[admin_email],
+        )
+        admin_msg.attach_alternative(html_content, "text/html")
+        if pdf_buffer:
+            admin_msg.attach(
+                f'Invoice_{booking.booking_reference}.pdf',
+                pdf_buffer.read(),
+                'application/pdf'
+            )
+        admin_msg.send()
+        logger.info(f"Admin notification email sent to {admin_email} for {booking.booking_reference}")
+    except Exception as e:
+        logger.error(f"Failed to send admin booking email: {e}", exc_info=True)
 
 # Note: PROMO_CODES are now managed in the Database via PromoCode model
 def index_view(request):
@@ -317,9 +364,15 @@ def car_detail_view(request, car_id):
 
 
 @login_required
+def booking_location_direct(request, car_id):
+    """Entry point for direct car booking from car-detail."""
+    request.session['booking_car_id'] = car_id
+    return redirect('booking_location')
+
+@login_required
 def booking_location_view(request):
     """Booking Step 1: Location selection."""
-    # Pre-select car if provided from car-detail page
+    # Pre-select car if provided from GET/POST parameter (legacy support)
     preselect_car = request.GET.get('preselect_car') or request.POST.get('preselect_car')
     if preselect_car:
         request.session['booking_car_id'] = preselect_car
@@ -369,14 +422,13 @@ def booking_dates_view(request):
         'form': form,
         'step': 2,
         'total_steps': 3 if has_car else 4,
-        'car_id': request.session.get('booking_car_id'),
     }
     return render(request, 'booking-flow.html', context)
 
 
 @login_required
 def booking_select_view(request):
-    """Booking Step 3: Car selection."""
+    """Booking Step 2: Select a Car (if not already selected)."""
     # SKIP if car is already selected in session (from car-detail "Start Booking")
     if request.session.get('booking_car_id'):
         return redirect('payment')
@@ -416,7 +468,7 @@ def booking_select_view(request):
             return redirect('payment')
 
     days = (dropoff_dt - pickup_dt).days
-    if days ==0: days = 1 # Minimum 1 day charge
+    if days == 0: days = 1 # Minimum 1 day charge
 
     context = {
         'cars': available_cars,
@@ -425,7 +477,7 @@ def booking_select_view(request):
         'pickup_date': pickup_dt,
         'dropoff_date': dropoff_dt,
         'days': days,
-        'selected_car_id': request.session.get('car_id'),
+        'selected_car_id': request.session.get('booking_car_id'),
         'is_outstation': request.session.get('is_outstation', False),
     }
     return render(request, 'booking-flow.html', context)
@@ -538,21 +590,38 @@ def payment_view(request):
             if promo_id:
                 PromoCode.objects.filter(id=promo_id).update(used_count=F('used_count') + 1)
 
-            # Create Stripe Session via Service
-            checkout_session = BookingService.create_stripe_session(
-                booking, car, days, pickup_dt, dropoff_dt, final_total
-            )
+            payment_method = request.POST.get('payment_method_choice', 'stripe')
             
-            booking.payment_intent_id = checkout_session.id
-            booking.save()
-
-            return redirect(checkout_session.url, code=303)
+            if payment_method == 'razorpay':
+                # Create Razorpay Order
+                razorpay_order = BookingService.create_razorpay_order(booking, final_total)
+                booking.payment_intent_id = razorpay_order['id']
+                booking.save()
+                
+                # Re-render payment page with Razorpay config to pop open the modal
+                context['trigger_razorpay'] = True
+                context['razorpay_order_id'] = razorpay_order['id']
+                context['razorpay_amount'] = final_total # passed for reference
+                context['razorpay_key_id'] = settings.RAZORPAY_KEY_ID
+                context['booking'] = booking
+                return render(request, 'payment.html', context)
+            else:
+                # Default to Stripe
+                checkout_session = BookingService.create_stripe_session(
+                    booking, car, days, pickup_dt, dropoff_dt, final_total
+                )
+                booking.payment_intent_id = checkout_session.id
+                booking.save()
+                return redirect(checkout_session.url, code=303)
 
         except Exception as e:
             if 'booking' in locals():
                 booking.status = 'Cancelled'
                 booking.save()
-            messages.error(request, "We encountered an issue processing your payment. Please try again.")
+            # Professional error logging with detail for the USER to debug
+            error_msg = f"Stripe Error: {str(e)}" if settings.DEBUG else "We encountered an issue processing your payment. Please try again."
+            messages.error(request, error_msg)
+            return redirect('payment')
             return redirect('booking_select')
 
     context = {
@@ -565,12 +634,37 @@ def payment_view(request):
         'total': total,
         'discount_amount': discount_amount,
         'final_total': final_total,
-        'step': 4,
-        'total_steps': 4,
+        'step': 3,
+        'total_steps': 3,
         'pickup_location': request.session.get('pickup_location', ''),
         'dropoff_location': request.session.get('dropoff_location', ''),
     }
     return render(request, 'payment.html', context)
+
+
+@csrf_exempt
+def razorpay_callback(request):
+    """Webhook callback for Razorpay UI Checkout"""
+    if request.method == "POST":
+        payment_id = request.POST.get('razorpay_payment_id', '')
+        order_id = request.POST.get('razorpay_order_id', '')
+        signature = request.POST.get('razorpay_signature', '')
+        
+        try:
+            booking = Booking.objects.get(payment_intent_id=order_id)
+            success = BookingService.process_razorpay_success(booking, payment_id, order_id, signature)
+            if success:
+                BookingService.clear_booking_session(request)
+                return redirect('confirmation', booking_id=booking.id)
+            else:
+                messages.error(request, "Payment verification failed.")
+                return redirect('payment')
+        except Booking.DoesNotExist:
+            messages.error(request, "Booking not found.")
+            return redirect('booking_select')
+    
+    from django.http import HttpResponseBadRequest
+    return HttpResponseBadRequest()
 
 
 @login_required

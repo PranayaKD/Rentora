@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Invoice - {{ booking.booking_reference }}</title>
+    <style>
+        @page { size: A4; margin: 1.5cm; }
+        body { font-family: Helvetica, Arial, sans-serif; color: #1e293b; font-size: 12px; line-height: 1.5; }
+        .header { background-color: #0f172a; color: #ffffff; padding: 24px 30px; }
+        .header h1 { margin: 0; font-size: 22px; letter-spacing: 2px; }
+        .header .ref { font-size: 14px; color: #94a3b8; margin-top: 6px; }
+        .badge { display: inline-block; background-color: #00c9a7; color: #0f172a; font-size: 10px; font-weight: bold; padding: 4px 14px; border-radius: 10px; letter-spacing: 1px; text-transform: uppercase; }
+        .section-title { font-size: 10px; font-weight: bold; letter-spacing: 1.5px; text-transform: uppercase; color: #94a3b8; margin: 20px 0 8px 0; }
+        table.details { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+        table.details td { padding: 10px 14px; border-bottom: 1px solid #e2e8f0; font-size: 12px; }
+        table.details td.label { color: #64748b; width: 40%; }
+        table.details td.value { color: #0f172a; font-weight: 600; text-align: right; }
+        .total-row { background-color: #0f172a; color: #ffffff; }
+        .total-row td { padding: 14px; border: none; }
+        .total-row td.value { color: #00c9a7; font-size: 16px; font-weight: bold; }
+        .addresses { width: 100%; margin-bottom: 16px; }
+        .addresses td { vertical-align: top; padding: 10px 0; width: 50%; }
+        .addresses .label { font-size: 10px; font-weight: bold; letter-spacing: 1.5px; text-transform: uppercase; color: #94a3b8; margin-bottom: 6px; }
+        .addresses .name { font-size: 14px; font-weight: bold; color: #0f172a; }
+        .addresses .info { font-size: 11px; color: #64748b; line-height: 1.6; }
+        .footer { margin-top: 30px; padding-top: 16px; border-top: 1px solid #e2e8f0; }
+        .footer p { font-size: 9px; color: #94a3b8; line-height: 1.6; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <table width="100%"><tr>
+            <td><h1>REN<span style="color: #00c9a7;">TORA</span></h1></td>
+            <td style="text-align: right;"><span class="badge">TAX INVOICE</span></td>
+        </tr></table>
+        <div class="ref">#{{ booking.booking_reference }} &bull; {{ booking.created_at|date:"d M Y" }}</div>
+    </div>
+
+    <!-- Addresses -->
+    <table class="addresses">
+        <tr>
+            <td>
+                <p class="label">Issuer</p>
+                <p class="name">Rentora India</p>
+                <p class="info">
+                    12, MG Road, Prestige Tower,<br>
+                    Bengaluru, Karnataka - 560001<br>
+                    GSTIN: 29AAACR1234A1Z1
+                </p>
+            </td>
+            <td>
+                <p class="label">Bill To</p>
+                <p class="name">{{ booking.user.get_full_name|default:booking.user.username }}</p>
+                <p class="info">
+                    Email: {{ booking.user.email }}<br>
+                    {% if booking.user.profile.phone %}Phone: {{ booking.user.profile.phone }}<br>{% endif %}
+                </p>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Trip Details -->
+    <p class="section-title">Trip Details</p>
+    <table class="details">
+        <tr>
+            <td class="label">Vehicle</td>
+            <td class="value">{{ booking.car.brand }} {{ booking.car.name }}</td>
+        </tr>
+        <tr>
+            <td class="label">Pickup</td>
+            <td class="value">{{ booking.pickup_date|date:"d M Y, H:i" }}<br><span style="font-weight:normal; color:#64748b; font-size:11px;">{{ booking.pickup_location }}</span></td>
+        </tr>
+        <tr>
+            <td class="label">Drop-off</td>
+            <td class="value">{{ booking.dropoff_date|date:"d M Y, H:i" }}<br><span style="font-weight:normal; color:#64748b; font-size:11px;">{{ booking.dropoff_location }}</span></td>
+        </tr>
+        <tr>
+            <td class="label">Duration</td>
+            <td class="value">{{ booking.duration_days }} Day(s)</td>
+        </tr>
+        <tr>
+            <td class="label">Trip Type</td>
+            <td class="value">{% if booking.is_outstation %}Outstation{% else %}Local{% endif %}</td>
+        </tr>
+    </table>
+
+    <!-- Payment Breakdown -->
+    <p class="section-title">Payment Breakdown</p>
+    <table class="details">
+        <tr>
+            <td class="label">Base Rental Fare</td>
+            <td class="value">&#8377;{{ booking.total_price|floatformat:2 }}</td>
+        </tr>
+        {% if booking.discount_amount %}
+        <tr>
+            <td class="label">Discount{% if booking.promo_code %} ({{ booking.promo_code }}){% endif %}</td>
+            <td class="value" style="color:#ef4444;">- &#8377;{{ booking.discount_amount|floatformat:2 }}</td>
+        </tr>
+        {% endif %}
+        <tr>
+            <td class="label">GST (18%)</td>
+            <td class="value">&#8377;{{ booking.gst_amount|floatformat:2 }}</td>
+        </tr>
+        {% if booking.security_deposit > 0 %}
+        <tr>
+            <td class="label">Refundable Security Deposit</td>
+            <td class="value">&#8377;{{ booking.security_deposit|floatformat:2 }}</td>
+        </tr>
+        {% endif %}
+        <tr class="total-row">
+            <td style="color:#ffffff; font-weight:bold; font-size:14px;">Total Amount Paid</td>
+            <td class="value">&#8377;{{ booking.total_with_gst|floatformat:2 }}</td>
+        </tr>
+    </table>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>
+            This is a computer-generated invoice and does not require a physical signature.<br>
+            All disputes are subject to Bengaluru jurisdiction.<br>
+            &copy; 2026 Rentora Technologies India Pvt Ltd. All rights reserved.
+        </p>
+    </div>
+</body>
+</html>

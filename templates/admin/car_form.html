@@ -1,0 +1,55 @@
+{% extends "admin_panel.html" %}
+
+{% block panel_title %}{{ action }} Car{% endblock %}
+{% block page_title %}{{ action }} Car{% endblock %}
+{% block page_subtitle %}{% if action == 'Edit' %}Editing {{ car.brand }} {{ car.name }}{% else %}Add a new vehicle to the fleet{% endif %}{% endblock %}
+
+{% block header_actions %}
+<a href="{% url 'admin_cars_list' %}" class="flex items-center gap-2 bg-slate-100 text-slate-700 px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-slate-200 transition-colors">
+    <span class="material-symbols-outlined text-lg">arrow_back</span> Back to Fleet
+</a>
+{% endblock %}
+
+{% block panel_content %}
+<div class="max-w-2xl">
+    <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-8">
+        <form method="post" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+            
+            {% for field in form %}
+            <div>
+                <label for="{{ field.id_for_label }}" class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
+                    {{ field.label }}{% if field.field.required %} <span class="text-red-400">*</span>{% endif %}
+                </label>
+                {{ field }}
+                {% if field.errors %}
+                <p class="text-xs text-red-500 mt-1 font-medium">{{ field.errors.0 }}</p>
+                {% endif %}
+                {% if field.help_text %}
+                <p class="text-xs text-slate-400 mt-1">{{ field.help_text }}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            {% if car and car.image %}
+            <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Current Image</label>
+                <div class="w-32 h-24 rounded-xl bg-slate-50 overflow-hidden">
+                    <img src="{{ car.image.url }}" class="w-full h-full object-cover" alt="{{ car.name }}">
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="flex items-center gap-3 pt-4">
+                <button type="submit" class="flex items-center gap-2 bg-accent text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-accent/90 transition-colors shadow-lg shadow-accent/20">
+                    <span class="material-symbols-outlined text-lg">{% if action == 'Edit' %}save{% else %}add{% endif %}</span>
+                    {{ action }} Car
+                </button>
+                <a href="{% url 'admin_cars_list' %}" class="px-6 py-3 rounded-xl font-bold text-sm text-slate-500 hover:text-slate-700 hover:bg-slate-100 transition-colors">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

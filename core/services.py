@@ -47,6 +47,29 @@ class BookingService:
             raise e
 
     @staticmethod
+    def create_razorpay_order(booking, final_total):
+        """Create a Razorpay Order for UPI & Netbanking payments in India."""
+        import razorpay
+        try:
+            client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+            amount_in_paise = int(round(Decimal(str(final_total)) * 100))
+            
+            data = {
+                "amount": amount_in_paise,
+                "currency": "INR",
+                "receipt": str(booking.booking_reference),
+                "notes": {
+                    "email": booking.user.email,
+                    "phone": booking.user.profile.phone_number if hasattr(booking.user, 'profile') else ""
+                }
+            }
+            order = client.order.create(data=data)
+            return order
+        except Exception as e:
+            logger.error(f"Razorpay Order Creation Error for Booking {booking.id}: {str(e)}")
+            raise e
+
+    @staticmethod
     def clear_booking_session(request):
         """Clear all booking-related keys from the session."""
         keys_to_clear = [
@@ -77,4 +100,30 @@ class BookingService:
             return False
         except Exception as e:
             logger.error(f"Error processing success for Booking {booking.id}: {str(e)}")
+            return False
+
+    @staticmethod
+    @transaction.atomic
+    def process_razorpay_success(booking, razorpay_payment_id, razorpay_order_id, razorpay_signature):
+        """Verify Razorpay signature and mark booking as paid."""
+        import razorpay
+        try:
+            client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+            params_dict = {
+                'razorpay_order_id': razorpay_order_id,
+                'razorpay_payment_id': razorpay_payment_id,
+                'razorpay_signature': razorpay_signature
+            }
+            # Verify signature will raise a SignatureVerificationError if invalid
+            client.utility.verify_payment_signature(params_dict)
+            
+            booking.is_paid = True
+            booking.status = 'Active'
+            booking.payment_intent_id = razorpay_payment_id
+            booking.save()
+            
+            logger.info(f"Booking {booking.booking_reference} marked as PAID via Razorpay {razorpay_payment_id}")
+            return True
+        except Exception as e:
+            logger.error(f"Razorpay Verification Error for Booking {booking.id}: {str(e)}")
             return False

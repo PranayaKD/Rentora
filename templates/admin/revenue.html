@@ -1,0 +1,120 @@
+{% extends "admin_panel.html" %}
+
+{% block panel_title %}Revenue{% endblock %}
+{% block page_title %}Revenue Analytics{% endblock %}
+{% block page_subtitle %}Financial overview and trends{% endblock %}
+
+{% block panel_content %}
+<!-- Revenue Summary Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+    <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="size-12 rounded-xl bg-green-50 text-green-600 flex items-center justify-center">
+                <span class="material-symbols-outlined filled-icon">payments</span>
+            </div>
+        </div>
+        <p class="text-3xl font-bold text-primary">₹{{ total_revenue|floatformat:0 }}</p>
+        <p class="text-slate-400 text-sm mt-1">Total Revenue (All Time)</p>
+    </div>
+    <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="size-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                <span class="material-symbols-outlined filled-icon">receipt_long</span>
+            </div>
+        </div>
+        <p class="text-3xl font-bold text-primary">{{ completed_bookings }}</p>
+        <p class="text-slate-400 text-sm mt-1">Completed Bookings</p>
+    </div>
+    <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="size-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+                <span class="material-symbols-outlined filled-icon">avg_pace</span>
+            </div>
+        </div>
+        <p class="text-3xl font-bold text-primary">₹{{ avg_booking_value|floatformat:0 }}</p>
+        <p class="text-slate-400 text-sm mt-1">Average Booking Value</p>
+    </div>
+</div>
+
+<!-- Monthly Revenue Chart -->
+<div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+    <h3 class="text-lg font-bold text-primary mb-6">Monthly Revenue Trend</h3>
+    <div id="monthlyRevenueChart" style="min-height: 350px;"></div>
+</div>
+
+<!-- Top Revenue Cars -->
+<div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+    <div class="px-6 py-5 border-b border-slate-100">
+        <h3 class="text-lg font-bold text-primary">Top Revenue Cars</h3>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+            <thead>
+                <tr class="text-left text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100">
+                    <th class="px-6 py-4">#</th>
+                    <th class="px-6 py-4">Vehicle</th>
+                    <th class="px-6 py-4">Bookings</th>
+                    <th class="px-6 py-4">Revenue</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-50">
+                {% for car in top_cars %}
+                <tr class="hover:bg-slate-50/50 transition-colors">
+                    <td class="px-6 py-4 text-xs font-bold text-slate-400">{{ forloop.counter }}</td>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="size-10 rounded-xl bg-slate-50 overflow-hidden flex items-center justify-center">
+                                {% if car.image %}
+                                <img src="{{ car.image.url }}" class="size-full object-cover">
+                                {% else %}
+                                <span class="material-symbols-outlined text-slate-300 text-lg">directions_car</span>
+                                {% endif %}
+                            </div>
+                            <div>
+                                <p class="font-bold text-primary">{{ car.name }}</p>
+                                <p class="text-[10px] text-slate-400">{{ car.brand }}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 font-bold">{{ car.booking_count }}</td>
+                    <td class="px-6 py-4 font-bold text-green-600">₹{{ car.total_revenue|floatformat:0 }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="px-6 py-12 text-center text-slate-400">No revenue data yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block panel_extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var options = {
+        series: [{ name: 'Revenue', data: {{ monthly_revenues|safe }} }],
+        chart: { height: 350, type: 'area', toolbar: { show: false }, background: 'transparent', foreColor: '#64748b' },
+        colors: ['#00c9a7'],
+        dataLabels: { enabled: false },
+        stroke: { curve: 'smooth', width: 3 },
+        fill: {
+            type: 'gradient',
+            gradient: { shadeIntensity: 1, opacityFrom: 0.45, opacityTo: 0.05, stops: [20, 100] }
+        },
+        xaxis: { categories: {{ monthly_labels|safe }}, axisBorder: { show: false }, axisTicks: { show: false } },
+        yaxis: {
+            labels: {
+                formatter: function(val) { return "₹" + (val / 1000).toFixed(1) + "k"; }
+            }
+        },
+        grid: { borderColor: '#f1f5f9', strokeDashArray: 4 },
+        tooltip: { theme: 'light', x: { show: true } }
+    };
+    var chart = new ApexCharts(document.querySelector("#monthlyRevenueChart"), options);
+    chart.render();
+});
+</script>
+{% endblock %}

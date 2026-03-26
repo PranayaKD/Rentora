@@ -1,0 +1,100 @@
+{% extends "admin_panel.html" %}
+
+{% block panel_title %}Users{% endblock %}
+{% block page_title %}Users{% endblock %}
+{% block page_subtitle %}{{ page_obj.paginator.count }} registered users{% endblock %}
+
+{% block header_actions %}
+{% if kyc_filter == 'pending' %}
+<a href="{% url 'admin_users_list' %}" class="flex items-center gap-2 bg-slate-100 text-slate-700 px-4 py-2.5 rounded-xl font-bold text-sm hover:bg-slate-200 transition-colors">
+    <span class="material-symbols-outlined text-lg">close</span> Clear Filter
+</a>
+{% else %}
+<a href="?kyc=pending" class="flex items-center gap-2 bg-amber-50 text-amber-700 px-4 py-2.5 rounded-xl font-bold text-sm hover:bg-amber-100 transition-colors">
+    <span class="material-symbols-outlined text-lg">verified_user</span> Pending KYC
+    {% if pending_kyc_count > 0 %}<span class="bg-amber-500 text-white text-xs px-1.5 rounded-full">{{ pending_kyc_count }}</span>{% endif %}
+</a>
+{% endif %}
+{% endblock %}
+
+{% block panel_content %}
+<div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+            <thead>
+                <tr class="text-left text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100">
+                    <th class="px-6 py-4">User</th>
+                    <th class="px-6 py-4">Email</th>
+                    <th class="px-6 py-4">Phone</th>
+                    <th class="px-6 py-4">Joined</th>
+                    <th class="px-6 py-4">Bookings</th>
+                    <th class="px-6 py-4">KYC</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-50">
+                {% for user_data in page_obj %}
+                <tr class="hover:bg-slate-50/50 transition-colors">
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="size-9 rounded-full bg-accent/10 text-accent flex items-center justify-center text-xs font-bold">
+                                {{ user_data.first_name|default:"U"|truncatechars:1 }}
+                            </div>
+                            <div>
+                                <p class="font-bold text-primary">{{ user_data.get_full_name|default:user_data.username }}</p>
+                                <p class="text-[10px] text-slate-400">@{{ user_data.username }}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-slate-600 text-xs">{{ user_data.email }}</td>
+                    <td class="px-6 py-4 text-slate-600 text-xs">{{ user_data.profile.phone|default:"—" }}</td>
+                    <td class="px-6 py-4 text-slate-500 text-xs">{{ user_data.date_joined|date:"d M Y" }}</td>
+                    <td class="px-6 py-4 text-center">
+                        <span class="inline-flex items-center justify-center size-7 rounded-lg bg-slate-100 text-xs font-bold text-primary">{{ user_data.booking_count }}</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        {% if user_data.profile.is_verified %}
+                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-green-50 text-green-700">
+                            <span class="material-symbols-outlined text-sm">check_circle</span> Verified
+                        </span>
+                        {% elif user_data.profile.license_number %}
+                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700">
+                            <span class="material-symbols-outlined text-sm">pending</span> Pending
+                        </span>
+                        {% else %}
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-slate-50 text-slate-400">
+                            Not Submitted
+                        </span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="px-6 py-12 text-center text-slate-400">
+                        <span class="material-symbols-outlined text-4xl mb-2 block">group_off</span>
+                        No users{% if kyc_filter %} matching this filter{% endif %}.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <div class="flex items-center justify-between px-6 py-4 border-t border-slate-100">
+        <p class="text-xs text-slate-400">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
+        <div class="flex gap-1">
+            {% if page_obj.has_previous %}
+            <a href="?{% if kyc_filter %}kyc={{ kyc_filter }}&{% endif %}page={{ page_obj.previous_page_number }}" class="size-8 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition-colors">
+                <span class="material-symbols-outlined text-lg">chevron_left</span>
+            </a>
+            {% endif %}
+            {% if page_obj.has_next %}
+            <a href="?{% if kyc_filter %}kyc={{ kyc_filter }}&{% endif %}page={{ page_obj.next_page_number }}" class="size-8 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition-colors">
+                <span class="material-symbols-outlined text-lg">chevron_right</span>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

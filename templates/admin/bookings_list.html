@@ -1,0 +1,113 @@
+{% extends "admin_panel.html" %}
+
+{% block panel_title %}Bookings{% endblock %}
+{% block page_title %}Bookings{% endblock %}
+{% block page_subtitle %}{{ page_obj.paginator.count }} total bookings{% endblock %}
+
+{% block header_actions %}
+<div class="flex items-center gap-3">
+    <!-- Status Filter -->
+    <div class="hidden sm:flex items-center gap-1 bg-slate-100 rounded-xl p-1">
+        <a href="{% url 'admin_bookings_list' %}" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-colors {% if not current_status %}bg-white text-primary shadow-sm{% else %}text-slate-500 hover:text-primary{% endif %}">All</a>
+        <a href="?status=Active" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-colors {% if current_status == 'Active' %}bg-white text-primary shadow-sm{% else %}text-slate-500 hover:text-primary{% endif %}">Active</a>
+        <a href="?status=Pending" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-colors {% if current_status == 'Pending' %}bg-white text-primary shadow-sm{% else %}text-slate-500 hover:text-primary{% endif %}">Pending</a>
+        <a href="?status=Completed" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-colors {% if current_status == 'Completed' %}bg-white text-primary shadow-sm{% else %}text-slate-500 hover:text-primary{% endif %}">Done</a>
+        <a href="?status=Cancelled" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-colors {% if current_status == 'Cancelled' %}bg-white text-primary shadow-sm{% else %}text-slate-500 hover:text-primary{% endif %}">Cancelled</a>
+    </div>
+    <a href="{% url 'admin_bookings_csv' %}" class="flex items-center gap-2 bg-slate-100 text-slate-700 px-4 py-2.5 rounded-xl font-bold text-sm hover:bg-slate-200 transition-colors">
+        <span class="material-symbols-outlined text-lg">download</span> CSV
+    </a>
+</div>
+{% endblock %}
+
+{% block panel_content %}
+<div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+            <thead>
+                <tr class="text-left text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100">
+                    <th class="px-6 py-4">Reference</th>
+                    <th class="px-6 py-4">Customer</th>
+                    <th class="px-6 py-4">Vehicle</th>
+                    <th class="px-6 py-4">Dates</th>
+                    <th class="px-6 py-4">Amount</th>
+                    <th class="px-6 py-4">Status</th>
+                    <th class="px-6 py-4 text-right">Change Status</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-50">
+                {% for booking in page_obj %}
+                <tr class="hover:bg-slate-50/50 transition-colors">
+                    <td class="px-6 py-4">
+                        <span class="font-mono font-bold text-primary text-xs">{{ booking.booking_reference }}</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="size-8 rounded-full bg-accent/10 text-accent flex items-center justify-center text-xs font-bold">
+                                {{ booking.user.first_name|default:"U"|truncatechars:1 }}
+                            </div>
+                            <div>
+                                <p class="font-semibold text-primary text-xs">{{ booking.user.get_full_name|default:booking.user.username }}</p>
+                                <p class="text-[10px] text-slate-400">{{ booking.user.email }}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-slate-600 text-xs">{{ booking.car.brand }} {{ booking.car.name }}</td>
+                    <td class="px-6 py-4 text-slate-500 text-xs">{{ booking.pickup_date|date:"d M" }} → {{ booking.dropoff_date|date:"d M" }}</td>
+                    <td class="px-6 py-4 font-bold text-primary">₹{{ booking.total_with_gst|floatformat:0 }}</td>
+                    <td class="px-6 py-4">
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold
+                            {% if booking.status == 'Completed' %}bg-green-50 text-green-700
+                            {% elif booking.status == 'Active' %}bg-blue-50 text-blue-700
+                            {% elif booking.status == 'Pending' %}bg-amber-50 text-amber-700
+                            {% elif booking.status == 'Cancelled' %}bg-red-50 text-red-700
+                            {% endif %}">
+                            {{ booking.status }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <form method="post" action="{% url 'admin_booking_status' booking.id %}" class="inline-flex items-center gap-2">
+                            {% csrf_token %}
+                            <select name="status" class="text-xs border-slate-200 rounded-lg px-2 py-1.5 bg-slate-50 font-medium focus:ring-accent focus:border-accent">
+                                <option value="Pending" {% if booking.status == 'Pending' %}selected{% endif %}>Pending</option>
+                                <option value="Active" {% if booking.status == 'Active' %}selected{% endif %}>Active</option>
+                                <option value="Completed" {% if booking.status == 'Completed' %}selected{% endif %}>Completed</option>
+                                <option value="Cancelled" {% if booking.status == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+                            </select>
+                            <button type="submit" class="size-7 rounded-lg bg-accent/10 hover:bg-accent/20 text-accent flex items-center justify-center transition-colors" title="Update">
+                                <span class="material-symbols-outlined text-sm">check</span>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="px-6 py-12 text-center text-slate-400">
+                        <span class="material-symbols-outlined text-4xl mb-2 block">event_busy</span>
+                        No bookings{% if current_status %} with status "{{ current_status }}"{% endif %}.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <div class="flex items-center justify-between px-6 py-4 border-t border-slate-100">
+        <p class="text-xs text-slate-400">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
+        <div class="flex gap-1">
+            {% if page_obj.has_previous %}
+            <a href="?{% if current_status %}status={{ current_status }}&{% endif %}page={{ page_obj.previous_page_number }}" class="size-8 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition-colors">
+                <span class="material-symbols-outlined text-lg">chevron_left</span>
+            </a>
+            {% endif %}
+            {% if page_obj.has_next %}
+            <a href="?{% if current_status %}status={{ current_status }}&{% endif %}page={{ page_obj.next_page_number }}" class="size-8 rounded-lg bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600 transition-colors">
+                <span class="material-symbols-outlined text-lg">chevron_right</span>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

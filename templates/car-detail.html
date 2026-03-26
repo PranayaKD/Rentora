@@ -171,13 +171,12 @@
                     </div>
                 </div>
 
-                <form action="{% url 'booking_location' %}" method="get" class="w-full">
+                <form action="{% url 'booking_location_direct' car.id %}" method="get" class="w-full">
                     <button type="submit" class="w-full bg-primary text-white py-4 rounded-2xl font-bold text-lg hover:bg-slate-800 transition-colors shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
                         Start Booking
                         <span class="material-symbols-outlined text-xl">arrow_forward</span>
                     </button>
                     <!-- Quick set car id in session to shortcut the flow -->
-                    <input type="hidden" name="preselect_car" value="{{ car.id }}">
                 </form>
                 
                 <p class="text-center text-xs text-slate-400 mt-4">You won't be charged yet</p>

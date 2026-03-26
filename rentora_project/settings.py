@@ -113,7 +113,23 @@ WSGI_APPLICATION = 'rentora_project.wsgi.application'
 # Database — Supabase PostgreSQL fallback logic
 db_host = os.getenv('DB_HOST', '')
 
-if db_host:
+import dj_database_url
+
+# Database Configuration
+db_url = os.getenv('DATABASE_URL')
+db_host = os.getenv('DB_HOST')
+
+if db_url:
+    # Use standard DATABASE_URL if provided (Common on Render/Railway/Heroku)
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=db_url,
+            conn_max_age=600,
+            ssl_require=True
+        )
+    }
+elif db_host:
+    # Fallback to granular Supabase ENV vars
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -122,23 +138,22 @@ if db_host:
             'PASSWORD': os.getenv('DB_PASSWORD', ''),
             'HOST': db_host,
             'PORT': os.getenv('DB_PORT', '5432'),
-            'CONN_MAX_AGE': 600, # 10 minutes connection pooling
+            'CONN_MAX_AGE': 600,
             'OPTIONS': {
                 'sslmode': 'require',
             },
         }
     }
 
-# Test-Only SQLite Fallback (Isolates tests from your live Supabase data)
+# Test-Only SQLite Fallback
 if 'test' in sys.argv:
     DATABASES['default'] = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': ':memory:',
     }
-elif not db_host:
-    # LOUD ERROR if Supabase is missing - prevents accidentally showing an empty site
+elif not DATABASES.get('default'):
     from django.core.exceptions import ImproperlyConfigured
-    raise ImproperlyConfigured("DB_HOST is missing in .env! Supabase connection is required for Rentora.")
+    raise ImproperlyConfigured("Database configuration is missing! Set DATABASE_URL or DB_HOST.")
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -235,6 +250,10 @@ STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET')
 STRIPE_CURRENCY = os.getenv('STRIPE_CURRENCY', 'inr')
 
+# Razorpay Configuration
+RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID')
+RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET')
+
 # Domain Configuration
 DOMAIN_URL = os.getenv('DOMAIN_URL', 'http://127.0.0.1:8000')
 
@@ -292,3 +311,12 @@ VAPID_ADMIN_EMAIL = os.getenv('VAPID_ADMIN_EMAIL', 'admin@rentora.com')
 
 # Google Maps API Key
 GOOGLE_MAPS_API_KEY = os.getenv('GOOGLE_MAPS_API_KEY')
+
+# Admin Notification Settings
+ADMIN_EMAIL = os.getenv('ADMIN_EMAIL', DEFAULT_FROM_EMAIL)
+ADMIN_PHONE = os.getenv('ADMIN_PHONE')
+
+# Twilio Settings
+TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
+TWILIO_WHATSAPP_NUMBER = os.getenv('TWILIO_WHATSAPP_NUMBER', 'whatsapp:+14155238886')

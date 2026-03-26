@@ -1,0 +1,170 @@
+{% extends "admin_panel.html" %}
+
+{% block panel_title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block page_subtitle %}Welcome back, {{ request.user.first_name|default:"Admin" }}{% endblock %}
+
+{% block header_actions %}
+<a href="{% url 'admin_car_add' %}" class="hidden sm:flex items-center gap-2 bg-accent text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-accent/90 transition-colors shadow-lg shadow-accent/20">
+    <span class="material-symbols-outlined text-lg">add</span> Add New Car
+</a>
+{% endblock %}
+
+{% block panel_content %}
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center justify-between mb-4">
+            <div class="size-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                <span class="material-symbols-outlined filled-icon">directions_car</span>
+            </div>
+        </div>
+        <p class="text-3xl font-bold text-primary">{{ total_cars }}</p>
+        <p class="text-slate-400 text-sm mt-1">Total Cars</p>
+    </div>
+    <a href="{% url 'admin_bookings_list' %}?status=Active" class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
+        <div class="flex items-center justify-between mb-4">
+            <div class="size-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+                <span class="material-symbols-outlined filled-icon">calendar_month</span>
+            </div>
+            <span class="material-symbols-outlined text-slate-300 group-hover:text-accent transition-colors">arrow_forward</span>
+        </div>
+        <p class="text-3xl font-bold text-primary">{{ active_bookings }}</p>
+        <p class="text-slate-400 text-sm mt-1">Active Bookings</p>
+    </a>
+    <a href="{% url 'admin_revenue' %}" class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
+        <div class="flex items-center justify-between mb-4">
+            <div class="size-12 rounded-xl bg-green-50 text-green-600 flex items-center justify-center">
+                <span class="material-symbols-outlined filled-icon">account_balance</span>
+            </div>
+            <span class="material-symbols-outlined text-slate-300 group-hover:text-accent transition-colors">arrow_forward</span>
+        </div>
+        <p class="text-3xl font-bold text-primary">₹{{ total_revenue|floatformat:0 }}</p>
+        <p class="text-slate-400 text-sm mt-1">Total Revenue</p>
+    </a>
+    <a href="{% url 'admin_users_list' %}" class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer group">
+        <div class="flex items-center justify-between mb-4">
+            <div class="size-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                <span class="material-symbols-outlined filled-icon">person_add</span>
+            </div>
+            <span class="material-symbols-outlined text-slate-300 group-hover:text-accent transition-colors">arrow_forward</span>
+        </div>
+        <p class="text-3xl font-bold text-primary">{{ total_users }}</p>
+        <p class="text-slate-400 text-sm mt-1">Total Users ({{ new_users }} new this month)</p>
+    </a>
+</div>
+
+<!-- Chart + Quick Actions -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Revenue Chart -->
+    <div class="lg:col-span-2 bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-lg font-bold text-primary">Weekly Revenue</h3>
+        </div>
+        <div class="h-64 flex items-end gap-4 px-2">
+            {% for day in chart_data %}
+            <div class="flex-1 flex flex-col items-center gap-2">
+                <div class="text-[10px] font-bold text-slate-500">{% if day.revenue %}₹{{ day.revenue|floatformat:0 }}{% endif %}</div>
+                <div class="w-full rounded-t-lg bg-gradient-to-t from-accent/80 to-accent/20 transition-all duration-500 hover:from-accent hover:to-accent/40"
+                     style="height: {{ day.height_percent }}%; min-height: 8px;"
+                     title="₹{{ day.revenue|floatformat:0 }}"></div>
+                <span class="text-xs text-slate-400 font-medium">{{ day.day }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="bg-primary rounded-2xl p-6 text-white shadow-xl">
+        <h3 class="text-lg font-bold mb-6">Quick Actions</h3>
+        <div class="space-y-3">
+            <a href="{% url 'admin_users_list' %}?kyc=pending" class="flex items-center justify-between bg-white/10 hover:bg-white/15 transition-colors rounded-xl px-4 py-3.5">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-accent">verified_user</span>
+                    <span class="text-sm font-semibold">Pending KYC Review</span>
+                </div>
+                {% if pending_kyc > 0 %}
+                <span class="bg-accent text-white text-xs font-bold px-2 py-0.5 rounded-full">{{ pending_kyc }}</span>
+                {% endif %}
+            </a>
+            <a href="{% url 'admin_bookings_list' %}" class="flex items-center justify-between bg-white/10 hover:bg-white/15 transition-colors rounded-xl px-4 py-3.5">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-blue-400">list_alt</span>
+                    <span class="text-sm font-semibold">View All Bookings</span>
+                </div>
+                <span class="material-symbols-outlined text-slate-400 text-lg">arrow_forward</span>
+            </a>
+            <a href="{% url 'admin_bookings_list' %}?status=Pending" class="flex items-center justify-between bg-white/10 hover:bg-white/15 transition-colors rounded-xl px-4 py-3.5">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-yellow-400">pending_actions</span>
+                    <span class="text-sm font-semibold">Pending Bookings</span>
+                </div>
+                {% if pending_bookings > 0 %}
+                <span class="bg-yellow-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{{ pending_bookings }}</span>
+                {% endif %}
+            </a>
+            <a href="{% url 'admin_car_add' %}" class="flex items-center justify-between bg-white/10 hover:bg-white/15 transition-colors rounded-xl px-4 py-3.5">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-green-400">add_circle</span>
+                    <span class="text-sm font-semibold">Add a New Car</span>
+                </div>
+                <span class="material-symbols-outlined text-slate-400 text-lg">arrow_forward</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Bookings Table -->
+<div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+    <div class="flex items-center justify-between px-6 py-5 border-b border-slate-100">
+        <h3 class="text-lg font-bold text-primary">Recent Bookings</h3>
+        <a href="{% url 'admin_bookings_list' %}" class="flex items-center gap-2 text-sm font-semibold text-accent hover:text-accent/80 transition-colors">
+            View All <span class="material-symbols-outlined text-lg">arrow_forward</span>
+        </a>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+            <thead>
+                <tr class="text-left text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100">
+                    <th class="px-6 py-4">User</th>
+                    <th class="px-6 py-4">Car</th>
+                    <th class="px-6 py-4">Dates</th>
+                    <th class="px-6 py-4">Status</th>
+                    <th class="px-6 py-4">Amount</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-50">
+                {% for booking in recent_bookings %}
+                <tr class="hover:bg-slate-50/50 transition-colors">
+                    <td class="px-6 py-4">
+                        <div class="flex items-center gap-3">
+                            <div class="size-8 rounded-full bg-accent/10 text-accent flex items-center justify-center text-xs font-bold">
+                                {{ booking.user.first_name|default:"U"|truncatechars:1 }}
+                            </div>
+                            <span class="font-semibold text-primary">{{ booking.user.get_full_name|default:booking.user.username }}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-slate-600">{{ booking.car.brand }} {{ booking.car.name }}</td>
+                    <td class="px-6 py-4 text-slate-500 text-xs">{{ booking.pickup_date|date:"M d" }} – {{ booking.dropoff_date|date:"M d" }}</td>
+                    <td class="px-6 py-4">
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold
+                            {% if booking.status == 'Completed' %}bg-green-50 text-green-700
+                            {% elif booking.status == 'Active' %}bg-blue-50 text-blue-700
+                            {% elif booking.status == 'Pending' %}bg-amber-50 text-amber-700
+                            {% elif booking.status == 'Cancelled' %}bg-red-50 text-red-700
+                            {% endif %}">
+                            {{ booking.status }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 font-bold text-primary">₹{{ booking.total_with_gst|floatformat:0 }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="px-6 py-12 text-center text-slate-400">No bookings yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
