@@ -65,7 +65,7 @@
                             <a href="{% url 'admin_car_edit' car.id %}" class="size-8 rounded-lg bg-slate-100 hover:bg-blue-100 text-slate-500 hover:text-blue-600 flex items-center justify-center transition-colors" title="Edit">
                                 <span class="material-symbols-outlined text-lg">edit</span>
                             </a>
-                            <form method="post" action="{% url 'admin_car_delete' car.id %}" onsubmit="return confirm('Remove {{ car.brand }} {{ car.name }} from fleet?');" style="display:inline;">
+                            <form method="post" action="{% url 'admin_car_delete' car.id %}" onsubmit="return confirm('Remove {{ car.brand|escapejs }} {{ car.name|escapejs }} from fleet?');" style="display:inline;">
                                 {% csrf_token %}
                                 <button type="submit" class="size-8 rounded-lg bg-slate-100 hover:bg-red-100 text-slate-500 hover:text-red-600 flex items-center justify-center transition-colors" title="Remove">
                                     <span class="material-symbols-outlined text-lg">delete</span>

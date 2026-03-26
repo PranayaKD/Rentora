@@ -57,13 +57,12 @@ def send_whatsapp_confirmation(booking):
     admin_message = (
         f"🔔 *New Booking Alert — Rentora*\n\n"
         f"🆔 Ref: {booking.booking_reference}\n"
-        f"👤 Customer: {booking.user.get_full_name() or booking.user.username}\n"
-        f"📧 Email: {booking.user.email}\n"
+        f"👤 Customer: {booking.user.username}\n"
         f"🚗 Vehicle: {booking.car.brand} {booking.car.name}\n"
         f"📅 {booking.pickup_date} → {booking.dropoff_date}\n"
         f"📍 Pickup: {booking.pickup_location}\n"
         f"💰 Total: ₹{booking.total_with_gst}\n"
-        f"✅ Status: PAID"
+        f"ℹ️ Status: {booking.status}"
     )
 
     if not account_sid or not auth_token:
@@ -74,6 +73,8 @@ def send_whatsapp_confirmation(booking):
         return True
 
     from twilio.rest import Client
+    import logging
+    logger = logging.getLogger(__name__)
     client = Client(account_sid, auth_token)
     
     # Send to User
@@ -81,14 +82,14 @@ def send_whatsapp_confirmation(booking):
         try:
             client.messages.create(body=user_message, from_=from_number, to=user_phone)
         except Exception as e:
-            print(f"Twilio WhatsApp Error (User): {e}")
+            logger.error(f"Twilio WhatsApp Error (User): {e}", exc_info=True)
     
     # Send to Admin
     if admin_phone:
         try:
             client.messages.create(body=admin_message, from_=from_number, to=f"whatsapp:{admin_phone}")
         except Exception as e:
-            print(f"Twilio WhatsApp Error (Admin): {e}")
+            logger.error(f"Twilio WhatsApp Error (Admin): {e}", exc_info=True)
     
     return True
 

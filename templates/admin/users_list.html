@@ -37,7 +37,7 @@
                     <td class="px-6 py-4">
                         <div class="flex items-center gap-3">
                             <div class="size-9 rounded-full bg-accent/10 text-accent flex items-center justify-center text-xs font-bold">
-                                {{ user_data.first_name|default:"U"|truncatechars:1 }}
+                                {{ user_data.first_name|default:"U"|slice:":1"|upper }}
                             </div>
                             <div>
                                 <p class="font-bold text-primary">{{ user_data.get_full_name|default:user_data.username }}</p>

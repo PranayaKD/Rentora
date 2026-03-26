@@ -203,7 +203,8 @@ def admin_bookings_csv_view(request):
     writer.writerow(['Reference', 'Customer', 'Email', 'Car', 'Pickup Date', 'Dropoff Date',
                      'Pickup Location', 'Dropoff Location', 'Amount', 'Status', 'Paid', 'Created'])
 
-    bookings = Booking.objects.select_related('user', 'car').all().order_by('-created_at')
+    # Prevent unbounded query memory exhaustion (DoS) using iterator
+    bookings = Booking.objects.select_related('user', 'car').order_by('-created_at').iterator(chunk_size=1000)
     for b in bookings:
         writer.writerow([
             b.booking_reference,

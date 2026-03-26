@@ -106,6 +106,9 @@ class BookingService:
     @transaction.atomic
     def process_razorpay_success(booking, razorpay_payment_id, razorpay_order_id, razorpay_signature):
         """Verify Razorpay signature and mark booking as paid."""
+        if booking.is_paid:
+            return True # Idempotency check prevents double processing
+            
         import razorpay
         try:
             client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
@@ -116,6 +119,13 @@ class BookingService:
             }
             # Verify signature will raise a SignatureVerificationError if invalid
             client.utility.verify_payment_signature(params_dict)
+            
+            # Amount verification (fetch order from razorpay and compare)
+            rzp_order = client.order.fetch(razorpay_order_id)
+            expected_amount = int(booking.total_with_gst * 100)
+            if rzp_order.get('amount') != expected_amount:
+                logger.error(f"Razorpay amount mismatch for Booking {booking.id}. Expected {expected_amount}, got {rzp_order.get('amount')}")
+                return False
             
             booking.is_paid = True
             booking.status = 'Active'

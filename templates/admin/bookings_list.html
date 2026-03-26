@@ -7,7 +7,7 @@
 {% block header_actions %}
 <div class="flex items-center gap-3">
     <!-- Status Filter -->
-    <div class="hidden sm:flex items-center gap-1 bg-slate-100 rounded-xl p-1">
+    <div class="flex overflow-x-auto items-center gap-1 bg-slate-100 rounded-xl p-1 w-full max-w-full hide-scrollbar">
         <a href="{% url 'admin_bookings_list' %}" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-colors {% if not current_status %}bg-white text-primary shadow-sm{% else %}text-slate-500 hover:text-primary{% endif %}">All</a>
         <a href="?status=Active" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-colors {% if current_status == 'Active' %}bg-white text-primary shadow-sm{% else %}text-slate-500 hover:text-primary{% endif %}">Active</a>
         <a href="?status=Pending" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-colors {% if current_status == 'Pending' %}bg-white text-primary shadow-sm{% else %}text-slate-500 hover:text-primary{% endif %}">Pending</a>
@@ -44,7 +44,7 @@
                     <td class="px-6 py-4">
                         <div class="flex items-center gap-3">
                             <div class="size-8 rounded-full bg-accent/10 text-accent flex items-center justify-center text-xs font-bold">
-                                {{ booking.user.first_name|default:"U"|truncatechars:1 }}
+                                {{ booking.user.first_name|default:"U"|slice:":1"|upper }}
                             </div>
                             <div>
                                 <p class="font-semibold text-primary text-xs">{{ booking.user.get_full_name|default:booking.user.username }}</p>

@@ -65,7 +65,7 @@
                         <div class="flex items-center gap-3">
                             <div class="size-10 rounded-xl bg-slate-50 overflow-hidden flex items-center justify-center">
                                 {% if car.image %}
-                                <img src="{{ car.image.url }}" class="size-full object-cover">
+                                <img src="{{ car.image.url }}" alt="{{ car.name }}" class="size-full object-cover">
                                 {% else %}
                                 <span class="material-symbols-outlined text-slate-300 text-lg">directions_car</span>
                                 {% endif %}
@@ -95,7 +95,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var options = {
-        series: [{ name: 'Revenue', data: {{ monthly_revenues|safe }} }],
+        series: [{ name: 'Revenue', data: JSON.parse('{{ monthly_revenues|escapejs }}') }],
         chart: { height: 350, type: 'area', toolbar: { show: false }, background: 'transparent', foreColor: '#64748b' },
         colors: ['#00c9a7'],
         dataLabels: { enabled: false },
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
             type: 'gradient',
             gradient: { shadeIntensity: 1, opacityFrom: 0.45, opacityTo: 0.05, stops: [20, 100] }
         },
-        xaxis: { categories: {{ monthly_labels|safe }}, axisBorder: { show: false }, axisTicks: { show: false } },
+        xaxis: { categories: JSON.parse('{{ monthly_labels|escapejs }}'), axisBorder: { show: false }, axisTicks: { show: false } },
         yaxis: {
             labels: {
                 formatter: function(val) { return "₹" + (val / 1000).toFixed(1) + "k"; }

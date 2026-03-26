@@ -58,7 +58,7 @@
         <!-- Navigation -->
         <nav class="flex-1 py-6 overflow-y-auto overflow-x-hidden relative">
             <p class="px-8 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3 mt-2">Main Menu</p>
-            <a href="{% url 'admin_dashboard' %}" class="flex items-center gap-3 px-4 py-3 mx-4 my-1 rounded-xl transition-all font-medium text-sm {% if active_page == 'dashboard' %}bg-accent/10 text-accent font-bold ring-1 ring-accent/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]{% else %}text-slate-400 hover:bg-slate-900 hover:text-slate-200{% endif %}">
+            <a href="{% url 'admin_dashboard' %}" aria-label="Dashboard" class="flex items-center gap-3 px-4 py-3 mx-4 my-1 rounded-xl transition-all font-medium text-sm {% if active_page == 'dashboard' %}bg-accent/10 text-accent font-bold ring-1 ring-accent/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]{% else %}text-slate-400 hover:bg-slate-900 hover:text-slate-200{% endif %}">
                 <span class="material-symbols-outlined text-[20px] transition-colors {% if active_page == 'dashboard' %}text-accent filled-icon drop-shadow-[0_0_8px_rgba(0,201,167,0.4)]{% else %}opacity-80{% endif %}">dashboard</span>
                 Dashboard
             </a>
@@ -66,7 +66,7 @@
                 <span class="material-symbols-outlined text-[20px] transition-colors {% if active_page == 'cars' %}text-accent filled-icon drop-shadow-[0_0_8px_rgba(0,201,167,0.4)]{% else %}opacity-80{% endif %}">directions_car</span>
                 Fleet
             </a>
-            <a href="{% url 'admin_bookings_list' %}" class="flex items-center gap-3 px-4 py-3 mx-4 my-1 rounded-xl transition-all font-medium text-sm {% if active_page == 'bookings' %}bg-accent/10 text-accent font-bold ring-1 ring-accent/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]{% else %}text-slate-400 hover:bg-slate-900 hover:text-slate-200{% endif %}">
+            <a href="{% url 'admin_bookings_list' %}" aria-label="Bookings" class="flex items-center gap-3 px-4 py-3 mx-4 my-1 rounded-xl transition-all font-medium text-sm {% if active_page == 'bookings' %}bg-accent/10 text-accent font-bold ring-1 ring-accent/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]{% else %}text-slate-400 hover:bg-slate-900 hover:text-slate-200{% endif %}">
                 <span class="material-symbols-outlined text-[20px] transition-colors {% if active_page == 'bookings' %}text-accent filled-icon drop-shadow-[0_0_8px_rgba(0,201,167,0.4)]{% else %}opacity-80{% endif %}">calendar_month</span>
                 Bookings
             </a>
@@ -80,12 +80,12 @@
             </a>
 
             <p class="px-8 text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3 mt-8">System</p>
-            <a href="{% url 'index' %}" target="_blank" class="group flex items-center gap-3 px-4 py-3 mx-4 my-1 rounded-xl text-slate-400 hover:bg-slate-900 hover:text-slate-200 transition-all font-medium text-sm">
+            <a href="{% url 'index' %}" target="_blank" rel="noopener noreferrer" aria-label="View Live site" class="group flex items-center gap-3 px-4 py-3 mx-4 my-1 rounded-xl text-slate-400 hover:bg-slate-900 hover:text-slate-200 transition-all font-medium text-sm">
                 <span class="material-symbols-outlined text-[20px] transition-colors opacity-80 group-hover:opacity-100">storefront</span>
                 Live Site
                 <span class="material-symbols-outlined ml-auto text-sm opacity-0 group-hover:opacity-100 transition-opacity">open_in_new</span>
             </a>
-            <a href="{% url 'admin:index' %}" target="_blank" class="group flex items-center gap-3 px-4 py-3 mx-4 my-1 rounded-xl text-slate-400 hover:bg-slate-900 hover:text-slate-200 transition-all font-medium text-sm">
+            <a href="{% url 'admin:index' %}" target="_blank" rel="noopener noreferrer" aria-label="Django Admin Database" class="group flex items-center gap-3 px-4 py-3 mx-4 my-1 rounded-xl text-slate-400 hover:bg-slate-900 hover:text-slate-200 transition-all font-medium text-sm">
                 <span class="material-symbols-outlined text-[20px] transition-colors opacity-80 group-hover:opacity-100">database</span>
                 Database
                 <span class="material-symbols-outlined ml-auto text-sm opacity-0 group-hover:opacity-100 transition-opacity">open_in_new</span>
@@ -96,7 +96,7 @@
         <div class="p-4 bg-slate-950 border-t border-slate-800">
             <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-900 transition-colors cursor-pointer border border-transparent hover:border-slate-800">
                 <div class="relative size-10 rounded-full bg-slate-800 flex items-center justify-center text-white font-bold text-sm overflow-hidden ring-1 ring-slate-700">
-                    {{ request.user.first_name|default:"A"|truncatechars:1 }}
+                    {{ request.user.first_name|default:"A"|slice:":1"|upper }}
                 </div>
                 <div class="min-w-0 flex-1 text-left">
                     <p class="text-sm font-bold text-white truncate">{{ request.user.get_full_name|default:request.user.username }}</p>

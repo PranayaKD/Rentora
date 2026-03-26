@@ -15,7 +15,13 @@ def render_invoice_pdf(booking):
     Render the invoice_pdf.html template into a PDF byte buffer.
     Returns (BytesIO buffer, success boolean).
     """
-    template = get_template('emails/invoice_pdf.html')
+    try:
+        from django.template.exceptions import TemplateDoesNotExist
+        template = get_template('emails/invoice_pdf.html')
+    except TemplateDoesNotExist as e:
+        logger.error(f"Failed to load invoice_pdf.html template: {e}")
+        return None, False
+        
     context = {'booking': booking}
     html = template.render(context)
 

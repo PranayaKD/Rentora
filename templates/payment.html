@@ -210,7 +210,7 @@
                             <span class="material-symbols-outlined absolute text-white text-sm opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity">check</span>
                         </div>
                         <div class="text-xs text-slate-500 leading-relaxed">
-                            I agree to the <a href="#" class="text-accent hover:underline font-bold">Rental Agreement</a>, <a href="#" class="text-accent hover:underline font-bold">Damage Liability Policy</a>, and understand that out-of-state travel requires permits. I also accept that the ₹{{ car.security_deposit|floatformat:0 }} deposit will be held securely during the trip.
+                            I agree to the <a href="javascript:void(0)" class="text-accent hover:underline font-bold">Rental Agreement</a>, <a href="javascript:void(0)" class="text-accent hover:underline font-bold">Damage Liability Policy</a>, and understand that out-of-state travel requires permits. I also accept that the ₹{{ car.security_deposit|floatformat:0 }} deposit will be held securely during the trip.
                         </div>
                     </label>
                 </div>
@@ -249,7 +249,23 @@
                         text.textContent = 'Processing...';
                         loader.classList.remove('hidden');
                         
-                        document.getElementById('payment-form').submit();
+                        const method = document.querySelector('input[name="payment_method_choice"]:checked').value;
+                        const form = document.getElementById('payment-form');
+                        
+                        // Dynamically append selected method as hidden input before submit
+                        const methodInput = document.createElement('input');
+                        methodInput.type = 'hidden';
+                        methodInput.name = 'payment_method_choice';
+                        methodInput.value = method;
+                        form.appendChild(methodInput);
+                        
+                        const tncInput = document.createElement('input');
+                        tncInput.type = 'hidden';
+                        tncInput.name = 'tnc_accepted';
+                        tncInput.value = 'true';
+                        form.appendChild(tncInput);
+                        
+                        form.submit();
                     }
                 </script>
 
@@ -311,6 +327,12 @@
         }
     };
     var rzp1 = new Razorpay(options);
+    
+    // Explicitly handle failures according to CodeRabbit analysis
+    rzp1.on('payment.failed', function (response){
+        alert("Payment Failed: " + response.error.description);
+        window.location.reload();
+    });
     
     // Automatically open the Razorpay popup once the page re-renders
     window.onload = function(e){

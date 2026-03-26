@@ -366,7 +366,9 @@ def car_detail_view(request, car_id):
 @login_required
 def booking_location_direct(request, car_id):
     """Entry point for direct car booking from car-detail."""
-    request.session['booking_car_id'] = car_id
+    from django.shortcuts import get_object_or_404
+    car = get_object_or_404(Car, id=car_id)
+    request.session['booking_car_id'] = car.id
     return redirect('booking_location')
 
 @login_required
@@ -595,7 +597,7 @@ def payment_view(request):
             if payment_method == 'razorpay':
                 # Create Razorpay Order
                 razorpay_order = BookingService.create_razorpay_order(booking, final_total)
-                booking.payment_intent_id = razorpay_order['id']
+                booking.razorpay_order_id = razorpay_order['id']
                 booking.save()
                 
                 # Re-render payment page with Razorpay config to pop open the modal
@@ -610,7 +612,7 @@ def payment_view(request):
                 checkout_session = BookingService.create_stripe_session(
                     booking, car, days, pickup_dt, dropoff_dt, final_total
                 )
-                booking.payment_intent_id = checkout_session.id
+                booking.stripe_session_id = checkout_session.id
                 booking.save()
                 return redirect(checkout_session.url, code=303)
 
@@ -619,10 +621,9 @@ def payment_view(request):
                 booking.status = 'Cancelled'
                 booking.save()
             # Professional error logging with detail for the USER to debug
-            error_msg = f"Stripe Error: {str(e)}" if settings.DEBUG else "We encountered an issue processing your payment. Please try again."
+            error_msg = f"Payment Gateway Error: {str(e)}" if settings.DEBUG else "We encountered an issue processing your payment. Please try again."
             messages.error(request, error_msg)
             return redirect('payment')
-            return redirect('booking_select')
 
     context = {
         'car': car,
@@ -652,6 +653,12 @@ def razorpay_callback(request):
         
         try:
             booking = Booking.objects.get(payment_intent_id=order_id)
+            
+            # Security: Verify ownership since this is a user-redirect callback
+            if request.user.is_authenticated and booking.user != request.user:
+                messages.error(request, "Permission denied.")
+                return redirect('index')
+                
             success = BookingService.process_razorpay_success(booking, payment_id, order_id, signature)
             if success:
                 BookingService.clear_booking_session(request)

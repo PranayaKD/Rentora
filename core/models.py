@@ -157,7 +157,8 @@ class Booking(models.Model):
     dropoff_location = models.CharField(max_length=255, default='Main Office')
     total_price = models.DecimalField(max_digits=12, decimal_places=2)
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
-    stripe_session_id = models.CharField(max_length=255, blank=True, null=True)
+    stripe_session_id = models.CharField(max_length=255, blank=True, null=True, unique=True)
+    razorpay_order_id = models.CharField(max_length=255, blank=True, null=True, unique=True)
     
     # Financial tracking
     is_paid = models.BooleanField(default=False)
@@ -179,8 +180,7 @@ class Booking(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
-        self.clean()
-        
+        # self.clean() removed to prevent unintentional webhook validation errors
         if not self.booking_reference:
             # Robust 10-char alphanumeric reference (RNT-XXXXXXXX)
             import uuid
@@ -202,18 +202,18 @@ class Booking(models.Model):
             from django.db import transaction
             try:
                 old_status = Booking.objects.get(pk=self.pk).status
-                if old_status != 'Completed' and self.status == 'Completed':
+                if old_status.lower() != 'completed' and self.status.lower() == 'completed':
                     with transaction.atomic():
                         # Select for update to prevent concurrent balance issues
                         from .models import Profile
                         user_profile = Profile.objects.select_for_update().get(user=self.user)
                         user_profile.wallet_balance += REFERRAL_REWARD_INR
-                        user_profile.save()
+                        user_profile.save(update_fields=['wallet_balance'])
                         
                         if user_profile.referred_by:
                             referrer_profile = Profile.objects.select_for_update().get(id=user_profile.referred_by.id)
                             referrer_profile.wallet_balance += REFERRAL_REWARD_INR
-                            referrer_profile.save()
+                            referrer_profile.save(update_fields=['wallet_balance'])
             except Exception as e:
                 logger.error(f"Referral Reward Payment Error during booking save: {str(e)}", exc_info=True)
         
