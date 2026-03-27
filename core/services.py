@@ -60,7 +60,7 @@ class BookingService:
                 "receipt": str(booking.booking_reference),
                 "notes": {
                     "email": booking.user.email,
-                    "phone": booking.user.profile.phone_number if hasattr(booking.user, 'profile') else ""
+                    "phone": booking.user.profile.phone if hasattr(booking.user, 'profile') else ""
                 }
             }
             order = client.order.create(data=data)

@@ -261,9 +261,6 @@ def cars_view(request):
         cars = cars.filter(brand=brand)
 
     # Search
-    location = request.GET.get('location', '')
-    if location:
-        cars = cars.filter(location__icontains=location)
     q = request.GET.get('q', '')
     if q:
         cars = cars.filter(Q(name__icontains=q) | Q(brand__icontains=q))

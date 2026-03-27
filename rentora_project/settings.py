@@ -1,7 +1,6 @@
 """
 Rentora Django Settings
 """
-from django.contrib.messages import constants as messages
 import os
 import sys
 from pathlib import Path
@@ -19,14 +18,13 @@ if render_external_hostname:
     ALLOWED_HOSTS.append(render_external_hostname)
 
 # Sentry SDK Integration (Production Monitoring)
-# Now enabled whenever SENTRY_DSN is present for verification
 if os.getenv('SENTRY_DSN'):
     import sentry_sdk
     from sentry_sdk.integrations.django import DjangoIntegration
     sentry_sdk.init(
         dsn=os.getenv('SENTRY_DSN'),
         integrations=[DjangoIntegration()],
-        traces_sample_rate=1.0, # Monitor 100% for verification, lower to 0.1 for production
+        traces_sample_rate=1.0,
         send_default_pii=True
     )
 
@@ -38,15 +36,12 @@ if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    
-    # HSTS (Strict Transport Security) - Enable after verifying SSL
-    SECURE_HSTS_SECONDS = 31536000 # 1 year
+    SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
-    # Strict Referrer Policy
     SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
-    # COOP Header
     SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin"
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -55,7 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    
+
     # Third party
     'storages',
     'crispy_forms',
@@ -64,7 +59,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    
+
     # Local apps
     'core',
     'accounts',
@@ -84,7 +79,7 @@ MIDDLEWARE = [
     'django.middleware.gzip.GZipMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.http.ConditionalGetMiddleware',  # Handle ETag/Last-Modified
+    'django.middleware.http.ConditionalGetMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'accounts.middleware.ProfilePrefetchMiddleware',
@@ -113,17 +108,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'rentora_project.wsgi.application'
 
-# Database — Supabase PostgreSQL fallback logic
-db_host = os.getenv('DB_HOST', '')
-
+# Database Configuration
 import dj_database_url
 
-# Database Configuration
+DATABASES = {}  # Initialize to prevent NameError
+
 db_url = os.getenv('DATABASE_URL')
 db_host = os.getenv('DB_HOST')
 
 if db_url:
-    # Use standard DATABASE_URL if provided (Common on Render/Railway/Heroku)
     DATABASES = {
         'default': dj_database_url.config(
             default=db_url,
@@ -132,7 +125,6 @@ if db_url:
         )
     }
 elif db_host:
-    # Fallback to granular Supabase ENV vars
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -175,7 +167,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Production Static Storage (Cache-busting / Ferrari Level)
+# Production Static Storage
 if not DEBUG:
     STORAGES = {
         "default": {
@@ -193,7 +185,6 @@ AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_ENDPOINT_URL = os.getenv('AWS_S3_ENDPOINT_URL')
 AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'ap-south-1')
 
-# S3 Custom Settings
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = 'public-read'
 AWS_S3_VERIFY = True
@@ -207,24 +198,13 @@ else:
     MEDIA_URL = '/media/'
     MEDIA_ROOT = BASE_DIR / 'media'
 
-# Caching Configuration (Zero-Cost Scalability)
+# Caching
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         'LOCATION': 'unique-snowflake',
     }
 }
-
-# If you install Redis (sudo apt install redis-server)
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django_redis.cache.RedisCache",
-#         "LOCATION": "redis://127.0.0.1:6379/1",
-#         "OPTIONS": {
-#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-#         }
-#     }
-# }
 
 # Auth
 LOGIN_URL = '/login/'
@@ -272,7 +252,6 @@ if RESEND_API_KEY:
     EMAIL_HOST_USER = 'resend'
     EMAIL_HOST_PASSWORD = RESEND_API_KEY
 else:
-    # Fallback to Gmail SMTP for development
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
     EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
@@ -323,3 +302,48 @@ ADMIN_PHONE = os.getenv('ADMIN_PHONE')
 TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID')
 TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
 TWILIO_WHATSAPP_NUMBER = os.getenv('TWILIO_WHATSAPP_NUMBER', 'whatsapp:+14155238886')
+
+# ===================== LOGGING =====================
+# This ensures Django tracebacks appear in Render/Gunicorn logs
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '[{asctime}] {levelname} {name} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'WARNING',
+            'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'core': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'accounts': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
