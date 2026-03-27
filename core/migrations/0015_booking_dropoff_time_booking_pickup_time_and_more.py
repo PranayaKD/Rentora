@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0014_booking_booking_reference'),
+        ('core', '0013_booking_abandoned_reminder_sent'),
     ]
 
     operations = [
