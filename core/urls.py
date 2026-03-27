@@ -5,7 +5,6 @@ urlpatterns = [
     # Landing
     path('', views.index_view, name='index'),
     path('how-it-works/', views.how_it_works_view, name='how_it_works'),
-    path('load-custom-data/', views.load_data_prod, name='load_data_prod'),
 
     # Cars
     path('cars/', views.cars_view, name='cars'),
