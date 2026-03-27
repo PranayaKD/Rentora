@@ -1125,3 +1125,13 @@ def get_booked_dates(request, car_id):
             current_date += timedelta(days=1)
             
     return JsonResponse({'booked_dates': list(set(booked_dates))})
+
+def load_data_prod(request):
+    """Temporary view to allow loading data without CLI shell."""
+    from django.core.management import call_command
+    from django.http import HttpResponse
+    try:
+        call_command('loaddata', 'cars.json')
+        return HttpResponse("<h1 style='color: green;'>Success! 84 Cars Loaded.</h1><p>Go back to <a href='/'>Homepage</a></p>")
+    except Exception as e:
+        return HttpResponse(f"<h1 style='color: red;'>Failed</h1><p>{str(e)}</p>")
