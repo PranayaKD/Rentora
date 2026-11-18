@@ -194,8 +194,8 @@
     <!-- Logout Confirmation Sheet / Modal -->
     {% include 'components/logout_sheet.html' %}
 
-    <!-- Core App JS (Version 5.0 with timestamp cache-buster) -->
-    <script src="{% static 'js/rentora.js' %}?v=5.0.0-{% now 'U' %}"></script>
+    <!-- Core App JS (Version 5.1.0 with static version caching) -->
+    <script src="{% static 'js/rentora.js' %}?v=5.1.0"></script>
     {% block extra_scripts %}{% endblock %}
 </body>
 </html>

@@ -80,11 +80,12 @@
                    class="group block relative rounded-2xl sm:rounded-3xl overflow-hidden border border-outline-variant/40 shadow-sm hover:shadow-lg transition-all duration-300 focus:outline-none"
                    aria-label="View Subscription Plans">
                     <picture>
-                        <source srcset="{% static 'images/banners/banner_monthly_subscription.webp' %}?v={% now 'U' %}" type="image/webp">
-                        <img src="{% static 'images/banners/banner_monthly_subscription.jpg' %}?v={% now 'U' %}" 
+                        <source srcset="https://res.cloudinary.com/e5m0ot7d/image/upload/v1795015213/rentora/site/banner_monthly_subscription.webp" type="image/webp">
+                        <img src="https://res.cloudinary.com/e5m0ot7d/image/upload/v1795015213/rentora/site/banner_monthly_subscription.webp" 
                              alt="All-Inclusive Monthly Car Subscriptions - 30 Days Pass Rentora" 
                              class="w-full h-auto aspect-[16/9] object-cover object-center group-hover:scale-[1.01] transition-transform duration-500 select-none" 
-                             loading="eager" />
+                             loading="eager"
+                             decoding="async" />
                     </picture>
 
                     <!-- Interactive Overlay Button (matching banner aesthetic) -->

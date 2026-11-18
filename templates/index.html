@@ -15,10 +15,13 @@ Rentora. Doorstep delivery, verified fleet, zero paperwork.{% endblock %}
     <!-- Hero Scenic Background: Tropical Coastal Shoreline (Pure Unblurred Image, No White Gradient) -->
     <div class="absolute inset-0 z-0">
       <picture class="block w-full h-full overflow-hidden">
-        <source srcset="{% static 'images/hero/odisha_coastal_hero.webp' %}?v={% now 'U' %}" type="image/webp">
-        <img src="{% static 'images/hero/odisha_coastal_hero.jpg' %}?v={% now 'U' %}"
+        <source srcset="https://res.cloudinary.com/e5m0ot7d/image/upload/v1795015206/rentora/site/hero_odisha_coastal.webp" type="image/webp">
+        <img src="https://res.cloudinary.com/e5m0ot7d/image/upload/v1795015206/rentora/site/hero_odisha_coastal.webp"
           alt="Rentora Self-Drive Scenic Coastal Shoreline Odisha"
-          class="hero-kenburns w-full h-full object-cover object-center select-none pointer-events-none [image-rendering:-webkit-optimize-contrast]" />
+          class="hero-kenburns w-full h-full object-cover object-center select-none pointer-events-none [image-rendering:-webkit-optimize-contrast]"
+          fetchpriority="high"
+          loading="eager"
+          decoding="async" />
       </picture>
     </div>
 
@@ -224,12 +227,13 @@ Rentora. Doorstep delivery, verified fleet, zero paperwork.{% endblock %}
             <div
               class="relative rounded-3xl overflow-hidden border border-outline-variant/40 shadow-xl bg-surface-container-low aspect-[16/11] group-hover:shadow-2xl transition-all duration-500">
               <picture>
-                <source srcset="{% static 'images/about/about_rentora_coastal.webp' %}?v={% now 'U' %}"
+                <source srcset="https://res.cloudinary.com/e5m0ot7d/image/upload/v1795015208/rentora/site/about_rentora_coastal.webp"
                   type="image/webp">
-                <img src="{% static 'images/about/about_rentora_coastal.jpg' %}?v={% now 'U' %}"
+                <img src="https://res.cloudinary.com/e5m0ot7d/image/upload/v1795015208/rentora/site/about_rentora_coastal.webp"
                   alt="Rentora Self-Drive SUV on Odisha Coastal Beach Shoreline"
                   class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out select-none [image-rendering:-webkit-optimize-contrast]"
-                  loading="lazy" />
+                  loading="lazy"
+                  decoding="async" />
               </picture>
 
               <!-- Floating Inspection Badge Bottom Left -->
@@ -823,11 +827,12 @@ Rentora. Doorstep delivery, verified fleet, zero paperwork.{% endblock %}
           class="banner-glass-sheen group block relative rounded-2xl sm:rounded-3xl overflow-hidden border border-outline-variant/40 shadow-xs hover:shadow-lg transition-all duration-300 focus:outline-none"
           aria-label="Bhubaneswar Airport Curb Delivery">
           <picture>
-            <source srcset="{% static 'images/banners/banner_airport_curb.webp' %}?v={% now 'U' %}" type="image/webp">
-            <img src="{% static 'images/banners/banner_airport_curb.jpg' %}?v={% now 'U' %}"
+            <source srcset="https://res.cloudinary.com/e5m0ot7d/image/upload/v1795015209/rentora/site/banner_airport_curb.webp" type="image/webp">
+            <img src="https://res.cloudinary.com/e5m0ot7d/image/upload/v1795015209/rentora/site/banner_airport_curb.webp"
               alt="Bhubaneswar Airport (BBI) Curb Delivery - Self Drive Rentals"
               class="w-full h-auto aspect-[16/9] object-cover object-center group-hover:scale-[1.02] transition-transform duration-500 select-none"
-              loading="eager" />
+              loading="lazy"
+              decoding="async" />
           </picture>
 
           <!-- Interactive Overlay Button (matching banner aesthetic) -->
@@ -845,11 +850,12 @@ Rentora. Doorstep delivery, verified fleet, zero paperwork.{% endblock %}
           class="banner-glass-sheen group block relative rounded-2xl sm:rounded-3xl overflow-hidden border border-outline-variant/40 shadow-xs hover:shadow-lg transition-all duration-300 focus:outline-none"
           aria-label="Puri Marine Drive Unlimited KM">
           <picture>
-            <source srcset="{% static 'images/banners/banner_unlimited_km.webp' %}?v={% now 'U' %}" type="image/webp">
-            <img src="{% static 'images/banners/banner_unlimited_km.jpg' %}?v={% now 'U' %}"
+            <source srcset="https://res.cloudinary.com/e5m0ot7d/image/upload/v1795015210/rentora/site/banner_unlimited_km.webp" type="image/webp">
+            <img src="https://res.cloudinary.com/e5m0ot7d/image/upload/v1795015210/rentora/site/banner_unlimited_km.webp"
               alt="Puri Marine Drive & Konark: Unlimited KM - Self Drive Thar 4x4"
               class="w-full h-auto aspect-[16/9] object-cover object-center group-hover:scale-[1.02] transition-transform duration-500 select-none"
-              loading="eager" />
+              loading="lazy"
+              decoding="async" />
           </picture>
 
           <!-- Interactive Overlay Button (matching banner aesthetic) -->
@@ -941,11 +947,12 @@ Rentora. Doorstep delivery, verified fleet, zero paperwork.{% endblock %}
           class="banner-glass-sheen group block relative rounded-2xl sm:rounded-3xl overflow-hidden border border-outline-variant/40 shadow-xs hover:shadow-lg transition-all duration-300 focus:outline-none"
           aria-label="Drive With ₹0 Security Deposit Across Odisha">
           <picture>
-            <source srcset="{% static 'images/banners/banner_zero_deposit.webp' %}?v={% now 'U' %}" type="image/webp">
-            <img src="{% static 'images/banners/banner_zero_deposit.jpg' %}?v={% now 'U' %}"
+            <source srcset="https://res.cloudinary.com/e5m0ot7d/image/upload/v1795015211/rentora/site/banner_zero_deposit.webp" type="image/webp">
+            <img src="https://res.cloudinary.com/e5m0ot7d/image/upload/v1795015211/rentora/site/banner_zero_deposit.webp"
               alt="Drive With ₹0 Security Deposit Across Odisha - Verified DigiLocker KYC"
               class="w-full h-auto aspect-[16/9] object-cover object-center group-hover:scale-[1.02] transition-transform duration-500 select-none"
-              loading="eager" />
+              loading="lazy"
+              decoding="async" />
           </picture>
 
           <!-- Interactive Overlay Button (matching banner aesthetic) -->
@@ -963,11 +970,12 @@ Rentora. Doorstep delivery, verified fleet, zero paperwork.{% endblock %}
           class="banner-glass-sheen group block relative rounded-2xl sm:rounded-3xl overflow-hidden border border-outline-variant/40 shadow-xs hover:shadow-lg transition-all duration-300 focus:outline-none"
           aria-label="Drive Green Across Odisha">
           <picture>
-            <source srcset="{% static 'images/banners/banner_ev_cars.webp' %}?v={% now 'U' %}" type="image/webp">
-            <img src="{% static 'images/banners/banner_ev_cars.jpg' %}?v={% now 'U' %}"
+            <source srcset="https://res.cloudinary.com/e5m0ot7d/image/upload/v1795015212/rentora/site/banner_ev_cars.webp" type="image/webp">
+            <img src="https://res.cloudinary.com/e5m0ot7d/image/upload/v1795015212/rentora/site/banner_ev_cars.webp"
               alt="Drive Green Across Odisha: Save 75% on Fuel - 100% Electric Self-Drive"
               class="w-full h-auto aspect-[16/9] object-cover object-center group-hover:scale-[1.02] transition-transform duration-500 select-none"
-              loading="eager" />
+              loading="lazy"
+              decoding="async" />
           </picture>
 
           <!-- Interactive Overlay Button (matching banner aesthetic) -->
@@ -1245,11 +1253,12 @@ Rentora. Doorstep delivery, verified fleet, zero paperwork.{% endblock %}
           class="banner-glass-sheen group block relative rounded-2xl sm:rounded-3xl overflow-hidden border border-outline-variant/40 shadow-xs hover:shadow-lg transition-all duration-300 focus:outline-none"
           aria-label="All-Inclusive Monthly Car Subscriptions">
           <picture>
-            <source srcset="{% static 'images/banners/banner_monthly_subscription.webp' %}?v={% now 'U' %}" type="image/webp">
-            <img src="{% static 'images/banners/banner_monthly_subscription.jpg' %}?v={% now 'U' %}"
+            <source srcset="https://res.cloudinary.com/e5m0ot7d/image/upload/v1795015213/rentora/site/banner_monthly_subscription.webp" type="image/webp">
+            <img src="https://res.cloudinary.com/e5m0ot7d/image/upload/v1795015213/rentora/site/banner_monthly_subscription.webp"
               alt="All-Inclusive Monthly Car Subscriptions - 30 Days Pass Rentora"
               class="w-full h-auto aspect-[16/9] object-cover object-center group-hover:scale-[1.01] transition-transform duration-500 select-none"
-              loading="eager" />
+              loading="lazy"
+              decoding="async" />
           </picture>
 
           <!-- Interactive Overlay Button (matching banner aesthetic) -->
