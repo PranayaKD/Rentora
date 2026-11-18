@@ -159,80 +159,195 @@
     });
     </script>
 
-    <!-- Leaflet Script with Mobile-First Scroll Handling -->
+    <!-- Map Scripts: Google Maps Platform with Instant Leaflet Fallback -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Disable scroll wheel zoom to prevent mobile/desktop page scroll trapping
-            var map = L.map('map', {
-                scrollWheelZoom: false,
-                tap: true
-            }).setView([20.2961, 85.8245], 13); // Default to Bhubaneswar (BBSR Hub)
-            window.rentoraMap = map;
+            const googleKey = "{{ google_maps_api_key|default:'' }}";
+            let googleMapLoaded = false;
 
-            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-                attribution: '© Esri',
-                maxZoom: 19
-            }).addTo(map);
+            function initLeafletMap() {
+                if (googleMapLoaded) return;
+                var map = L.map('map', {
+                    scrollWheelZoom: false,
+                    tap: true
+                }).setView([20.2961, 85.8245], 13);
+                window.rentoraMap = map;
 
-            var pickupMarker = L.marker([20.2961, 85.8245], {draggable: true}).addTo(map);
-            var dropoffMarker = L.marker([20.3061, 85.8345], {draggable: true});
-            window.dropoffMarker = dropoffMarker;
-            
-            pickupMarker.bindPopup("Pickup Location").openPopup();
-            dropoffMarker.bindPopup("Drop-off Location");
+                L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+                    attribution: '© Esri',
+                    maxZoom: 19
+                }).addTo(map);
 
-            function updateInputs() {
-                var p = pickupMarker.getLatLng();
-                var d = dropoffMarker.getLatLng();
+                var pickupMarker = L.marker([20.2961, 85.8245], {draggable: true}).addTo(map);
+                var dropoffMarker = L.marker([20.3061, 85.8345], {draggable: true});
+                window.dropoffMarker = dropoffMarker;
                 
-                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${p.lat}&lon=${p.lng}`)
-                    .then(r => r.json())
-                    .then(data => {
-                        if (data && data.display_name) {
-                            const name = data.address?.suburb || data.address?.neighbourhood || data.display_name.split(',')[0];
-                            document.getElementById('id_pickup_location').value = name;
-                            if (!document.getElementById('diff-dropoff-toggle').checked) {
-                                document.getElementById('id_dropoff_location').value = name;
-                            }
-                        }
-                    }).catch(() => {});
-                
-                if (document.getElementById('diff-dropoff-toggle').checked) {
-                    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${d.lat}&lon=${d.lng}`)
+                pickupMarker.bindPopup("Pickup Location").openPopup();
+                dropoffMarker.bindPopup("Drop-off Location");
+
+                function updateInputs() {
+                    var p = pickupMarker.getLatLng();
+                    var d = dropoffMarker.getLatLng();
+                    
+                    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${p.lat}&lon=${p.lng}`)
                         .then(r => r.json())
                         .then(data => {
                             if (data && data.display_name) {
                                 const name = data.address?.suburb || data.address?.neighbourhood || data.display_name.split(',')[0];
-                                document.getElementById('id_dropoff_location').value = name;
+                                document.getElementById('id_pickup_location').value = name;
+                                if (!document.getElementById('diff-dropoff-toggle').checked) {
+                                    document.getElementById('id_dropoff_location').value = name;
+                                }
                             }
                         }).catch(() => {});
+                    
+                    if (document.getElementById('diff-dropoff-toggle').checked) {
+                        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${d.lat}&lon=${d.lng}`)
+                            .then(r => r.json())
+                            .then(data => {
+                                if (data && data.display_name) {
+                                    const name = data.address?.suburb || data.address?.neighbourhood || data.display_name.split(',')[0];
+                                    document.getElementById('id_dropoff_location').value = name;
+                                }
+                            }).catch(() => {});
+                    }
+                }
+
+                pickupMarker.on('dragend', updateInputs);
+                dropoffMarker.on('dragend', updateInputs);
+                
+                map.on('click', function(e) {
+                    const diffChecked = document.getElementById('diff-dropoff-toggle').checked;
+                    if (!diffChecked || !window.settingDropoff) {
+                        pickupMarker.setLatLng(e.latlng);
+                        if (diffChecked) window.settingDropoff = true;
+                    } else {
+                        dropoffMarker.setLatLng(e.latlng);
+                        window.settingDropoff = false;
+                    }
+                    updateInputs();
+                });
+
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        var lat = position.coords.latitude;
+                        var lng = position.coords.longitude;
+                        map.setView([lat, lng], 14);
+                        pickupMarker.setLatLng([lat, lng]);
+                        updateInputs();
+                    }, function() {});
                 }
             }
 
-            pickupMarker.on('dragend', updateInputs);
-            dropoffMarker.on('dragend', updateInputs);
-            
-            map.on('click', function(e) {
-                const diffChecked = document.getElementById('diff-dropoff-toggle').checked;
-                if (!diffChecked || !window.settingDropoff) {
-                    pickupMarker.setLatLng(e.latlng);
-                    if (diffChecked) window.settingDropoff = true;
-                } else {
-                    dropoffMarker.setLatLng(e.latlng);
-                    window.settingDropoff = false;
-                }
-                updateInputs();
-            });
+            // Attempt Google Maps Platform integration if key is provided
+            if (googleKey && googleKey !== 'YOUR_KEY_HERE') {
+                window.gm_authFailure = function() {
+                    console.warn("Google Maps authentication notice — activating fallback map layer.");
+                    initLeafletMap();
+                };
 
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    var lat = position.coords.latitude;
-                    var lng = position.coords.longitude;
-                    map.setView([lat, lng], 14);
-                    pickupMarker.setLatLng([lat, lng]);
-                    updateInputs();
-                }, function() {});
+                const gScript = document.createElement('script');
+                gScript.src = `https://maps.googleapis.com/maps/api/js?key=${googleKey}&libraries=places,geocoding&callback=initGoogleMap`;
+                gScript.async = true;
+                gScript.defer = true;
+                gScript.onerror = function() {
+                    initLeafletMap();
+                };
+
+                window.initGoogleMap = function() {
+                    try {
+                        const bbsr = { lat: 20.2961, lng: 85.8245 };
+                        const gMap = new google.maps.Map(document.getElementById('map'), {
+                            center: bbsr,
+                            zoom: 13,
+                            mapTypeControl: false,
+                            streetViewControl: false,
+                            fullscreenControl: false,
+                        });
+                        googleMapLoaded = true;
+
+                        const geocoder = new google.maps.Geocoder();
+                        const pMarker = new google.maps.Marker({
+                            position: bbsr,
+                            map: gMap,
+                            draggable: true,
+                            title: "Pickup Hub"
+                        });
+                        const dMarker = new google.maps.Marker({
+                            position: { lat: 20.3061, lng: 85.8345 },
+                            map: null,
+                            draggable: true,
+                            title: "Drop-off Location"
+                        });
+
+                        function reverseGeocode(pos, inputId) {
+                            geocoder.geocode({ location: pos }, (results, status) => {
+                                if (status === "OK" && results[0]) {
+                                    document.getElementById(inputId).value = results[0].formatted_address.split(',')[0];
+                                }
+                            });
+                        }
+
+                        pMarker.addListener('dragend', () => {
+                            const pos = pMarker.getPosition();
+                            reverseGeocode(pos, 'id_pickup_location');
+                        });
+                        dMarker.addListener('dragend', () => {
+                            const pos = dMarker.getPosition();
+                            reverseGeocode(pos, 'id_dropoff_location');
+                        });
+
+                        // Hook diff dropoff toggle
+                        const diffToggle = document.getElementById('diff-dropoff-toggle');
+                        if (diffToggle) {
+                            diffToggle.addEventListener('change', function() {
+                                if (this.checked) {
+                                    dMarker.setMap(gMap);
+                                } else {
+                                    dMarker.setMap(null);
+                                }
+                            });
+                        }
+
+                        // Map click
+                        gMap.addListener('click', (e) => {
+                            const diffChecked = diffToggle && diffToggle.checked;
+                            if (!diffChecked || !window.settingDropoff) {
+                                pMarker.setPosition(e.latLng);
+                                reverseGeocode(e.latLng, 'id_pickup_location');
+                                if (diffChecked) window.settingDropoff = true;
+                            } else {
+                                dMarker.setPosition(e.latLng);
+                                reverseGeocode(e.latLng, 'id_dropoff_location');
+                                window.settingDropoff = false;
+                            }
+                        });
+
+                        // Autocomplete on location inputs
+                        if (google.maps.places) {
+                            const pInput = document.getElementById('id_pickup_location');
+                            if (pInput) {
+                                const pAuto = new google.maps.places.Autocomplete(pInput, { componentRestrictions: { country: 'in' } });
+                                pAuto.addListener('place_changed', () => {
+                                    const place = pAuto.getPlace();
+                                    if (place.geometry && place.geometry.location) {
+                                        gMap.setCenter(place.geometry.location);
+                                        pMarker.setPosition(place.geometry.location);
+                                    }
+                                });
+                            }
+                        }
+
+                    } catch (err) {
+                        console.error("Google Maps init exception:", err);
+                        initLeafletMap();
+                    }
+                };
+
+                document.head.appendChild(gScript);
+            } else {
+                initLeafletMap();
             }
         });
     </script>

@@ -78,6 +78,7 @@ def shared_layout_context(request):
         'active_tab': active_tab,
         'hide_bottom_nav': hide_bottom_nav,
         'vapid_public_key': getattr(settings, 'VAPID_PUBLIC_KEY', ''),
+        'google_maps_api_key': getattr(settings, 'GOOGLE_MAPS_API_KEY', ''),
     }
 
 def vapid_key_processor(request):
