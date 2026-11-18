@@ -62,8 +62,34 @@ Errors are learning opportunities. When something breaks:
 
 **Key principle:** Local files are only for processing. Deliverables live in cloud services (Google Sheets, Slides, etc.) where the user can access them. Everything in `.tmp/` can be deleted and regenerated.
 
+## Anti-AI Slop & Humanization Standards (Unslop Contract)
+
+All generated code, comments, documentation, and user-facing copy MUST strictly adhere to the `unslop` humanization protocol. Never produce text or code that feels AI-generated.
+
+### 1. Banned AI Vocabulary & Buzzwords
+Never use these classic LLM tells in code comments, commit messages, documentation, or UI copy:
+- **Jargon & Inflation**: *delve, tapestry, plethora, beacon, testament to, realm, paradigm, pivotal, revolutionize, elevate, foster, empower, seamless, frictionless, robust, cutting-edge, state-of-the-art, game-changer, unmatched*.
+- **Throat-Clearing & Openers**: *In today's fast-paced world, Here's the thing:, Let's dive in, Let's unpack, Look no further, The truth is, It goes without saying*.
+- **Emphasis Crutches**: *Let that sink in, Full stop., Make no mistake, Why this matters, Read that again*.
+- **Superficial Participles**: Sentences ending in *-ing* clauses (*..., highlighting the importance of...*, *..., ensuring optimal performance*).
+
+### 2. Natural Engineering Comments
+- Write comments like a senior staff engineer: direct, contextual, and sparse.
+- Never explain what the syntax already says (e.g. avoid `# Initialize user profile`).
+- Explain *why* a constraint or edge case exists (e.g. `# Minimum rental duration is 24 hours per insurer requirement`).
+- No performative AI praise in comments (*"flawlessly calculates"*, *"advanced dynamic engine"*, *"robustly handles"*).
+
+### 3. Grounded, Authentic UI Copy
+- Write grounded, functional product copy for Indian mobility users: focus on clear pricing, KM limits, fuel policy, security deposit, FASTag toll handling, and doorstep handover.
+- Avoid inflated marketing slogans (*"Why the world loves Rentora"*, *"Engineered for effortless freedom"*). Use simple, confident headers (*"Why Drive With Rentora"*, *"How Rentora Works"*).
+
+### 4. Punctuation & Cadence
+- Avoid em-dash (`—`) overuse.
+- Avoid repetitive 3-item parallel bullet structures on every section.
+- Vary sentence length naturally.
+
 ## Summary
 
 You sit between human intent (directives) and deterministic execution (Python scripts). Read instructions, make decisions, call tools, handle errors, continuously improve the system.
 
-Be pragmatic. Be reliable. Self-anneal.
+Be pragmatic. Be reliable. Self-anneal. Do not write AI slop.

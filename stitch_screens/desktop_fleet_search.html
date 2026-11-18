@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Rentora Mobility | Odisha Luxury Self-Drive Fleet</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-error": "#ffffff",
+            "on-primary-fixed": "#1b1b1f",
+            "surface-container-lowest": "#ffffff",
+            "on-primary": "#ffffff",
+            "tertiary": "#000000",
+            "secondary-container": "#fdbf13",
+            "on-background": "#1a1c1c",
+            "error-container": "#ffdad6",
+            "tertiary-fixed": "#e2e2e7",
+            "secondary": "#795900",
+            "on-surface-variant": "#46464b",
+            "primary-fixed": "#e3e2e6",
+            "surface-variant": "#e2e2e2",
+            "on-surface": "#1a1c1c",
+            "surface-container-highest": "#e2e2e2",
+            "tertiary-container": "#1a1c20",
+            "on-tertiary-fixed-variant": "#45474b",
+            "secondary-fixed-dim": "#fabd0d",
+            "surface-tint": "#5e5e62",
+            "inverse-primary": "#c7c6ca",
+            "inverse-on-surface": "#f0f1f1",
+            "surface-container-high": "#e8e8e8",
+            "error": "#ba1a1a",
+            "outline": "#76777b",
+            "primary": "#000000",
+            "on-tertiary-container": "#828489",
+            "on-secondary-container": "#6c5000",
+            "inverse-surface": "#2f3131",
+            "on-tertiary": "#ffffff",
+            "surface-bright": "#f9f9f9",
+            "outline-variant": "#c7c6cb",
+            "primary-container": "#1b1b1f",
+            "surface-container-low": "#f3f3f3",
+            "surface-dim": "#dadada",
+            "surface-container": "#eeeeee",
+            "on-primary-container": "#848387",
+            "on-secondary-fixed": "#261a00",
+            "on-secondary-fixed-variant": "#5b4300",
+            "background": "#f9f9f9",
+            "on-tertiary-fixed": "#1a1c20",
+            "on-error-container": "#93000a",
+            "primary-fixed-dim": "#c7c6ca",
+            "tertiary-fixed-dim": "#c6c6cb",
+            "secondary-fixed": "#ffdf9f",
+            "on-secondary": "#ffffff",
+            "surface": "#f9f9f9",
+            "on-primary-fixed-variant": "#46464a"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter-sm": "0.75rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "gutter": "1rem",
+            "margin-sm": "0.75rem",
+            "space-xs": "0.25rem",
+            "margin": "1rem",
+            "margin-lg": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "gutter-lg": "1.25rem"
+          },
+          "fontFamily": {
+            "headline-xl": ["Plus Jakarta Sans", "sans-serif"],
+            "label-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "label-sm": ["Plus Jakarta Sans", "sans-serif"],
+            "body-md": ["Plus Jakarta Sans", "sans-serif"],
+            "price-display": ["Plus Jakarta Sans", "sans-serif"],
+            "headline-md": ["Plus Jakarta Sans", "sans-serif"],
+            "headline-sm": ["Plus Jakarta Sans", "sans-serif"],
+            "label-md": ["Plus Jakarta Sans", "sans-serif"],
+            "body-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "headline-xl-mobile": ["Plus Jakarta Sans", "sans-serif"],
+            "headline-lg": ["Plus Jakarta Sans", "sans-serif"],
+            "body-sm": ["Plus Jakarta Sans", "sans-serif"]
+          },
+          "fontSize": {
+            "headline-xl": ["36px", { lineHeight: "44px", letterSpacing: "-0.03em", fontWeight: "800" }],
+            "label-lg": ["14px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "600" }],
+            "label-sm": ["10px", { lineHeight: "14px", letterSpacing: "0.06em", fontWeight: "700" }],
+            "body-md": ["14px", { lineHeight: "20px", letterSpacing: "0em", fontWeight: "400" }],
+            "price-display": ["22px", { lineHeight: "28px", letterSpacing: "-0.02em", fontWeight: "800" }],
+            "headline-md": ["20px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "700" }],
+            "headline-sm": ["18px", { lineHeight: "24px", letterSpacing: "-0.01em", fontWeight: "600" }],
+            "label-md": ["12px", { lineHeight: "16px", letterSpacing: "0.02em", fontWeight: "600" }],
+            "body-lg": ["16px", { lineHeight: "24px", letterSpacing: "0em", fontWeight: "400" }],
+            "headline-xl-mobile": ["28px", { lineHeight: "36px", letterSpacing: "-0.02em", fontWeight: "800" }],
+            "headline-lg": ["24px", { lineHeight: "32px", letterSpacing: "-0.02em", fontWeight: "700" }],
+            "body-sm": ["12px", { lineHeight: "18px", letterSpacing: "0.01em", fontWeight: "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      line-height: 1;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 5px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #c7c6cb;
+      border-radius: 4px;
+    }
+    .custom-range-slider {
+      accent-color: #000000;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md antialiased selection:bg-secondary-container selection:text-primary">
+<!-- ================= TOP APP BAR / BRAND HEADER ================= -->
+<header class="w-full bg-surface-container-lowest border-b border-outline-variant shadow-sm sticky top-0 z-50">
+<div class="w-full px-6 lg:px-12 flex items-center justify-between h-20 max-w-7xl mx-auto">
+<!-- Brand & Hub Selector -->
+<div class="flex items-center space-x-6">
+<a class="flex items-center space-x-2 group" href="#">
+<div class="w-9 h-9 bg-primary text-secondary-container rounded-lg flex items-center justify-center font-headline-md tracking-tighter">
+<span class="material-symbols-outlined text-secondary-container text-xl" data-icon="directions_car">directions_car</span>
+</div>
+<div class="flex flex-col">
+<div class="text-headline-md font-headline-md tracking-tight font-extrabold text-primary flex items-center gap-1.5">
+<span>Rentora</span>
+<span class="text-label-sm font-label-sm bg-secondary-container text-on-secondary-container px-1.5 py-0.5 rounded tracking-widest uppercase">Odisha Hub</span>
+</div>
+<span class="text-body-sm text-on-surface-variant font-medium tracking-tight">Executive Mobility</span>
+</div>
+</a>
+<!-- Vertical Divider -->
+<div class="hidden xl:block h-7 w-[1px] bg-outline-variant"></div>
+<!-- Odisha City Selector Dropdown -->
+<div class="relative hidden lg:block">
+<button class="flex items-center space-x-2 bg-surface-container-low hover:bg-surface-container border border-outline-variant rounded-full px-4 py-2 text-label-md font-label-md text-on-surface transition-all" id="cityDropdownBtn">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="location_on" data-weight="fill" style="font-variation-settings: 'FILL' 1;">location_on</span>
+<span class="font-bold text-primary">Bhubaneswar Hub</span>
+<span class="text-on-surface-variant text-body-sm">(Janpath / BBI Airport)</span>
+<span class="material-symbols-outlined text-on-surface-variant text-base" data-icon="expand_more">expand_more</span>
+</button>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="hidden md:flex items-center space-x-7">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 text-label-lg font-label-lg transition-colors" href="#">Fleet</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors text-label-lg font-label-lg" href="#">Bhubaneswar Hubs</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors text-label-lg font-label-lg" href="#">Tariffs</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors text-label-lg font-label-lg flex items-center gap-1" href="#">
+<span>Keyless Go</span>
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors text-label-lg font-label-lg" href="#">Support</a>
+</nav>
+<!-- Trailing Action Cluster & User Profile -->
+<div class="flex items-center space-x-4">
+<!-- Search Quick Icon -->
+<button class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors" title="Search Fleet">
+<span class="material-symbols-outlined text-xl" data-icon="search">search</span>
+</button>
+<!-- Notification Bell -->
+<button class="relative w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors" title="Notifications">
+<span class="material-symbols-outlined text-xl" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full ring-2 ring-surface-container-lowest"></span>
+</button>
+<!-- User Profile Pill -->
+<div class="hidden sm:flex items-center space-x-3 pl-2 border-l border-outline-variant">
+<div class="flex flex-col text-right">
+<div class="flex items-center gap-1 justify-end">
+<span class="text-label-md font-label-md text-primary font-bold">Abhishek P.</span>
+<span class="text-label-sm font-label-sm text-secondary bg-secondary-fixed px-1.5 py-0.5 rounded-full uppercase">Tier 1</span>
+</div>
+<span class="text-body-sm text-on-surface-variant">₹2,450 Rentora Cash</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold text-label-lg ring-2 ring-secondary-container">
+            AP
+          </div>
+</div>
+<!-- Manage Booking CTA (Immutable JSON anchor) -->
+<button class="bg-primary hover:bg-primary-container text-on-primary px-4 py-2.5 rounded-full text-label-md font-label-md transition-all shadow-sm active:scale-95 hidden xl:inline-flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-base" data-icon="manage_accounts">manage_accounts</span>
+<span>Manage Booking</span>
+</button>
+</div>
+</div>
+</header>
+<!-- ================= SUB-HEADER: TIMING & LOCATION DOCK ================= -->
+<section class="bg-surface-container-lowest border-b border-outline-variant py-4 px-6 lg:px-12 sticky top-20 z-40 shadow-[0_4px_16px_-4px_rgba(0,0,0,0.03)]">
+<div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-4">
+<!-- Pick-up & Drop Summary -->
+<div class="flex flex-wrap items-center gap-3 md:gap-6 w-full lg:w-auto">
+<div class="flex items-center space-x-3 bg-surface-container-low px-4 py-2.5 rounded-xl border border-outline-variant">
+<div class="w-8 h-8 rounded-lg bg-surface-container-lowest flex items-center justify-center shadow-xs">
+<span class="material-symbols-outlined text-primary text-base" data-icon="flight_takeoff">flight_takeoff</span>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Pickup Hub</div>
+<div class="text-label-md font-label-md text-primary font-bold flex items-center gap-1.5">
+<span>16 Nov, 10:00 AM</span>
+<span class="text-on-surface-variant font-normal">• BBI Airport Hub</span>
+</div>
+</div>
+</div>
+<div class="hidden sm:flex text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</div>
+<div class="flex items-center space-x-3 bg-surface-container-low px-4 py-2.5 rounded-xl border border-outline-variant">
+<div class="w-8 h-8 rounded-lg bg-surface-container-lowest flex items-center justify-center shadow-xs">
+<span class="material-symbols-outlined text-primary text-base" data-icon="flight_land">flight_land</span>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Drop-off Hub</div>
+<div class="text-label-md font-label-md text-primary font-bold flex items-center gap-1.5">
+<span>18 Nov, 10:00 AM</span>
+<span class="text-on-surface-variant font-normal">• Same Location</span>
+</div>
+</div>
+</div>
+<!-- Duration Badge -->
+<div class="flex items-center space-x-2 bg-surface-container px-3 py-2 rounded-lg border border-outline-variant/60">
+<span class="material-symbols-outlined text-base text-primary" data-icon="schedule">schedule</span>
+<span class="text-label-md font-label-md font-bold text-primary">48 Hours</span>
+<span class="text-body-sm text-on-surface-variant">• Unlimited KMs</span>
+</div>
+</div>
+<!-- Guarantee Badges & Modify Search -->
+<div class="flex items-center justify-between w-full lg:w-auto gap-3">
+<div class="hidden xl:flex items-center gap-3">
+<div class="flex items-center space-x-1.5 text-label-sm font-label-sm bg-secondary-fixed/40 text-on-secondary-fixed border border-secondary-fixed-dim px-3 py-1.5 rounded-full">
+<span class="material-symbols-outlined text-sm" data-icon="verified_user" data-weight="fill" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span>₹0 Security Deposit Tier 1 Active</span>
+</div>
+<div class="flex items-center space-x-1.5 text-label-sm font-label-sm bg-surface-container text-on-surface px-3 py-1.5 rounded-full border border-outline-variant">
+<span class="material-symbols-outlined text-sm text-secondary-container" data-icon="bluetooth">bluetooth</span>
+<span>Instant Bluetooth Keyless Entry</span>
+</div>
+</div>
+<button class="bg-surface-container-lowest hover:bg-surface-container border-2 border-primary text-primary px-4 py-2 rounded-full text-label-md font-label-md flex items-center space-x-1.5 transition-all">
+<span class="material-symbols-outlined text-base" data-icon="tune">tune</span>
+<span>Modify Search</span>
+</button>
+</div>
+</div>
+</section>
+<!-- ================= MAIN 2-COLUMN CATALOG CANVAS ================= -->
+<main class="max-w-7xl mx-auto px-6 lg:px-12 py-8">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- ================= LEFT COLUMN: STICKY FILTERS (280px ~ col-span-3) ================= -->
+<aside class="lg:col-span-3 bg-surface-container-lowest border border-outline-variant/80 rounded-2xl p-5 shadow-sm sticky top-44 space-y-6">
+<!-- Filter Header -->
+<div class="flex items-center justify-between pb-4 border-b border-outline-variant/60">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="filter_list">filter_list</span>
+<h2 class="text-headline-sm font-headline-sm text-primary font-bold">Filters</h2>
+</div>
+<button class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors underline">Reset All</button>
+</div>
+<!-- Vehicle Category Filter -->
+<div class="space-y-3">
+<span class="text-label-sm font-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Vehicle Category</span>
+<div class="space-y-2">
+<label class="flex items-center justify-between p-2 rounded-lg bg-surface-container-low cursor-pointer border border-outline-variant">
+<span class="text-label-md font-label-md font-bold text-primary">All Vehicles</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant bg-surface-container-lowest px-2 py-0.5 rounded-full">18</span>
+</label>
+<label class="flex items-center justify-between p-2 rounded-lg hover:bg-surface-container-low cursor-pointer transition-colors">
+<div class="flex items-center space-x-2">
+<input checked="" class="w-4 h-4 rounded text-primary focus:ring-0 border-outline accent-black" type="checkbox"/>
+<span class="text-body-md font-medium text-primary">SUV &amp; 4x4</span>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant">8</span>
+</label>
+<label class="flex items-center justify-between p-2 rounded-lg hover:bg-surface-container-low cursor-pointer transition-colors">
+<div class="flex items-center space-x-2">
+<input class="w-4 h-4 rounded text-primary focus:ring-0 border-outline accent-black" type="checkbox"/>
+<span class="text-body-md font-medium text-on-surface">Premium Sedan</span>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant">5</span>
+</label>
+<label class="flex items-center justify-between p-2 rounded-lg hover:bg-surface-container-low cursor-pointer transition-colors">
+<div class="flex items-center space-x-2">
+<input class="w-4 h-4 rounded text-primary focus:ring-0 border-outline accent-black" type="checkbox"/>
+<span class="text-body-md font-medium text-on-surface">EV Smart Fleet</span>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant">3</span>
+</label>
+<label class="flex items-center justify-between p-2 rounded-lg hover:bg-surface-container-low cursor-pointer transition-colors">
+<div class="flex items-center space-x-2">
+<input class="w-4 h-4 rounded text-primary focus:ring-0 border-outline accent-black" type="checkbox"/>
+<span class="text-body-md font-medium text-on-surface">Hatchback</span>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant">2</span>
+</label>
+</div>
+</div>
+<!-- Transmission -->
+<div class="space-y-3 pt-3 border-t border-outline-variant/60">
+<span class="text-label-sm font-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Transmission</span>
+<div class="grid grid-cols-2 gap-2">
+<button class="py-2 px-3 rounded-lg border-2 border-primary bg-primary text-on-primary text-label-md font-label-md font-bold text-center">
+              Automatic (12)
+            </button>
+<button class="py-2 px-3 rounded-lg border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-low text-on-surface text-label-md font-label-md text-center transition-colors">
+              Manual (6)
+            </button>
+</div>
+</div>
+<!-- Price Range Slider -->
+<div class="space-y-3 pt-3 border-t border-outline-variant/60">
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Price / 24 Hours</span>
+<span class="text-label-md font-label-md font-bold text-primary">₹2,500 - ₹5,500</span>
+</div>
+<input class="w-full custom-range-slider h-1.5 bg-surface-container rounded-lg appearance-none cursor-pointer" max="7500" min="1490" type="range" value="4500"/>
+<div class="flex justify-between text-body-sm text-on-surface-variant">
+<span>₹1,490/day</span>
+<span>₹7,500/day</span>
+</div>
+</div>
+<!-- Fuel Type -->
+<div class="space-y-2.5 pt-3 border-t border-outline-variant/60">
+<span class="text-label-sm font-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Fuel Type</span>
+<div class="space-y-1.5">
+<label class="flex items-center justify-between text-body-md text-on-surface cursor-pointer">
+<span class="flex items-center gap-2">
+<input checked="" class="rounded border-outline accent-black" type="checkbox"/> Diesel
+              </span>
+<span class="text-body-sm text-on-surface-variant">9</span>
+</label>
+<label class="flex items-center justify-between text-body-md text-on-surface cursor-pointer">
+<span class="flex items-center gap-2">
+<input checked="" class="rounded border-outline accent-black" type="checkbox"/> Petrol
+              </span>
+<span class="text-body-sm text-on-surface-variant">6</span>
+</label>
+<label class="flex items-center justify-between text-body-md text-on-surface cursor-pointer">
+<span class="flex items-center gap-2">
+<input checked="" class="rounded border-outline accent-black" type="checkbox"/> Electric (EV)
+              </span>
+<span class="text-body-sm text-on-surface-variant">3</span>
+</label>
+</div>
+</div>
+<!-- Seating Capacity -->
+<div class="space-y-2.5 pt-3 border-t border-outline-variant/60">
+<span class="text-label-sm font-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Seating Capacity</span>
+<div class="flex gap-2">
+<button class="flex-1 py-1.5 rounded-lg border border-primary bg-primary text-on-primary text-label-md font-label-md font-bold">
+              4-5 Seater
+            </button>
+<button class="flex-1 py-1.5 rounded-lg border border-outline-variant hover:bg-surface-container text-label-md font-label-md text-on-surface">
+              7-Seater
+            </button>
+</div>
+</div>
+<!-- Brand Filter -->
+<div class="space-y-2 pt-3 border-t border-outline-variant/60">
+<span class="text-label-sm font-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Car Maker</span>
+<div class="space-y-1.5 text-body-md text-on-surface">
+<label class="flex items-center justify-between cursor-pointer">
+<span class="flex items-center gap-2"><input checked="" class="rounded border-outline accent-black" type="checkbox"/> Mahindra</span>
+<span class="text-body-sm text-on-surface-variant">6</span>
+</label>
+<label class="flex items-center justify-between cursor-pointer">
+<span class="flex items-center gap-2"><input checked="" class="rounded border-outline accent-black" type="checkbox"/> Tata Motors</span>
+<span class="text-body-sm text-on-surface-variant">5</span>
+</label>
+<label class="flex items-center justify-between cursor-pointer">
+<span class="flex items-center gap-2"><input class="rounded border-outline accent-black" type="checkbox"/> Toyota</span>
+<span class="text-body-sm text-on-surface-variant">3</span>
+</label>
+<label class="flex items-center justify-between cursor-pointer">
+<span class="flex items-center gap-2"><input class="rounded border-outline accent-black" type="checkbox"/> Hyundai</span>
+<span class="text-body-sm text-on-surface-variant">2</span>
+</label>
+</div>
+</div>
+<!-- Perks & Policies -->
+<div class="space-y-2 pt-3 border-t border-outline-variant/60">
+<span class="text-label-sm font-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Included Perks</span>
+<div class="space-y-1.5 text-body-sm text-on-surface">
+<label class="flex items-center gap-2 cursor-pointer font-medium">
+<input checked="" class="rounded border-outline accent-black" type="checkbox"/> FASTag Pre-Activated
+            </label>
+<label class="flex items-center gap-2 cursor-pointer font-medium">
+<input checked="" class="rounded border-outline accent-black" type="checkbox"/> Zero Security Deposit
+            </label>
+<label class="flex items-center gap-2 cursor-pointer font-medium">
+<input class="rounded border-outline accent-black" type="checkbox"/> Hub-to-Doorstep Handover
+            </label>
+</div>
+</div>
+</aside>
+<!-- ================= RIGHT COLUMN: FLEET RESULTS & GRID (col-span-9) ================= -->
+<section class="lg:col-span-9 space-y-6">
+<!-- Results Header & Active Filter Pills -->
+<div class="bg-surface-container-lowest border border-outline-variant/70 rounded-2xl p-5 shadow-xs space-y-4">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<div class="flex items-center gap-2.5">
+<h1 class="text-headline-md font-headline-md text-primary font-extrabold tracking-tight">Available Self-Drive Fleet</h1>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-secondary-fixed/50 text-on-secondary-fixed font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container animate-pulse"></span>
+                  Bhubaneswar Live Hub
+                </span>
+</div>
+<p class="text-body-md text-on-surface-variant mt-0.5">Showing 18 executive vehicles ready for instant handover</p>
+</div>
+<!-- Sort By Control -->
+<div class="flex items-center space-x-2">
+<span class="text-body-sm text-on-surface-variant whitespace-nowrap">Sort by:</span>
+<select class="bg-surface-container-low text-on-surface text-label-md font-label-md font-semibold rounded-full border border-outline-variant py-2 pl-3 pr-8 focus:ring-1 focus:ring-primary">
+<option>Recommended for Odisha Highway</option>
+<option>Price: Low to High</option>
+<option>Price: High to Low</option>
+<option>Rating: 4.8+ Top Rated</option>
+</select>
+</div>
+</div>
+<!-- Active Filter Chips -->
+<div class="flex flex-wrap items-center gap-2 pt-2 border-t border-outline-variant/40">
+<span class="text-label-sm font-label-sm text-on-surface-variant font-bold uppercase mr-1">Active:</span>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-label-sm font-label-sm bg-primary text-on-primary font-medium">
+              SUV &amp; 4x4
+              <button class="hover:text-secondary-container"><span class="material-symbols-outlined text-sm" data-icon="close">close</span></button>
+</span>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-label-sm font-label-sm bg-primary text-on-primary font-medium">
+              Automatic Transmission
+              <button class="hover:text-secondary-container"><span class="material-symbols-outlined text-sm" data-icon="close">close</span></button>
+</span>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-label-sm font-label-sm bg-primary text-on-primary font-medium">
+              Unlimited Kilometres
+              <button class="hover:text-secondary-container"><span class="material-symbols-outlined text-sm" data-icon="close">close</span></button>
+</span>
+<button class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary underline ml-2">Clear all filters</button>
+</div>
+</div>
+<!-- Smart Fallback Recommendation Banner -->
+<div class="bg-gradient-to-r from-surface-container-lowest via-surface-bright to-surface-container-lowest border border-secondary-container/80 rounded-2xl p-4 flex items-center justify-between gap-4 shadow-xs">
+<div class="flex items-center space-x-3.5">
+<div class="w-10 h-10 rounded-xl bg-secondary-fixed flex items-center justify-center flex-shrink-0 text-on-secondary-fixed">
+<span class="material-symbols-outlined text-2xl" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div>
+<div class="text-label-md font-label-md font-bold text-primary">Express BBI Airport Handover Match</div>
+<div class="text-body-sm text-on-surface-variant">Looking for rugged terrain capability? 3 matched 4x4 SUVs are stationed at the terminal parking with zero delay.</div>
+</div>
+</div>
+<button class="hidden sm:inline-flex items-center space-x-1 px-3 py-1.5 bg-primary text-on-primary hover:bg-primary-container rounded-full text-label-sm font-label-sm whitespace-nowrap transition-all">
+<span>View 3 Fast Picks</span>
+<span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<!-- ================= 3-COLUMN CAR CARDS GRID ================= -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+<!-- VEHICLE CARD 1: Mahindra Thar 4x4 (Attached User Image 1) -->
+<article class="bg-surface-container-lowest rounded-2xl border border-outline-variant/80 hover:border-primary/50 transition-all duration-300 shadow-[0_4px_16px_-2px_rgba(18,19,22,0.04)] hover:shadow-[0_10px_24px_-4px_rgba(18,19,22,0.08)] flex flex-col overflow-hidden group">
+<!-- Card Visual Banner -->
+<div class="relative h-48 w-full bg-surface-container-low overflow-hidden">
+<img alt="Mahindra Thar 4x4 in Odisha mountain pass" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida/ALJJyrCU2owxRQfMqF25eKEY7yrLPFfos_wmb6P2ZISVsjK9xtZ-9nTqMGqlX-z8nLlgGYDrws-MUFxZlmM_v7jLgx47CTKDIUh6Sp7HP2pRrMjaad8AksnrwrvBbyjyhzTErvT3Z0wqh8fQW8KLhDD3GMZLw59rdLujFlC-IFPr1g8VG2Ws1HHowMimLFDORtrIwG40Mi_5sUYuQYdxBmCYdsVFfYkWLuT6LN4xh4bbMGqS9mYVhGty_-ew43c"/>
+<!-- Badges Container -->
+<div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
+<span class="px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-primary text-secondary-container tracking-wider font-extrabold uppercase">TOP ADVENTURE</span>
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-surface-container-lowest/90 backdrop-blur-md text-primary font-bold uppercase">FASTAG READY</span>
+</div>
+<!-- Rating Badge -->
+<div class="absolute bottom-3 right-3 bg-surface-container-lowest/95 backdrop-blur-md px-2.5 py-1 rounded-full border border-outline-variant/50 flex items-center space-x-1">
+<span class="material-symbols-outlined text-secondary-container text-sm" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-label-sm font-bold text-primary">4.9</span>
+<span class="text-[10px] text-on-surface-variant font-medium">(240+ trips)</span>
+</div>
+</div>
+<!-- Card Content Body -->
+<div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+<div>
+<div class="text-label-sm font-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Mahindra Fleet</div>
+<h3 class="text-headline-sm font-headline-sm font-bold text-primary tracking-tight group-hover:text-secondary transition-colors">Thar 4x4 LX Hardtop</h3>
+<div class="text-body-sm text-on-surface-variant mt-0.5">Bhubaneswar Hub • Puri Marine Drive Ready</div>
+</div>
+<!-- Specs Row -->
+<div class="grid grid-cols-3 gap-2 py-2.5 px-3 bg-surface-container-low/70 rounded-xl text-center border border-outline-variant/40">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-base text-primary" data-icon="auto_transmission">auto_transmission</span>
+<span class="text-label-sm font-label-sm font-bold text-primary mt-1">Diesel AT</span>
+<span class="text-[10px] text-on-surface-variant">4x4 Low</span>
+</div>
+<div class="flex flex-col items-center border-x border-outline-variant/60">
+<span class="material-symbols-outlined text-base text-primary" data-icon="airline_seat_recline_normal">airline_seat_recline_normal</span>
+<span class="text-label-sm font-label-sm font-bold text-primary mt-1">4 Seats</span>
+<span class="text-[10px] text-on-surface-variant">Roll Cage</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-base text-primary" data-icon="local_gas_station">local_gas_station</span>
+<span class="text-label-sm font-label-sm font-bold text-primary mt-1">15.2 km/l</span>
+<span class="text-[10px] text-on-surface-variant">Range 650km</span>
+</div>
+</div>
+<!-- Price Footer & Action -->
+<div class="pt-3 border-t border-outline-variant/50 flex items-center justify-between">
+<div>
+<div class="flex items-baseline space-x-1">
+<span class="text-headline-sm font-headline-sm font-extrabold text-primary">₹2,899</span>
+<span class="text-body-sm text-on-surface-variant">/day</span>
+</div>
+<div class="text-[11px] text-on-surface-variant">₹179/hr base • ₹0 Deposit</div>
+</div>
+<button class="bg-secondary-container hover:bg-secondary-fixed-dim text-primary px-5 py-2.5 rounded-full text-label-md font-label-md font-bold flex items-center space-x-1 shadow-sm active:scale-95 transition-all">
+<span>Book Now</span>
+<span class="material-symbols-outlined text-base" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+<!-- VEHICLE CARD 2: Tata Nexon EV Max (Attached User Image 2) -->
+<article class="bg-surface-container-lowest rounded-2xl border border-outline-variant/80 hover:border-primary/50 transition-all duration-300 shadow-[0_4px_16px_-2px_rgba(18,19,22,0.04)] hover:shadow-[0_10px_24px_-4px_rgba(18,19,22,0.08)] flex flex-col overflow-hidden group">
+<!-- Card Visual Banner -->
+<div class="relative h-48 w-full bg-surface-container-low overflow-hidden">
+<img alt="Tata Nexon EV cruising on smooth express highway" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida/ALJJyrAnotY2wfrersGMUEtVRnd--d3mNrrgTTF5unJpxFBsVQqiE_025PaSzYSMsmZTj_eyujTrm78xk65rkyGP0BhJVIHX7xJ5lpyVwJeG5Ha4xPOz_iW-rAR6ARJRkAGGs7RJdS0bLy62WA9wpJU4GylXMpajDm7yYUQQk_NqLMrC7RVWu7lcZg-hmkFhD0lxXP1nd0I7KTRZ36a33vp2v1BCrN0HcELgjVdyBmgvSq4bzU-tLQOPQw9Q2Q"/>
+<!-- Badges Container -->
+<div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
+<span class="px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-primary text-on-primary tracking-wider font-extrabold uppercase">ZERO EMISSION</span>
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-surface-container-lowest/90 backdrop-blur-md text-primary font-bold uppercase">FAST CHARGING</span>
+</div>
+<!-- Rating Badge -->
+<div class="absolute bottom-3 right-3 bg-surface-container-lowest/95 backdrop-blur-md px-2.5 py-1 rounded-full border border-outline-variant/50 flex items-center space-x-1">
+<span class="material-symbols-outlined text-secondary-container text-sm" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-label-sm font-bold text-primary">4.88</span>
+<span class="text-[10px] text-on-surface-variant font-medium">(180+ trips)</span>
+</div>
+</div>
+<!-- Card Content Body -->
+<div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+<div>
+<div class="text-label-sm font-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Tata Smart EV</div>
+<h3 class="text-headline-sm font-headline-sm font-bold text-primary tracking-tight group-hover:text-secondary transition-colors">Nexon EV Max Lux</h3>
+<div class="text-body-sm text-on-surface-variant mt-0.5">Free DC Fast Charging at Cuttack &amp; Puri Hubs</div>
+</div>
+<!-- Specs Row -->
+<div class="grid grid-cols-3 gap-2 py-2.5 px-3 bg-surface-container-low/70 rounded-xl text-center border border-outline-variant/40">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-base text-primary" data-icon="bolt">bolt</span>
+<span class="text-label-sm font-label-sm font-bold text-primary mt-1">437 km</span>
+<span class="text-[10px] text-on-surface-variant">ARAI Range</span>
+</div>
+<div class="flex flex-col items-center border-x border-outline-variant/60">
+<span class="material-symbols-outlined text-base text-primary" data-icon="airline_seat_recline_normal">airline_seat_recline_normal</span>
+<span class="text-label-sm font-label-sm font-bold text-primary mt-1">5 Seats</span>
+<span class="text-[10px] text-on-surface-variant">Ventilated</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-base text-primary" data-icon="ev_station">ev_station</span>
+<span class="text-label-sm font-label-sm font-bold text-primary mt-1">50 kW DC</span>
+<span class="text-[10px] text-on-surface-variant">Keyless Go</span>
+</div>
+</div>
+<!-- Price Footer & Action -->
+<div class="pt-3 border-t border-outline-variant/50 flex items-center justify-between">
+<div>
+<div class="flex items-baseline space-x-1">
+<span class="text-headline-sm font-headline-sm font-extrabold text-primary">₹1,999</span>
+<span class="text-body-sm text-on-surface-variant">/day</span>
+</div>
+<div class="text-[11px] text-on-surface-variant">₹120/hr base • Unlimited KMs</div>
+</div>
+<button class="bg-secondary-container hover:bg-secondary-fixed-dim text-primary px-5 py-2.5 rounded-full text-label-md font-label-md font-bold flex items-center space-x-1 shadow-sm active:scale-95 transition-all">
+<span>Book Now</span>
+<span class="material-symbols-outlined text-base" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+<!-- VEHICLE CARD 3: Hyundai Creta SX (O) Turbo -->
+<article class="bg-surface-container-lowest rounded-2xl border border-outline-variant/80 hover:border-primary/50 transition-all duration-300 shadow-[0_4px_16px_-2px_rgba(18,19,22,0.04)] hover:shadow-[0_10px_24px_-4px_rgba(18,19,22,0.08)] flex flex-col overflow-hidden group">
+<div class="relative h-48 w-full bg-surface-container-low overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A modern luxury metallic white Hyundai Creta SUV parked cleanly under bright daylight on an executive paved road in Bhubaneswar. The vehicle showcases an assertive chrome front grille, aerodynamic curves, and polished multi-spoke alloy wheels against clean architectural lines. High-contrast executive light mood with crisp shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjc9RNbGHYrKwjC0MoBIMd7La4dDb21SiSfl7xLKFkyqPiGFCMleyX_UnTQeKpU8ggeNZDKO-LPL8n94UB135j0zuqT__nGBoHGVSdZQNMd_BKRxT5AsKY7H380ljo9TJpZlu_wwYbKEsaXJxM2rqv7zEMj0o9O2lQhPtQ0NSpLOmV5TKOdllvkeQ9RX2ujZ1uuOELopCorFVKRUYJdONKsXvgl07EudT2XHLpo_iKN0UB0MEvb4Gt98kUluNKhT6fV7qCa3nyIyc"/>
+<div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
+<span class="px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-primary text-on-primary tracking-wider font-extrabold uppercase">COMFORT SUV</span>
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-surface-container-lowest/90 backdrop-blur-md text-primary font-bold uppercase">PANORAMIC SUNROOF</span>
+</div>
+<div class="absolute bottom-3 right-3 bg-surface-container-lowest/95 backdrop-blur-md px-2.5 py-1 rounded-full border border-outline-variant/50 flex items-center space-x-1">
+<span class="material-symbols-outlined text-secondary-container text-sm" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-label-sm font-bold text-primary">4.92</span>
+<span class="text-[10px] text-on-surface-variant font-medium">(310+ trips)</span>
+</div>
+</div>
+<div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+<div>
+<div class="text-label-sm font-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Hyundai Comfort</div>
+<h3 class="text-headline-sm font-headline-sm font-bold text-primary tracking-tight group-hover:text-secondary transition-colors">Creta SX (O) Turbo AT</h3>
+<div class="text-body-sm text-on-surface-variant mt-0.5">Bhubaneswar Janpath Hub • Express Dropoff</div>
+</div>
+<div class="grid grid-cols-3 gap-2 py-2.5 px-3 bg-surface-container-low/70 rounded-xl text-center border border-outline-variant/40">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-base text-primary" data-icon="speed">speed</span>
+<span class="text-label-sm font-label-sm font-bold text-primary mt-1">Petrol DCT</span>
+<span class="text-[10px] text-on-surface-variant">160 PS</span>
+</div>
+<div class="flex flex-col items-center border-x border-outline-variant/60">
+<span class="material-symbols-outlined text-base text-primary" data-icon="airline_seat_recline_normal">airline_seat_recline_normal</span>
+<span class="text-label-sm font-label-sm font-bold text-primary mt-1">5 Seats</span>
+<span class="text-[10px] text-on-surface-variant">Ventilated</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-base text-primary" data-icon="surround_sound">surround_sound</span>
+<span class="text-label-sm font-label-sm font-bold text-primary mt-1">Bose Audio</span>
+<span class="text-[10px] text-on-surface-variant">8 Speakers</span>
+</div>
+</div>
+<div class="pt-3 border-t border-outline-variant/50 flex items-center justify-between">
+<div>
+<div class="flex items-baseline space-x-1">
+<span class="text-headline-sm font-headline-sm font-extrabold text-primary">₹2,590</span>
+<span class="text-body-sm text-on-surface-variant">/day</span>
+</div>
+<div class="text-[11px] text-on-surface-variant">₹155/hr base • Fastag Included</div>
+</div>
+<button class="bg-secondary-container hover:bg-secondary-fixed-dim text-primary px-5 py-2.5 rounded-full text-label-md font-label-md font-bold flex items-center space-x-1 shadow-sm active:scale-95 transition-all">
+<span>Book Now</span>
+<span class="material-symbols-outlined text-base" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+<!-- VEHICLE CARD 4: Mahindra XUV700 AX7 Luxury -->
+<article class="bg-surface-container-lowest rounded-2xl border border-outline-variant/80 hover:border-primary/50 transition-all duration-300 shadow-[0_4px_16px_-2px_rgba(18,19,22,0.04)] hover:shadow-[0_10px_24px_-4px_rgba(18,19,22,0.08)] flex flex-col overflow-hidden group">
+<div class="relative h-48 w-full bg-surface-container-low overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="An executive obsidian black Mahindra XUV700 luxury SUV parked outside an upscale corporate terminal in Bhubaneswar. Pristine gloss metallic paint reflecting bright morning daylight, striking twin LED daytime running lights, and panoramic skyroof glass visible. The vehicle exudes commanding sophistication and automotive prestige." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3AtGTXsdOw26mG1002ySSMREIhBzKkwSUkctojcHrV9fz-disxmg5c2L8QoZ2RG6Ju7XyoS6vkNfAdBEMBWsRy1uHoANZOIA1_jlOFpCll4rNYpV52TPxa8U2Wa9UsJSfKHAD0f-eWlSdlYSoqW3WisiMui5oUxzUaMMAha3QZTjRJTUESmOmRCG4D2a_guTKhi3eTz6DletP4c9Zi1DUpD_XW4nE1CTLpMsNTMhghyy7jlUjELijaXQvf8xHi4OwLt0MaaU5PNQ"/>
+<div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
+<span class="px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-primary text-secondary-container tracking-wider font-extrabold uppercase">EXECUTIVE 7-SEATER</span>
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-surface-container-lowest/90 backdrop-blur-md text-primary font-bold uppercase">ADAS LEVEL 2</span>
+</div>
+<div class="absolute bottom-3 right-3 bg-surface-container-lowest/95 backdrop-blur-md px-2.5 py-1 rounded-full border border-outline-variant/50 flex items-center space-x-1">
+<span class="material-symbols-outlined text-secondary-container text-sm" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-label-sm font-bold text-primary">4.95</span>
+<span class="text-[10px] text-on-surface-variant font-medium">(190+ trips)</span>
+</div>
+</div>
+<div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+<div>
+<div class="text-label-sm font-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Mahindra Flagship</div>
+<h3 class="text-headline-sm font-headline-sm font-bold text-primary tracking-tight group-hover:text-secondary transition-colors">XUV700 AX7 Luxury Pack</h3>
+<div class="text-body-sm text-on-surface-variant mt-0.5">Bhubaneswar Airport Hub • Bluetooth Keyless</div>
+</div>
+<div class="grid grid-cols-3 gap-2 py-2.5 px-3 bg-surface-container-low/70 rounded-xl text-center border border-outline-variant/40">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-base text-primary" data-icon="car_repair">car_repair</span>
+<span class="text-label-sm font-label-sm font-bold text-primary mt-1">Diesel AT</span>
+<span class="text-[10px] text-on-surface-variant">185 PS mHawk</span>
+</div>
+<div class="flex flex-col items-center border-x border-outline-variant/60">
+<span class="material-symbols-outlined text-base text-primary" data-icon="airline_seat_recline_normal">airline_seat_recline_normal</span>
+<span class="text-label-sm font-label-sm font-bold text-primary mt-1">7 Seats</span>
+<span class="text-[10px] text-on-surface-variant">Captain Seats</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-base text-primary" data-icon="speaker">speaker</span>
+<span class="text-label-sm font-label-sm font-bold text-primary mt-1">Sony 3D</span>
+<span class="text-[10px] text-on-surface-variant">Skyroof</span>
+</div>
+</div>
+<div class="pt-3 border-t border-outline-variant/50 flex items-center justify-between">
+<div>
+<div class="flex items-baseline space-x-1">
+<span class="text-headline-sm font-headline-sm font-extrabold text-primary">₹3,699</span>
+<span class="text-body-sm text-on-surface-variant">/day</span>
+</div>
+<div class="text-[11px] text-on-surface-variant">₹220/hr base • Full Insurance CDW</div>
+</div>
+<button class="bg-secondary-container hover:bg-secondary-fixed-dim text-primary px-5 py-2.5 rounded-full text-label-md font-label-md font-bold flex items-center space-x-1 shadow-sm active:scale-95 transition-all">
+<span>Book Now</span>
+<span class="material-symbols-outlined text-base" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+<!-- VEHICLE CARD 5: Toyota Fortuner 4x4 Legender -->
+<article class="bg-surface-container-lowest rounded-2xl border border-outline-variant/80 hover:border-primary/50 transition-all duration-300 shadow-[0_4px_16px_-2px_rgba(18,19,22,0.04)] hover:shadow-[0_10px_24px_-4px_rgba(18,19,22,0.08)] flex flex-col overflow-hidden group">
+<div class="relative h-48 w-full bg-surface-container-low overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A pristine pearl white Toyota Fortuner Legender 4x4 SUV positioned on a scenic highway turnout overlooking Odisha's Eastern Ghats mountains. The imposing split grille, blacked-out contrast roof, and aggressive sharp LED quad-headlamps capture bright natural daylight. The composition highlights rugged elegance and sheer highway authority." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZ89IwY60AvDRpbwN_4CAMx45a_XtnlxcQJ6K5UsuhSUQK5A1VyKf8u3q2fCOFzurUdSiQSMV5ug41u9TQd2K8WETsbkREQMB2R6bJnVAkHl0_kLf4FGpS7mrgQw1uqV9qXPgCGi4Mp-gPCB7MGXT-AbbRLLNg1e6lFrH6YgLlZ5cMcquwG7nKjktEsqknjawsU0wlauTiirDFLJE1OnehA0lFHOnV8MTa-TUT5yCFBQfijBfa1Gv2P-kMKtTqngVqtyHKD4_RBd8"/>
+<div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
+<span class="px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-primary text-secondary-container tracking-wider font-extrabold uppercase">PREMIUM TOUGH</span>
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-surface-container-lowest/90 backdrop-blur-md text-primary font-bold uppercase">4X4 LEGENDER</span>
+</div>
+<div class="absolute bottom-3 right-3 bg-surface-container-lowest/95 backdrop-blur-md px-2.5 py-1 rounded-full border border-outline-variant/50 flex items-center space-x-1">
+<span class="material-symbols-outlined text-secondary-container text-sm" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-label-sm font-bold text-primary">4.98</span>
+<span class="text-[10px] text-on-surface-variant font-medium">(340+ trips)</span>
+</div>
+</div>
+<div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+<div>
+<div class="text-label-sm font-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Toyota Luxury</div>
+<h3 class="text-headline-sm font-headline-sm font-bold text-primary tracking-tight group-hover:text-secondary transition-colors">Fortuner 4x4 Legender</h3>
+<div class="text-body-sm text-on-surface-variant mt-0.5">Bhubaneswar &amp; Cuttack Hub Delivery Available</div>
+</div>
+<div class="grid grid-cols-3 gap-2 py-2.5 px-3 bg-surface-container-low/70 rounded-xl text-center border border-outline-variant/40">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-base text-primary" data-icon="settings">settings</span>
+<span class="text-label-sm font-label-sm font-bold text-primary mt-1">2.8L AT</span>
+<span class="text-[10px] text-on-surface-variant">500 Nm Torque</span>
+</div>
+<div class="flex flex-col items-center border-x border-outline-variant/60">
+<span class="material-symbols-outlined text-base text-primary" data-icon="airline_seat_recline_normal">airline_seat_recline_normal</span>
+<span class="text-label-sm font-label-sm font-bold text-primary mt-1">7 Seats</span>
+<span class="text-[10px] text-on-surface-variant">Ventilated</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-base text-primary" data-icon="terrain">terrain</span>
+<span class="text-label-sm font-label-sm font-bold text-primary mt-1">4x4 Terrain</span>
+<span class="text-[10px] text-on-surface-variant">Differential Lock</span>
+</div>
+</div>
+<div class="pt-3 border-t border-outline-variant/50 flex items-center justify-between">
+<div>
+<div class="flex items-baseline space-x-1">
+<span class="text-headline-sm font-headline-sm font-extrabold text-primary">₹5,499</span>
+<span class="text-body-sm text-on-surface-variant">/day</span>
+</div>
+<div class="text-[11px] text-on-surface-variant">₹340/hr base • Unlimited KMs</div>
+</div>
+<button class="bg-secondary-container hover:bg-secondary-fixed-dim text-primary px-5 py-2.5 rounded-full text-label-md font-label-md font-bold flex items-center space-x-1 shadow-sm active:scale-95 transition-all">
+<span>Book Now</span>
+<span class="material-symbols-outlined text-base" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+<!-- VEHICLE CARD 6: Tata Harrier Fearless Plus Dark -->
+<article class="bg-surface-container-lowest rounded-2xl border border-outline-variant/80 hover:border-primary/50 transition-all duration-300 shadow-[0_4px_16px_-2px_rgba(18,19,22,0.04)] hover:shadow-[0_10px_24px_-4px_rgba(18,19,22,0.08)] flex flex-col overflow-hidden group">
+<div class="relative h-48 w-full bg-surface-container-low overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A sleek stealth matte dark black Tata Harrier SUV parked outside a contemporary luxury resort near Chilika Lake in Odisha. High key architectural morning sunlight accents the aggressive stance, connected LED lightbars, and piano-black exterior trim. The visual mood is executive, pristine, and meticulously maintained." src="https://lh3.googleusercontent.com/aida-public/AB6AXuANEiFYUQj5k5Iz-452w_44Xo_Srsxy2AHsny5A3umRHjg96Utrs2BPsIfCohZnDV_k-2n6HpwtfSJC_FWXJcIYsqsOzrYecQXQslCu_KwDaJFNfiIOwgk5HUfrcD4o3Pwy43aIz5km6JLtbXhiMsR7_KMOPbAaTGzMY7hBlN08Gjxc5JC6KxrCtI374snWM6l6U29gdYzPzTCtcXGUtMdUXfhf6UA4jnBCcWAvi6u852wiHY_OXBtg7dcgeRzFaf2WEW-jh1ypR5c"/>
+<div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
+<span class="px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-primary text-on-primary tracking-wider font-extrabold uppercase">DARK EDITION</span>
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-surface-container-lowest/90 backdrop-blur-md text-primary font-bold uppercase">HIGHWAY CRUISER</span>
+</div>
+<div class="absolute bottom-3 right-3 bg-surface-container-lowest/95 backdrop-blur-md px-2.5 py-1 rounded-full border border-outline-variant/50 flex items-center space-x-1">
+<span class="material-symbols-outlined text-secondary-container text-sm" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-label-sm font-bold text-primary">4.91</span>
+<span class="text-[10px] text-on-surface-variant font-medium">(150+ trips)</span>
+</div>
+</div>
+<div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+<div>
+<div class="text-label-sm font-label-sm uppercase tracking-wider text-on-surface-variant font-bold">Tata Executive</div>
+<h3 class="text-headline-sm font-headline-sm font-bold text-primary tracking-tight group-hover:text-secondary transition-colors">Harrier Fearless+ Dark</h3>
+<div class="text-body-sm text-on-surface-variant mt-0.5">BBI Airport Express Keyless Pick • 5-Star BNCAP</div>
+</div>
+<div class="grid grid-cols-3 gap-2 py-2.5 px-3 bg-surface-container-low/70 rounded-xl text-center border border-outline-variant/40">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-base text-primary" data-icon="tune">tune</span>
+<span class="text-label-sm font-label-sm font-bold text-primary mt-1">Diesel AT</span>
+<span class="text-[10px] text-on-surface-variant">170 PS Kryotec</span>
+</div>
+<div class="flex flex-col items-center border-x border-outline-variant/60">
+<span class="material-symbols-outlined text-base text-primary" data-icon="airline_seat_recline_normal">airline_seat_recline_normal</span>
+<span class="text-label-sm font-label-sm font-bold text-primary mt-1">5 Seats</span>
+<span class="text-[10px] text-on-surface-variant">JBL 10-Spk</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-base text-primary" data-icon="security">security</span>
+<span class="text-label-sm font-label-sm font-bold text-primary mt-1">7 Airbags</span>
+<span class="text-[10px] text-on-surface-variant">Gesture Gate</span>
+</div>
+</div>
+<div class="pt-3 border-t border-outline-variant/50 flex items-center justify-between">
+<div>
+<div class="flex items-baseline space-x-1">
+<span class="text-headline-sm font-headline-sm font-extrabold text-primary">₹3,199</span>
+<span class="text-body-sm text-on-surface-variant">/day</span>
+</div>
+<div class="text-[11px] text-on-surface-variant">₹195/hr base • ₹0 Security Deposit</div>
+</div>
+<button class="bg-secondary-container hover:bg-secondary-fixed-dim text-primary px-5 py-2.5 rounded-full text-label-md font-label-md font-bold flex items-center space-x-1 shadow-sm active:scale-95 transition-all">
+<span>Book Now</span>
+<span class="material-symbols-outlined text-base" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+</div>
+<!-- Pagination & Load More Hubs Fleet -->
+<div class="pt-6 pb-2 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-outline-variant/60">
+<div class="text-body-sm text-on-surface-variant">
+            Showing <span class="font-bold text-primary">6 of 18</span> available self-drive vehicles in Bhubaneswar
+          </div>
+<div class="flex items-center space-x-3">
+<button class="px-6 py-3 rounded-full border border-primary text-primary hover:bg-surface-container font-label-md font-label-md font-bold transition-all active:scale-95 flex items-center space-x-2 shadow-xs">
+<span class="material-symbols-outlined text-base" data-icon="autorenew">autorenew</span>
+<span>Load 12 More Odisha Fleet Vehicles</span>
+</button>
+</div>
+</div>
+<!-- Why Rentora Odisha Advantage Bento Strip -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/60 flex items-start space-x-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container-lowest flex items-center justify-center text-primary shadow-xs">
+<span class="material-symbols-outlined text-xl" data-icon="toll">toll</span>
+</div>
+<div>
+<div class="text-label-md font-label-md font-bold text-primary">Odisha FASTag Pre-Activated</div>
+<div class="text-body-sm text-on-surface-variant mt-0.5">Automated toll payment on NH-16 (Bhubaneswar-Cuttack-Puri Corridor) with zero toll stoppage.</div>
+</div>
+</div>
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/60 flex items-start space-x-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container-lowest flex items-center justify-center text-primary shadow-xs">
+<span class="material-symbols-outlined text-xl" data-icon="support_agent">support_agent</span>
+</div>
+<div>
+<div class="text-label-md font-label-md font-bold text-primary">24/7 Odisha Highway RSA</div>
+<div class="text-body-sm text-on-surface-variant mt-0.5">Quick mechanical response within 45 mins across Bhubaneswar, Puri Marine Drive, and Chilika.</div>
+</div>
+</div>
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/60 flex items-start space-x-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container-lowest flex items-center justify-center text-primary shadow-xs">
+<span class="material-symbols-outlined text-xl" data-icon="phonelink_lock">phonelink_lock</span>
+</div>
+<div>
+<div class="text-label-md font-label-md font-bold text-primary">Keyless Bluetooth Go</div>
+<div class="text-body-sm text-on-surface-variant mt-0.5">Unlock car doors directly from your Rentora mobile app upon arrival at BBI Airport terminal.</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- ================= FOOTER (IMMUTABLE BRAND COMPONENT) ================= -->
+<footer class="w-full bg-primary text-on-primary border-t border-primary-container">
+<div class="w-full px-6 lg:px-12 py-12 max-w-7xl mx-auto space-y-10">
+<!-- Top Section: Brand & Quick Hubs -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+<!-- Brand Bio -->
+<div class="lg:col-span-2 space-y-4">
+<div class="text-headline-lg font-headline-lg tracking-tight font-bold text-on-primary flex items-center space-x-2">
+<span>Rentora</span>
+<span class="text-label-sm font-label-sm bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded font-bold uppercase">Mobility India</span>
+</div>
+<p class="text-body-sm text-on-primary-container max-w-sm">
+            Odisha’s premier executive self-drive mobility network. Offering keyless access, 100% verified luxury fleet, and seamless transit across Bhubaneswar, Cuttack, Puri, and major state corridors.
+          </p>
+<div class="flex items-center space-x-4 pt-2">
+<div class="flex items-center space-x-2 text-label-md font-label-md text-on-primary font-semibold">
+<span class="material-symbols-outlined text-secondary-container" data-icon="phone_in_talk">phone_in_talk</span>
+<span>1800-419-RENTORA (Toll Free 24/7)</span>
+</div>
+</div>
+</div>
+<!-- Links Column 1: Fleet & Policy (Matching JSON links) -->
+<div class="space-y-3">
+<h4 class="text-label-lg font-label-lg font-bold text-on-primary">Fleet &amp; Tariffs</h4>
+<ul class="space-y-2 text-body-sm text-on-primary-container">
+<li><a class="hover:text-secondary-container transition-colors duration-150" href="#">Self-Drive Fleet</a></li>
+<li><a class="hover:text-secondary-container transition-colors duration-150" href="#">Odisha Hubs</a></li>
+<li><a class="hover:text-secondary-container transition-colors duration-150" href="#">Tariff &amp; Fuel Policy</a></li>
+<li><a class="hover:text-secondary-container transition-colors duration-150" href="#">Fastag Guidelines</a></li>
+</ul>
+</div>
+<!-- Links Column 2: Legal & Assurance -->
+<div class="space-y-3">
+<h4 class="text-label-lg font-label-lg font-bold text-on-primary">Assurance &amp; Legal</h4>
+<ul class="space-y-2 text-body-sm text-on-primary-container">
+<li><a class="hover:text-secondary-container transition-colors duration-150" href="#">Insurance &amp; CDW</a></li>
+<li><a class="hover:text-secondary-container transition-colors duration-150" href="#">Terms of Service</a></li>
+<li><a class="hover:text-secondary-container transition-colors duration-150" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-secondary-container transition-colors duration-150" href="#">Emergency Assistance</a></li>
+</ul>
+</div>
+<!-- Odisha Physical Hub Locations -->
+<div class="space-y-3">
+<h4 class="text-label-lg font-label-lg font-bold text-on-primary">Odisha Operations Hubs</h4>
+<ul class="space-y-2 text-body-sm text-on-primary-container">
+<li class="flex items-start gap-1.5">
+<span class="material-symbols-outlined text-secondary-container text-sm mt-0.5" data-icon="pin_drop">pin_drop</span>
+<span>Bhubaneswar Airport (BBI) Kiosk</span>
+</li>
+<li class="flex items-start gap-1.5">
+<span class="material-symbols-outlined text-secondary-container text-sm mt-0.5" data-icon="pin_drop">pin_drop</span>
+<span>Janpath Master Canteen Hub</span>
+</li>
+<li class="flex items-start gap-1.5">
+<span class="material-symbols-outlined text-secondary-container text-sm mt-0.5" data-icon="pin_drop">pin_drop</span>
+<span>Cuttack Link Road Station</span>
+</li>
+<li class="flex items-start gap-1.5">
+<span class="material-symbols-outlined text-secondary-container text-sm mt-0.5" data-icon="pin_drop">pin_drop</span>
+<span>Puri Marine Drive VIP Station</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Bottom Copyright & Compliance -->
+<div class="pt-8 border-t border-primary-container/80 flex flex-col sm:flex-row items-center justify-between text-body-sm text-on-primary-container gap-4">
+<div>
+          © 2025 Rentora Mobility India Pvt. Ltd. Odisha Operations Hub (Bhubaneswar • Cuttack • Puri). All rights reserved.
+        </div>
+<div class="flex items-center space-x-6 text-label-md font-label-md">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary-container text-sm" data-icon="verified">verified</span>
+            Biju Patnaik Airport Authorized Kiosk
+          </span>
+<span class="text-on-primary-container">•</span>
+<span>Security Deposit Tier 1 Verified</span>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

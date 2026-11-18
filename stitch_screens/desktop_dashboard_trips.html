@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Rentora | Odisha Mobility Hub &amp; Executive Dashboard</title>
+<!-- Plus Jakarta Sans Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-error": "#ffffff",
+            "on-tertiary-container": "#828489",
+            "secondary-container": "#fdbf13",
+            "primary": "#000000",
+            "on-secondary-fixed": "#261a00",
+            "surface-container-high": "#e8e8e8",
+            "inverse-on-surface": "#f0f1f1",
+            "on-background": "#1a1c1c",
+            "surface-container-lowest": "#ffffff",
+            "surface-container": "#eeeeee",
+            "on-tertiary-fixed-variant": "#45474b",
+            "on-tertiary": "#ffffff",
+            "on-error-container": "#93000a",
+            "tertiary": "#000000",
+            "on-primary-container": "#848387",
+            "surface-container-low": "#f3f3f3",
+            "on-primary-fixed-variant": "#46464a",
+            "tertiary-fixed-dim": "#c6c6cb",
+            "on-secondary": "#ffffff",
+            "on-tertiary-fixed": "#1a1c20",
+            "inverse-surface": "#2f3131",
+            "surface-dim": "#dadada",
+            "surface-bright": "#f9f9f9",
+            "on-secondary-fixed-variant": "#5b4300",
+            "on-surface": "#1a1c1c",
+            "background": "#f9f9f9",
+            "surface-tint": "#5e5e62",
+            "tertiary-container": "#1a1c20",
+            "error": "#ba1a1a",
+            "outline-variant": "#c7c6cb",
+            "primary-container": "#1b1b1f",
+            "primary-fixed-dim": "#c7c6ca",
+            "on-secondary-container": "#6c5000",
+            "error-container": "#ffdad6",
+            "tertiary-fixed": "#e2e2e7",
+            "surface": "#f9f9f9",
+            "surface-container-highest": "#e2e2e2",
+            "inverse-primary": "#c7c6ca",
+            "on-primary-fixed": "#1b1b1f",
+            "secondary-fixed-dim": "#fabd0d",
+            "primary-fixed": "#e3e2e6",
+            "surface-variant": "#e2e2e2",
+            "on-primary": "#ffffff",
+            "on-surface-variant": "#46464b",
+            "secondary-fixed": "#ffdf9f",
+            "secondary": "#795900",
+            "outline": "#76777b"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin-sm": "0.75rem",
+            "margin": "1rem",
+            "gutter-lg": "1.25rem",
+            "margin-lg": "1.5rem",
+            "space-md": "1rem",
+            "space-xl": "2rem",
+            "space-lg": "1.5rem",
+            "space-sm": "0.5rem",
+            "gutter-sm": "0.75rem",
+            "space-xs": "0.25rem",
+            "gutter": "1rem"
+          },
+          "fontFamily": {
+            "label-md": ["Plus Jakarta Sans"],
+            "price-display": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "headline-xl": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-xl-mobile": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "price-display": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "headline-xl-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-card-shadow {
+      box-shadow: 0 4px 16px -2px rgba(18, 19, 22, 0.04);
+      border: 1px solid rgba(18, 19, 22, 0.06);
+    }
+    .amber-glow {
+      box-shadow: 0 4px 14px 0 rgba(245, 184, 0, 0.35);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col font-body-md text-body-md selection:bg-secondary-container selection:text-primary">
+<!-- Top Executive Navigation Bar (Shared Component Anchor) -->
+<header class="bg-surface-container-lowest border-b border-outline-variant shadow-sm sticky top-0 z-50">
+<div class="w-full px-6 lg:px-12 flex items-center justify-between h-20 max-w-7xl mx-auto">
+<!-- Left: Brand & Hub Selector -->
+<div class="flex items-center gap-6">
+<a class="flex items-center gap-2 group" href="#">
+<span class="text-headline-md font-headline-md tracking-tight font-extrabold text-primary">Rentora</span>
+<span class="bg-primary-container text-on-primary font-label-sm text-label-sm px-2 py-0.5 rounded uppercase tracking-wider">ODISHA HUB</span>
+</a>
+<!-- Hub Location Selector -->
+<div class="hidden xl:flex items-center gap-2 bg-surface-container-low px-3.5 py-1.5 rounded-full border border-surface-container-high cursor-pointer hover:border-outline-variant transition-colors">
+<span class="material-symbols-outlined text-secondary-container text-lg" data-icon="location_on">location_on</span>
+<span class="font-label-md text-label-md text-on-surface">Bhubaneswar BBI Hub (Terminal 1)</span>
+<span class="material-symbols-outlined text-on-surface-variant text-base" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<!-- Center: Navigation Links -->
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors font-label-lg text-label-lg" href="#">Fleet</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-label-lg text-label-lg" href="#">Active Trips</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors font-label-lg text-label-lg" href="#">Wallet &amp; FASTag</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors font-label-lg text-label-lg" href="#">Keyless Go</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors font-label-lg text-label-lg" href="#">Support</a>
+</nav>
+<!-- Right: User & Actions -->
+<div class="flex items-center gap-3">
+<!-- FASTag Quick Balance Pill -->
+<div class="hidden sm:flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded-full border border-surface-container-high">
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Rentora Cash</span>
+<span class="font-label-md text-label-md text-primary font-bold">₹2,450</span>
+</div>
+<!-- Notification Icon -->
+<button aria-label="Notifications" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors relative">
+<span class="material-symbols-outlined text-xl" data-icon="notifications">notifications</span>
+<span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-error ring-2 ring-surface-container-lowest"></span>
+</button>
+<!-- User Profile Pill -->
+<div class="flex items-center gap-3 pl-2 sm:border-l border-surface-container-high cursor-pointer group">
+<div class="w-9 h-9 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold text-xs ring-2 ring-secondary-container/50">
+            AP
+          </div>
+<div class="hidden lg:block text-left">
+<div class="font-label-md text-label-md text-primary leading-tight flex items-center gap-1">
+              Abhishek Patnaik
+              <span class="material-symbols-outlined text-sm text-secondary-container" data-icon="verified" data-weight="fill" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<div class="font-label-sm text-label-sm text-on-primary-container">Tier 1 Elite</div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Body Content Canvas -->
+<main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-8">
+<!-- Executive User Header Profile & Metrics Hero Banner -->
+<div class="bg-surface-container-lowest rounded-xl custom-card-shadow p-6 mb-8 relative overflow-hidden">
+<!-- Background subtle gradient aura -->
+<div class="absolute -right-16 -top-16 w-64 h-64 bg-secondary-container/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-surface-container-high">
+<!-- Identity info -->
+<div class="flex items-start gap-4">
+<div class="w-16 h-16 rounded-2xl bg-primary-container text-on-primary flex items-center justify-center font-bold text-xl relative shadow-md">
+            AP
+            <div class="absolute -bottom-1 -right-1 bg-secondary-container text-on-secondary-fixed text-[10px] font-extrabold px-1.5 py-0.5 rounded-full border-2 border-surface-container-lowest flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[10px]" data-icon="stars" data-weight="fill" style="font-variation-settings: 'FILL' 1;">stars</span>
+              ELITE
+            </div>
+</div>
+<div>
+<div class="flex flex-wrap items-center gap-2">
+<h1 class="text-headline-lg font-headline-lg text-primary">Abhishek Patnaik</h1>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+<span class="material-symbols-outlined text-xs text-emerald-700" data-icon="shield" data-weight="fill" style="font-variation-settings: 'FILL' 1;">shield</span>
+                DigiLocker Verified
+              </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-low px-2 py-0.5 rounded">DL: OD-02-2019-0048291</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Member since Jan 2024 • Bhubaneswar Hub Priority Driver • Zero Security Deposit Access
+            </p>
+</div>
+</div>
+<!-- Action / Emergency contact quick trigger -->
+<div class="flex items-center gap-3">
+<button class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary text-primary hover:bg-surface-container-low transition-colors font-label-md text-label-md">
+<span class="material-symbols-outlined text-lg" data-icon="support_agent">support_agent</span>
+            Hub Support
+          </button>
+<button class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-secondary-container text-on-secondary-fixed font-label-md text-label-md font-bold amber-glow hover:bg-secondary-fixed transition-transform active:scale-95">
+<span class="material-symbols-outlined text-lg" data-icon="add_circle">add_circle</span>
+            Add Rentora Cash
+          </button>
+</div>
+</div>
+<!-- Quick executive metric pill widgets in a clean horizontal strip -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+<div class="p-3.5 rounded-xl bg-surface-container-low/70 border border-surface-container-high/80">
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Completed Trips</div>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-price-display text-price-display text-primary font-bold">12</span>
+<span class="font-label-sm text-label-sm text-emerald-600 font-medium">100% on-time</span>
+</div>
+</div>
+<div class="p-3.5 rounded-xl bg-surface-container-low/70 border border-surface-container-high/80">
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Odisha Distance</div>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-price-display text-price-display text-primary font-bold">4,820</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">KM</span>
+</div>
+</div>
+<div class="p-3.5 rounded-xl bg-surface-container-low/70 border border-surface-container-high/80">
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Safety Record</div>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-price-display text-price-display text-primary font-bold">0</span>
+<span class="font-label-sm text-label-sm text-emerald-700 font-semibold bg-emerald-50 px-1.5 py-0.2 rounded">Spotless</span>
+</div>
+</div>
+<div class="p-3.5 rounded-xl bg-surface-container-low/70 border border-surface-container-high/80 flex justify-between items-center">
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Rentora Balance</div>
+<div class="font-price-display text-price-display text-primary font-bold mt-1">₹2,450</div>
+</div>
+<a class="text-xs font-bold text-secondary hover:underline flex items-center gap-0.5" href="#">
+            History
+            <span class="material-symbols-outlined text-xs" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Sub-navigation tabs -->
+<div class="flex items-center gap-6 mt-6 border-b border-surface-container-high overflow-x-auto scrollbar-none pt-2">
+<button class="text-primary font-bold border-b-2 border-secondary-container pb-3 px-1 font-label-md text-label-md flex items-center gap-2 whitespace-nowrap">
+<span class="w-2 h-2 rounded-full bg-secondary-container animate-pulse"></span>
+          Active &amp; Upcoming Trips (1)
+        </button>
+<button class="text-on-surface-variant font-medium hover:text-primary pb-3 px-1 font-label-md text-label-md transition-colors whitespace-nowrap">
+          Trip History (11)
+        </button>
+<button class="text-on-surface-variant font-medium hover:text-primary pb-3 px-1 font-label-md text-label-md transition-colors whitespace-nowrap">
+          FASTag &amp; Toll Pass
+        </button>
+<button class="text-on-surface-variant font-medium hover:text-primary pb-3 px-1 font-label-md text-label-md transition-colors whitespace-nowrap">
+          KYC &amp; Documents
+        </button>
+<button class="text-on-surface-variant font-medium hover:text-primary pb-3 px-1 font-label-md text-label-md transition-colors whitespace-nowrap">
+          Wallet &amp; Invoices
+        </button>
+</div>
+</div>
+<!-- Main Content 12-Column Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Primary Column (8 Columns) -->
+<section class="lg:col-span-8 space-y-8">
+<!-- Active Trip Hero Card -->
+<article class="bg-surface-container-lowest rounded-xl custom-card-shadow overflow-hidden border border-outline-variant/30">
+<!-- Card Header & Status Bar -->
+<div class="px-6 py-4 bg-surface-container-low/80 border-b border-surface-container-high flex flex-wrap items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<span class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-600"></span>
+</span>
+<span class="font-label-md text-label-md font-bold text-on-surface">Trip in Progress</span>
+<span class="text-on-surface-variant">•</span>
+<span class="font-label-sm text-label-sm font-semibold text-secondary bg-secondary-fixed/50 px-2 py-0.5 rounded-full">18 hrs remaining</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Booking ID:</span>
+<span class="font-mono text-xs font-bold text-primary bg-surface-container px-2 py-1 rounded">#RT-BBI-9944</span>
+</div>
+</div>
+<!-- Vehicle Showcase Block -->
+<div class="p-6">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+<!-- Vehicle Photographic Asset -->
+<div class="md:col-span-6 overflow-hidden rounded-xl bg-surface-container-low relative group">
+<img alt="Active Mahindra Thar 4x4 self-drive rental vehicle" class="w-full h-64 md:h-72 object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida/ALJJyrCU2owxRQfMqF25eKEY7yrLPFfos_wmb6P2ZISVsjK9xtZ-9nTqMGqlX-z8nLlgGYDrws-MUFxZlmM_v7jLgx47CTKDIUh6Sp7HP2pRrMjaad8AksnrwrvBbyjyhzTErvT3Z0wqh8fQW8KLhDD3GMZLw59rdLujFlC-IFPr1g8VG2Ws1HHowMimLFDORtrIwG40Mi_5sUYuQYdxBmCYdsVFfYkWLuT6LN4xh4bbMGqS9mYVhGty_-ew43c"/>
+<div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
+<span class="bg-primary/80 backdrop-blur-md text-on-primary font-label-sm text-label-sm px-2.5 py-1 rounded uppercase tracking-wider font-bold">
+                    OD-02-AX-9944
+                  </span>
+<span class="bg-secondary-container text-on-secondary-fixed font-label-sm text-label-sm px-2.5 py-1 rounded uppercase tracking-wider font-bold">
+                    4x4 HARDTOP
+                  </span>
+</div>
+</div>
+<!-- Vehicle Spec & Rental Overview -->
+<div class="md:col-span-6 space-y-4">
+<div>
+<div class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-bold">Rentora Odisha Fleet • Bhubaneswar BBI Hub</div>
+<h2 class="text-headline-md font-headline-md text-primary mt-1">Mahindra Thar 4x4 LX</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">mStallion Turbo Diesel • Automatic 4WD • Coastal Ready Spec</p>
+</div>
+<!-- Itinerary Details -->
+<div class="bg-surface-container-low/60 rounded-xl p-4 border border-surface-container-high space-y-3">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-lg mt-0.5" data-icon="flight_takeoff">flight_takeoff</span>
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Pick-up Location &amp; Time</div>
+<div class="font-label-md text-label-md text-primary">BBI Airport Terminal 1 Hub • 14 Nov, 10:00 AM</div>
+</div>
+</div>
+<div class="w-full border-t border-surface-container-high"></div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-lg mt-0.5" data-icon="flight_land">flight_land</span>
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Drop-off Location &amp; Time</div>
+<div class="font-label-md text-label-md text-primary">BBI Airport Terminal 1 Hub • 16 Nov, 10:00 AM (48h)</div>
+</div>
+</div>
+<div class="w-full border-t border-surface-container-high"></div>
+<div class="flex items-center gap-2 pt-0.5">
+<span class="material-symbols-outlined text-secondary-container text-base" data-icon="explore">explore</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Authorized Route:</span>
+<span class="font-label-sm text-label-sm font-semibold text-primary">Coastal Highway &amp; Puri Marine Drive Corridor</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Live Vehicle Telemetry Bar -->
+<div class="mt-6 pt-6 border-t border-surface-container-high">
+<div class="flex items-center justify-between mb-3">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-bold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-base" data-icon="speed">speed</span>
+                  Live IoT Telematics &amp; Vehicle Diagnostics
+                </span>
+<span class="font-label-sm text-label-sm text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                  OBD-II Cloud Link: Active
+                </span>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+<div class="bg-surface-container-low p-3 rounded-lg">
+<div class="font-label-sm text-label-sm text-on-surface-variant flex items-center justify-between">
+                    Fuel Level
+                    <span class="material-symbols-outlined text-sm text-primary" data-icon="local_gas_station">local_gas_station</span>
+</div>
+<div class="font-headline-sm font-headline-sm text-primary mt-1">84%</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full mt-2 overflow-hidden">
+<div class="bg-emerald-500 h-full rounded-full" style="width: 84%"></div>
+</div>
+</div>
+<div class="bg-surface-container-low p-3 rounded-lg">
+<div class="font-label-sm text-label-sm text-on-surface-variant flex items-center justify-between">
+                    Odometer
+                    <span class="material-symbols-outlined text-sm text-primary" data-icon="alt_route">alt_route</span>
+</div>
+<div class="font-headline-sm font-headline-sm text-primary mt-1">14,290 <span class="text-xs font-normal text-on-surface-variant">km</span></div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mt-2">240 km driven</div>
+</div>
+<div class="bg-surface-container-low p-3 rounded-lg">
+<div class="font-label-sm text-label-sm text-on-surface-variant flex items-center justify-between">
+                    BLE Keyless
+                    <span class="material-symbols-outlined text-sm text-emerald-600" data-icon="bluetooth">bluetooth</span>
+</div>
+<div class="font-headline-sm font-headline-sm text-emerald-700 mt-1">Paired</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mt-2">Signal: Strong (3m)</div>
+</div>
+<div class="bg-surface-container-low p-3 rounded-lg">
+<div class="font-label-sm text-label-sm text-on-surface-variant flex items-center justify-between">
+                    TPMS Sensors
+                    <span class="material-symbols-outlined text-sm text-primary" data-icon="tire_repair">tire_repair</span>
+</div>
+<div class="font-headline-sm font-headline-sm text-primary mt-1">33 <span class="text-xs font-normal text-on-surface-variant">PSI</span></div>
+<div class="font-label-sm text-label-sm text-emerald-600 mt-2">All 4 wheels normal</div>
+</div>
+</div>
+</div>
+<!-- Keyless Digital Control Console -->
+<div class="mt-6 p-4 rounded-xl bg-primary-container text-on-primary">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-container text-xl" data-icon="key">key</span>
+<span class="font-label-lg text-label-lg font-bold">Keyless Go™ Mobile Cockpit</span>
+</div>
+<div class="font-label-sm text-label-sm text-on-primary-container">
+                  Direct encrypted smartphone control • PIN: ****
+                </div>
+</div>
+<!-- Button actions -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+<button class="flex items-center justify-center gap-2 py-3 px-4 rounded-full bg-secondary-container text-on-secondary-fixed font-bold font-label-md text-label-md hover:bg-secondary-fixed transition active:scale-95">
+<span class="material-symbols-outlined text-lg" data-icon="lock_open">lock_open</span>
+                  Unlock Doors
+                </button>
+<button class="flex items-center justify-center gap-2 py-3 px-4 rounded-full bg-surface-container-lowest text-primary font-bold font-label-md text-label-md hover:bg-surface-bright transition active:scale-95">
+<span class="material-symbols-outlined text-lg" data-icon="lock">lock</span>
+                  Lock Doors
+                </button>
+<button class="flex items-center justify-center gap-2 py-3 px-4 rounded-full bg-tertiary-container text-on-primary hover:bg-surface-variant/20 transition active:scale-95 border border-outline/30 font-label-md text-label-md">
+<span class="material-symbols-outlined text-lg" data-icon="volume_up">volume_up</span>
+                  Honk &amp; Flash
+                </button>
+<button class="flex items-center justify-center gap-2 py-3 px-4 rounded-full border border-red-500/50 text-red-300 hover:bg-red-950/40 transition active:scale-95 font-label-md text-label-md">
+<span class="material-symbols-outlined text-lg text-red-400" data-icon="emergency">emergency</span>
+                  Odisha SOS 24/7
+                </button>
+</div>
+</div>
+<!-- Live Trip Toll & FASTag Activity snippet -->
+<div class="mt-6 p-4 rounded-lg bg-surface-container-low border border-surface-container-high flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-secondary-fixed/50 flex items-center justify-center text-on-secondary-fixed">
+<span class="material-symbols-outlined text-lg" data-icon="toll">toll</span>
+</div>
+<div>
+<div class="font-label-md text-label-md text-primary font-semibold">Latest Fastag Deduction: Pipili Toll Plaza (NH-316)</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Today at 11:42 AM • En route to Puri Marine Drive • Paid ₹110</div>
+</div>
+</div>
+<button class="text-xs font-semibold text-primary hover:underline text-left sm:text-right">
+                Dispute Charge
+              </button>
+</div>
+</div>
+</article>
+<!-- Past Completed Bookings Section -->
+<div class="bg-surface-container-lowest rounded-xl custom-card-shadow p-6">
+<div class="flex items-center justify-between mb-6">
+<div>
+<h2 class="text-headline-md font-headline-md text-primary">Recent Completed Bookings</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Verified trips completed across Odisha Operations</p>
+</div>
+<a class="font-label-md text-label-md text-primary font-bold hover:underline flex items-center gap-1" href="#">
+              View All (11)
+              <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+<div class="space-y-4">
+<!-- Trip Record 1 -->
+<div class="p-4 rounded-xl border border-surface-container-high hover:border-outline-variant transition-colors flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container-low flex items-center justify-center text-primary font-bold">
+<span class="material-symbols-outlined text-2xl" data-icon="electric_car">electric_car</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="font-headline-sm font-headline-sm text-primary">Tata Nexon EV Max</h3>
+<span class="bg-emerald-50 text-emerald-700 text-xs px-2 py-0.5 rounded font-semibold">Completed 04 Nov</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Bhubaneswar Janpath Hub ➔ Cuttack Link Road ➔ Bhubaneswar</p>
+<div class="flex items-center gap-4 mt-2 font-label-sm text-label-sm text-on-surface-variant">
+<span>Distance: 280 km</span>
+<span>•</span>
+<span>Energy: 44 kWh</span>
+<span>•</span>
+<span class="text-primary font-bold">₹4,290 Total</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 self-end md:self-center">
+<button class="px-3.5 py-2 rounded-full border border-surface-container-highest hover:bg-surface-container text-xs font-semibold text-on-surface flex items-center gap-1.5 transition">
+<span class="material-symbols-outlined text-base" data-icon="download">download</span>
+                  Tax Invoice
+                </button>
+<button class="px-4 py-2 rounded-full bg-primary text-on-primary hover:bg-neutral-800 text-xs font-bold transition active:scale-95">
+                  Book Again
+                </button>
+</div>
+</div>
+<!-- Trip Record 2 -->
+<div class="p-4 rounded-xl border border-surface-container-high hover:border-outline-variant transition-colors flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container-low flex items-center justify-center text-primary font-bold">
+<span class="material-symbols-outlined text-2xl" data-icon="directions_car">directions_car</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="font-headline-sm font-headline-sm text-primary">Hyundai Creta Turbo SX</h3>
+<span class="bg-emerald-50 text-emerald-700 text-xs px-2 py-0.5 rounded font-semibold">Completed 22 Oct</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Puri Marine Drive &amp; Konark Sun Temple Coastal Leisure Tour</p>
+<div class="flex items-center gap-4 mt-2 font-label-sm text-label-sm text-on-surface-variant">
+<span>Distance: 410 km</span>
+<span>•</span>
+<span>Fuel: Petrol</span>
+<span>•</span>
+<span class="text-primary font-bold">₹6,800 Total</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2 self-end md:self-center">
+<button class="px-3.5 py-2 rounded-full border border-surface-container-highest hover:bg-surface-container text-xs font-semibold text-on-surface flex items-center gap-1.5 transition">
+<span class="material-symbols-outlined text-base" data-icon="download">download</span>
+                  Tax Invoice
+                </button>
+<button class="px-4 py-2 rounded-full bg-primary text-on-primary hover:bg-neutral-800 text-xs font-bold transition active:scale-95">
+                  Book Again
+                </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Sidebar Column (4 Columns) -->
+<aside class="lg:col-span-4 space-y-6">
+<!-- FASTag Wallet & Toll Card -->
+<div class="bg-surface-container-lowest rounded-xl custom-card-shadow p-6">
+<div class="flex items-center justify-between pb-4 border-b border-surface-container-high">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-xl" data-icon="toll">toll</span>
+<h2 class="font-headline-sm font-headline-sm text-primary">FASTag &amp; Toll Pass</h2>
+</div>
+<span class="font-label-sm text-label-sm uppercase font-extrabold tracking-wider bg-secondary-fixed/40 text-on-secondary-fixed px-2 py-0.5 rounded">
+              NETC FASTag
+            </span>
+</div>
+<div class="mt-4">
+<div class="font-label-sm text-label-sm text-on-surface-variant">Pre-loaded Toll Balance</div>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-price-display text-price-display text-primary">₹890.00</span>
+<span class="font-label-sm text-label-sm text-emerald-600 font-semibold">Active &amp; Synced</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Automatic barrier clearance across all NHAI &amp; Odisha State Highway toll plazas.</p>
+</div>
+<!-- Quick Top-up buttons -->
+<div class="mt-5 space-y-2">
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Instant Recharge</div>
+<div class="grid grid-cols-2 gap-2">
+<button class="py-2 px-3 border border-outline-variant/60 rounded-lg hover:border-primary text-xs font-bold text-primary transition">
+                + ₹500
+              </button>
+<button class="py-2 px-3 border border-outline-variant/60 rounded-lg hover:border-primary text-xs font-bold text-primary transition">
+                + ₹1,000
+              </button>
+</div>
+</div>
+<!-- Auto-Recharge Toggle -->
+<div class="mt-5 p-3.5 bg-surface-container-low rounded-xl flex items-center justify-between">
+<div>
+<div class="font-label-md text-label-md text-primary font-semibold">Auto-recharge</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">When balance is below ₹300</div>
+</div>
+<!-- Checkbox styled as executive toggle -->
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-high peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Toll Dispute Prompt -->
+<div class="mt-5 pt-4 border-t border-surface-container-high">
+<div class="flex items-start gap-2 text-xs text-on-surface-variant leading-relaxed">
+<span class="material-symbols-outlined text-sm text-secondary-container mt-0.5" data-icon="info">info</span>
+<span>Double-debited or incorrect fee? Odisha Hub auto-audit resolves within 24 hours.</span>
+</div>
+<button class="w-full mt-3 py-2.5 rounded-full border border-primary text-primary hover:bg-surface-container font-label-md text-label-md font-bold transition">
+              Raise Toll Dispute
+            </button>
+</div>
+</div>
+<!-- Digital Documents & DigiLocker Pass Card -->
+<div class="bg-surface-container-lowest rounded-xl custom-card-shadow p-6">
+<div class="flex items-center justify-between pb-4 border-b border-surface-container-high">
+<h2 class="font-headline-sm font-headline-sm text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-emerald-700 text-xl" data-icon="verified_user">verified_user</span>
+              KYC &amp; Safe Passes
+            </h2>
+<span class="font-label-sm text-label-sm text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded font-semibold">VERIFIED</span>
+</div>
+<div class="mt-4 space-y-3">
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low border border-surface-container-high/60">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="badge">badge</span>
+<div>
+<div class="font-label-md text-label-md text-primary font-bold">Odisha RTO Driving Licence</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Valid till 18 May 2038</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-emerald-600 text-lg" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low border border-surface-container-high/60">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="savings">savings</span>
+<div>
+<div class="font-label-md text-label-md text-primary font-bold">Zero Security Deposit Pass</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Waived ₹10,000 for Elite Drivers</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-emerald-600 text-lg" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low border border-surface-container-high/60">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="health_and_safety">health_and_safety</span>
+<div>
+<div class="font-label-md text-label-md text-primary font-bold">Comprehensive CDW Insurance</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Policy #REN-OD-88219 (Zero Deductible)</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-emerald-600 text-lg" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+</div>
+<!-- Quick Hub Concierge Card -->
+<div class="bg-primary rounded-xl text-on-primary p-6 relative overflow-hidden">
+<div class="relative z-10">
+<span class="bg-secondary-container text-on-secondary-fixed text-xs uppercase font-extrabold tracking-wider px-2 py-0.5 rounded">
+              BBI AIRPORT DESK
+            </span>
+<h3 class="font-headline-sm font-headline-sm text-on-primary mt-2">Odisha Operations Duty Manager</h3>
+<p class="font-body-sm text-body-sm text-on-primary-container mt-1">Available 24/7 at Terminal 1 Arrival Kiosk for vehicle handover, modifications, and emergency road rescue.</p>
+<div class="mt-4 pt-4 border-t border-tertiary-container flex flex-col gap-2">
+<a class="flex items-center gap-2 text-sm text-on-primary font-semibold hover:text-secondary-fixed" href="tel:+916742918800">
+<span class="material-symbols-outlined text-secondary-container text-lg" data-icon="call">call</span>
+                +91 (0674) 291-8800 (Duty Officer)
+              </a>
+<a class="inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-full bg-secondary-container text-on-secondary-fixed font-bold font-label-md text-label-md hover:bg-secondary-fixed transition mt-2" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="chat">chat</span>
+                WhatsApp Concierge
+              </a>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Executive Global Footer (Shared Component Anchor) -->
+<footer class="bg-primary text-on-primary mt-16 border-t border-primary-container">
+<div class="w-full px-6 lg:px-12 py-12 max-w-7xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+<div class="md:col-span-2">
+<span class="text-headline-lg font-headline-lg tracking-tight font-bold text-on-primary">Rentora</span>
+<p class="font-body-sm text-body-sm text-on-primary-container mt-2 max-w-md">
+            India's premier executive self-drive mobility provider. State-of-the-art keyless fleet, zero-deposit privilege passes, and comprehensive coverage across the state of Odisha.
+          </p>
+<div class="flex items-center gap-3 mt-4 text-xs text-on-primary-container">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-secondary-container" data-icon="check_circle">check_circle</span> MoRTH Compliant</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-secondary-container" data-icon="check_circle">check_circle</span> PCI-DSS Certified</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-secondary-container" data-icon="check_circle">check_circle</span> NETC FASTag Member</span>
+</div>
+</div>
+<div>
+<h4 class="font-label-lg text-label-lg font-bold text-on-primary mb-3">Odisha Hubs &amp; Network</h4>
+<ul class="space-y-2 text-body-sm font-body-sm text-on-primary-container">
+<li><a class="hover:text-secondary-container transition-colors" href="#">Bhubaneswar BBI Airport (T1 &amp; T2)</a></li>
+<li><a class="hover:text-secondary-container transition-colors" href="#">Bhubaneswar Railway Station (Master Canteen)</a></li>
+<li><a class="hover:text-secondary-container transition-colors" href="#">Cuttack Link Road Hub</a></li>
+<li><a class="hover:text-secondary-container transition-colors" href="#">Puri Marine Drive Coastal Kiosk</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-lg text-label-lg font-bold text-on-primary mb-3">Customer Assistance</h4>
+<ul class="space-y-2 text-body-sm font-body-sm text-on-primary-container">
+<li><a class="hover:text-secondary-container transition-colors" href="#">Emergency Assistance (24x7)</a></li>
+<li><a class="hover:text-secondary-container transition-colors" href="#">Insurance &amp; CDW Coverage</a></li>
+<li><a class="hover:text-secondary-container transition-colors" href="#">Fastag Guidelines &amp; Toll Disputes</a></li>
+<li><a class="hover:text-secondary-container transition-colors" href="#">Odisha Self-Drive Permits</a></li>
+</ul>
+</div>
+</div>
+<div class="pt-8 border-t border-tertiary-container flex flex-col md:flex-row items-center justify-between gap-4 text-on-primary-container text-body-sm font-body-sm">
+<div>
+          © 2025 Rentora Mobility India Pvt. Ltd. Odisha Operations Hub (Bhubaneswar • Cuttack • Puri). All rights reserved.
+        </div>
+<div class="flex items-center gap-6">
+<a class="hover:text-secondary-container transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-secondary-container transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-secondary-container transition-colors" href="#">Tariff &amp; Fuel Policy</a>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

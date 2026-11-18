@@ -1,31 +1,91 @@
-/* Rentora Core Styles - Optimized */
+/* Rentora Core Styles - Based on DESIGN.md Tokens */
 
 :root {
-  --primary: #050811;
-  --accent: #00c9a7;
-  --accent-glow: rgba(0, 201, 167, 0.3);
-  --background: #f8fafc;
-  --text: #050811;
-  --background-dark: #09090b;
-  --text-dark: #f8fafc;
+  --primary: #121316;
+  --primary-dark: #000000;
+  --primary-light: #26272b;
+  --primary-container: #1b1b1f;
+  --on-primary: #ffffff;
+  --surface: #f9f9f9;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f3f3f3;
+  --surface-container: #eeeeee;
+  --on-surface: #0a0a0b;
+  --on-surface-variant: #1a1c1e;
+  --secondary: #f0b106;
+  --secondary-container: #fdbf13;
+  --accent: #fdbf13;
+  --go-green: #10b981;
+  --charcoal: #121316;
+}
+
+/* Eradicate default browser blue focus rings and outlines globally on all elements */
+*, *:focus, *:focus-visible, *:focus-within {
+  outline: none !important;
+}
+
+input,
+textarea,
+select,
+button {
+  -webkit-tap-highlight-color: transparent !important;
+  outline: none !important;
+  outline-width: 0 !important;
+  outline-style: none !important;
+  outline-color: transparent !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+}
+
+input:focus,
+input:focus-visible,
+input:focus-within,
+textarea:focus,
+textarea:focus-visible,
+textarea:focus-within,
+select:focus,
+select:focus-visible,
+button:focus,
+button:focus-visible {
+  outline: 0 !important;
+  outline: none !important;
+  outline-width: 0 !important;
+  outline-style: none !important;
+  outline-color: transparent !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+}
+
+/* High-contrast crisp typography - eradicate washed-out greyish text */
+.text-on-surface-variant {
+  color: #1a1c1e !important;
+}
+p.text-on-surface-variant,
+span.text-on-surface-variant,
+div.text-on-surface-variant {
+  color: #1a1c1e !important;
 }
 
 body {
-  font-family: 'Outfit', sans-serif;
-  background-color: var(--background);
-  color: var(--text);
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--surface);
+  color: var(--on-surface);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
 }
 
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: var(--background-dark);
-    color: var(--text-dark);
-  }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-headline {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-/* Base Material Symbols styles */
+/* Material Symbols configuration */
 .material-symbols-outlined {
   font-family: 'Material Symbols Outlined';
   font-weight: normal;
@@ -42,79 +102,775 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Map specific symbol overrides */
-.material-symbols-outlined[class*="icon-home"]::before { content: "home"; }
-.material-symbols-outlined[class*="icon-search"]::before { content: "search"; }
-.material-symbols-outlined[class*="icon-directions_car"]::before { content: "directions_car"; }
-.material-symbols-outlined[class*="icon-person"]::before { content: "person"; }
-.material-symbols-outlined[class*="icon-calendar_month"]::before { content: "calendar_month"; }
-.material-symbols-outlined[class*="icon-bookmark"]::before { content: "bookmark"; }
-.material-symbols-outlined[class*="icon-menu"]::before { content: "menu"; }
-.material-symbols-outlined[class*="icon-close"]::before { content: "close"; }
+/* Safe areas */
+.safe-area-bottom {
+  padding-bottom: max(env(safe-area-inset-bottom, 16px), 16px);
+}
 
-/* Hide scrollbar for select elements but keep functionality */
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* Cross-browser scrollbar hiding for horizontal tabs and pills */
+.no-scrollbar::-webkit-scrollbar,
 .hide-scrollbar::-webkit-scrollbar {
-  display: none;
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+  -webkit-appearance: none !important;
 }
+
+.no-scrollbar,
 .hide-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none !important;
+  /* IE and Edge */
+  scrollbar-width: none !important;
+  /* Firefox */
 }
 
-/* Glassmorphism helpers */
-.glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
+/* Infinite Marquee Scroll (Right to Left) */
+@keyframes marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
 
-@media (prefers-color-scheme: dark) {
-  .glass {
-    background: rgba(5, 8, 17, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+  100% {
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
-/* Premium Card Hover Effects */
-.premium-card {
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.premium-card:hover {
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.3);
+@keyframes marquee-reverse {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
 }
 
-/* Custom Selection Color */
-::selection {
-  background: var(--accent);
+.animate-marquee {
+  display: flex !important;
+  width: max-content !important;
+  animation: marquee 35s linear infinite !important;
+  will-change: transform;
+}
+
+.animate-marquee-reverse {
+  display: flex !important;
+  width: max-content !important;
+  animation: marquee-reverse 35s linear infinite !important;
+  will-change: transform;
+}
+
+.animate-marquee:hover,
+.animate-marquee-reverse:hover {
+  animation-play-state: paused !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .animate-marquee,
+  .animate-marquee-reverse {
+    animation: none !important;
+    overflow-x: auto !important;
+  }
+}
+
+/* Bottom Sheet backdrop and slide-up primitives */
+.sheet-backdrop {
+  background-color: rgba(21, 27, 42, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: opacity 0.25s ease-out;
+}
+
+.sheet-panel {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Status Badges */
+.badge-confirmed,
+.badge-active {
+  background-color: #e9edff;
+  color: #006b58;
+  border: 1px solid #00c9a7;
+}
+
+.badge-pending {
+  background-color: #ffddb4;
+  color: #835500;
+}
+
+.badge-cancelled {
+  background-color: #ffdad6;
+  color: #ba1a1a;
+}
+
+/* Buttons */
+.btn-primary-teal {
+  background-color: #00c9a7;
   color: #050811;
+  font-weight: 700;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 1.5rem;
+  transition: all 0.2s ease;
 }
 
-/* Smooth Image Loading */
-img.loading {
+.btn-primary-teal,
+.btn-primary-orange {
+  background-color: #121316;
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.btn-primary-teal:hover,
+.btn-primary-orange:hover {
+  background-color: #26272b;
+  box-shadow: 0 4px 14px rgba(18, 19, 22, 0.25);
+}
+
+/* Selection Color */
+::selection {
+  background: #fdbf13;
+  color: #121316;
+}
+
+/* Crisp rendering for vehicle cutout images */
+.car-main-img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* ==========================================================================
+   Smooth Scrolling & Modern Scroll Reveal Engine (Progressive Enhancement)
+   ========================================================================== */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Base transition properties */
+.reveal-on-scroll,
+.reveal-fade-in,
+.reveal-scale-up,
+.reveal-slide-left,
+.reveal-slide-right,
+.reveal-blur-focus {
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+/* 1. Masked Baseline Upward Reveal (Editorial / Apple Style) */
+.reveal-mask-heading {
+  overflow: hidden !important;
+  display: block !important;
+  width: 100%;
+  vertical-align: bottom;
+}
+
+.reveal-mask-heading>* {
+  display: inline-block;
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.js-reveal-active .reveal-mask-heading:not(.is-revealed)>* {
+  transform: translate3d(0, 110%, 0);
   opacity: 0;
 }
-img.loaded {
+
+.reveal-mask-heading.is-revealed>* {
+  transform: translate3d(0, 0, 0) !important;
+  opacity: 1 !important;
+}
+
+/* Floating Pill Architecture (Transparent Navbar with Floating Frosted Island Pills - No Black Background) */
+.navbar-glass {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  transition: all 0.3s ease !important;
+}
+
+.navbar-glass.is-scrolled {
+  background: transparent !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+/* Floating Island Pill (Pure White Design) */
+.nav-island-pill {
+  background: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+  color: #000000 !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.nav-island-pill:hover {
+  background: #ffffff !important;
+  box-shadow: 0 14px 38px -5px rgba(0, 0, 0, 0.42), 0 4px 12px rgba(0, 0, 0, 0.16) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Modern Shimmer Light Sweep on Primary CTAs */
+.btn-modern-primary {
+  background: #121316 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 18px rgba(18, 19, 22, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.btn-modern-primary::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(60deg, transparent 40%, rgba(255, 255, 255, 0.3) 50%, transparent 60%);
+  transform: translateX(-100%);
+  transition: transform 0.65s ease;
+  pointer-events: none;
+}
+
+.btn-modern-primary:hover::after {
+  transform: translateX(100%);
+}
+
+.btn-modern-primary:hover {
+  transform: translateY(-1px) scale(1.02) !important;
+  box-shadow: 0 6px 24px rgba(255, 95, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+}
+
+.btn-modern-primary:active {
+  transform: translateY(0) scale(0.98) !important;
+}
+
+/* Smooth Navigation Pill Transitions */
+.nav-pill-link {
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-pill-link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  opacity: 0;
+  transform: scale(0.85);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.nav-pill-link:hover::before {
   opacity: 1;
+  transform: scale(1);
 }
 
-/* Safe area bottom for mobile PWA support */
-.safe-area-bottom {
-  padding-bottom: env(safe-area-inset-bottom, 20px);
+/* 2. Staggered Word-by-Word Float */
+.reveal-word-float .word-span {
+  display: inline-block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.6s ease;
+  will-change: transform, opacity;
 }
 
-.bottom-nav-safe {
-  padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 1rem));
+.js-reveal-active .reveal-word-float:not(.is-revealed) .word-span {
+  opacity: 0;
+  transform: translate3d(0, 16px, 0);
 }
 
-/* Date picker color overrides */
-::-webkit-calendar-picker-indicator {
-  filter: invert(0.5);
-  cursor: pointer;
+.reveal-word-float.is-revealed .word-span {
+  opacity: 1 !important;
+  transform: translate3d(0, 0, 0) !important;
 }
-@media (prefers-color-scheme: dark) {
-  ::-webkit-calendar-picker-indicator {
-    filter: invert(1);
+
+/* 3. Highlighter Accent Sweep (Tricolour / Orange Glow) */
+.marker-sweep {
+  position: relative;
+  display: inline-block;
+  z-index: 1;
+}
+
+.marker-sweep::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  width: 0;
+  height: 40%;
+  background: linear-gradient(90deg, rgba(255, 95, 0, 0.28) 0%, rgba(255, 140, 56, 0.38) 100%);
+  border-radius: 4px;
+  z-index: -1;
+  transition: width 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
+  pointer-events: none;
+}
+
+.is-revealed .marker-sweep::after,
+.marker-sweep.is-revealed::after {
+  width: 100% !important;
+}
+
+/* 4. Progressive enhancement: Only hide elements if JavaScript is actively running */
+.js-reveal-active .reveal-on-scroll:not(.is-revealed) {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+.js-reveal-active .reveal-fade-in:not(.is-revealed) {
+  opacity: 0;
+}
+
+.js-reveal-active .reveal-scale-up:not(.is-revealed) {
+  opacity: 0;
+  transform: scale(0.96) translateY(24px);
+}
+
+.js-reveal-active .reveal-slide-left:not(.is-revealed) {
+  opacity: 0;
+  transform: translateX(-36px);
+}
+
+.js-reveal-active .reveal-slide-right:not(.is-revealed) {
+  opacity: 0;
+  transform: translateX(36px);
+}
+
+.js-reveal-active .reveal-blur-focus:not(.is-revealed) {
+  opacity: 0.5;
+  filter: blur(8px);
+  transform: scale(0.98);
+}
+
+/* Revealed active state (triggered by IntersectionObserver) */
+.is-revealed {
+  opacity: 1 !important;
+  transform: translate3d(0, 0, 0) scale(1) !important;
+  filter: blur(0px) !important;
+}
+
+/* Staggered Children Cascade */
+.js-reveal-active .reveal-stagger:not(.is-revealed) > * {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-stagger.is-revealed > *,
+.is-revealed .reveal-stagger > * {
+  opacity: 1 !important;
+  transform: translate3d(0, 0, 0) !important;
+}
+
+.reveal-stagger > *:nth-child(1) { transition-delay: 40ms; }
+.reveal-stagger > *:nth-child(2) { transition-delay: 100ms; }
+.reveal-stagger > *:nth-child(3) { transition-delay: 160ms; }
+.reveal-stagger > *:nth-child(4) { transition-delay: 220ms; }
+.reveal-stagger > *:nth-child(5) { transition-delay: 280ms; }
+.reveal-stagger > *:nth-child(6) { transition-delay: 340ms; }
+.reveal-stagger > *:nth-child(7) { transition-delay: 400ms; }
+.reveal-stagger > *:nth-child(8) { transition-delay: 460ms; }
+
+/* Stagger delay utility classes */
+.reveal-delay-50  { transition-delay: 50ms !important; }
+.reveal-delay-100 { transition-delay: 100ms !important; }
+.reveal-delay-150 { transition-delay: 150ms !important; }
+.reveal-delay-200 { transition-delay: 200ms !important; }
+.reveal-delay-250 { transition-delay: 250ms !important; }
+.reveal-delay-300 { transition-delay: 300ms !important; }
+.reveal-delay-400 { transition-delay: 400ms !important; }
+.reveal-delay-500 { transition-delay: 500ms !important; }
+
+/* 5. Sticky Filter Pin & Elevation Shadow */
+.sticky-filter-pin {
+  transition: box-shadow 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.sticky-filter-pin.is-pinned {
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.18) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Stagger delay classes for child card sequences */
+.delay-75 {
+  transition-delay: 75ms;
+}
+
+.delay-100 {
+  transition-delay: 100ms;
+}
+
+.delay-150 {
+  transition-delay: 150ms;
+}
+
+.delay-200 {
+  transition-delay: 200ms;
+}
+
+.delay-225 {
+  transition-delay: 225ms;
+}
+
+.delay-250 {
+  transition-delay: 250ms;
+}
+
+.delay-300 {
+  transition-delay: 300ms;
+}
+
+.delay-375 {
+  transition-delay: 375ms;
+}
+
+.delay-400 {
+  transition-delay: 400ms;
+}
+
+.delay-450 {
+  transition-delay: 450ms;
+}
+
+.delay-500 {
+  transition-delay: 500ms;
+}
+
+.delay-600 {
+  transition-delay: 600ms;
+}
+
+/* Micro-interaction: Shimmer Light Beam Effect */
+@keyframes shimmerPass {
+  0% {
+    transform: translateX(-150%) skewX(-20deg);
+  }
+
+  100% {
+    transform: translateX(250%) skewX(-20deg);
+  }
+}
+
+.shimmer-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  transform: translateX(-150%) skewX(-20deg);
+  pointer-events: none;
+}
+
+.shimmer-container:hover::after {
+  animation: shimmerPass 1.2s ease-in-out;
+}
+
+/* Gentle floating micro-animation */
+@keyframes floatSubtle {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.animate-float {
+  animation: floatSubtle 3.5s ease-in-out infinite;
+}
+
+/* Pulse Beacon for Live Availability */
+@keyframes beaconPulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+  }
+
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+.pulse-beacon {
+  animation: beaconPulse 2s infinite;
+}
+
+/* Interactive Card Elevate & Depth */
+.card-hover-fx {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s ease;
+  will-change: transform, box-shadow;
+}
+
+.card-hover-fx:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px -15px rgba(32, 81, 93, 0.16), 0 0 0 1px rgba(32, 81, 93, 0.12);
+}
+
+/* Image zoom hover effect */
+.img-zoom-hover {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.group:hover .img-zoom-hover {
+  transform: scale(1.08) translateY(-3px);
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+
+  .reveal-on-scroll,
+  .reveal-fade-in,
+  .reveal-scale-up,
+  .reveal-slide-left,
+  .reveal-slide-right {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .animate-float,
+  .pulse-beacon,
+  .hero-kenburns,
+  .shimmer-container:hover::after,
+  .banner-glass-sheen:hover::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ==========================================================================
+   Motion Design & Premium Micro-Interactions
+   ========================================================================== */
+
+/* 1. Hero Scenic Depth (Subtle Ease-In Ken Burns on Page Load) */
+@keyframes heroDepthZoom {
+  0% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1.0);
+  }
+}
+
+.hero-kenburns {
+  animation: heroDepthZoom 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform;
+  transform-origin: center center;
+}
+
+/* 2. Header Morph on Scroll (Frosted Floating Dock) */
+#main-header.header-scrolled {
+  background-color: rgba(255, 255, 255, 0.94) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+  border-bottom-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+#main-header.header-scrolled .header-inner-row {
+  height: 3.5rem !important; /* 56px instead of 64px/80px */
+}
+
+@media (min-width: 1024px) {
+  #main-header.header-scrolled .header-inner-row {
+    height: 4.25rem !important;
+  }
+}
+
+/* 3. Apple-Style Scroll-Scrubbed Text Reveal */
+.scroll-scrub-text .scrub-word {
+  display: inline;
+  color: #94a3b8; /* slate-400 */
+  opacity: 0.42;
+  transition: color 0.35s ease, opacity 0.35s ease;
+  will-change: color, opacity;
+  margin-right: 0.25em;
+}
+
+.scroll-scrub-text .scrub-word.is-illuminated {
+  color: #0f172a !important; /* slate-900 */
+  opacity: 1 !important;
+}
+
+/* 4. Spring Lift & Micro-Hover on Brand Logo Cards */
+.brand-card-hover {
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.2s ease !important;
+}
+
+.brand-card-hover:hover {
+  transform: translateY(-3px) scale(1.02) !important;
+  box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.10), 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+  border-color: #121316 !important;
+}
+
+/* 5. Vehicle Floating Hover Lift on Car Cards */
+.rentora-car-card {
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.32s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease !important;
+  will-change: transform, box-shadow;
+}
+
+.rentora-car-card:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  border-color: rgba(18, 19, 22, 0.35) !important;
+}
+
+.rentora-car-card .car-main-img {
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  will-change: transform;
+}
+
+.rentora-car-card:hover .car-main-img {
+  transform: scale(1.06) translateY(-2px) !important;
+}
+
+/* 6. Promotional Banner Glass Sheen / Light Sweep */
+.banner-glass-sheen {
+  position: relative;
+  overflow: hidden;
+}
+
+.banner-glass-sheen::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.22) 50%,
+    transparent 100%
+  );
+  transform: skewX(-22deg);
+  pointer-events: none;
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+  z-index: 5;
+}
+
+.banner-glass-sheen:hover::after {
+  transform: translateX(450%) skewX(-22deg);
+}
+
+/* 7. Smooth Accordion Expand for FAQs */
+details.faq-accordion summary {
+  list-style: none;
+}
+
+details.faq-accordion summary::-webkit-details-marker {
+  display: none;
+}
+
+details.faq-accordion {
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+details.faq-accordion[open] {
+  border-color: rgba(18, 19, 22, 0.3) !important;
+  box-shadow: 0 6px 20px -4px rgba(0, 0, 0, 0.06) !important;
+}
+
+details.faq-accordion[open] summary .material-symbols-outlined {
+  transform: rotate(180deg);
+}
+
+details.faq-accordion .faq-answer {
+  animation: accordionSlideIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes accordionSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 8. Mobile Sheet Spring Damping & Bottom Nav Tap Physics */
+.bottom-nav-link {
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.15s ease;
+}
+
+.bottom-nav-link:active {
+  transform: scale(0.92);
+}
+
+
+/* Responsive & Viewport Clearance Utilities */
+.pb-32 {
+  padding-bottom: 8rem;
+}
+
+.pb-36 {
+  padding-bottom: 9rem;
+}
+
+.pb-44 {
+  padding-bottom: 11rem;
+}
+
+@media (min-width: 1536px) {
+  .\32xl\:max-w-\[1500px\] {
+    max-width: 1500px !important;
+  }
+
+  .\32xl\:max-w-\[1600px\] {
+    max-width: 1600px !important;
+  }
+
+  .\32xl\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
   }
 }

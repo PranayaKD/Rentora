@@ -8,6 +8,10 @@ def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'rentora_project.settings')
     try:
+        import rentora_project.compat  # noqa: F401
+    except ImportError:
+        pass
+    try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
         raise ImportError(

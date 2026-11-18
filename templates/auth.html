@@ -1,259 +1,194 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load socialaccount %}
 
-{% block title %}Authenticaion - Rentora{% endblock %}
+{% block title %}Login & Verification - Rentora Mobility{% endblock %}
+
+{% block meta_description %}Instant phone OTP login for Rentora self-drive rentals in Odisha. 60-second DigiLocker driving license verification.{% endblock %}
 
 {% block content %}
-<div class="min-h-screen flex bg-background-light dark:bg-background-dark">
-    <!-- Left Pattern/Image Area - Hidden on Mobile -->
-    <div class="hidden lg:flex lg:w-1/2 bg-primary relative items-center justify-center p-12 overflow-hidden">
-        <div class="absolute inset-0 z-0">
-            <div class="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
-            <div class="absolute -top-[30%] -left-[10%] w-[70%] h-[70%] rounded-full bg-accent/20 blur-[120px]"></div>
-            <div class="absolute -bottom-[20%] -right-[10%] w-[60%] h-[60%] rounded-full bg-blue-600/20 blur-[100px]"></div>
-        </div>
+<div class="bg-surface text-on-surface flex justify-center items-center min-h-[90vh] p-0 sm:p-6 antialiased selection:bg-secondary-container selection:text-tertiary">
+  
+  <!-- Canvas Card (Exact Stitch Mobile Frame on mobile, centered executive card on desktop) -->
+  <main class="w-full sm:w-[410px] min-h-[820px] bg-surface-container-lowest sm:shadow-[0_24px_50px_-12px_rgba(18,19,22,0.25)] sm:rounded-[40px] overflow-hidden flex flex-col relative sm:border border-outline-variant/30">
+    
+    <!-- TOP SECTION: Hero Automotive Visual + Status Scrim (Stitch Exact) -->
+    <header class="relative w-full h-[240px] sm:h-[260px] shrink-0 overflow-hidden bg-primary-container">
+      <img alt="Sleek sports car on coastal expressway at sunset" class="w-full h-full object-cover object-center transform scale-105" src="https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=800&q=80"/>
+      
+      <!-- Top Vignette Scrim -->
+      <div class="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-primary/70 via-primary/30 to-transparent pointer-events-none"></div>
+      
+      <!-- Bottom Gradient Scrim seamlessly blending into sheet -->
+      <div class="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-primary/85 via-primary/35 to-transparent pointer-events-none"></div>
+      
+      <!-- Floating Navigation Bar Row -->
+      <div class="absolute top-4 inset-x-0 px-4 flex items-center justify-between z-20">
+        <!-- Back Button Glass Pill -->
+        <a href="{% url 'cars' %}" aria-label="Go Back" class="w-10 h-10 rounded-full bg-primary/40 backdrop-blur-md border border-surface-container-lowest/20 flex items-center justify-center text-surface-container-lowest active:scale-95 transition-transform duration-150 shadow-sm">
+          <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+        </a>
         
-        <div class="relative z-10 w-full max-w-lg text-white">
-            <a href="{% url 'index' %}" class="inline-flex flex-col items-center justify-center w-20 h-20 bg-white/10 backdrop-blur-md rounded-2xl mb-12 border border-white/10 hover:bg-white/20 transition-all">
-                <svg class="size-10 text-white" fill="currentColor" viewBox="0 0 48 48">
-                    <path d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z"></path>
-                </svg>
-            </a>
-            
-            <h1 class="text-5xl font-black mb-6 leading-tight">Your Journey,<br/>Your Way.</h1>
-            <p class="text-slate-300 text-lg mb-12 max-w-md leading-relaxed">Join Rentora today to unlock exclusive access to the world's most premium vehicles.</p>
-            
-            <div class="grid grid-cols-2 gap-6">
-                <div class="bg-black/20 backdrop-blur border border-white/5 rounded-2xl p-6">
-                    <span class="material-symbols-outlined text-4xl text-accent mb-4 block">workspace_premium</span>
-                    <p class="font-bold mb-1">Premium Fleet</p>
-                    <p class="text-xs text-slate-400">Only the best vehicles</p>
-                </div>
-                <div class="bg-black/20 backdrop-blur border border-white/5 rounded-2xl p-6">
-                    <span class="material-symbols-outlined text-4xl text-accent mb-4 block">speed</span>
-                    <p class="font-bold mb-1">Instant Booking</p>
-                    <p class="text-xs text-slate-400">Zero paperwork</p>
-                </div>
-            </div>
+        <!-- Brand Identity Pill -->
+        <div class="px-3 py-1.5 rounded-full bg-primary-container/80 backdrop-blur-md border border-surface-container-lowest/15 flex items-center gap-1.5 shadow-sm">
+          <span class="w-2 h-2 rounded-full bg-secondary-container animate-pulse"></span>
+          <span class="text-surface-container-lowest font-headline-sm text-xs font-bold tracking-wide">Rentora Self-Drive</span>
         </div>
-    </div>
+      </div>
 
-    <!-- Right Form Area -->
-    <div class="w-full lg:w-1/2 flex items-center justify-center p-4 md:p-6 lg:p-8">
-        <div class="w-full max-w-[400px] bg-white dark:bg-slate-900 rounded-[2rem] p-6 sm:p-7 shadow-2xl border border-slate-100 dark:border-slate-800">
-            <!-- Mobile Logo -->
-            <div class="lg:hidden flex justify-center mb-6">
-                <a href="{% url 'index' %}" class="flex items-center gap-2 text-primary dark:text-white">
-                    <svg class="size-6" fill="currentColor" viewBox="0 0 48 48">
-                        <path d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z"></path>
-                    </svg>
-                    <span class="text-lg font-bold tracking-tight">Rentora</span>
-                </a>
-            </div>
+      <!-- Ambient Location Hint -->
+      <div class="absolute bottom-6 left-5 z-20 flex items-center gap-1.5 text-surface-container-lowest/90 text-xs font-medium drop-shadow">
+        <span class="material-symbols-outlined text-[14px] text-secondary-container" style="font-variation-settings: 'FILL' 1;">near_me</span>
+        <span>NH 16 • Bhubaneswar Mobility Network</span>
+      </div>
+    </header>
 
-            <div class="mb-6 text-center lg:text-left">
-                <h2 class="text-2xl sm:text-3xl font-black mb-1.5 text-primary dark:text-white tracking-tight">
-                    Sign in to Rentora
-                </h2>
-                <p class="text-slate-500 text-sm font-medium">
-                    Enter your phone to continue.
-                </p>
-            </div>
+    <!-- BOTTOM SHEET CARD CONTAINER: Overlaps vehicle visual (Stitch Exact) -->
+    <div class="relative flex-1 bg-surface-container-lowest rounded-t-[34px] -mt-5 z-30 shadow-[0_-12px_32px_rgba(0,0,0,0.12)] flex flex-col px-5 pt-3 pb-6 overflow-y-auto">
+      
+      <!-- Grabber Pill Indicator -->
+      <div class="w-10 h-1 rounded-full bg-surface-container-highest mx-auto mb-3 shrink-0"></div>
 
-            <!-- Unified OTP Flow -->
-            <div id="unified-auth-flow" class="space-y-5">
-                <!-- Step 1: Phone Input -->
-                <div id="phone-input-step" class="space-y-5">
-                    <div class="space-y-2">
-                        <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest pl-1">Mobile Number</label>
-                        <div class="flex gap-2 relative group">
-                            <!-- Modern Country Code Picker -->
-                            <div class="relative w-[110px] shrink-0">
-                                <select id="country-code" class="w-full h-14 pl-5 pr-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border-2 border-slate-100 dark:border-slate-800 text-slate-900 dark:text-white font-bold text-sm focus:border-accent focus:ring-0 transition-all appearance-none cursor-pointer">
-                                    <option value="+91">+91 (IN)</option>
-                                    <option value="+971">+971 (UAE)</option>
-                                    <option value="+1">+1 (USA)</option>
-                                    <option value="+44">+44 (UK)</option>
-                                    <option value="+61">+61 (AUS)</option>
-                                    <option value="+65">+65 (SG)</option>
-                                    <option value="+966">+966 (KSA)</option>
-                                    <option value="+974">+974 (QA)</option>
-                                    <option value="+968">+968 (OM)</option>
-                                    <option value="+965">+965 (KW)</option>
-                                    <option value="+973">+973 (BH)</option>
-                                    <option value="+977">+977 (NP)</option>
-                                    <option value="+880">+880 (BD)</option>
-                                    <option value="+94">+94 (LK)</option>
-                                    <option value="+66">+66 (TH)</option>
-                                    <option value="+60">+60 (MY)</option>
-                                </select>
-                            </div>
-
-                            <!-- Phone Input -->
-                            <div class="relative flex-1">
-                                <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400">
-                                    <span class="material-symbols-outlined text-lg">smartphone</span>
-                                </div>
-                                <input type="tel" id="otp-phone-raw" placeholder="00000 00000" class="w-full h-14 pl-10 pr-6 rounded-2xl bg-slate-50 dark:bg-slate-900 border-2 border-slate-100 dark:border-slate-800 text-slate-900 dark:text-white font-black text-lg placeholder:text-slate-300 placeholder:font-bold focus:border-accent focus:ring-0 transition-all">
-                            </div>
-                        </div>
-                    </div>
-
-                    <button type="button" onclick="requestOTP()" id="btn-send-otp" class="w-full bg-primary dark:bg-accent text-white h-14 rounded-2xl font-black text-base hover:scale-[1.01] active:scale-[0.99] transition-all shadow-xl shadow-primary/20 flex items-center justify-center gap-2">
-                        Get OTP Code
-                        <span class="material-symbols-outlined font-bold text-sm">arrow_forward</span>
-                    </button>
-                </div>
-
-                <!-- Step 2: OTP Verification (Hidden) -->
-                <div id="otp-verify-step" class="hidden space-y-6">
-                    <!-- ... Keep existing step 2 but tighten it ... -->
-                    <div class="text-center space-y-2">
-                        <h4 class="text-xl font-black text-primary dark:text-white">Verify Phone</h4>
-                        <p class="text-slate-500 text-xs font-medium">Code sent to <span id="display-phone" class="text-accent font-bold"></span></p>
-                    </div>
-
-                    <div class="space-y-4">
-                        <input type="text" maxlength="6" id="otp-code" placeholder="000000" 
-                            class="w-full h-14 bg-slate-50 dark:bg-slate-900 border-2 border-slate-100 dark:border-slate-800 rounded-2xl px-6 font-black text-2xl text-center tracking-[1rem] placeholder:tracking-normal placeholder:text-slate-200 focus:border-accent focus:ring-0 transition-all">
-                        
-                        <button type="button" onclick="verifyOTP()" id="btn-verify-otp" class="w-full bg-primary text-white h-14 rounded-2xl font-black text-base shadow-xl shadow-primary/20 hover:scale-[1.01] transition-all">
-                            Verify & Sign In
-                        </button>
-                        <div class="text-center">
-                            <button type="button" onclick="backToPhone()" class="text-xs font-bold text-slate-400 hover:text-accent transition-colors">Use a different number</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Social Authentication (Ultra-Compact) -->
-            <div class="mt-6 pt-6 border-t border-slate-50 dark:border-slate-800">
-                <p class="text-[9px] font-black text-slate-300 uppercase tracking-[0.2em] text-center mb-4">Or connect with</p>
-                <div class="grid grid-cols-2 gap-3">
-                    <a href="{% provider_login_url 'google' %}" class="flex items-center justify-center gap-2 h-11 rounded-xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 font-bold text-xs text-slate-600 dark:text-slate-400 hover:bg-slate-50 transition-all shadow-sm">
-                        <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-4 h-4" alt="Google">
-                        <span>Google</span>
-                    </a>
-                    <button type="button" class="flex items-center justify-center gap-2 h-11 rounded-xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 font-bold text-xs text-slate-600 dark:text-slate-400 opacity-50">
-                        <img src="https://www.svgrepo.com/show/475647/apple.svg" class="w-4 h-4 dark:invert" alt="Apple">
-                        <span>Apple</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Social Auth Note -->
-            <p class="mt-6 text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-relaxed">
-                <span class="text-accent underline decoration-accent/30 underline-offset-4">Note:</span> 
-                Social login users will need to provide a phone number in their Profile section to complete car bookings.
-            </p>
+      <!-- Card Headline & Subtitle -->
+      <div class="mb-3">
+        <div class="flex items-center justify-between">
+          <h1 class="text-xl sm:text-2xl font-headline-lg font-bold text-primary tracking-tight">
+            {% if not phone %}Welcome to Rentora{% else %}Verify Mobile Number{% endif %}
+          </h1>
+          <span class="px-2 py-0.5 rounded-full bg-secondary-container/20 text-secondary border border-secondary-container/40 text-[10px] font-bold">ODISHA</span>
         </div>
+        <p class="text-xs font-body-sm text-on-surface-variant flex items-center gap-1 mt-0.5">
+          <span class="material-symbols-outlined text-[15px] text-secondary-container" style="font-variation-settings: 'FILL' 1;">verified</span>
+          Drive across Bhubaneswar, Puri & Cuttack with zero physical paperwork
+        </p>
+      </div>
+
+      {% if not phone %}
+      <!-- STEP 1: Phone Number Input Form -->
+      <form action="{% url 'otp_login_request' %}{% if next %}?next={{ next }}{% endif %}" method="post" class="space-y-3.5">
+        {% csrf_token %}
+        {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+
+        <!-- Segmented Tab Switcher: Mobile vs Email -->
+        <nav aria-label="Sign-in Method" class="w-full p-1 bg-surface-container-low rounded-full flex items-center gap-1 border border-outline-variant/30">
+          <button type="button" class="flex-1 py-1.5 text-center text-xs font-bold rounded-full bg-primary-container text-surface-container-lowest shadow-xs flex items-center justify-center gap-1.5">
+            <span class="material-symbols-outlined text-[14px]">smartphone</span>
+            Mobile OTP
+          </button>
+          <button type="button" class="flex-1 py-1.5 text-center text-xs font-medium rounded-full text-on-surface-variant hover:text-primary transition-all flex items-center justify-center gap-1.5 opacity-60">
+            <span class="material-symbols-outlined text-[14px]">mail</span>
+            Email
+          </button>
+        </nav>
+
+        <!-- Phone Number Input Container -->
+        <div>
+          <label class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant mb-1 ml-1" for="mobile-number-input">
+            Registered Mobile Number
+          </label>
+          <div class="flex items-center h-[50px] px-3.5 bg-surface-container-low rounded-2xl border border-outline-variant/60 focus-within:border-primary focus-within:bg-surface-container-lowest focus-within:shadow-[0_0_0_2px_rgba(0,0,0,0.06)] transition-all">
+            <!-- India Country Code -->
+            <div class="flex items-center gap-1.5 pr-2.5 border-r border-outline-variant/40 shrink-0">
+              <span class="text-base select-none">🇮🇳</span>
+              <span class="text-xs font-bold text-primary">+91</span>
+            </div>
+            <!-- Input -->
+            <input aria-label="10-digit mobile number" class="w-full bg-transparent pl-3 text-sm font-bold text-primary focus:outline-none border-none p-0 tracking-wider" id="mobile-number-input" name="phone" placeholder="Enter 10-digit number" type="tel" maxlength="10" required autofocus oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(-10)"/>
+          </div>
+        </div>
+
+        <!-- Primary Amber CTA Button (Stitch Exact) -->
+        <button type="submit" class="w-full h-[50px] bg-secondary-container text-on-secondary-fixed rounded-full font-headline-sm text-sm font-extrabold flex items-center justify-center gap-2 shadow-[0_8px_20px_-4px_rgba(253,191,19,0.55)] active:scale-[0.98] transition-all duration-150 hover:brightness-105 cursor-pointer">
+          <span>Get Login OTP</span>
+          <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+        </button>
+      </form>
+      {% else %}
+      <!-- STEP 2: OTP Entry Form -->
+      <form action="{% url 'otp_verify_login' %}{% if next %}?next={{ next }}{% endif %}" method="post" class="space-y-3.5">
+        {% csrf_token %}
+        <input type="hidden" name="phone" value="{{ phone }}">
+        {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+
+        <section class="bg-surface-container-low/50 rounded-2xl p-3.5 border border-outline-variant/30">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[16px] text-secondary-container">pin</span>
+              <h2 class="text-xs font-bold text-primary">Enter 6-digit OTP</h2>
+            </div>
+            <a href="{% url 'login' %}?change=1{% if next %}&next={{ next }}{% endif %}" class="text-[11px] font-bold text-secondary hover:underline">Change Number</a>
+          </div>
+
+          <p class="text-[11px] text-on-surface-variant mb-2.5">
+            Sent via SMS to <span class="font-bold text-primary">+91 {{ phone }}</span>
+          </p>
+
+          {% if otp_error %}
+          <div class="p-2.5 mb-2 bg-red-50 border border-red-200 text-red-600 rounded-xl text-xs font-bold flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-sm">error</span>
+            <span>{{ otp_error }}</span>
+          </div>
+          {% endif %}
+
+          <input type="text" name="code" maxlength="6" placeholder="• • • • • •" required autofocus class="w-full text-center text-2xl font-black tracking-widest bg-surface-container-lowest border border-primary/30 rounded-xl py-2.5 px-4 text-primary focus:ring-2 focus:ring-primary outline-none font-mono" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(-6)"/>
+        </section>
+
+        <!-- Primary Amber CTA Button -->
+        <button type="submit" class="w-full h-[50px] bg-secondary-container text-on-secondary-fixed rounded-full font-headline-sm text-sm font-extrabold flex items-center justify-center gap-2 shadow-[0_8px_20px_-4px_rgba(253,191,19,0.55)] active:scale-[0.98] transition-all duration-150 hover:brightness-105 cursor-pointer">
+          <span>Verify & Continue</span>
+          <span class="material-symbols-outlined text-[20px]">check_circle</span>
+        </button>
+      </form>
+      {% endif %}
+
+      <!-- DigiLocker Trust Micro-Ribbon (Stitch Exact) -->
+      <div class="w-full py-2 px-3 rounded-xl bg-surface-container-low border border-outline-variant/40 flex items-center justify-center gap-2 my-3">
+        <span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">bolt</span>
+        <span class="text-[11px] text-on-surface-variant">
+          Instant 1-minute <strong class="text-primary font-bold">DigiLocker / Driving Licence</strong> verification
+        </span>
+      </div>
+
+      <!-- Social Divider -->
+      <div class="relative flex items-center justify-center my-2">
+        <div class="w-full border-t border-outline-variant/40"></div>
+        <span class="absolute px-3 bg-surface-container-lowest text-[10px] uppercase font-bold tracking-wider text-outline">
+          Or continue with
+        </span>
+      </div>
+
+      <!-- Dual Fast Social Sign-In -->
+      <div class="grid grid-cols-2 gap-2.5 my-2">
+        <!-- Google Button -->
+        <button type="button" onclick="alert('Google One-Tap available for verified devices.');" class="h-10 rounded-full border border-outline-variant/60 bg-surface-container-lowest hover:bg-surface-container-low transition-colors flex items-center justify-center gap-2 px-3 active:scale-95 shadow-xs">
+          <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"></path>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"></path>
+          </svg>
+          <span class="text-xs font-bold text-primary">Google</span>
+        </button>
+
+        <!-- Apple Button -->
+        <button type="button" onclick="alert('Apple Sign-In available on iOS devices.');" class="h-10 rounded-full border border-outline-variant/60 bg-surface-container-lowest hover:bg-surface-container-low transition-colors flex items-center justify-center gap-2 px-3 active:scale-95 shadow-xs">
+          <svg class="w-4 h-4 fill-primary shrink-0" viewBox="0 0 170 170">
+            <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.08-7.7-7.87-12-14.36-6.85-10.22-12-22.37-15.45-36.45-3.46-14.07-5.19-27.1-5.19-39.08 0-16.1 3.8-29.35 11.41-39.73 7.6-10.38 17.51-15.68 29.72-15.9 4.35 0 9.4 1.16 15.15 3.48 5.75 2.32 9.5 3.54 11.26 3.66 1.76-.12 5.58-1.34 11.46-3.66 5.88-2.32 10.8-3.42 14.75-3.3 13.9.68 24.7 5.6 32.41 14.77-12.07 7.37-17.95 17.48-17.65 30.34.3 10.23 4.22 18.77 11.75 25.62 7.53 6.86 16.5 10.63 26.93 11.33-2.18 6.53-4.73 13.06-7.65 19.57zM119.22 31.85c0-7.85 2.76-15.22 8.28-22.12 5.52-6.9 12.35-11.46 20.49-13.68.88 7.38-.85 14.7-5.19 21.96-4.34 7.27-10.87 12.18-19.58 14.73-.67-.3-1.63-.5-2.88-.6-1.25-.1-2.14-.15-2.67-.15l1.55-.14z"></path>
+          </svg>
+          <span class="text-xs font-bold text-primary">Apple ID</span>
+        </button>
+      </div>
+
+      <!-- Legal Disclaimer Footer -->
+      <footer class="mt-auto pt-3 text-center">
+        <p class="text-[10px] text-outline leading-tight">
+          By continuing, you agree to Rentora's 
+          <a class="underline text-on-surface-variant hover:text-primary font-medium" href="{% url 'terms' %}">Terms of Service</a> &amp; 
+          <a class="underline text-on-surface-variant hover:text-primary font-medium" href="{% url 'privacy' %}">Privacy Policy</a>
+        </p>
+      </footer>
+
     </div>
+  </main>
+
 </div>
-
-</style>
-
-<script>
-    function togglePassword(btn, inputId) {
-        // Django marks fields based on form prefixes sometimes, let's find by name/id
-        let input = document.getElementById(inputId);
-        if (!input) {
-            // Fallback for custom layouts
-            input = btn.parentElement.querySelector('input');
-        }
-        
-        const icon = btn.querySelector('.material-symbols-outlined');
-        if (input.type === 'password') {
-            input.type = 'text';
-            icon.innerText = 'visibility_off';
-        } else {
-            input.type = 'password';
-            icon.innerText = 'visibility';
-        }
-    }
-
-    // Modern OTP Flow Logic
-    function updateFlag() {
-        const select = document.getElementById('country-code');
-        const flag = select.options[select.selectedIndex].getAttribute('data-flag');
-        document.getElementById('current-flag').innerText = flag;
-    }
-
-    async function requestOTP() {
-        const country = document.getElementById('country-code').value;
-        const rawPhone = document.getElementById('otp-phone-raw').value.trim();
-        if (!rawPhone) return alert('Please enter your phone number');
-        
-        const phone = country + rawPhone.replace(/\s+/g, '');
-        
-        const btn = document.getElementById('btn-send-otp');
-        btn.disabled = true;
-        btn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> Processing...';
-
-        try {
-            const response = await fetch('{% url "otp_login_request" %}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify({ phone })
-            });
-            const data = await response.json();
-            if (data.success) {
-                document.getElementById('phone-input-step').classList.add('hidden');
-                document.getElementById('otp-verify-step').classList.remove('hidden');
-                document.getElementById('display-phone').innerText = phone;
-            } else {
-                alert(data.message);
-            }
-        } catch (e) {
-            alert('Service error. Please try again later.');
-        } finally {
-            btn.disabled = false;
-            btn.innerHTML = 'Continue to Rentora <span class="material-symbols-outlined font-bold">arrow_forward</span>';
-        }
-    }
-
-    async function verifyOTP() {
-        const country = document.getElementById('country-code').value;
-        const rawPhone = document.getElementById('otp-phone-raw').value.trim();
-        const phone = country + rawPhone.replace(/\s+/g, '');
-        const code = document.getElementById('otp-code').value.trim();
-        
-        if (code.length < 6) return alert('Enter the 6-digit code');
-
-        const btn = document.getElementById('btn-verify-otp');
-        btn.disabled = true;
-        btn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> Verifying...';
-
-        try {
-            const response = await fetch('{% url "otp_verify_login" %}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify({ phone, code })
-            });
-            const data = await response.json();
-            if (data.success) {
-                window.location.href = data.redirect;
-            } else {
-                alert(data.message);
-            }
-        } catch (e) {
-            alert('Connection lost. Try again.');
-        } finally {
-            btn.disabled = false;
-            btn.innerText = 'Verify & Sign In';
-        }
-    }
-
-    // Initialize on Page Load
-    window.addEventListener('load', () => {
-        updateFlag();
-    });
-</script>
 {% endblock %}

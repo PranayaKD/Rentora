@@ -11,7 +11,6 @@ from pywebpush import webpush, WebPushException
 logger = logging.getLogger(__name__)
 
 @login_required
-@csrf_exempt
 @require_POST
 def save_push_subscription(request):
     """Save or update a user's push subscription."""

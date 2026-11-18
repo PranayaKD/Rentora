@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Identity &amp; Licence KYC - Rentora</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Plus Jakarta Sans Font -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-background": "#1a1c1c",
+            "on-tertiary-fixed": "#1a1c20",
+            "on-secondary-container": "#6c5000",
+            "primary": "#000000",
+            "secondary": "#795900",
+            "on-secondary-fixed": "#261a00",
+            "tertiary-fixed-dim": "#c6c6cb",
+            "on-tertiary": "#ffffff",
+            "surface-bright": "#f9f9f9",
+            "on-primary-fixed-variant": "#46464a",
+            "tertiary-fixed": "#e2e2e7",
+            "primary-fixed-dim": "#c7c6ca",
+            "error": "#ba1a1a",
+            "surface-container-low": "#f3f3f3",
+            "surface-tint": "#5e5e62",
+            "inverse-on-surface": "#f0f1f1",
+            "on-error-container": "#93000a",
+            "on-surface": "#1a1c1c",
+            "secondary-fixed": "#ffdf9f",
+            "surface-dim": "#dadada",
+            "secondary-fixed-dim": "#fabd0d",
+            "inverse-surface": "#2f3131",
+            "on-surface-variant": "#46464b",
+            "surface-variant": "#e2e2e2",
+            "on-primary-fixed": "#1b1b1f",
+            "background": "#f9f9f9",
+            "surface-container-high": "#e8e8e8",
+            "on-primary": "#ffffff",
+            "surface": "#f9f9f9",
+            "on-secondary": "#ffffff",
+            "secondary-container": "#fdbf13",
+            "primary-container": "#1b1b1f",
+            "outline-variant": "#c7c6cb",
+            "on-secondary-fixed-variant": "#5b4300",
+            "primary-fixed": "#e3e2e6",
+            "on-tertiary-fixed-variant": "#45474b",
+            "on-tertiary-container": "#828489",
+            "tertiary": "#000000",
+            "on-primary-container": "#848387",
+            "inverse-primary": "#c7c6ca",
+            "surface-container-highest": "#e2e2e2",
+            "on-error": "#ffffff",
+            "error-container": "#ffdad6",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-container": "#1a1c20",
+            "outline": "#76777b",
+            "surface-container": "#eeeeee"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-sm": "0.5rem",
+            "gutter-sm": "0.75rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "gutter": "1rem",
+            "margin-lg": "1.5rem",
+            "margin": "1rem",
+            "gutter-lg": "1.25rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "margin-sm": "0.75rem"
+          },
+          "fontFamily": {
+            "label-md": ["Plus Jakarta Sans"],
+            "price-display": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "headline-xl-mobile": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-xl": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "price-display": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-xl-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    
+    @keyframes pulse-subtle {
+      0%, 100% { opacity: 0.9; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.03); }
+    }
+    .animate-pulse-subtle {
+      animation: pulse-subtle 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex justify-center selection:bg-secondary-container selection:text-primary">
+<!-- Mobile Viewport Canvas (390px x 844px Container) -->
+<main class="w-full max-w-[390px] min-h-screen bg-background relative flex flex-col shadow-2xl border-x border-outline-variant/30">
+<!-- 1. iOS Status Bar -->
+<header class="w-full pt-3 px-6 flex items-center justify-between z-30 select-none">
+<span class="text-label-md font-label-md font-bold text-on-surface">12:45</span>
+<!-- Dynamic Island Indicator -->
+<div class="w-24 h-5 bg-primary-container rounded-full flex items-center justify-center space-x-1.5 shadow-sm">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-primary-fixed-dim/40"></div>
+</div>
+<div class="flex items-center space-x-1.5 text-on-surface">
+<span class="text-label-sm font-label-sm font-bold tracking-tight">5G</span>
+<span class="material-symbols-outlined text-[15px]" data-icon="wifi">wifi</span>
+<div class="flex items-center space-x-0.5">
+<span class="text-label-sm font-label-sm font-semibold">88%</span>
+<span class="material-symbols-outlined text-[18px]" data-icon="battery_full">battery_full</span>
+</div>
+</div>
+</header>
+<!-- 2. Sticky Top Navigation Bar -->
+<nav class="sticky top-0 z-20 bg-surface/90 backdrop-blur-md px-margin py-space-sm flex items-center justify-between border-b border-outline-variant/20">
+<button aria-label="Go Back" class="w-10 h-10 rounded-full bg-surface-container-lowest border border-outline-variant/40 flex items-center justify-center text-on-surface shadow-sm active:scale-95 transition-transform duration-150" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="chevron_left">chevron_left</span>
+</button>
+<div class="flex flex-col items-center text-center">
+<h1 class="text-headline-sm font-headline-sm font-bold text-primary tracking-tight">Identity &amp; Licence KYC</h1>
+<p class="text-label-sm font-label-sm text-on-surface-variant font-medium">Step 2 of 3 • Required for Keyless Unlock</p>
+</div>
+<button class="px-3 py-1.5 rounded-full bg-surface-container-low border border-outline-variant/30 flex items-center space-x-1 text-on-surface-variant active:scale-95 transition-transform duration-150 hover:bg-surface-container" type="button">
+<span class="material-symbols-outlined text-[15px] text-secondary" data-icon="help">help</span>
+<span class="text-label-sm font-label-sm font-bold">FAQ</span>
+</button>
+</nav>
+<!-- Scrollable Content Canvas -->
+<div class="flex-1 px-margin pt-space-sm pb-[110px] space-y-space-md overflow-y-auto">
+<!-- 3. Trust Header Ribbon -->
+<section class="bg-surface-container-lowest rounded-xl p-3.5 border border-outline-variant/30 shadow-sm flex items-start space-x-3">
+<div class="w-9 h-9 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 border border-emerald-200">
+<span class="material-symbols-outlined text-[20px]" data-icon="verified_user" data-weight="fill" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+<div class="space-y-0.5">
+<div class="flex items-center space-x-1.5">
+<span class="text-label-sm font-label-sm uppercase text-emerald-800 tracking-wider">Govt. Approved DigiLocker</span>
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+<span class="text-label-sm font-label-sm text-on-surface-variant font-medium">100% Paperless</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Instant digital approval via Ministry of Road Transport &amp; Highways (MoRTH) databases.</p>
+</div>
+</section>
+<!-- 4. DigiLocker Instant Verification Card (Hero / Recommended Flow) -->
+<section class="relative bg-surface-container-lowest rounded-2xl p-4 border-2 border-emerald-500/40 shadow-md overflow-hidden bg-gradient-to-b from-emerald-50/30 via-white to-white">
+<!-- Floating Recommendation Tag -->
+<div class="flex items-center justify-between mb-3">
+<span class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-label-sm font-label-sm font-bold tracking-wide">
+<span class="material-symbols-outlined text-[13px]" data-icon="bolt">bolt</span>
+<span>RECOMMENDED • FASTEST</span>
+</span>
+<div class="flex items-center space-x-1 bg-surface-container-low px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px] text-emerald-600" data-icon="timer">timer</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant font-bold">~60 Secs</span>
+</div>
+</div>
+<!-- Card Body -->
+<div class="flex items-start space-x-3 mb-3.5">
+<div class="w-12 h-12 rounded-xl bg-tertiary-container flex items-center justify-center shrink-0 border border-outline-variant/30 shadow-inner">
+<span class="material-symbols-outlined text-secondary-container text-[26px]" data-icon="lock_person">lock_person</span>
+</div>
+<div class="space-y-1">
+<h2 class="text-headline-sm font-headline-sm font-bold text-primary">Verify via DigiLocker in 60 seconds</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
+              Instant verification of your Indian Driving Licence &amp; Aadhaar with zero document scanning.
+            </p>
+</div>
+</div>
+<!-- Security Perk Tags -->
+<div class="space-y-1.5 py-2.5 px-3 bg-surface-container-low/70 rounded-xl mb-4 text-on-surface text-body-sm font-body-sm border border-outline-variant/20">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-emerald-600 text-[16px]" data-icon="check_circle">check_circle</span>
+<span class="text-body-sm font-body-sm font-medium">Zero physical paperwork or photocopy upload</span>
+</div>
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-emerald-600 text-[16px]" data-icon="check_circle">check_circle</span>
+<span class="text-body-sm font-body-sm font-medium">Instant keyless unlock access upon booking</span>
+</div>
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-emerald-600 text-[16px]" data-icon="check_circle">check_circle</span>
+<span class="text-body-sm font-body-sm font-medium">Privacy protected by UIDAI &amp; Digital India protocol</span>
+</div>
+</div>
+<!-- Primary CTA: DigiLocker Auth -->
+<button class="w-full h-[52px] bg-primary-container text-on-primary rounded-full flex items-center justify-center space-x-2 shadow-lg active:scale-95 transition-all duration-150 group hover:bg-tertiary-container" type="button">
+<span class="text-label-lg font-label-lg font-bold tracking-tight">Authenticate with DigiLocker</span>
+<span class="material-symbols-outlined text-[18px] text-secondary-container group-hover:translate-x-0.5 transition-transform" data-icon="open_in_new">open_in_new</span>
+</button>
+</section>
+<!-- 5. Alternative Manual DL Upload Divider -->
+<div class="relative flex items-center justify-center py-2">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-outline-variant/40"></div>
+</div>
+<div class="relative bg-background px-3">
+<span class="px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant text-label-sm font-label-sm tracking-wider uppercase">
+            OR MANUAL VERIFICATION
+          </span>
+</div>
+</div>
+<!-- Manual Upload Form Fields -->
+<section class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/30 shadow-sm space-y-4">
+<!-- DL Number Input -->
+<div class="space-y-1.5">
+<div class="flex justify-between items-center">
+<label class="text-label-md font-label-md text-on-surface font-semibold" for="dl-number">
+              Indian Driving Licence Number
+            </label>
+<span class="text-label-sm font-label-sm text-secondary font-bold">RTO Verified Format</span>
+</div>
+<div class="relative flex items-center">
+<div class="absolute left-3.5 flex items-center pointer-events-none text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]" data-icon="credit_card">credit_card</span>
+</div>
+<input class="w-full h-[52px] pl-11 pr-11 bg-surface-container-lowest border border-outline-variant/60 rounded-xl text-body-lg font-body-lg font-bold text-on-surface tracking-wide focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary uppercase transition-all" id="dl-number" placeholder="e.g. MH02 20190012345" type="text" value="KA01 20220005678"/>
+<div class="absolute right-3.5 flex items-center text-emerald-600">
+<span class="material-symbols-outlined text-[20px]" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+</div>
+<!-- Date of Birth Input -->
+<div class="space-y-1.5">
+<label class="text-label-md font-label-md text-on-surface font-semibold" for="dob-input">
+            Date of Birth (As per DL)
+          </label>
+<div class="relative flex items-center">
+<div class="absolute left-3.5 flex items-center pointer-events-none text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]" data-icon="calendar_month">calendar_month</span>
+</div>
+<input class="w-full h-[52px] pl-11 pr-4 bg-surface-container-lowest border border-outline-variant/60 rounded-xl text-body-md font-body-md font-bold text-on-surface tracking-wider focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" id="dob-input" placeholder="DD / MM / YYYY" type="text" value="15 / 08 / 1995"/>
+</div>
+</div>
+<!-- Dual Upload Cards -->
+<div class="grid grid-cols-2 gap-3 pt-1">
+<!-- Card 1: Front -->
+<div class="border-2 border-dashed border-outline-variant/60 hover:border-primary rounded-xl p-3 flex flex-col items-center text-center justify-center bg-surface-container-low/40 active:scale-[0.98] transition-all cursor-pointer group">
+<div class="w-10 h-10 rounded-full bg-surface-container-lowest shadow-sm flex items-center justify-center text-on-surface mb-2 group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="add_a_photo">add_a_photo</span>
+</div>
+<span class="text-label-md font-label-md font-bold text-primary mb-0.5">DL Front</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Tap to snap or PNG/JPG (Max 5MB)</span>
+</div>
+<!-- Card 2: Back -->
+<div class="border-2 border-dashed border-outline-variant/60 hover:border-primary rounded-xl p-3 flex flex-col items-center text-center justify-center bg-surface-container-low/40 active:scale-[0.98] transition-all cursor-pointer group">
+<div class="w-10 h-10 rounded-full bg-surface-container-lowest shadow-sm flex items-center justify-center text-on-surface mb-2 group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="document_scanner">document_scanner</span>
+</div>
+<span class="text-label-md font-label-md font-bold text-primary mb-0.5">DL Back</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Vehicle classes &amp; validity seal</span>
+</div>
+</div>
+</section>
+<!-- 6. Liveness Selfie Verification -->
+<section class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/30 shadow-sm space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-secondary text-[20px]" data-icon="face">face</span>
+<h3 class="text-headline-sm font-headline-sm font-bold text-primary">Liveness Check</h3>
+</div>
+<span class="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-label-sm font-label-sm font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+<span>AI Active</span>
+</span>
+</div>
+<!-- Scanner Simulation Frame -->
+<div class="relative w-full py-4 flex flex-col items-center justify-center bg-surface-container-low rounded-xl overflow-hidden border border-outline-variant/30">
+<!-- Ambient camera grid lines -->
+<div class="absolute inset-0 opacity-10 bg-[radial-gradient(#121316_1px,transparent_1px)] [background-size:12px_12px]"></div>
+<!-- Pulsing Facial Oval Guideline -->
+<div class="relative w-28 h-36 rounded-[50%] border-2 border-secondary-container animate-pulse-subtle flex items-center justify-center bg-surface-container-lowest/80 shadow-md">
+<span class="material-symbols-outlined text-outline/50 text-[54px]" data-icon="account_circle">account_circle</span>
+<div class="absolute -top-1 w-4 h-1 bg-secondary-container rounded-full"></div>
+<div class="absolute -bottom-1 w-4 h-1 bg-secondary-container rounded-full"></div>
+<div class="absolute -left-1 w-1 h-4 bg-secondary-container rounded-full"></div>
+<div class="absolute -right-1 w-1 h-4 bg-secondary-container rounded-full"></div>
+</div>
+<p class="mt-3 text-label-md font-label-md font-bold text-on-surface text-center px-4">
+            Take a quick 3-second selfie to match licence photo
+          </p>
+<p class="text-label-sm font-label-sm text-on-surface-variant text-center mt-0.5">
+            Keep spectacles &amp; face mask off • Ensure ambient lighting
+          </p>
+<button class="mt-3 px-5 py-2 rounded-full bg-primary text-on-primary text-label-md font-label-md font-bold flex items-center space-x-1.5 shadow-sm active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[16px] text-secondary-container" data-icon="photo_camera">photo_camera</span>
+<span>Open Camera Check</span>
+</button>
+</div>
+</section>
+<!-- 7. Compliance & Privacy Guarantee Accordion/Card -->
+<section class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/30 shadow-sm space-y-3">
+<div class="flex items-center space-x-2 text-primary font-bold">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]" data-icon="shield">shield</span>
+<h4 class="text-headline-sm font-headline-sm font-bold text-primary">Why is KYC mandatory before trip?</h4>
+</div>
+<ul class="space-y-2.5 pt-1">
+<li class="flex items-start space-x-2.5">
+<div class="w-5 h-5 rounded-full bg-surface-container flex items-center justify-center shrink-0 mt-0.5 text-on-surface">
+<span class="text-label-sm font-label-sm font-bold">1</span>
+</div>
+<div>
+<p class="text-label-md font-label-md font-bold text-on-surface">Motor Vehicles Act 1988 Compliance</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Mandatory central government regulation for self-drive commercial rental authorization.</p>
+</div>
+</li>
+<li class="flex items-start space-x-2.5">
+<div class="w-5 h-5 rounded-full bg-surface-container flex items-center justify-center shrink-0 mt-0.5 text-on-surface">
+<span class="text-label-sm font-label-sm font-bold">2</span>
+</div>
+<div>
+<p class="text-label-md font-label-md font-bold text-on-surface">Insurance Damage Protection</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Ensures zero-liability comprehensive vehicle insurance remains legally valid on road trips.</p>
+</div>
+</li>
+<li class="flex items-start space-x-2.5">
+<div class="w-5 h-5 rounded-full bg-surface-container flex items-center justify-center shrink-0 mt-0.5 text-on-surface">
+<span class="text-label-sm font-label-sm font-bold">3</span>
+</div>
+<div>
+<p class="text-label-md font-label-md font-bold text-on-surface">End-to-End 256-Bit Bank-Grade Encryption</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Your documents are directly verified with official registries and never stored or shared with unapproved parties.</p>
+</div>
+</li>
+</ul>
+</section>
+</div>
+<!-- 8. Sticky Bottom Action Bar -->
+<footer class="fixed bottom-0 left-0 right-0 max-w-[390px] mx-auto z-40 bg-surface/95 backdrop-blur-xl border-t border-outline-variant/30 px-margin pt-2.5 pb-6 space-y-2 shadow-2xl">
+<!-- Trust microcopy -->
+<div class="flex items-center justify-center space-x-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px] text-emerald-600" data-icon="lock">lock</span>
+<span class="text-label-sm font-label-sm font-medium tracking-tight">Encrypted via DigiLocker &amp; UIDAI gateway</span>
+</div>
+<!-- Warm Amber-Gold Primary CTA -->
+<button class="w-full h-[52px] bg-secondary-container hover:bg-secondary-fixed-dim text-primary font-extrabold rounded-full flex items-center justify-center space-x-2 shadow-md active:scale-95 transition-all duration-150" type="button">
+<span class="text-label-lg font-label-lg tracking-tight font-extrabold text-primary">Submit &amp; Unlock Car</span>
+<span class="material-symbols-outlined text-[20px] font-bold text-primary" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</footer>
+</main>
+</body></html>

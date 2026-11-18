@@ -1,0 +1,395 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Airport Transfers & Self-Drive India | Flight Radar Tracking & Fixed Fares | Rentora{% endblock %}
+{% block meta_description %}Book reliable airport transfers and terminal self-drive car pickups across Bengaluru BLR, Delhi DEL, Mumbai BOM, Hyderabad HYD, Pune PNQ, and Chennai MAA. Zero delay charges, live flight tracking, and all-inclusive pricing.{% endblock %}
+
+{% block content %}
+<!-- Airport Transfer Hero Section with Booking Capsule -->
+<section class="relative pt-24 sm:pt-32 pb-20 bg-[#09090b] text-white overflow-hidden text-center">
+    <!-- Background Hero Media -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute inset-0 bg-black/75 z-[1]"></div>
+        <div class="hero-car absolute inset-0 bg-cover bg-center opacity-40 scale-105 transition-transform duration-1000" style="background-image: url('{% static 'images/hero/hero-main.webp' %}');"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-[#09090b] z-[2]"></div>
+    </div>
+
+    <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 flex flex-col items-center">
+        <!-- Live Status Pill -->
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-white backdrop-blur-md text-xs font-black uppercase tracking-wider mb-6 shadow-sm">
+            <span class="material-symbols-outlined text-sm text-[#FF5F00]">flight_takeoff</span>
+            <span>Live Flight Radar Tracking • 60 Min Free Waiting • Fixed All-Inclusive Rates</span>
+        </div>
+
+        <h1 class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-[900] tracking-tight mb-5 leading-tight text-white drop-shadow-2xl">
+            Airport Transfers, <br class="hidden sm:inline"/>
+            <span class="bg-gradient-to-r from-[#FF5F00] via-amber-300 to-[#10b981] bg-clip-text text-transparent">Guaranteed On-Time.</span>
+        </h1>
+
+        <p class="text-slate-300 text-sm sm:text-base md:text-lg max-w-2xl mx-auto font-medium leading-relaxed mb-10">
+            Step off the plane directly into your sanitized car. Choose terminal self-drive delivery or executive chauffeur meet-and-greet across all major Indian international airports.
+        </p>
+
+        <!-- Airport Booking Capsule Card -->
+        <div class="w-full max-w-5xl bg-white dark:bg-zinc-900 rounded-3xl p-5 sm:p-7 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.5)] border border-slate-200 dark:border-zinc-800 text-left text-slate-900 dark:text-white">
+            
+            <!-- Service Mode Radios -->
+            <div class="flex items-center gap-3 mb-6 border-b border-slate-100 dark:border-zinc-800 pb-4 overflow-x-auto">
+                <button type="button" onclick="setAirportMode('pickup')" id="mode-btn-pickup" class="airport-mode-pill px-4 py-2 rounded-full bg-[#FF5F00] text-white font-black text-xs sm:text-sm inline-flex items-center gap-2 whitespace-nowrap shadow-sm">
+                    <span class="material-symbols-outlined text-base">flight_land</span>
+                    <span>Pickup From Airport</span>
+                </button>
+                <button type="button" onclick="setAirportMode('drop')" id="mode-btn-drop" class="airport-mode-pill px-4 py-2 rounded-full bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 font-bold text-xs sm:text-sm inline-flex items-center gap-2 whitespace-nowrap">
+                    <span class="material-symbols-outlined text-base">flight_takeoff</span>
+                    <span>Drop To Airport</span>
+                </button>
+                <button type="button" onclick="setAirportMode('selfdrive')" id="mode-btn-selfdrive" class="airport-mode-pill px-4 py-2 rounded-full bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 font-bold text-xs sm:text-sm inline-flex items-center gap-2 whitespace-nowrap">
+                    <span class="material-symbols-outlined text-base">key</span>
+                    <span>Airport Self-Drive Delivery</span>
+                </button>
+            </div>
+
+            <!-- Booking Inputs Grid -->
+            <form action="{% url 'cars' %}" method="get" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                <input type="hidden" name="delivery" value="airport">
+                <input type="hidden" name="airport_service_mode" id="service-mode-input" value="pickup">
+
+                <!-- 1. Airport Selector -->
+                <div class="p-3 bg-slate-50 dark:bg-zinc-800/80 rounded-2xl border border-slate-200 dark:border-zinc-700">
+                    <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-1">Select Airport</label>
+                    <select name="location" id="airport-select" class="w-full bg-transparent border-none p-0 text-slate-900 dark:text-white text-xs sm:text-sm font-black focus:ring-0 outline-none cursor-pointer">
+                        <option value="Kempegowda Intl Airport (BLR)" class="text-slate-900">Kempegowda Airport (BLR) - Bengaluru</option>
+                        <option value="Indira Gandhi Intl Airport (DEL)" class="text-slate-900">Indira Gandhi Airport (DEL) - Delhi NCR</option>
+                        <option value="Chhatrapati Shivaji Intl Airport (BOM)" class="text-slate-900">Chhatrapati Shivaji Airport (BOM) - Mumbai</option>
+                        <option value="Rajiv Gandhi Intl Airport (HYD)" class="text-slate-900">Rajiv Gandhi Airport (HYD) - Hyderabad</option>
+                        <option value="Pune Intl Airport (PNQ)" class="text-slate-900">Pune Airport (PNQ) - Pune</option>
+                        <option value="Chennai Intl Airport (MAA)" class="text-slate-900">Chennai Airport (MAA) - Chennai</option>
+                    </select>
+                </div>
+
+                <!-- 2. Flight Number & Radar -->
+                <div class="p-3 bg-slate-50 dark:bg-zinc-800/80 rounded-2xl border border-slate-200 dark:border-zinc-700">
+                    <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-1">Flight Number (Optional)</label>
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[#FF5F00] text-sm">radar</span>
+                        <input type="text" name="flight_no" placeholder="e.g. 6E-204 / AI-508" class="w-full bg-transparent border-none p-0 text-slate-900 dark:text-white text-xs sm:text-sm font-bold uppercase placeholder:text-slate-400 focus:ring-0 outline-none">
+                    </div>
+                </div>
+
+                <!-- 3. Terminal & Time -->
+                <div class="p-3 bg-slate-50 dark:bg-zinc-800/80 rounded-2xl border border-slate-200 dark:border-zinc-700">
+                    <label class="block text-[10px] font-black uppercase tracking-wider text-slate-400 mb-1">Terminal & Flight Time</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <select name="terminal" class="w-full bg-transparent border-none p-0 text-slate-900 dark:text-white text-xs font-bold focus:ring-0 outline-none cursor-pointer">
+                            <option value="T1" class="text-slate-900">Terminal 1</option>
+                            <option value="T2" selected class="text-slate-900">Terminal 2</option>
+                            <option value="T3" class="text-slate-900">Terminal 3</option>
+                        </select>
+                        <select name="pickup_time" class="w-full bg-transparent border-none p-0 text-slate-900 dark:text-white text-xs font-bold focus:ring-0 outline-none cursor-pointer">
+                            <option value="06:00" class="text-slate-900">06:00 am</option>
+                            <option value="09:00" class="text-slate-900">09:00 am</option>
+                            <option value="12:00" class="text-slate-900">12:00 pm</option>
+                            <option value="15:00" class="text-slate-900">03:00 pm</option>
+                            <option value="18:00" selected class="text-slate-900">06:00 pm</option>
+                            <option value="21:00" class="text-slate-900">09:00 pm</option>
+                            <option value="23:30" class="text-slate-900">11:30 pm</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 4. Submit CTA -->
+                <div class="flex items-center">
+                    <button type="submit" class="w-full h-full min-h-[50px] py-3.5 px-6 rounded-2xl bg-[#FF5F00] hover:bg-[#e05300] active:scale-95 text-white font-black text-xs sm:text-sm uppercase tracking-wider shadow-lg shadow-[#FF5F00]/30 transition-all flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-lg">search</span>
+                        <span>Find Airport Rides</span>
+                    </button>
+                </div>
+            </form>
+
+            <div class="mt-4 pt-3 border-t border-slate-100 dark:border-zinc-800 flex flex-wrap items-center justify-between text-xs text-slate-500 font-medium">
+                <span class="flex items-center gap-1.5"><span class="text-[#10b981]">✓</span> All toll and parking entry fees included in price</span>
+                <span class="flex items-center gap-1.5"><span class="text-[#10b981]">✓</span> 60 mins complimentary waiting time after flight touchdown</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 3 Airport Service Modes -->
+<section class="py-20 bg-slate-50 dark:bg-zinc-950 border-b border-slate-200 dark:border-zinc-800">
+    <div class="max-w-7xl 2xl:max-w-[1500px] mx-auto px-4 sm:px-6">
+        <div class="text-center mb-16">
+            <span class="text-[#FF5F00] dark:text-[#FF7A29] font-black bg-[#FFF2EA] dark:bg-zinc-800 border border-[#FF5F00]/20 px-3.5 py-1 rounded-full tracking-[0.25em] uppercase text-[10px] mb-3 inline-block">Flexible Options</span>
+            <h2 class="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">Three Ways To Move From The Terminal</h2>
+            <p class="text-xs sm:text-sm text-slate-500 dark:text-zinc-400 font-medium max-w-xl mx-auto mt-2">Tailored for busy business travelers, family holidays, and independent self-drivers.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+            <!-- Mode 1: Terminal Keyless Self-Drive -->
+            <div class="p-8 rounded-3xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group">
+                <div>
+                    <div class="w-14 h-14 rounded-2xl bg-orange-100 text-[#FF5F00] flex items-center justify-center mb-6 shadow-sm">
+                        <span class="material-symbols-outlined text-3xl font-bold">key</span>
+                    </div>
+                    <span class="text-[10px] font-black uppercase tracking-wider text-[#FF5F00] bg-orange-50 px-3 py-1 rounded-full border border-orange-200">Self-Drive Terminal Bay</span>
+                    <h3 class="text-xl font-black text-slate-900 dark:text-white mt-4 mb-2">Terminal Self-Drive Delivery</h3>
+                    <p class="text-xs text-slate-500 font-semibold leading-relaxed mb-6">
+                        Your chosen car is parked in the airport short-stay parking bay. Walk directly from baggage reclaim, unlock with your phone, and drive away in under 3 minutes.
+                    </p>
+                </div>
+                <div class="pt-4 border-t border-slate-100 dark:border-zinc-800 text-xs font-bold text-slate-700 dark:text-slate-300 space-y-2">
+                    <div class="flex items-center gap-2"><span class="text-[#10b981]">✓</span> Zero rental counter queues</div>
+                    <div class="flex items-center gap-2"><span class="text-[#10b981]">✓</span> Keyless Bluetooth phone unlock</div>
+                    <div class="flex items-center gap-2"><span class="text-[#10b981]">✓</span> Full privacy with your family</div>
+                </div>
+            </div>
+
+            <!-- Mode 2: Executive Chauffeur Meet & Greet -->
+            <div class="p-8 rounded-3xl bg-white dark:bg-zinc-900 border-2 border-[#FF5F00]/40 shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group relative">
+                <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#FF5F00] text-white text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-full shadow-md">
+                    Recommended For Business
+                </span>
+                <div>
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-[#10b981] flex items-center justify-center mb-6 shadow-sm">
+                        <span class="material-symbols-outlined text-3xl font-bold">person_pin</span>
+                    </div>
+                    <span class="text-[10px] font-black uppercase tracking-wider text-[#10b981] bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">Meet & Greet Chauffeur</span>
+                    <h3 class="text-xl font-black text-slate-900 dark:text-white mt-4 mb-2">Chauffeur Arrival Placard</h3>
+                    <p class="text-xs text-slate-500 font-semibold leading-relaxed mb-6">
+                        A verified, uniformed chauffeur awaits you at the terminal arrivals gate holding a personalized name placard. Full assistance with luggage to your AC car.
+                    </p>
+                </div>
+                <div class="pt-4 border-t border-slate-100 dark:border-zinc-800 text-xs font-bold text-slate-700 dark:text-slate-300 space-y-2">
+                    <div class="flex items-center gap-2"><span class="text-[#10b981]">✓</span> Personalized arrival name board</div>
+                    <div class="flex items-center gap-2"><span class="text-[#10b981]">✓</span> Flight radar tracking for delays</div>
+                    <div class="flex items-center gap-2"><span class="text-[#10b981]">✓</span> Complimentary mineral water & Wi-Fi</div>
+                </div>
+            </div>
+
+            <!-- Mode 3: Fixed City Express -->
+            <div class="p-8 rounded-3xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group">
+                <div>
+                    <div class="w-14 h-14 rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center mb-6 shadow-sm">
+                        <span class="material-symbols-outlined text-3xl font-bold">domain</span>
+                    </div>
+                    <span class="text-[10px] font-black uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1 rounded-full border border-sky-200">Fixed Upfront Fares</span>
+                    <h3 class="text-xl font-black text-slate-900 dark:text-white mt-4 mb-2">City Hub Express</h3>
+                    <p class="text-xs text-slate-500 font-semibold leading-relaxed mb-6">
+                        Guaranteed upfront fixed fares to major IT parks, central business districts, and 5-star hotels. Zero surge pricing during rains, peak hours, or late nights.
+                    </p>
+                </div>
+                <div class="pt-4 border-t border-slate-100 dark:border-zinc-800 text-xs font-bold text-slate-700 dark:text-slate-300 space-y-2">
+                    <div class="flex items-center gap-2"><span class="text-[#10b981]">✓</span> 0% Surge pricing guaranteed</div>
+                    <div class="flex items-center gap-2"><span class="text-[#10b981]">✓</span> All toll expressway tickets included</div>
+                    <div class="flex items-center gap-2"><span class="text-[#10b981]">✓</span> GST invoice sent directly to email</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Popular Airport Fleet Categories -->
+<section class="py-20 bg-white dark:bg-zinc-900 border-b border-slate-200/80 dark:border-zinc-800">
+    <div class="max-w-7xl 2xl:max-w-[1500px] mx-auto px-4 sm:px-6">
+        <div class="text-center mb-14">
+            <span class="text-[#FF5F00] dark:text-[#FF7A29] font-black bg-[#FFF2EA] dark:bg-zinc-800 border border-[#FF5F00]/20 px-3.5 py-1 rounded-full tracking-[0.25em] uppercase text-[10px] mb-3 inline-block">Terminal Fleet</span>
+            <h2 class="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">Vehicles Configured For Airport Travel</h2>
+            <p class="text-xs sm:text-sm text-slate-500 dark:text-zinc-400 font-medium max-w-xl mx-auto mt-2">Ample luggage boots, high roof clearance, and chilled air conditioning.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Vehicle 1: Executive Sedan -->
+            <div class="p-6 rounded-3xl bg-slate-50 dark:bg-zinc-800/60 border border-slate-200 dark:border-zinc-700 shadow-sm flex flex-col justify-between group">
+                <div>
+                    <span class="px-3 py-1 rounded-full bg-slate-200 text-slate-800 text-[10px] font-black uppercase">Executive Sedan</span>
+                    <div class="h-36 rounded-2xl overflow-hidden bg-white dark:bg-zinc-900 p-2 my-3 flex items-center justify-center border border-slate-100 dark:border-zinc-700/60">
+                        <img src="/media/cars/hondacity.webp" alt="Honda City" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" onerror="this.src='/static/images/hero/hero-main.webp'">
+                    </div>
+                    <h3 class="text-lg font-black text-slate-900 dark:text-white mb-1">Honda City / Dzire</h3>
+                    <p class="text-xs text-slate-500 font-semibold mb-4">Up to 4 Passengers • 2 Large Suitcases</p>
+                    <div class="text-xs text-slate-600 dark:text-slate-300 space-y-1.5 mb-4">
+                        <div>• Fixed Airport Drop: <strong>₹1,199</strong></div>
+                        <div>• Terminal Self-Drive: <strong>₹1,850/day</strong></div>
+                    </div>
+                </div>
+                <a href="{% url 'cars' %}?category=Sedan" class="w-full min-h-[40px] flex items-center justify-center py-2.5 rounded-xl bg-slate-900 hover:bg-[#FF5F00] text-white text-xs font-black uppercase tracking-wider text-center transition-colors active:scale-[0.98]">
+                    View Sedans
+                </a>
+            </div>
+
+            <!-- Vehicle 2: Premium Family SUV -->
+            <div class="p-6 rounded-3xl bg-slate-50 dark:bg-zinc-800/60 border border-slate-200 dark:border-zinc-700 shadow-sm flex flex-col justify-between group">
+                <div>
+                    <span class="px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-[10px] font-black uppercase">Family SUV</span>
+                    <div class="h-36 rounded-2xl overflow-hidden bg-white dark:bg-zinc-900 p-2 my-3 flex items-center justify-center border border-slate-100 dark:border-zinc-700/60">
+                        <img src="/media/cars/xuv700.webp" alt="Mahindra XUV700" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" onerror="this.src='/static/images/hero/hero-main.webp'">
+                    </div>
+                    <h3 class="text-lg font-black text-slate-900 dark:text-white mb-1">Mahindra XUV700 / Creta</h3>
+                    <p class="text-xs text-slate-500 font-semibold mb-4">Up to 5 Passengers • 3 Suitcases</p>
+                    <div class="text-xs text-slate-600 dark:text-slate-300 space-y-1.5 mb-4">
+                        <div>• Fixed Airport Drop: <strong>₹1,699</strong></div>
+                        <div>• Terminal Self-Drive: <strong>₹2,800/day</strong></div>
+                    </div>
+                </div>
+                <a href="{% url 'cars' %}?category=SUV" class="w-full min-h-[40px] flex items-center justify-center py-2.5 rounded-xl bg-slate-900 hover:bg-[#FF5F00] text-white text-xs font-black uppercase tracking-wider text-center transition-colors active:scale-[0.98]">
+                    View SUVs
+                </a>
+            </div>
+
+            <!-- Vehicle 3: Luxury MPV -->
+            <div class="p-6 rounded-3xl bg-slate-50 dark:bg-zinc-800/60 border-2 border-[#FF5F00]/40 shadow-md flex flex-col justify-between group">
+                <div>
+                    <span class="px-3 py-1 rounded-full bg-orange-100 text-[#FF5F00] text-[10px] font-black uppercase">Luggage King</span>
+                    <div class="h-36 rounded-2xl overflow-hidden bg-white dark:bg-zinc-900 p-2 my-3 flex items-center justify-center border border-slate-100 dark:border-zinc-700/60">
+                        <img src="/media/cars/innovacrysta.webp" alt="Toyota Innova Crysta" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" onerror="this.src='/static/images/hero/hero-main.webp'">
+                    </div>
+                    <h3 class="text-lg font-black text-slate-900 dark:text-white mb-1">Toyota Innova Crysta</h3>
+                    <p class="text-xs text-slate-500 font-semibold mb-4">Up to 7 Passengers • 5 Large Suitcases</p>
+                    <div class="text-xs text-slate-600 dark:text-slate-300 space-y-1.5 mb-4">
+                        <div>• Fixed Airport Drop: <strong>₹2,299</strong></div>
+                        <div>• Terminal Self-Drive: <strong>₹3,400/day</strong></div>
+                    </div>
+                </div>
+                <a href="{% url 'cars' %}?category=MPV" class="w-full min-h-[40px] flex items-center justify-center py-2.5 rounded-xl bg-[#FF5F00] hover:bg-[#e05300] text-white text-xs font-black uppercase tracking-wider text-center transition-colors shadow-md active:scale-[0.98]">
+                    View Innova MPVs
+                </a>
+            </div>
+
+            <!-- Vehicle 4: VIP German Luxury -->
+            <div class="p-6 rounded-3xl bg-slate-50 dark:bg-zinc-800/60 border border-slate-200 dark:border-zinc-700 shadow-sm flex flex-col justify-between group">
+                <div>
+                    <span class="px-3 py-1 rounded-full bg-purple-100 text-purple-900 text-[10px] font-black uppercase">VIP Chauffeur</span>
+                    <div class="h-36 rounded-2xl overflow-hidden bg-white dark:bg-zinc-900 p-2 my-3 flex items-center justify-center border border-slate-100 dark:border-zinc-700/60">
+                        <img src="/media/cars/bmw5series.webp" alt="BMW 5 Series" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" onerror="this.src='/static/images/hero/hero-main.webp'">
+                    </div>
+                    <h3 class="text-lg font-black text-slate-900 dark:text-white mb-1">BMW 5 Series / Mercedes</h3>
+                    <p class="text-xs text-slate-500 font-semibold mb-4">Up to 4 Passengers • Premium Executive</p>
+                    <div class="text-xs text-slate-600 dark:text-slate-300 space-y-1.5 mb-4">
+                        <div>• Fixed Airport Drop: <strong>₹4,999</strong></div>
+                        <div>• Terminal Self-Drive: <strong>₹7,500/day</strong></div>
+                    </div>
+                </div>
+                <a href="{% url 'cars' %}?fleet=premium" class="w-full min-h-[40px] flex items-center justify-center py-2.5 rounded-xl bg-slate-900 hover:bg-[#FF5F00] text-white text-xs font-black uppercase tracking-wider text-center transition-colors active:scale-[0.98]">
+                    View Luxury
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Major Airports Served Across India -->
+<section class="py-20 bg-slate-50 dark:bg-zinc-950 border-b border-slate-200 dark:border-zinc-800">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-14">
+            <span class="text-[#FF5F00] dark:text-[#FF7A29] font-black bg-[#FFF2EA] dark:bg-zinc-800 border border-[#FF5F00]/20 px-3.5 py-1 rounded-full tracking-[0.25em] uppercase text-[10px] mb-3 inline-block">Terminal Network</span>
+            <h2 class="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">Active Indian Airport Terminals</h2>
+            <p class="text-xs sm:text-sm text-slate-500 dark:text-zinc-400 font-medium max-w-xl mx-auto mt-2">Rentora maintains dedicated short-stay pickup bays and parking vouchers at all 6 international hubs.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div class="p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 flex items-start gap-3.5">
+                <span class="w-10 h-10 rounded-xl bg-orange-50 text-[#FF5F00] font-black flex items-center justify-center shrink-0">BLR</span>
+                <div>
+                    <h4 class="text-sm font-black text-slate-900 dark:text-white">Kempegowda Intl Airport</h4>
+                    <p class="text-xs text-slate-500 font-semibold">Bengaluru • Terminal 1 & 2 Pickup Bay 4B</p>
+                </div>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 flex items-start gap-3.5">
+                <span class="w-10 h-10 rounded-xl bg-orange-50 text-[#FF5F00] font-black flex items-center justify-center shrink-0">DEL</span>
+                <div>
+                    <h4 class="text-sm font-black text-slate-900 dark:text-white">Indira Gandhi Intl Airport</h4>
+                    <p class="text-xs text-slate-500 font-semibold">Delhi NCR • T1, T2 & T3 Multi-Level Bay</p>
+                </div>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 flex items-start gap-3.5">
+                <span class="w-10 h-10 rounded-xl bg-orange-50 text-[#FF5F00] font-black flex items-center justify-center shrink-0">BOM</span>
+                <div>
+                    <h4 class="text-sm font-black text-slate-900 dark:text-white">Chhatrapati Shivaji Maharaj Airport</h4>
+                    <p class="text-xs text-slate-500 font-semibold">Mumbai • Terminal 1 & T2 West Bay</p>
+                </div>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 flex items-start gap-3.5">
+                <span class="w-10 h-10 rounded-xl bg-orange-50 text-[#FF5F00] font-black flex items-center justify-center shrink-0">HYD</span>
+                <div>
+                    <h4 class="text-sm font-black text-slate-900 dark:text-white">Rajiv Gandhi Intl Airport</h4>
+                    <p class="text-xs text-slate-500 font-semibold">Hyderabad • Shamshabad Expressway Bay</p>
+                </div>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 flex items-start gap-3.5">
+                <span class="w-10 h-10 rounded-xl bg-orange-50 text-[#FF5F00] font-black flex items-center justify-center shrink-0">PNQ</span>
+                <div>
+                    <h4 class="text-sm font-black text-slate-900 dark:text-white">Pune Intl Airport</h4>
+                    <p class="text-xs text-slate-500 font-semibold">Pune • Lohegaon Arrival Gate 2</p>
+                </div>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 flex items-start gap-3.5">
+                <span class="w-10 h-10 rounded-xl bg-orange-50 text-[#FF5F00] font-black flex items-center justify-center shrink-0">MAA</span>
+                <div>
+                    <h4 class="text-sm font-black text-slate-900 dark:text-white">Chennai Intl Airport</h4>
+                    <p class="text-xs text-slate-500 font-semibold">Chennai • Meenambakkam MLCP Bay</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Airport FAQs -->
+<section class="py-20 bg-white dark:bg-zinc-900">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-12">
+            <span class="text-[#FF5F00] dark:text-[#FF7A29] font-black bg-[#FFF2EA] dark:bg-zinc-800 border border-[#FF5F00]/20 px-3.5 py-1 rounded-full tracking-[0.25em] uppercase text-[10px] mb-3 inline-block">Airport Assistance</span>
+            <h2 class="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">Airport Transfer Questions</h2>
+        </div>
+
+        <div class="space-y-4">
+            <details class="p-5 rounded-2xl bg-slate-50 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 group cursor-pointer">
+                <summary class="font-black text-sm text-slate-900 dark:text-white flex items-center justify-between">
+                    <span>What happens if my flight is delayed?</span>
+                    <span class="material-symbols-outlined text-slate-400 group-open:rotate-180 transition-transform">expand_more</span>
+                </summary>
+                <p class="text-xs text-slate-600 dark:text-slate-300 font-medium mt-3 leading-relaxed">
+                    When you enter your flight number, our system tracks flight radar in real-time. If your flight is delayed by 30 minutes or 3 hours, our driver and vehicle schedule updates automatically with 60 minutes of complimentary waiting time after touchdown.
+                </p>
+            </details>
+
+            <details class="p-5 rounded-2xl bg-slate-50 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 group cursor-pointer">
+                <summary class="font-black text-sm text-slate-900 dark:text-white flex items-center justify-between">
+                    <span>Are airport toll charges and parking vouchers included?</span>
+                    <span class="material-symbols-outlined text-slate-400 group-open:rotate-180 transition-transform">expand_more</span>
+                </summary>
+                <p class="text-xs text-slate-600 dark:text-slate-300 font-medium mt-3 leading-relaxed">
+                    Yes! All Rentora airport bookings are 100% all-inclusive. Airport parking entry fees and expressway toll tickets are included in your quote, so you never have to pay extra cash upon exit.
+                </p>
+            </details>
+
+            <details class="p-5 rounded-2xl bg-slate-50 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 group cursor-pointer">
+                <summary class="font-black text-sm text-slate-900 dark:text-white flex items-center justify-between">
+                    <span>How do I find my self-drive car or chauffeur?</span>
+                    <span class="material-symbols-outlined text-slate-400 group-open:rotate-180 transition-transform">expand_more</span>
+                </summary>
+                <p class="text-xs text-slate-600 dark:text-slate-300 font-medium mt-3 leading-relaxed">
+                    For Chauffeur Meet & Greet, your driver stands right at the Arrivals Gate holding a Rentora placard with your name. For Terminal Self-Drive, you receive the exact parking bay number and keyless Bluetooth unlock pin via SMS/WhatsApp as soon as you land.
+                </p>
+            </details>
+        </div>
+    </div>
+</section>
+
+<script>
+function setAirportMode(mode) {
+    document.querySelectorAll('.airport-mode-pill').forEach(b => {
+        b.className = "airport-mode-pill px-4 py-2 rounded-full bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 font-bold text-xs sm:text-sm inline-flex items-center gap-2 whitespace-nowrap";
+    });
+    const activeBtn = document.getElementById(`mode-btn-${mode}`);
+    if (activeBtn) {
+        activeBtn.className = "airport-mode-pill px-4 py-2 rounded-full bg-[#FF5F00] text-white font-black text-xs sm:text-sm inline-flex items-center gap-2 whitespace-nowrap shadow-sm";
+    }
+    const input = document.getElementById('service-mode-input');
+    if (input) input.value = mode;
+}
+</script>
+{% endblock %}

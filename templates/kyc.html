@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Identity & Licence KYC - Rentora Mobility{% endblock %}
+
+{% block meta_description %}Instant 60-second DigiLocker driving licence verification for self-drive rentals in Odisha.{% endblock %}
+
+{% block content %}
+<div class="bg-surface text-on-surface font-body-md antialiased selection:bg-secondary-container selection:text-tertiary min-h-screen pb-28 lg:pb-16">
+
+  <!-- Sub-Nav Header -->
+  <div class="max-w-xl mx-auto px-4 sm:px-6 pt-4 pb-2 flex items-center justify-between">
+    <a href="{% url 'profile' %}" class="w-9 h-9 rounded-full bg-surface-container-lowest border border-outline-variant/40 flex items-center justify-center text-primary shadow-xs active:scale-95 transition-transform" aria-label="Go back">
+      <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+    </a>
+    <div class="text-center">
+      <h1 class="font-headline-sm text-sm sm:text-base font-bold text-primary">Identity & Licence KYC</h1>
+      <p class="font-label-sm text-[10px] text-on-surface-variant font-medium">Bhubaneswar Mobility • 60-Sec Check</p>
+    </div>
+    <div class="w-9"></div>
+  </div>
+
+  <!-- Main Card Container -->
+  <main class="max-w-xl mx-auto px-4 sm:px-6 py-4 flex flex-col gap-4">
+    
+    <!-- Hero Status Card -->
+    <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/30 shadow-xs flex items-center gap-3.5">
+      <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-200">
+        <span class="material-symbols-outlined text-2xl">verified_user</span>
+      </div>
+      <div>
+        <h2 class="font-bold text-sm sm:text-base text-primary">DigiLocker Fast-Track KYC</h2>
+        <p class="text-xs text-on-surface-variant mt-0.5">Zero paper forms. Fetch your verified Government Driving Licence in 60 seconds.</p>
+      </div>
+    </div>
+
+    <!-- DigiLocker Option Card (Primary Recommendation) -->
+    <section class="bg-surface-container-lowest rounded-3xl p-5 border-2 border-secondary-container shadow-md relative overflow-hidden">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/2/23/DigiLocker_logo.png" alt="DigiLocker" class="h-6 object-contain" onerror="this.style.display='none'"/>
+          <span class="font-bold text-xs uppercase tracking-wider text-primary">Government of India Verified</span>
+        </div>
+        <span class="px-2 py-0.5 rounded-full bg-secondary-container text-primary font-bold text-[10px] uppercase">
+          RECOMMENDED
+        </span>
+      </div>
+
+      <p class="text-xs text-on-surface-variant leading-relaxed mb-4">
+        Authenticate securely via UIDAI / Parivahan Sewa to instantly approve your rental eligibility without human delays.
+      </p>
+
+      <div class="space-y-2 mb-4 text-xs">
+        <div class="flex items-center gap-2 text-on-surface">
+          <span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span>
+          <span>Aadhaar Identity confirmation</span>
+        </div>
+        <div class="flex items-center gap-2 text-on-surface">
+          <span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span>
+          <span>Valid Original Driving Licence fetch</span>
+        </div>
+        <div class="flex items-center gap-2 text-on-surface">
+          <span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span>
+          <span>100% Privacy Compliant & Encrypted</span>
+        </div>
+      </div>
+
+      <button type="button" onclick="alert('Redirecting to Government of India DigiLocker OAuth sandbox...');" class="w-full h-12 rounded-full bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-fixed font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md active:scale-98 transition-all cursor-pointer">
+        <span class="material-symbols-outlined text-lg">bolt</span>
+        <span>Verify Instantly via DigiLocker</span>
+        <span class="material-symbols-outlined text-base">arrow_forward</span>
+      </button>
+    </section>
+
+    <!-- Manual Upload Fallback -->
+    <section class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+      <div class="flex items-center justify-between">
+        <h3 class="font-bold text-xs sm:text-sm text-primary">Manual Document Upload (Fallback)</h3>
+        <span class="text-[11px] text-outline">Takes 2-4 Hours</span>
+      </div>
+
+      <p class="text-xs text-on-surface-variant">
+        If you don't have DigiLocker access, upload clear photos of the front and back of your Driving Licence.
+      </p>
+
+      <div class="grid grid-cols-2 gap-3 mt-1">
+        <label class="cursor-pointer border-2 border-dashed border-outline-variant/60 rounded-2xl p-4 flex flex-col items-center justify-center text-center hover:border-primary transition-colors">
+          <span class="material-symbols-outlined text-2xl text-outline mb-1">badge</span>
+          <span class="text-xs font-bold text-primary">DL Front Side</span>
+          <span class="text-[10px] text-outline mt-0.5">JPG, PNG, PDF</span>
+          <input type="file" class="sr-only" accept="image/*,.pdf" onchange="alert('Front licence image selected.')">
+        </label>
+
+        <label class="cursor-pointer border-2 border-dashed border-outline-variant/60 rounded-2xl p-4 flex flex-col items-center justify-center text-center hover:border-primary transition-colors">
+          <span class="material-symbols-outlined text-2xl text-outline mb-1">flip</span>
+          <span class="text-xs font-bold text-primary">DL Back Side</span>
+          <span class="text-[10px] text-outline mt-0.5">JPG, PNG, PDF</span>
+          <input type="file" class="sr-only" accept="image/*,.pdf" onchange="alert('Back licence image selected.')">
+        </label>
+      </div>
+
+      <button type="button" onclick="alert('Manual documents submitted for review.');" class="w-full mt-2 py-3 rounded-full border border-primary text-primary hover:bg-surface-container font-bold text-xs active:scale-95 transition-all">
+        Submit for Manual Verification
+      </button>
+    </section>
+
+  </main>
+</div>
+{% endblock %}

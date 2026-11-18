@@ -4,92 +4,121 @@
 {% block title %}Booking Confirmed - Rentora{% endblock %}
 
 {% block content %}
-<div class="max-w-3xl mx-auto px-6 py-12 text-center">
-    
-    <!-- Success Animation / Icon -->
-    <div class="w-24 h-24 bg-green-100 text-green-500 rounded-full flex items-center justify-center mx-auto mb-8 relative">
-        <div class="absolute inset-0 bg-green-400/20 rounded-full animate-ping"></div>
-        <span class="material-symbols-outlined text-[3rem] relative z-10">check_circle</span>
-    </div>
-
-    <h1 class="text-4xl font-black mb-4">Booking Confirmed!</h1>
-    <p class="text-slate-500 text-lg mb-8 max-w-lg mx-auto">Your trip with the <strong>{{ booking.car.name }}</strong> has been confirmed. A confirmation email has been sent to <strong>{{ booking.user.email }}</strong>.</p>
-    
-    <!-- Ticket / Receipt Card -->
-    <div class="bg-white dark:bg-slate-900 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-xl overflow-hidden mb-10 text-left relative">
-        <!-- Ticket notches -->
-        <div class="absolute -left-4 top-[5.5rem] w-8 h-8 bg-slate-50 dark:bg-background-dark rounded-full border border-slate-100 dark:border-slate-800 border-l-transparent z-10 -rotate-45"></div>
-        <div class="absolute -right-4 top-[5.5rem] w-8 h-8 bg-slate-50 dark:bg-background-dark rounded-full border border-slate-100 dark:border-slate-800 border-r-transparent z-10 rotate-45"></div>
-        
-        <!-- Header -->
-        <div class="p-6 sm:p-8 bg-slate-900 text-white relative flex justify-between items-center border-b border-dashed border-slate-700">
-            <div>
-                <p class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-widest mb-1">Booking Reference</p>
-                <p class="text-xl font-bold font-mono tracking-wider">{{ booking.booking_reference }}</p>
+<div class="w-full max-w-xl mx-auto px-4 py-8 pb-28 sm:pb-12 flex flex-col gap-6">
+    <!-- Success Celebration Banner -->
+    <section class="flex flex-col items-center text-center pt-2">
+        <!-- Pulsing Celebration Badge -->
+        <div class="relative flex items-center justify-center mb-4">
+            <div class="absolute w-24 h-24 rounded-full bg-primary-container/20 animate-ping opacity-75"></div>
+            <div class="absolute w-20 h-20 rounded-full bg-primary-fixed/40 blur-sm"></div>
+            <div class="relative w-16 h-16 rounded-full bg-primary-container flex items-center justify-center shadow-lg shadow-primary-container/25">
+                <span class="material-symbols-outlined text-[36px] text-on-primary-fixed font-bold">check</span>
             </div>
-            
-            <a href="{% url 'invoice' booking.id %}" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 transition-colors flex items-center justify-center border border-white/10 text-white shadow-sm" title="View & Print Tax Invoice">
-                <span class="material-symbols-outlined text-[1.25rem]">receipt_long</span>
-            </a>
+            <!-- Tiny Decorative Bubbles -->
+            <div class="absolute -top-1 -right-2 w-3.5 h-3.5 rounded-full bg-primary-fixed"></div>
+            <div class="absolute -bottom-1 -left-2 w-2.5 h-2.5 rounded-full bg-primary"></div>
         </div>
 
-        
-        <!-- Body -->
-        <div class="p-6 sm:p-8">
-            <div class="flex gap-4 mb-8">
-                <div class="w-24 h-16 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-center justify-center p-2 shrink-0">
-                    {% if booking.car.image %}
-                    <img src="{{ booking.car.image.url }}" class="w-full h-full object-contain">
-                    {% else %}
-                    <span class="material-symbols-outlined text-3xl text-slate-300">directions_car</span>
-                    {% endif %}
-                </div>
-                <div>
-                    <h3 class="text-lg font-bold leading-tight">{{ booking.car.name }}</h3>
-                    <p class="text-sm font-bold text-accent">{{ booking.car.brand }}</p>
-                </div>
+        <h1 class="font-headline text-2xl sm:text-3xl font-bold text-on-surface tracking-tight mb-1">Booking Confirmed!</h1>
+        <p class="text-sm text-secondary mb-3">Your self-drive trip is all set and confirmed</p>
+
+        <!-- Booking Reference ID Pill -->
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface-container-high text-on-surface">
+            <span class="material-symbols-outlined text-[16px] text-primary">confirmation_number</span>
+            <span class="text-sm font-bold tracking-wide font-mono">{{ booking.booking_reference }}</span>
+        </div>
+    </section>
+
+    <!-- Booking Summary Card -->
+    <section class="bg-surface-container-lowest rounded-3xl p-5 border border-surface-container-high shadow-md flex flex-col gap-4">
+        <!-- Vehicle Overview -->
+        <div class="flex items-center gap-4">
+            <div class="w-24 h-20 rounded-2xl overflow-hidden bg-surface-container-low shrink-0 relative flex items-center justify-center p-2">
+                {% if booking.car.image %}
+                <img class="w-full h-full object-contain" src="{{ booking.car.image.url }}" alt="{{ booking.car.name }}"/>
+                {% elif booking.car.image_url %}
+                <img class="w-full h-full object-contain" src="{{ booking.car.image_url }}" alt="{{ booking.car.name }}"/>
+                {% else %}
+                <span class="material-symbols-outlined text-3xl text-secondary">directions_car</span>
+                {% endif %}
             </div>
-
-            <div class="grid grid-cols-2 gap-6 relative mb-8">
-                <div class="absolute left-1/2 top-2 bottom-2 w-px border-l border-dashed border-slate-200 dark:border-slate-700"></div>
-                <div>
-                    <p class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-widest mb-1">Pickup</p>
-                    <p class="font-bold mb-1">{{ booking.pickup_date|date:"l, M d, Y" }}</p>
-                    <p class="text-sm text-slate-500 mb-2">10:00 AM</p>
-                    <p class="text-xs text-slate-500 truncate max-w-full" title="{{ booking.pickup_location }}">{{ booking.pickup_location }}</p>
-                    {% if booking.is_outstation %}
-                    <span class="mt-2 text-[10px] font-bold text-blue-500 uppercase tracking-widest flex items-center gap-1">
-                        <span class="material-symbols-outlined text-[12px]">distance</span> Outstation
-                    </span>
-                    {% endif %}
-                </div>
-                <div class="pl-4">
-                    <p class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-widest mb-1">Drop-off</p>
-                    <p class="font-bold mb-1">{{ booking.dropoff_date|date:"l, M d, Y" }}</p>
-                    <p class="text-sm text-slate-500 mb-2">10:00 AM</p>
-                    <p class="text-xs text-slate-500 truncate max-w-full" title="{{ booking.dropoff_location }}">{{ booking.dropoff_location }}</p>
-                </div>
-            </div>
-
-
-            <div class="flex justify-between items-end pt-6 border-t border-slate-100 dark:border-slate-700">
-                <div>
-                    <p class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-widest mb-1">Total (Incl. GST)</p>
-                    <span class="px-2 py-0.5 bg-green-100 text-green-700 rounded text-xs font-bold inline-flex items-center gap-1">
-                        <span class="material-symbols-outlined text-[0.8rem]">check</span> Paid
+            <div class="flex flex-col min-w-0 flex-1">
+                <div class="inline-flex items-center gap-1 mb-1">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-surface-container-low text-primary text-[10px] font-bold">
+                        <span class="material-symbols-outlined text-[12px] mr-1">bolt</span>Keyless Unlock
                     </span>
                 </div>
-                <p class="text-3xl font-black">₹{{ booking.total_with_gst }}</p>
-
+                <h2 class="font-headline text-base font-bold text-on-surface truncate">{{ booking.car.name }}</h2>
+                <p class="text-xs text-secondary truncate">{{ booking.car.transmission }} · {{ booking.car.fuel_type }} · {{ booking.car.seating_capacity|default:booking.car.seats|default:5 }} Seats</p>
             </div>
         </div>
-    </div>
 
-    <!-- Actions -->
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="{% url 'dashboard_bookings' %}" class="bg-primary text-white px-8 py-4 rounded-xl font-bold shadow-lg hover:bg-slate-800 transition-colors">View My Bookings</a>
-        <a href="{% url 'index' %}" class="bg-white dark:bg-slate-900 text-slate-900 border border-slate-200 dark:border-slate-700 dark:text-white px-8 py-4 rounded-xl font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Back to Home</a>
-    </div>
+        <!-- Divider -->
+        <div class="h-px w-full bg-surface-container-high"></div>
 
+        <!-- Trip Details -->
+        <div class="flex flex-col gap-3">
+            <div class="grid grid-cols-2 gap-3 bg-surface-container-low p-3 rounded-2xl">
+                <div class="flex flex-col">
+                    <div class="flex items-center gap-1 text-secondary mb-0.5">
+                        <span class="material-symbols-outlined text-[14px] text-primary">trip_origin</span>
+                        <span class="text-[11px] font-semibold">Pickup</span>
+                    </div>
+                    <span class="text-xs font-bold text-on-surface">{{ booking.pickup_date|date:"D, d M" }}</span>
+                    <span class="text-[11px] text-secondary">{{ booking.pickup_time|time:"h:i A"|default:"10:00 AM" }}</span>
+                </div>
+                <div class="flex flex-col">
+                    <div class="flex items-center gap-1 text-secondary mb-0.5">
+                        <span class="material-symbols-outlined text-[14px] text-primary">location_on</span>
+                        <span class="text-[11px] font-semibold">Drop-off</span>
+                    </div>
+                    <span class="text-xs font-bold text-on-surface">{{ booking.dropoff_date|date:"D, d M" }}</span>
+                    <span class="text-[11px] text-secondary">{{ booking.dropoff_time|time:"h:i A"|default:"10:00 AM" }}</span>
+                </div>
+            </div>
+
+            <!-- Delivery Location -->
+            <div class="flex items-start gap-2.5 p-3 rounded-2xl bg-surface-container-low">
+                <span class="material-symbols-outlined text-[20px] text-primary shrink-0 mt-0.5">home_pin</span>
+                <div class="flex flex-col min-w-0">
+                    <span class="text-[10px] text-secondary uppercase font-bold tracking-wider">Doorstep Delivery</span>
+                    <span class="text-xs text-on-surface font-semibold leading-snug">{{ booking.delivery_location|default:booking.pickup_location }}</span>
+                </div>
+            </div>
+
+            <!-- Payment Summary Row -->
+            <div class="flex items-center justify-between pt-1">
+                <div class="flex flex-col">
+                    <span class="text-[11px] text-secondary">Total Amount Paid</span>
+                    <span class="font-headline text-xl font-bold text-on-surface">₹{{ booking.total_price|default:booking.total_with_gst }}</span>
+                </div>
+                <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-low text-primary border border-primary/20">
+                    <span class="material-symbols-outlined text-[16px]">check_circle</span>
+                    <span class="text-xs font-bold">Payment Verified</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Optional Bluetooth Unlock Action -->
+        {% if booking.bluetooth_unlock %}
+        <div class="pt-2">
+            <button type="button" class="w-full min-h-[48px] bg-primary-container text-[#0F172A] font-bold text-xs uppercase tracking-wider rounded-full flex items-center justify-center gap-2 shadow-sm">
+                <span class="material-symbols-outlined text-lg">bluetooth_searching</span>
+                <span>Bluetooth Key Unlock</span>
+            </button>
+        </div>
+        {% endif %}
+    </section>
+
+    <!-- Navigation CTAs -->
+    <div class="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+        <a href="{% url 'dashboard_bookings' %}" class="w-full sm:w-auto min-h-[48px] px-6 rounded-full bg-primary-container text-[#0F172A] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-sm hover:bg-[#FF5F00] active:scale-[0.98] transition-all">
+            <span>View My Bookings</span>
+            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+        </a>
+        <a href="{% url 'index' %}" class="w-full sm:w-auto min-h-[48px] px-6 rounded-full bg-surface-container-low text-on-surface border border-surface-container-high font-bold text-xs uppercase tracking-wider flex items-center justify-center hover:bg-surface-container active:scale-[0.98] transition-all">
+            <span>Back to Home</span>
+        </a>
+    </div>
 </div>
 {% endblock %}

@@ -1,0 +1,74 @@
+<!-- Cancel Booking Bottom Sheet -->
+<div id="cancel-overlay" class="sheet-backdrop fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300" onclick="closeCancelSheet()"></div>
+
+<div id="cancel-sheet" class="sheet-panel fixed bottom-0 inset-x-0 max-w-[480px] mx-auto z-50 hidden bg-surface-container-lowest rounded-t-3xl p-6 border-t border-surface-container-high shadow-2xl translate-y-full transition-transform duration-300 ease-out flex flex-col">
+    <!-- Drag Handle -->
+    <div class="w-12 h-1.5 bg-surface-container-highest rounded-full mx-auto mb-4 shrink-0 cursor-pointer" onclick="closeCancelSheet()"></div>
+
+    <div class="flex items-center justify-between mb-4">
+        <div>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-error">Cancellation</span>
+            <h3 class="font-headline text-lg font-bold text-on-surface">Cancel Trip?</h3>
+        </div>
+        <button type="button" onclick="closeCancelSheet()" class="w-8 h-8 rounded-full bg-surface-container-low flex items-center justify-center text-secondary hover:text-on-surface">
+            <span class="material-symbols-outlined text-base">close</span>
+        </button>
+    </div>
+
+    <!-- Booking Ref Pill -->
+    <div class="p-3 bg-surface-container-low rounded-2xl mb-4 flex items-center justify-between">
+        <span class="text-xs text-secondary font-medium">Booking Reference</span>
+        <span class="text-xs font-mono font-bold text-on-surface">{{ booking.booking_reference }}</span>
+    </div>
+
+    <!-- Refund Line (bound strictly to refund_message context variable) -->
+    {% if refund_message %}
+    <div class="p-3.5 bg-surface-container rounded-2xl mb-5 flex items-start gap-2.5 border border-primary/20">
+        <span class="material-symbols-outlined text-primary text-base shrink-0 mt-0.5">info</span>
+        <p class="text-xs text-on-surface font-medium leading-relaxed">{{ refund_message }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Cancellation Form -->
+    <form action="{% if booking.id %}{% url 'cancel_booking' booking.id %}{% else %}{{ cancel_url|default:'#' }}{% endif %}" method="post" class="space-y-4">
+        {% csrf_token %}
+        <div>
+            <label class="block text-[11px] font-bold uppercase tracking-wider text-secondary mb-2">Reason for Cancellation</label>
+            <select name="reason" class="w-full bg-surface-container-low border border-surface-container-high rounded-xl p-3 text-xs font-semibold text-on-surface focus:outline-none focus:ring-1 focus:ring-primary">
+                <option value="plans_changed">Plans changed / Trip cancelled</option>
+                <option value="booked_by_mistake">Booked by mistake</option>
+                <option value="found_alternative">Found alternative ride</option>
+                <option value="other">Other reason</option>
+            </select>
+        </div>
+
+        <button type="submit" class="w-full min-h-[48px] rounded-full bg-error text-on-error font-bold text-xs uppercase tracking-wider flex items-center justify-center shadow-sm hover:opacity-95 transition-all">
+            <span>Confirm Cancellation</span>
+        </button>
+    </form>
+</div>
+
+<script>
+function openCancelSheet() {
+    const overlay = document.getElementById('cancel-overlay');
+    const sheet = document.getElementById('cancel-sheet');
+    if (!overlay || !sheet) return;
+    overlay.classList.remove('hidden');
+    sheet.classList.remove('hidden');
+    setTimeout(() => {
+        overlay.classList.remove('opacity-0');
+        sheet.classList.remove('translate-y-full');
+    }, 10);
+}
+function closeCancelSheet() {
+    const overlay = document.getElementById('cancel-overlay');
+    const sheet = document.getElementById('cancel-sheet');
+    if (!overlay || !sheet) return;
+    overlay.classList.add('opacity-0');
+    sheet.classList.add('translate-y-full');
+    setTimeout(() => {
+        overlay.classList.add('hidden');
+        sheet.classList.add('hidden');
+    }, 300);
+}
+</script>

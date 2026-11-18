@@ -29,12 +29,12 @@
 
 {% block content %}
 <!-- Sub-Navigation / Step Progress -->
-<div class="bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border-b border-slate-200 dark:border-slate-800 py-3 mb-6">
+<div class="pt-4 sm:pt-28 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 pb-3 mb-6 transition-all">
     <div class="max-w-3xl mx-auto px-6 flex items-center justify-between">
         <a href="javascript:history.back()" class="flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-accent font-bold transition-colors">
             <span class="material-symbols-outlined text-xl">arrow_back</span>
         </a>
-        <h1 class="text-sm font-bold tracking-tight">Step {{ step }} of {{ total_steps }}</h1>
+        <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Step {{ step }} of {{ total_steps }}</span>
         <div class="text-[10px] font-black text-accent uppercase tracking-widest">{% widthratio step total_steps 100 %}% Done</div>
     </div>
     <!-- Progress Line -->
@@ -43,115 +43,141 @@
     </div>
 </div>
 
-<div class="max-w-3xl mx-auto px-6 py-12">
+<div class="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-12">
     <!-- Step 1: Location -->
     {% if step == 1 %}
-    <div class="mb-12" id="step1-header">
-        <h2 class="text-3xl font-black mb-3" id="step1-title">Where should we pick you up?</h2>
-        <p class="text-slate-500" id="step1-subtitle">Search or pin your pickup location on the map.</p>
+    <div class="mb-8 sm:mb-12" id="step1-header">
+        <h1 class="text-2xl sm:text-3xl font-black mb-2 text-slate-900 dark:text-white" id="step1-title">Where should we pick you up?</h1>
+        <p class="text-slate-500 text-sm sm:text-base" id="step1-subtitle">Search or pin your pickup location on the map.</p>
     </div>
 
     <form method="post" id="location-form" class="space-y-6">
         {% csrf_token %}
         <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-100 dark:border-slate-800 shadow-sm relative">
-            <div class="absolute left-10 top-16 bottom-16 w-0.5 border-l-2 border-dashed border-slate-200 dark:border-slate-700 z-0"></div>
-            
             <div class="space-y-6 relative z-10">
                 <!-- Pickup (always visible) -->
                 <div class="relative" id="pickup-section">
-                    <label class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2 block ml-10">Pickup Location</label>
-                    <div class="flex items-center gap-4">
+                    <label class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2 block">Pickup Location</label>
+                    <div class="flex items-center gap-3">
                         <div class="w-8 h-8 rounded-full bg-accent border-[6px] border-white dark:border-slate-900 shrink-0 z-10 shadow-sm"></div>
                         <div class="relative flex-1 location-input-wrapper">
                             <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">my_location</span>
-                            {{ form.pickup_location|add_class:"w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-accent outline-none" }}
+                            {{ form.pickup_location|add_class:"w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-accent outline-none font-bold text-sm" }}
                         </div>
                     </div>
                 </div>
                 
-                <!-- Dropoff (hidden initially) -->
+                <!-- Dropoff (shown only if different location checked) -->
                 <div class="relative hidden" id="dropoff-section">
-                    <label class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2 block ml-10">Drop-off Location</label>
-                    <div class="flex items-center gap-4">
-                        <div class="w-8 h-8 rounded-full border-[6px] border-slate-200 dark:border-slate-700 shrink-0 z-10 bg-white dark:bg-slate-900"></div>
+                    <div class="w-0.5 h-4 border-l-2 border-dashed border-slate-300 dark:border-slate-600 ml-4 mb-2"></div>
+                    <label class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2 block">Drop-off Location</label>
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-full border-[6px] border-slate-300 dark:border-slate-700 shrink-0 z-10 bg-white dark:bg-slate-900"></div>
                         <div class="relative flex-1 location-input-wrapper">
                             <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">location_on</span>
-                            {{ form.dropoff_location|add_class:"w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-accent outline-none" }}
+                            {{ form.dropoff_location|add_class:"w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-accent outline-none font-bold text-sm" }}
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Return to different location toggle -->
+            <div class="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800">
+                <label for="diff-dropoff-toggle" class="inline-flex items-center gap-2.5 cursor-pointer select-none text-slate-700 dark:text-slate-300 hover:text-accent transition-colors">
+                    <input type="checkbox" id="diff-dropoff-toggle" onchange="toggleDifferentDropoff(this.checked)" class="w-4 h-4 text-accent rounded border-slate-300 dark:border-slate-600 focus:ring-accent cursor-pointer">
+                    <span class="text-xs font-bold">Drop-off at a different location</span>
+                </label>
             </div>
 
             <!-- Map Integration -->
             <div id="map-container">
                 <div id="map" class="w-full h-full rounded-[1.4rem]"></div>
             </div>
-            <p class="text-[10px] text-slate-400 mt-3 text-center font-bold tracking-wider uppercase">Drag markers or click map to set exact locations</p>
+            <p class="text-[10px] text-slate-400 mt-3 text-center font-bold tracking-wider uppercase">Drag marker or tap map to set your location</p>
         </div>
         
-        <!-- Continue to Dropoff (visible in substep 1) -->
-        <button type="button" id="btn-to-dropoff" onclick="showDropoff()" class="w-full bg-accent text-white py-4 rounded-xl font-bold text-lg hover:bg-accent/90 transition-colors mt-8 flex justify-center items-center gap-2">
-            Continue <span class="material-symbols-outlined">arrow_forward</span>
-        </button>
-
-        <!-- Submit to next step (visible in substep 2) -->
-        <button type="submit" id="btn-submit-location" class="w-full bg-primary text-white py-4 rounded-xl font-bold text-lg hover:bg-slate-800 transition-colors mt-8 flex justify-center items-center gap-2 hidden">
-            Continue to Dates <span class="material-symbols-outlined">arrow_forward</span>
+        <!-- Streamlined 1-Tap CTA -->
+        <button type="submit" id="btn-submit-location" class="w-full bg-[#FF5F00] hover:bg-[#E05300] active:scale-[0.98] text-white py-4 rounded-2xl font-black text-base transition-all mt-8 flex justify-center items-center gap-2 shadow-xl shadow-[#FF5F00]/25">
+            <span>Continue to Dates</span>
+            <span class="material-symbols-outlined text-lg">arrow_forward</span>
         </button>
     </form>
 
     <script>
-    function showDropoff() {
-        var pickupVal = document.getElementById('id_pickup_location').value.trim();
-        if (!pickupVal) {
-            document.getElementById('id_pickup_location').focus();
-            document.getElementById('id_pickup_location').classList.add('ring-2', 'ring-red-400');
-            setTimeout(function() { document.getElementById('id_pickup_location').classList.remove('ring-2', 'ring-red-400'); }, 2000);
-            return;
-        }
-        
-        // Premium transition
+    function toggleDifferentDropoff(checked) {
         const dropoffSection = document.getElementById('dropoff-section');
-        dropoffSection.classList.remove('hidden');
-        dropoffSection.classList.add('animate-[fadeIn_0.5s_ease-out]');
+        const dropoffInput = document.getElementById('id_dropoff_location');
+        const pickupInput = document.getElementById('id_pickup_location');
         
-        document.getElementById('btn-to-dropoff').classList.add('hidden');
-        document.getElementById('btn-submit-location').classList.remove('hidden');
-        document.getElementById('step1-title').textContent = 'Where should we drop it off?';
-        document.getElementById('step1-subtitle').textContent = 'Now pin your drop-off location.';
-        document.getElementById('id_dropoff_location').focus();
-        
-        // Scroll to dropoff on mobile
-        if (window.innerWidth < 768) {
-            dropoffSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (checked) {
+            dropoffSection.classList.remove('hidden');
+            dropoffSection.classList.add('animate-[fadeIn_0.3s_ease-out]');
+            if (!dropoffInput.value.trim() && pickupInput.value.trim()) {
+                dropoffInput.value = pickupInput.value.trim();
+            }
+            if (window.rentoraMap && window.dropoffMarker && !window.rentoraMap.hasLayer(window.dropoffMarker)) {
+                window.dropoffMarker.addTo(window.rentoraMap);
+            }
+            dropoffInput.focus();
+        } else {
+            dropoffSection.classList.add('hidden');
+            if (pickupInput.value.trim()) {
+                dropoffInput.value = pickupInput.value.trim();
+            }
+            if (window.rentoraMap && window.dropoffMarker && window.rentoraMap.hasLayer(window.dropoffMarker)) {
+                window.rentoraMap.removeLayer(window.dropoffMarker);
+            }
         }
     }
 
-    // Initialize state if values exist but we want to force the two-step feel
     document.addEventListener('DOMContentLoaded', function() {
-        const pickupVal = document.getElementById('id_pickup_location').value.trim();
-        const dropoffVal = document.getElementById('id_dropoff_location').value.trim();
+        const form = document.getElementById('location-form');
+        const pickupInput = document.getElementById('id_pickup_location');
+        const dropoffInput = document.getElementById('id_dropoff_location');
+        const diffToggle = document.getElementById('diff-dropoff-toggle');
         
-        // Even if both exist, hide dropoff initially to force confirmation of pickup
-        if (pickupVal && dropoffVal) {
-            // Keep it hidden to force the "Continue" interaction as requested
-            console.log("Pre-filled data detected, but enforcing two-step flow.");
-        }
+        // Auto sync if user types in pickup
+        pickupInput.addEventListener('input', function() {
+            if (!diffToggle.checked) {
+                dropoffInput.value = pickupInput.value;
+            }
+        });
+
+        form.addEventListener('submit', function(e) {
+            if (!pickupInput.value.trim()) {
+                e.preventDefault();
+                pickupInput.focus();
+                pickupInput.classList.add('ring-2', 'ring-red-400');
+                setTimeout(() => pickupInput.classList.remove('ring-2', 'ring-red-400'), 2000);
+                return;
+            }
+            // If dropoff is not different or empty, sync to pickup
+            if (!diffToggle.checked || !dropoffInput.value.trim()) {
+                dropoffInput.value = pickupInput.value.trim();
+            }
+        });
     });
     </script>
 
-    <!-- Leaflet Script -->
+    <!-- Leaflet Script with Mobile-First Scroll Handling -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            var map = L.map('map').setView([28.6139, 77.2090], 13); // Default to Delhi
-            
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors'
+            // Disable scroll wheel zoom to prevent mobile/desktop page scroll trapping
+            var map = L.map('map', {
+                scrollWheelZoom: false,
+                tap: true
+            }).setView([20.2961, 85.8245], 13); // Default to Bhubaneswar (BBSR Hub)
+            window.rentoraMap = map;
+
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+                attribution: '© Esri',
+                maxZoom: 19
             }).addTo(map);
 
-            var pickupMarker = L.marker([28.6139, 77.2090], {draggable: true}).addTo(map);
-            var dropoffMarker = L.marker([28.6239, 77.2190], {draggable: true}).addTo(map);
+            var pickupMarker = L.marker([20.2961, 85.8245], {draggable: true}).addTo(map);
+            var dropoffMarker = L.marker([20.3061, 85.8345], {draggable: true});
+            window.dropoffMarker = dropoffMarker;
             
             pickupMarker.bindPopup("Pickup Location").openPopup();
             dropoffMarker.bindPopup("Drop-off Location");
@@ -160,29 +186,38 @@
                 var p = pickupMarker.getLatLng();
                 var d = dropoffMarker.getLatLng();
                 
-                // Reverse geocoding would be ideal, but for now we set the coordinates or a clear message
-                // Using OpenStreetMap Nominatim for simple reverse geocoding
                 fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${p.lat}&lon=${p.lng}`)
                     .then(r => r.json())
                     .then(data => {
-                        document.getElementById('id_pickup_location').value = data.display_name;
-                    });
+                        if (data && data.display_name) {
+                            const name = data.address?.suburb || data.address?.neighbourhood || data.display_name.split(',')[0];
+                            document.getElementById('id_pickup_location').value = name;
+                            if (!document.getElementById('diff-dropoff-toggle').checked) {
+                                document.getElementById('id_dropoff_location').value = name;
+                            }
+                        }
+                    }).catch(() => {});
                 
-                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${d.lat}&lon=${d.lng}`)
-                    .then(r => r.json())
-                    .then(data => {
-                        document.getElementById('id_dropoff_location').value = data.display_name;
-                    });
+                if (document.getElementById('diff-dropoff-toggle').checked) {
+                    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${d.lat}&lon=${d.lng}`)
+                        .then(r => r.json())
+                        .then(data => {
+                            if (data && data.display_name) {
+                                const name = data.address?.suburb || data.address?.neighbourhood || data.display_name.split(',')[0];
+                                document.getElementById('id_dropoff_location').value = name;
+                            }
+                        }).catch(() => {});
+                }
             }
 
             pickupMarker.on('dragend', updateInputs);
             dropoffMarker.on('dragend', updateInputs);
             
             map.on('click', function(e) {
-                // Toggle between setting pickup and dropoff on click
-                if(!window.settingDropoff) {
+                const diffChecked = document.getElementById('diff-dropoff-toggle').checked;
+                if (!diffChecked || !window.settingDropoff) {
                     pickupMarker.setLatLng(e.latlng);
-                    window.settingDropoff = true;
+                    if (diffChecked) window.settingDropoff = true;
                 } else {
                     dropoffMarker.setLatLng(e.latlng);
                     window.settingDropoff = false;
@@ -190,15 +225,14 @@
                 updateInputs();
             });
 
-            // Try to use geolocation
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
                     var lat = position.coords.latitude;
                     var lng = position.coords.longitude;
-                    map.setView([lat, lng], 15);
+                    map.setView([lat, lng], 14);
                     pickupMarker.setLatLng([lat, lng]);
                     updateInputs();
-                });
+                }, function() {});
             }
         });
     </script>
@@ -207,9 +241,9 @@
 
     <!-- Step 2: Dates -->
     {% if step == 2 %}
-    <div class="mb-12">
-        <h2 class="text-3xl font-black mb-3">Select Date & Time</h2>
-        <p class="text-slate-500">Choose your pickup and drop-off dates and times.</p>
+    <div class="mb-8 sm:mb-12">
+        <h1 class="text-2xl sm:text-3xl font-black mb-2 text-slate-900 dark:text-white">Select Date & Time</h1>
+        <p class="text-slate-500 text-sm sm:text-base">Choose your pickup and drop-off dates and times.</p>
     </div>
 
     <form method="post" class="space-y-6">
@@ -241,9 +275,16 @@
                 </div>
             </div>
         </div>
+
+        <!-- Rentora Trip Duration Counter Pill -->
+        <div id="booking-duration-badge" class="p-3.5 rounded-2xl bg-[#FFF2EA] dark:bg-zinc-800 border border-[#FF5F00]/20 dark:border-zinc-700 text-[#FF5F00] dark:text-[#FF7A29] font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm">
+            <span class="material-symbols-outlined text-base">schedule</span>
+            <span id="booking-duration-text">Select pickup and drop-off to view trip duration</span>
+        </div>
         
-        <button type="submit" class="w-full bg-primary text-white py-4 rounded-xl font-bold text-lg hover:bg-slate-800 transition-colors mt-8 flex justify-center items-center gap-2">
-            Continue to Payment <span class="material-symbols-outlined">arrow_forward</span>
+        <button type="submit" class="w-full bg-[#FF5F00] hover:bg-[#E05300] active:scale-[0.98] text-white py-4 rounded-2xl font-black text-base transition-all mt-6 flex justify-center items-center gap-2 shadow-xl shadow-[#FF5F00]/25">
+            <span>Continue to Payment</span>
+            <span class="material-symbols-outlined text-lg">arrow_forward</span>
         </button>
     </form>
 
@@ -276,6 +317,37 @@
             let disabledDates = [];
             const carId = "{{ car_id }}";
 
+            function updateBookingDuration() {
+                const pDate = pickupPicker ? pickupPicker.selectedDates[0] : null;
+                const dDate = dropoffPicker ? dropoffPicker.selectedDates[0] : null;
+                const badgeText = document.getElementById('booking-duration-text');
+                if (!badgeText) return;
+
+                if (!pDate || !dDate) {
+                    badgeText.textContent = "Select both pickup and drop-off to view trip duration";
+                    return;
+                }
+                const diffMs = dDate - pDate;
+                if (diffMs <= 0) {
+                    badgeText.textContent = "⚠️ Drop-off time must be after pickup time";
+                    return;
+                }
+                const totalHours = Math.round(diffMs / (1000 * 60 * 60));
+                const days = Math.floor(totalHours / 24);
+                const remHours = totalHours % 24;
+
+                let durStr = "";
+                if (days > 0) {
+                    durStr = `${days} Day${days > 1 ? 's' : ''}${remHours > 0 ? ` ${remHours} Hr${remHours > 1 ? 's' : ''}` : ''}`;
+                } else {
+                    durStr = `${totalHours} Hour${totalHours > 1 ? 's' : ''}`;
+                }
+                badgeText.innerHTML = `⏱️ <strong>${durStr}</strong> (${totalHours} hrs total)`;
+            }
+
+            let pickupPicker = null;
+            let dropoffPicker = null;
+
             const initPickers = () => {
                 const config = {
                     enableTime: true,
@@ -283,23 +355,30 @@
                     minDate: "today",
                     time_24hr: true,
                     animate: true,
-                    inline: false, // Changed to hover/popup as requested
+                    inline: false,
                     disableMobile: true,
                     disable: disabledDates,
                 };
 
-                const pickupPicker = flatpickr("#pickup_picker", {
+                pickupPicker = flatpickr("#pickup_picker", {
                     ...config,
                     onChange: function(selectedDates) {
                         if (selectedDates[0]) {
                             dropoffPicker.set('minDate', selectedDates[0]);
                         }
+                        updateBookingDuration();
                     }
                 });
 
-                const dropoffPicker = flatpickr("#dropoff_picker", {
+                dropoffPicker = flatpickr("#dropoff_picker", {
                     ...config,
+                    onChange: function() {
+                        updateBookingDuration();
+                    }
                 });
+
+                // Initial calculation
+                setTimeout(updateBookingDuration, 200);
             };
 
             if (carId && carId !== "None" && carId !== "") {
@@ -325,8 +404,8 @@
     {% if step == 3 %}
     <div class="mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-            <h2 class="text-3xl font-black mb-2">Select a Car</h2>
-            <p class="text-slate-500">{{ cars.count }} cars available for your dates.</p>
+            <h1 class="text-2xl sm:text-3xl font-black mb-2 text-slate-900 dark:text-white">Select a Car</h1>
+            <p class="text-slate-500 text-sm sm:text-base">{{ cars.count }} cars available for your dates.</p>
         </div>
         <div class="flex items-center gap-4">
             <!-- Outstation Toggle -->
@@ -345,7 +424,7 @@
         </div>
     </div>
 
-    <form method="post" id="select-car-form" class="space-y-4">
+    <form method="post" id="select-car-form" class="space-y-4 pb-28">
         {% csrf_token %}
         <input type="hidden" name="car_id" id="selected-car-id" value="{{ selected_car_id|default:'' }}">
         
@@ -394,9 +473,10 @@
         {% endfor %}
 
         {% if cars %}
-        <div class="sticky bottom-4 mt-8 safe-area-bottom">
-            <button type="submit" id="submit-btn" class="w-full bg-primary text-white py-4 rounded-xl font-bold text-lg hover:bg-slate-800 transition-colors shadow-2xl flex justify-center items-center gap-2 {% if not selected_car_id %}opacity-50 cursor-not-allowed{% endif %}" {% if not selected_car_id %}disabled{% endif %}>
-                Proceed to Payment <span class="material-symbols-outlined">payments</span>
+        <div class="fixed bottom-0 inset-x-0 p-4 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 z-40 safe-area-bottom shadow-2xl sm:static sm:bg-transparent sm:p-0 sm:border-0 sm:shadow-none sm:mt-8">
+            <button type="submit" id="submit-btn" class="w-full bg-[#FF5F00] hover:bg-[#E05300] active:scale-[0.98] text-white py-4 rounded-xl font-bold text-lg transition-all shadow-2xl flex justify-center items-center gap-2 {% if not selected_car_id %}opacity-50 cursor-not-allowed{% endif %}" {% if not selected_car_id %}disabled{% endif %}>
+                <span>Proceed to Payment</span>
+                <span class="material-symbols-outlined text-lg">payments</span>
             </button>
         </div>
         {% endif %}

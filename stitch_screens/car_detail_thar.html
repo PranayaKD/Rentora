@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mahindra Thar 4x4 LX - Rentora Mobility</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-background": "#1a1c1c",
+            "surface": "#f9f9f9",
+            "tertiary": "#000000",
+            "tertiary-fixed": "#e2e2e7",
+            "surface-container-high": "#e8e8e8",
+            "surface-bright": "#f9f9f9",
+            "on-tertiary-container": "#828489",
+            "surface-variant": "#e2e2e2",
+            "surface-container-highest": "#e2e2e2",
+            "secondary": "#795900",
+            "on-tertiary-fixed": "#1a1c20",
+            "surface-tint": "#5e5e62",
+            "outline-variant": "#c7c6cb",
+            "surface-container-low": "#f3f3f3",
+            "secondary-fixed-dim": "#fabd0d",
+            "primary-container": "#1b1b1f",
+            "on-primary": "#ffffff",
+            "on-tertiary-fixed-variant": "#45474b",
+            "primary": "#000000",
+            "tertiary-container": "#1a1c20",
+            "secondary-fixed": "#ffdf9f",
+            "tertiary-fixed-dim": "#c6c6cb",
+            "secondary-container": "#fdbf13",
+            "primary-fixed-dim": "#c7c6ca",
+            "on-error": "#ffffff",
+            "surface-container": "#eeeeee",
+            "inverse-on-surface": "#f0f1f1",
+            "outline": "#76777b",
+            "primary-fixed": "#e3e2e6",
+            "on-error-container": "#93000a",
+            "error": "#ba1a1a",
+            "on-surface-variant": "#46464b",
+            "on-surface": "#1a1c1c",
+            "on-secondary-fixed-variant": "#5b4300",
+            "on-primary-fixed-variant": "#46464a",
+            "on-primary-container": "#848387",
+            "surface-container-lowest": "#ffffff",
+            "error-container": "#ffdad6",
+            "on-secondary-fixed": "#261a00",
+            "inverse-surface": "#2f3131",
+            "on-tertiary": "#ffffff",
+            "inverse-primary": "#c7c6ca",
+            "on-secondary": "#ffffff",
+            "background": "#f9f9f9",
+            "on-secondary-container": "#6c5000",
+            "on-primary-fixed": "#1b1b1f",
+            "surface-dim": "#dadada"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin": "1rem",
+            "margin-lg": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-lg": "1.5rem",
+            "space-md": "1rem",
+            "space-xl": "2rem",
+            "gutter-sm": "0.75rem",
+            "margin-sm": "0.75rem",
+            "space-xs": "0.25rem",
+            "gutter": "1rem",
+            "gutter-lg": "1.25rem"
+          },
+          "fontFamily": {
+            "headline-xl-mobile": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-xl": ["Plus Jakarta Sans"],
+            "price-display": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "headline-xl-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "price-display": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill {
+      font-variation-settings: 'FILL' 1;
+    }
+  </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface antialiased flex justify-center selection:bg-secondary-container selection:text-tertiary">
+<!-- Mobile Container (390px viewport target) -->
+<main class="w-full max-w-[430px] min-h-screen bg-background relative flex flex-col pb-28 shadow-xl">
+<!-- 1. Floating Header Over Hero -->
+<header class="absolute top-0 left-0 right-0 z-30 flex items-center justify-between px-4 pt-4 pb-2">
+<!-- Back Action -->
+<button aria-label="Go Back" class="w-10 h-10 rounded-full bg-surface-container-lowest/80 backdrop-blur-md border border-outline-variant/30 flex items-center justify-center text-on-surface shadow-sm active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+</button>
+<!-- Trailing Action Cluster -->
+<div class="flex items-center gap-2">
+<button aria-label="Save to Wishlist" class="w-10 h-10 rounded-full bg-surface-container-lowest/80 backdrop-blur-md border border-outline-variant/30 flex items-center justify-center text-on-surface shadow-sm active:scale-95 transition-transform" id="favorite-btn">
+<span class="material-symbols-outlined text-[20px]" id="fav-icon">favorite_border</span>
+</button>
+<button aria-label="Share Car" class="w-10 h-10 rounded-full bg-surface-container-lowest/80 backdrop-blur-md border border-outline-variant/30 flex items-center justify-center text-on-surface shadow-sm active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[20px]">share</span>
+</button>
+</div>
+</header>
+<!-- 2. Hero Media Gallery -->
+<section class="relative w-full h-80 overflow-hidden bg-primary-container">
+<img alt="Jet Black Mahindra Thar 4x4 LX Hardtop" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBl43dTuwuLaKR-HAXhaVNgY2xZVZyq5or189QNmONY3cXF0K2SrwkwsS8dv9CVZaFMl-bpLYVKYSdNrDHc4q5NVC5ltkEDYktj9gq4uT8XuvtI90ZC7JwTgyFwaQzSz6ommb3lPMjyv8-xHiPyXnlXtHcA8tvxmsUsroRaKzmjzYV5JrqiT2JxqhAbeFbpMMOQ4V3MytROvkZCVIIYHDYf4RWHxkwSs_33Ey2GJeBhUh1Dd1toEk_QaK2QGc6ERTjH5-xUZcpXBsY"/>
+<!-- Gradient overlay for badge legibility -->
+<div class="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-primary/20 pointer-events-none"></div>
+<!-- Live Availability / Trip Ready Pill Tag -->
+<div class="absolute bottom-6 left-4 z-10 flex items-center gap-1.5 bg-primary/80 backdrop-blur-md border border-outline-variant/30 px-3 py-1 rounded-full text-secondary-container">
+<span class="w-2 h-2 rounded-full bg-secondary-container animate-pulse"></span>
+<span class="font-label-sm text-label-sm tracking-wider uppercase text-secondary-container">FASTAG READY</span>
+</div>
+<!-- Image Pagination Counter -->
+<div class="absolute bottom-6 right-4 z-10 bg-tertiary-container/85 backdrop-blur-md text-surface-container-lowest font-label-md text-label-md px-3 py-1 rounded-full border border-outline/30 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">photo_camera</span>
+<span>1 / 6</span>
+</div>
+</section>
+<!-- Content Sheet Container with curved transition -->
+<div class="relative -mt-4 bg-background rounded-t-[28px] px-margin pt-5 flex flex-col gap-6 z-20">
+<!-- 3. Car Details & Badging -->
+<section class="flex flex-col gap-2">
+<div class="flex items-start justify-between gap-2">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary font-bold tracking-tight">Mahindra Thar 4x4 LX</h1>
+<p class="font-body-md text-body-md text-on-surface-variant font-medium mt-0.5">4WD Adventure SUV • 4 Seats • Hardtop</p>
+</div>
+<!-- Zero Deposit Green Badge -->
+<div class="inline-flex items-center gap-1 bg-emerald-50 border border-emerald-200/80 px-2.5 py-1 rounded-full text-emerald-800 shrink-0">
+<span class="material-symbols-outlined text-[14px] text-emerald-700">verified</span>
+<span class="font-label-md text-label-md font-bold tracking-tight">Zero Deposit</span>
+</div>
+</div>
+<!-- Rating, Location & Trips Meta Bar -->
+<div class="flex flex-wrap items-center gap-y-1 gap-x-2.5 pt-1 text-on-surface-variant font-body-sm text-body-sm">
+<div class="flex items-center gap-1 font-semibold text-on-surface">
+<span class="material-symbols-outlined text-secondary-container fill text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span>4.9</span>
+<span class="text-on-surface-variant font-normal">(240+ trips)</span>
+</div>
+<span class="text-outline-variant">•</span>
+<div class="flex items-center gap-1 font-medium">
+<span class="material-symbols-outlined text-[15px] text-outline">location_on</span>
+<span>Indiranagar Hub</span>
+<span class="text-outline text-xs">(1.2 km away)</span>
+</div>
+<span class="text-outline-variant">•</span>
+<div class="inline-flex items-center gap-1 text-secondary font-medium">
+<span class="material-symbols-outlined text-[15px]">workspace_premium</span>
+<span>Top Rated Host</span>
+</div>
+</div>
+</section>
+<!-- 4. Specifications 3-Card Grid -->
+<section>
+<div class="grid grid-cols-3 gap-2.5">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-3 flex flex-col items-center text-center shadow-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary mb-1.5">
+<span class="material-symbols-outlined text-[18px]">speed</span>
+</div>
+<span class="font-headline-sm text-[13px] leading-tight font-bold text-on-surface">2.2L mHawk</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant mt-0.5">Diesel 130 BHP</span>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-3 flex flex-col items-center text-center shadow-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary mb-1.5">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+</div>
+<span class="font-headline-sm text-[13px] leading-tight font-bold text-on-surface">4x4 Auto</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant mt-0.5">Transmission</span>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-3 flex flex-col items-center text-center shadow-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary mb-1.5">
+<span class="material-symbols-outlined text-[18px]">local_gas_station</span>
+</div>
+<span class="font-headline-sm text-[13px] leading-tight font-bold text-on-surface">15.2 km/l</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant mt-0.5">Certified Mileage</span>
+</div>
+</div>
+</section>
+<!-- 5. Indian Mobility Perks & Features -->
+<section class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-headline-md text-headline-sm font-bold text-primary">Rentora Perks for Bangalore Trips</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Seamless self-drive experience tailored for Karnataka travel</p>
+</div>
+<span class="shrink-0 bg-primary text-secondary-container font-label-sm text-label-sm px-2 py-0.5 rounded-full uppercase tracking-wider">Verified</span>
+</div>
+<div class="grid grid-cols-1 gap-2.5">
+<!-- Feature 1: FASTag Pre-Installed -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-3.5 flex items-start gap-3 shadow-sm hover:border-outline/40 transition-colors">
+<div class="w-9 h-9 rounded-xl bg-amber-50 text-secondary border border-amber-200/50 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">toll</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<h3 class="font-label-lg text-label-lg font-bold text-on-surface">FASTag Pre-Installed</h3>
+<span class="text-[11px] font-semibold text-secondary-container bg-primary px-1.5 py-0.5 rounded">Expressway Ready</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Automatic toll booth clearance on Bengaluru-Mysuru Expressway & toll receipts synced in-app.</p>
+</div>
+</div>
+<!-- Feature 2: Doorstep Delivery -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-3.5 flex items-start gap-3 shadow-sm hover:border-outline/40 transition-colors">
+<div class="w-9 h-9 rounded-xl bg-surface-container text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">local_shipping</span>
+</div>
+<div class="flex-1">
+<h3 class="font-label-lg text-label-lg font-bold text-on-surface">Doorstep Delivery</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Free delivery available in Domlur, Indiranagar, Koramangala & Bengaluru Airport (BLR).</p>
+</div>
+</div>
+<!-- Feature 3: DigiLocker Verified -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-3.5 flex items-start gap-3 shadow-sm hover:border-outline/40 transition-colors">
+<div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 border border-blue-200/40 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">badge</span>
+</div>
+<div class="flex-1">
+<h3 class="font-label-lg text-label-lg font-bold text-on-surface">DigiLocker Verified</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Instant 60-second driving license KYC check, zero physical paperwork or key exchange friction.</p>
+</div>
+</div>
+<!-- Feature 4: Comprehensive Insurance -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-3.5 flex items-start gap-3 shadow-sm hover:border-outline/40 transition-colors">
+<div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200/50 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">shield</span>
+</div>
+<div class="flex-1">
+<h3 class="font-label-lg text-label-lg font-bold text-on-surface">Comprehensive Insurance</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">₹0 liability comprehensive damage cover included. On-road 24/7 emergency roadside assistance.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- 6. KM Package Selection -->
+<section class="flex flex-col gap-3">
+<div class="flex items-baseline justify-between">
+<h2 class="font-headline-md text-headline-sm font-bold text-primary">Select Kilometre Package</h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Fuel Excluded</span>
+</div>
+<div class="grid grid-cols-1 gap-2.5" id="km-packages">
+<!-- Package 1: 120 km/day -->
+<div class="km-option cursor-pointer bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-3.5 flex items-center justify-between transition-all" onclick="selectKm(this, '120 km/day', '₹ 2,499')">
+<div class="flex items-center gap-3">
+<div class="radio-indicator w-5 h-5 rounded-full border-2 border-outline flex items-center justify-center">
+<span class="radio-dot w-2 h-2 rounded-full bg-transparent"></span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg font-bold text-on-surface">120 km / day</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Lite • Ideal for city runabouts & commute</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">₹2,499</span>
+<p class="font-label-sm text-label-sm text-outline">per day</p>
+</div>
+</div>
+<!-- Package 2: 240 km/day (Default Selected) -->
+<div class="km-option cursor-pointer bg-surface-container-lowest border-2 border-primary rounded-2xl p-3.5 flex items-center justify-between shadow-sm transition-all relative overflow-hidden" onclick="selectKm(this, '240 km/day', '₹ 2,899')">
+<!-- Popular Ribbon / Tag -->
+<div class="absolute top-0 right-0 bg-secondary-container text-tertiary font-label-sm text-[10px] font-bold px-2 py-0.5 rounded-bl-lg tracking-wider uppercase">
+              Popular
+            </div>
+<div class="flex items-center gap-3 pt-1">
+<div class="radio-indicator w-5 h-5 rounded-full border-2 border-primary flex items-center justify-center bg-primary">
+<span class="radio-dot w-2 h-2 rounded-full bg-secondary-container"></span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<p class="font-label-lg text-label-lg font-bold text-on-surface">240 km / day</p>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Standard • Perfect for Nandi Hills & Coorg</p>
+</div>
+</div>
+<div class="text-right pt-2">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">₹2,899</span>
+<p class="font-label-sm text-label-sm text-outline">per day</p>
+</div>
+</div>
+<!-- Package 3: Unlimited KMs -->
+<div class="km-option cursor-pointer bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-3.5 flex items-center justify-between transition-all" onclick="selectKm(this, 'Unlimited KMs', '₹ 3,799')">
+<div class="flex items-center gap-3">
+<div class="radio-indicator w-5 h-5 rounded-full border-2 border-outline flex items-center justify-center">
+<span class="radio-dot w-2 h-2 rounded-full bg-transparent"></span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg font-bold text-on-surface">Unlimited KMs</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Highway Explorer • Western Ghats & Goa</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">₹3,799</span>
+<p class="font-label-sm text-label-sm text-outline">per day</p>
+</div>
+</div>
+</div>
+<!-- Extra km charge note -->
+<div class="flex items-center gap-1.5 text-on-surface-variant px-1 font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[16px] text-outline">info</span>
+<span>Extra KMs @ <strong>₹14/km</strong> beyond selected daily tier.</span>
+</div>
+</section>
+<!-- 7. Free Cancellation & Safety Guarantee -->
+<section class="bg-surface-container-low border border-outline-variant/30 rounded-2xl p-4 flex items-start gap-3">
+<div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+</div>
+<div>
+<h3 class="font-label-lg text-label-lg font-bold text-on-surface">Rentora Flexibility Guarantee</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 leading-relaxed">
+            Free cancellation up to 6 hours before pickup. 100% instant refund directly to your original payment source.
+          </p>
+</div>
+</section>
+<!-- Host & Pickup Location Card -->
+<section class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-4 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-full bg-tertiary text-on-tertiary flex items-center justify-center font-bold text-sm tracking-wider">
+            RH
+          </div>
+<div>
+<h4 class="font-label-lg text-label-lg font-bold text-on-surface">Rentora Indiranagar Hub</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">100ft Road, Indiranagar, Bengaluru</p>
+</div>
+</div>
+<button class="px-3 py-1.5 rounded-full border border-outline-variant text-on-surface font-label-md text-label-md active:scale-95 transition-transform hover:bg-surface-container">
+          Directions
+        </button>
+</section>
+</div>
+<!-- 8. Sticky Bottom Booking Bar (Task-Focused Sub-page: suppress global bottom nav as per Semantic Shell Mandate) -->
+<div class="fixed bottom-0 inset-x-0 w-full max-w-[430px] mx-auto bg-surface-container-lowest/95 backdrop-blur-xl border-t border-outline-variant/30 px-5 py-3.5 pb-6 flex items-center justify-between z-50 shadow-[0_-8px_24px_rgba(0,0,0,0.06)]">
+<!-- Left Column: Price Summary -->
+<div class="flex flex-col">
+<div class="flex items-baseline gap-1">
+<span class="font-price-display text-price-display font-extrabold text-primary tracking-tight" id="price-display">₹ 2,899</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant font-medium">/day</span>
+</div>
+<span class="font-body-sm text-[11px] text-on-surface-variant">or ₹179/hr • Excl. FASTag & GST</span>
+</div>
+<!-- Right Column: Accent CTA (Instant Book) -->
+<button class="bg-secondary-container hover:bg-secondary-fixed-dim text-tertiary font-label-lg text-label-lg font-bold px-6 py-3.5 rounded-full shadow-md flex items-center gap-2 active:scale-95 transition-transform">
+<span>Book This Thar</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</main>
+<!-- Interactive Scripts -->
+<script>
+    // Wishlist Toggle
+    const favBtn = document.getElementById('favorite-btn');
+    const favIcon = document.getElementById('fav-icon');
+    let isFavorited = false;
+    favBtn.addEventListener('click', () => {
+      isFavorited = !isFavorited;
+      if (isFavorited) {
+        favIcon.textContent = 'favorite';
+        favIcon.classList.add('fill', 'text-error');
+      } else {
+        favIcon.textContent = 'favorite_border';
+        favIcon.classList.remove('fill', 'text-error');
+      }
+    });
+
+    // KM Package Selection
+    function selectKm(element, packageTitle, price) {
+      const allOptions = document.querySelectorAll('.km-option');
+      allOptions.forEach(opt => {
+        opt.classList.remove('border-2', 'border-primary', 'shadow-sm');
+        opt.classList.add('border', 'border-outline-variant/40');
+        const indicator = opt.querySelector('.radio-indicator');
+        const dot = opt.querySelector('.radio-dot');
+        if (indicator) {
+          indicator.className = 'radio-indicator w-5 h-5 rounded-full border-2 border-outline flex items-center justify-center';
+        }
+        if (dot) {
+          dot.className = 'radio-dot w-2 h-2 rounded-full bg-transparent';
+        }
+      });
+
+      element.classList.remove('border', 'border-outline-variant/40');
+      element.classList.add('border-2', 'border-primary', 'shadow-sm');
+      const activeIndicator = element.querySelector('.radio-indicator');
+      const activeDot = element.querySelector('.radio-dot');
+      if (activeIndicator) {
+        activeIndicator.className = 'radio-indicator w-5 h-5 rounded-full border-2 border-primary flex items-center justify-center bg-primary';
+      }
+      if (activeDot) {
+        activeDot.className = 'radio-dot w-2 h-2 rounded-full bg-secondary-container';
+      }
+
+      // Update sticky bar price
+      const priceDisplay = document.getElementById('price-display');
+      if (priceDisplay) {
+        priceDisplay.textContent = price;
+      }
+    }
+  </script>
+</body></html>

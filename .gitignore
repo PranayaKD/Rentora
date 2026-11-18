@@ -6,6 +6,7 @@ __pycache__/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+.postgres_data/
 media/
 staticfiles/
 
@@ -31,6 +32,9 @@ skyler/
 credentials.json
 token.json
 .DS_Store
+templates_v1_backup/
+db.test.sqlite3
 
 # Static build
 static/css/tailwind_output.css
+.neon

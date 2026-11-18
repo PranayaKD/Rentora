@@ -12,13 +12,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fallback-key-change-me')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,.onrender.com').split(',')
+ALLOWED_HOSTS = [h.strip() for h in os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,testserver,.onrender.com').split(',') if h.strip()]
+if 'testserver' not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append('testserver')
+if DEBUG:
+    ALLOWED_HOSTS.extend(['*', '192.168.29.117'])
 render_external_hostname = os.getenv('RENDER_EXTERNAL_HOSTNAME')
 if render_external_hostname:
     ALLOWED_HOSTS.append(render_external_hostname)
 
 # Sentry SDK Integration (Production Monitoring)
-if os.getenv('SENTRY_DSN'):
+if os.getenv('SENTRY_DSN') and not DEBUG:
     import sentry_sdk
     from sentry_sdk.integrations.django import DjangoIntegration
     sentry_sdk.init(
@@ -30,17 +34,26 @@ if os.getenv('SENTRY_DSN'):
 
 # Production Security Hardening
 if not DEBUG:
-    SECURE_SSL_REDIRECT = True
+    SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', 'True').lower() in ('true', '1', 'yes')
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_SECONDS = int(os.getenv('SECURE_HSTS_SECONDS', '31536000'))
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
     SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
     SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin"
+
+# CSRF Trusted Origins for Production
+CSRF_TRUSTED_ORIGINS = [
+    f"https://{h.strip()}" for h in ALLOWED_HOSTS if h.strip() and not h.startswith('.') and h not in ('localhost', '127.0.0.1', 'testserver')
+]
+CSRF_TRUSTED_ORIGINS.extend(['https://*.onrender.com', 'https://*.supabase.co'])
+if os.getenv('CSRF_TRUSTED_ORIGINS'):
+    CSRF_TRUSTED_ORIGINS.extend([o.strip() for o in os.getenv('CSRF_TRUSTED_ORIGINS').split(',') if o.strip()])
+CSRF_TRUSTED_ORIGINS = list(dict.fromkeys(CSRF_TRUSTED_ORIGINS))  # Remove duplicates
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -101,6 +114,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'core.context_processors.shared_layout_context',
             ],
         },
     },
@@ -108,47 +122,56 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'rentora_project.wsgi.application'
 
-# Database Configuration
+# Database Configuration — Production-Grade PostgreSQL
 import dj_database_url
 
-DATABASES = {}  # Initialize to prevent NameError
-
 db_url = os.getenv('DATABASE_URL')
-db_host = os.getenv('DB_HOST')
+db_host = os.getenv('DB_HOST', '127.0.0.1')
+is_local_host = db_host in ('localhost', '127.0.0.1')
 
 if db_url:
+    # Neon Best Practice: Direct unpooled connection for DDL migrations, pooled for web traffic
+    is_migration = any(cmd in sys.argv for cmd in ('migrate', 'makemigrations', 'inspectdb'))
+    unpooled_url = os.getenv('DATABASE_URL_UNPOOLED')
+    active_db_url = unpooled_url if (is_migration and unpooled_url) else db_url
+    
+    db_config = dj_database_url.config(
+        default=active_db_url,
+        conn_max_age=0 if '-pooler' in active_db_url else 600,
+        ssl_require=not any(h in active_db_url for h in ('localhost', '127.0.0.1'))
+    )
+    # DNS fallback for Windows local environments when ISP DNS blocks *.neon.tech
+    if 'neon.tech' in db_config.get('HOST', ''):
+        try:
+            import socket
+            socket.gethostbyname(db_config['HOST'])
+        except Exception:
+            db_config.setdefault('OPTIONS', {})['hostaddr'] = '52.220.170.93'
+
     DATABASES = {
-        'default': dj_database_url.config(
-            default=db_url,
-            conn_max_age=600,
-            ssl_require=True
-        )
+        'default': db_config
     }
-elif db_host:
+else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('DB_NAME', 'postgres'),
+            'NAME': os.getenv('DB_NAME', 'rentora_db'),
             'USER': os.getenv('DB_USER', 'postgres'),
-            'PASSWORD': os.getenv('DB_PASSWORD', ''),
+            'PASSWORD': os.getenv('DB_PASSWORD', 'postgres'),
             'HOST': db_host,
             'PORT': os.getenv('DB_PORT', '5432'),
             'CONN_MAX_AGE': 600,
             'OPTIONS': {
-                'sslmode': 'require',
+                'sslmode': 'disable' if is_local_host else os.getenv('DB_SSLMODE', 'require'),
             },
         }
     }
 
-# Test-Only SQLite Fallback
 if 'test' in sys.argv:
     DATABASES['default'] = {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ':memory:',
+        'NAME': BASE_DIR / 'db.test.sqlite3',
     }
-elif not DATABASES.get('default'):
-    from django.core.exceptions import ImproperlyConfigured
-    raise ImproperlyConfigured("Database configuration is missing! Set DATABASE_URL or DB_HOST.")
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -167,29 +190,51 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Production Static Storage
-if not DEBUG:
-    STORAGES = {
-        "default": {
-            "BACKEND": "django.core.files.storage.FileSystemStorage",
-        },
-        "staticfiles": {
-            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-        },
-    }
+# Production Static & Media Storage
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage" if not DEBUG else "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+WHITENOISE_MANIFEST_STRICT = False
 
-# Media files
+# Media Storage Configuration (Cloudinary / Supabase S3 / Local fallback)
+CLOUDINARY_CLOUD_NAME = os.getenv("CLOUDINARY_CLOUD_NAME", "")
+CLOUDINARY_API_KEY = os.getenv("CLOUDINARY_API_KEY", "")
+CLOUDINARY_API_SECRET = os.getenv("CLOUDINARY_API_SECRET", "")
+
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_ENDPOINT_URL = os.getenv('AWS_S3_ENDPOINT_URL')
 AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'ap-south-1')
-
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = 'public-read'
 AWS_S3_VERIFY = True
 
-if not DEBUG and AWS_ACCESS_KEY_ID:
+if CLOUDINARY_CLOUD_NAME and CLOUDINARY_API_KEY and CLOUDINARY_API_SECRET:
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': CLOUDINARY_CLOUD_NAME,
+        'API_KEY': CLOUDINARY_API_KEY,
+        'API_SECRET': CLOUDINARY_API_SECRET,
+    }
+    import cloudinary
+    cloudinary.config(
+        cloud_name=CLOUDINARY_CLOUD_NAME,
+        api_key=CLOUDINARY_API_KEY,
+        api_secret=CLOUDINARY_API_SECRET,
+        secure=True
+    )
+    if 'cloudinary_storage' not in INSTALLED_APPS:
+        INSTALLED_APPS += ['cloudinary_storage', 'cloudinary']
+    STORAGES["default"] = {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    }
+    MEDIA_URL = '/media/'
+elif not DEBUG and AWS_ACCESS_KEY_ID:
     MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.storage.supabase.co/storage/v1/s3/'
     STORAGES["default"] = {
         "BACKEND": "storages.backends.s3.S3Storage",

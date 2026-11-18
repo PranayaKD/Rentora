@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Server Error (500) | Rentora{% endblock %}
+
+{% block content %}
+<div class="min-h-[70vh] flex items-center justify-center px-4 py-16">
+    <div class="max-w-md w-full text-center">
+        <div class="w-20 h-20 rounded-3xl bg-rose-50 dark:bg-rose-950/40 flex items-center justify-center text-rose-600 dark:text-rose-400 mx-auto mb-6 shadow-sm border border-rose-200 dark:border-rose-900/50">
+            <span class="material-symbols-outlined text-4xl">car_crash</span>
+        </div>
+        <p class="text-xs font-black uppercase tracking-[0.25em] text-rose-500 mb-2">500 Server Error</p>
+        <h1 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white mb-3">Pit Stop Needed</h1>
+        <p class="text-sm text-slate-500 dark:text-zinc-400 mb-8 leading-relaxed">
+            Something went wrong under the hood. Our mechanics have been notified and are working on it.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <a href="{% url 'index' %}" class="w-full sm:w-auto px-6 py-3 bg-zinc-950 hover:bg-zinc-800 text-white dark:bg-white dark:text-zinc-950 font-black rounded-xl text-xs uppercase tracking-wider transition-all shadow-sm">
+                Back to Home
+            </a>
+            <button onclick="window.location.reload()" class="w-full sm:w-auto px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-zinc-800 dark:text-zinc-200 font-bold rounded-xl text-xs uppercase tracking-wider transition-all">
+                Retry Page
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

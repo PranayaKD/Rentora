@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Rentora - My Trips &amp; Bookings History</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Plus Jakarta Sans Font -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-background": "#1a1c1c",
+            "error": "#ba1a1a",
+            "inverse-primary": "#c7c6ca",
+            "on-error": "#ffffff",
+            "on-secondary": "#ffffff",
+            "background": "#f9f9f9",
+            "secondary-container": "#fdbf13",
+            "on-error-container": "#93000a",
+            "inverse-on-surface": "#f0f1f1",
+            "on-tertiary": "#ffffff",
+            "primary-container": "#1b1b1f",
+            "on-tertiary-fixed": "#1a1c20",
+            "surface-container": "#eeeeee",
+            "surface-container-high": "#e8e8e8",
+            "tertiary": "#000000",
+            "tertiary-container": "#1a1c20",
+            "outline": "#76777b",
+            "primary-fixed-dim": "#c7c6ca",
+            "inverse-surface": "#2f3131",
+            "on-secondary-fixed-variant": "#5b4300",
+            "secondary": "#795900",
+            "tertiary-fixed": "#e2e2e7",
+            "error-container": "#ffdad6",
+            "surface-container-low": "#f3f3f3",
+            "tertiary-fixed-dim": "#c6c6cb",
+            "on-primary-container": "#848387",
+            "surface-tint": "#5e5e62",
+            "on-tertiary-container": "#828489",
+            "surface": "#f9f9f9",
+            "on-primary": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "surface-dim": "#dadada",
+            "surface-bright": "#f9f9f9",
+            "surface-container-highest": "#e2e2e2",
+            "primary": "#000000",
+            "on-secondary-container": "#6c5000",
+            "primary-fixed": "#e3e2e6",
+            "outline-variant": "#c7c6cb",
+            "secondary-fixed": "#ffdf9f",
+            "on-tertiary-fixed-variant": "#45474b",
+            "on-surface": "#1a1c1c",
+            "surface-variant": "#e2e2e2",
+            "secondary-fixed-dim": "#fabd0d",
+            "on-secondary-fixed": "#261a00",
+            "on-surface-variant": "#46464b",
+            "on-primary-fixed": "#1b1b1f",
+            "on-primary-fixed-variant": "#46464a"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "space-xs": "0.25rem",
+            "gutter-lg": "1.25rem",
+            "margin": "1rem",
+            "margin-sm": "0.75rem",
+            "space-sm": "0.5rem",
+            "gutter-sm": "0.75rem",
+            "space-md": "1rem",
+            "gutter": "1rem",
+            "margin-lg": "1.5rem"
+          },
+          "fontFamily": {
+            "headline-sm": ["Plus Jakarta Sans"],
+            "headline-xl": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "headline-xl-mobile": ["Plus Jakarta Sans"],
+            "price-display": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "headline-sm": ["18px", {"lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+            "headline-xl": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.03em", "fontWeight": "800"}],
+            "headline-md": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+            "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+            "headline-xl-mobile": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+            "price-display": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+            "body-sm": ["12px", {"lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400"}],
+            "label-sm": ["10px", {"lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700"}],
+            "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+            "body-lg": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+            "body-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}],
+            "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    /* Subtle pulse animation for live tracking */
+    @keyframes live-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.15); }
+    }
+    .animate-live-pulse {
+      animation: live-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    /* Hide scrollbars for crisp horizontal filter strip */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased font-body-md selection:bg-secondary-container selection:text-tertiary">
+<!-- Mobile Viewport Frame Container (390px x 844px target) -->
+<div class="relative w-full max-w-[430px] mx-auto min-h-screen bg-background flex flex-col shadow-2xl overflow-x-hidden pb-[88px]">
+<!-- iOS Top Status Bar Indicator -->
+<header class="w-full pt-3 px-6 pb-2 flex items-center justify-between text-on-surface z-50 select-none bg-surface/90 backdrop-blur-md sticky top-0">
+<span class="font-headline-sm text-body-sm font-semibold tracking-tight">12:45</span>
+<!-- Dynamic Island Mockup -->
+<div class="w-24 h-4 bg-primary rounded-full mx-auto"></div>
+<div class="flex items-center gap-1.5 text-on-surface">
+<span class="material-symbols-outlined text-[14px]">signal_cellular_alt</span>
+<span class="material-symbols-outlined text-[14px]">wifi</span>
+<div class="flex items-center gap-0.5">
+<span class="font-label-sm text-[11px] font-bold">88%</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface" style="font-variation-settings: 'FILL' 1;">battery_charging_full</span>
+</div>
+</div>
+</header>
+<!-- Navigation Header -->
+<div class="px-margin pt-2 pb-3 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<h1 class="font-headline-md text-headline-md font-extrabold text-primary tracking-tight">My Trips</h1>
+</div>
+<!-- 24/7 Support Pill Button -->
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-lowest border border-outline-variant/50 shadow-sm active:scale-95 transition-transform duration-150 hover:bg-surface-container">
+<span class="material-symbols-outlined text-secondary text-[16px]">support_agent</span>
+<span class="font-label-md text-label-md font-bold text-on-surface">24/7 Support</span>
+</button>
+</div>
+<!-- Segmented Filter Tabs (Horizontal Scrollable Strip) -->
+<div class="px-margin pb-3 overflow-x-auto no-scrollbar flex items-center gap-2">
+<!-- Active (Selected state: obsidian pill #121316) -->
+<button class="shrink-0 px-4 py-2 rounded-full bg-primary-container text-surface-container-lowest font-label-md text-label-md shadow-sm flex items-center gap-1.5 active:scale-95 transition-transform">
+<span>Active</span>
+<span class="w-4 h-4 rounded-full bg-secondary-container text-tertiary text-[10px] font-bold flex items-center justify-center leading-none">1</span>
+</button>
+<!-- Upcoming (Unselected pill) -->
+<button class="shrink-0 px-4 py-2 rounded-full bg-surface-container-lowest border border-outline-variant/60 text-on-surface-variant font-label-md text-label-md hover:bg-surface-container transition-colors active:scale-95">
+<span>Upcoming</span>
+<span class="ml-1 text-[11px] text-outline font-medium">(1)</span>
+</button>
+<!-- Completed (Unselected pill) -->
+<button class="shrink-0 px-4 py-2 rounded-full bg-surface-container-lowest border border-outline-variant/60 text-on-surface-variant font-label-md text-label-md hover:bg-surface-container transition-colors active:scale-95">
+<span>Completed</span>
+<span class="ml-1 text-[11px] text-outline font-medium">(4)</span>
+</button>
+<!-- Cancelled (Unselected pill) -->
+<button class="shrink-0 px-4 py-2 rounded-full bg-surface-container-lowest border border-outline-variant/60 text-on-surface-variant font-label-md text-label-md hover:bg-surface-container transition-colors active:scale-95">
+<span>Cancelled</span>
+</button>
+</div>
+<!-- Main Content Canvas -->
+<main class="px-margin flex flex-col gap-5 pt-1">
+<!-- SECTION 1: ONGOING RENTAL -->
+<section class="flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="relative flex h-2 w-2">
+<span class="animate-live-pulse absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-600"></span>
+</span>
+<h2 class="font-headline-sm text-body-lg font-bold text-on-background tracking-tight">Ongoing Rental</h2>
+</div>
+<span class="font-label-sm text-[10px] font-bold text-outline uppercase tracking-wider">Live Telemetry</span>
+</div>
+<!-- Active Trip Highlight Card (High-priority Level 2 Elevation) -->
+<article class="relative rounded-2xl bg-surface-container-lowest p-4 border border-outline-variant/60 shadow-[0_4px_20px_-2px_rgba(18,19,22,0.06)] overflow-hidden transition-all">
+<!-- Top Row: Status badge & Bluetooth BLE Keyless Status -->
+<div class="flex items-center justify-between pb-3 border-b border-surface-container">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+<span class="font-label-sm text-[10px] font-bold text-emerald-800 tracking-wider">KEYLESS ACTIVE</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant text-[11px] font-medium bg-surface-container-low px-2 py-0.5 rounded-md">
+<span class="material-symbols-outlined text-[14px] text-primary">bluetooth</span>
+<span>BLE Connected</span>
+</div>
+</div>
+<!-- Vehicle Media + Specifications Row -->
+<div class="py-3 flex gap-3 items-center">
+<!-- Jet Black Mahindra Thar 4x4 Thumbnail -->
+<div class="w-28 h-20 rounded-xl overflow-hidden bg-surface-container shrink-0 relative border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A rugged jet black Mahindra Thar 4x4 parked beside a winding mountain highway in the Western Ghats near Bangalore with lush green hills and misty golden sunrise light illuminating its metallic gloss exterior and aggressive off-road stance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxOCxWaJzKZPKr8oqxbYJgt2lCj6zB0RR3zalUxxIWZS_scoKmZVMm5ZiBPwZ1aMYMW8MoHl9Uu2evn1Bw3s-ijuE9Bn8MsY8XuxlFF0D9BrZu_ZVk3gKzRzFk6Nv44lNXm7MvNvvq-KaO3Ic-HFua-eYKaGt_EZAmvo_jRmm6qRKDJ8iDN-p1Ckoc00svhGnJXGp-suwiYyOSqiTWPFSMm7NeXihAVfTvU1ELSbrQ2ePpwO4llIGOLChr-CFtjIl8291_OySFJh4"/>
+<span class="absolute bottom-1 right-1 bg-tertiary/80 backdrop-blur-sm text-surface-container-lowest text-[9px] font-extrabold px-1 rounded">4X4</span>
+</div>
+<!-- Vehicle Details -->
+<div class="flex flex-col justify-center flex-1 min-w-0">
+<div class="flex items-center gap-1.5 flex-wrap">
+<h3 class="font-headline-sm text-body-lg font-bold text-primary truncate">Mahindra Thar 4x4 LX</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Hard Top • 2.2L mHawk Diesel AT</p>
+<!-- Indian Number Plate Pill -->
+<div class="mt-1.5 inline-flex items-center self-start gap-1 px-2 py-0.5 rounded border border-on-surface/40 bg-white shadow-xs">
+<span class="text-[8px] font-bold text-blue-700 leading-none">IND</span>
+<span class="font-headline-sm text-[11px] font-bold tracking-wider text-primary leading-none">KA 05 MB 4912</span>
+</div>
+</div>
+</div>
+<!-- Schedule & Hub Route -->
+<div class="bg-surface-container-low/70 rounded-xl p-3 flex flex-col gap-2 border border-outline-variant/20">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[16px] text-secondary mt-0.5">schedule</span>
+<div class="text-[12px] leading-tight">
+<span class="font-bold text-on-surface">14 Nov, 10:00 AM</span>
+<span class="text-outline mx-1">→</span>
+<span class="font-bold text-on-surface">15 Nov, 10:00 AM</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-outline">location_on</span>
+<span class="text-[12px] font-medium text-on-surface-variant">Indiranagar Hub, 100ft Road (Self Pickup)</span>
+</div>
+</div>
+<!-- Quick Telemetry Stats Strip -->
+<div class="grid grid-cols-3 gap-2 mt-3 text-center">
+<div class="bg-surface-container-lowest border border-outline-variant/40 rounded-lg py-2 px-1">
+<div class="flex items-center justify-center gap-1 text-on-surface-variant mb-0.5">
+<span class="material-symbols-outlined text-[14px] text-secondary">local_gas_station</span>
+<span class="font-label-sm text-[10px] font-semibold">Fuel Tank</span>
+</div>
+<span class="font-headline-sm text-body-md font-bold text-primary">72%</span>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant/40 rounded-lg py-2 px-1">
+<div class="flex items-center justify-center gap-1 text-on-surface-variant mb-0.5">
+<span class="material-symbols-outlined text-[14px] text-outline">speed</span>
+<span class="font-label-sm text-[10px] font-semibold">Allowance</span>
+</div>
+<span class="font-headline-sm text-body-md font-bold text-primary">142<span class="text-[11px] font-normal text-on-surface-variant">/240km</span></span>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant/40 rounded-lg py-2 px-1">
+<div class="flex items-center justify-center gap-1 text-on-surface-variant mb-0.5">
+<span class="material-symbols-outlined text-[14px] text-amber-600">timer</span>
+<span class="font-label-sm text-[10px] font-semibold">Remaining</span>
+</div>
+<span class="font-headline-sm text-body-md font-bold text-amber-800">14h 22m</span>
+</div>
+</div>
+<!-- Primary Action CTA Button: Warm Amber Gold -->
+<button class="mt-3.5 w-full h-[48px] rounded-full bg-secondary-container hover:bg-secondary-fixed-dim text-tertiary font-label-lg text-label-lg font-bold flex items-center justify-center gap-2 shadow-md active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-[18px]">lock_open</span>
+<span>Open Live In-Trip Controls</span>
+<span class="material-symbols-outlined text-[16px]">arrow_outward</span>
+</button>
+</article>
+</section>
+<!-- SECTION 2: UPCOMING BOOKINGS -->
+<section class="flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-body-lg font-bold text-on-background tracking-tight">Upcoming Bookings</h2>
+<span class="font-label-sm text-[11px] font-semibold text-secondary">1 Scheduled</span>
+</div>
+<!-- Upcoming Booking Card -->
+<article class="rounded-2xl bg-surface-container-lowest p-4 border border-outline-variant/60 shadow-[0_4px_16px_-2px_rgba(18,19,22,0.04)] flex flex-col gap-3">
+<!-- Card Header / Status Pill -->
+<div class="flex items-center justify-between">
+<span class="px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-800 border border-blue-200/80 font-label-sm text-[10px] font-bold tracking-wide">
+              CONFIRMED • STARTS IN 6 DAYS
+            </span>
+<span class="font-label-sm text-[11px] font-bold text-outline">#RT-9104</span>
+</div>
+<!-- Car Image and Title Row -->
+<div class="flex gap-3 items-center">
+<!-- Tata Nexon EV Max Thumbnail -->
+<div class="w-24 h-16 rounded-xl overflow-hidden bg-surface-container shrink-0 border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="An electric teal Tata Nexon EV Max driving along a modern multi-lane highway near Bangalore during a soft warm sunset with scenic green hills and palm trees visible in the soft-focus background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHVf7zSRFUw-oe29sp8U1GKZmDLr2xVrrnOl50Mrln-qVR053341JVAiIW8mn3JXoTS3R_K9-WatUF215jya86whviC6y2I_kGPqz__cY3PvuZg8li7sMODYwrhEGdYNQaEIxhyzz1RNTTD7Ze9us6mypLXH-oPt4NUxBSMok9E2gcwB6U3HA7kLGDk4vqImG4XFyvtCP76aBF6FEHcT2UEttdOzL7qPy3unq8widmx3IG9GIpuSNtRMseUBNwr_3g3Q43IC-RkQA"/>
+</div>
+<!-- Details -->
+<div class="flex-1 min-w-0">
+<h3 class="font-headline-sm text-body-md font-bold text-primary truncate">Tata Nexon EV Max</h3>
+<p class="font-body-sm text-[12px] text-on-surface-variant">Empowered+ • Fast Charging 7.2kW AC</p>
+<div class="mt-1 flex items-center gap-1.5 text-[11px] text-emerald-700 font-semibold">
+<span class="material-symbols-outlined text-[13px]">bolt</span>
+<span>437 km Certified Range • Clean EV</span>
+</div>
+</div>
+</div>
+<!-- Delivery Specification Strip -->
+<div class="p-2.5 rounded-xl bg-surface-container-low/60 flex flex-col gap-1.5 text-[12px]">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5 text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-outline">event</span>
+<span class="font-semibold">20 Nov, 08:00 AM – 22 Nov, 08:00 AM</span>
+</div>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] text-outline">home_pin</span>
+<span class="truncate">Doorstep Delivery (Domlur 2nd Stage, Bangalore)</span>
+</div>
+</div>
+<!-- Pricing & Action Row -->
+<div class="pt-2 border-t border-surface-container flex items-center justify-between">
+<div>
+<span class="font-label-sm text-[10px] text-outline uppercase block leading-none">Total Fare</span>
+<span class="font-price-display text-headline-sm font-extrabold text-primary">₹4,120</span>
+<span class="text-[10px] text-outline font-medium">(Taxes &amp; Fastag incl.)</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3.5 py-1.5 rounded-full border border-primary-container text-primary font-label-md text-label-md font-bold hover:bg-surface-container active:scale-95 transition-transform">
+                Modify Schedule
+              </button>
+</div>
+</div>
+<!-- Cancellation policy note -->
+<div class="flex items-center justify-between text-[11px] text-on-surface-variant pt-0.5">
+<span class="flex items-center gap-1 text-emerald-700 font-medium">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+              Free Cancellation (100% Refundable)
+            </span>
+<a class="text-outline hover:text-primary font-semibold underline text-[11px]" href="#">Policy</a>
+</div>
+</article>
+</section>
+<!-- SECTION 3: PAST COMPLETED TRIPS -->
+<section class="flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-body-lg font-bold text-on-background tracking-tight">Past Completed Trips</h2>
+<span class="font-label-sm text-[11px] text-outline">4 Completed</span>
+</div>
+<!-- Completed Trip Card -->
+<article class="rounded-2xl bg-surface-container-lowest p-4 border border-outline-variant/60 shadow-[0_4px_16px_-2px_rgba(18,19,22,0.04)] flex flex-col gap-3">
+<!-- Header Status & Booking ID -->
+<div class="flex items-center justify-between">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface font-label-sm text-[10px] font-bold">
+<span class="material-symbols-outlined text-[12px] text-emerald-600 font-bold">check_circle</span>
+              COMPLETED &amp; RETURNED
+            </span>
+<span class="font-label-sm text-[11px] font-semibold text-outline">02 Nov 2026</span>
+</div>
+<!-- Car Title & Registration -->
+<div class="flex items-center justify-between">
+<div>
+<h3 class="font-headline-sm text-body-md font-bold text-primary">Maruti Swift ZXi Automatic</h3>
+<p class="font-body-sm text-[12px] text-on-surface-variant">Booking ID: #REN-7512 • Koramangala Hub</p>
+</div>
+<!-- Indian Number Plate Minimal -->
+<div class="px-2 py-0.5 rounded border border-outline-variant text-[11px] font-bold text-on-surface bg-surface-container-low">
+              KA 01 MR 8820
+            </div>
+</div>
+<!-- Summary Metric Badges -->
+<div class="grid grid-cols-3 gap-2 py-2 px-3 rounded-xl bg-surface-container-low text-[11px]">
+<div>
+<span class="text-outline block text-[10px]">Total Paid</span>
+<span class="font-bold text-on-surface font-headline-sm text-[13px]">₹1,690</span>
+</div>
+<div>
+<span class="text-outline block text-[10px]">FASTag Settled</span>
+<span class="font-bold text-on-surface font-headline-sm text-[13px]">₹180</span>
+</div>
+<div>
+<span class="text-outline block text-[10px]">Distance</span>
+<span class="font-bold text-on-surface font-headline-sm text-[13px]">186 km</span>
+</div>
+</div>
+<!-- Actions: GST Tax Invoice & Book Again -->
+<div class="pt-2 border-t border-surface-container flex items-center justify-between gap-2">
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-outline-variant text-on-surface font-label-md text-[11px] font-bold hover:bg-surface-container active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-error text-[16px]">picture_as_pdf</span>
+<span>GST Tax Invoice</span>
+</button>
+<button class="px-4 py-1.5 rounded-full bg-primary-container text-surface-container-lowest font-label-md text-[11px] font-bold hover:bg-primary active:scale-95 transition-transform flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">replay</span>
+<span>Book Again</span>
+</button>
+</div>
+</article>
+</section>
+</main>
+<!-- FLOATING BOTTOM NAVIGATION DOCK (Mandatory Shared Component from JSON) -->
+<!-- Screen intent = "My Trips", so destination "Trips" is ACTIVE with active indicator -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 flex justify-around items-center px-4 py-3 pb-safe max-w-[430px] mx-auto pointer-events-none">
+<div class="w-full bg-tertiary-container/95 dark:bg-tertiary-container/95 backdrop-blur-xl rounded-full border border-outline/20 shadow-[0_16px_36px_-6px_rgba(18,19,22,0.35)] flex items-center justify-around py-2.5 px-3 pointer-events-auto">
+<!-- Explore (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-tertiary-container hover:text-on-tertiary active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">explore</span>
+<span class="text-label-sm font-label-sm text-[10px] mt-0.5">Explore</span>
+</a>
+<!-- Search (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-tertiary-container hover:text-on-tertiary active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">search</span>
+<span class="text-label-sm font-label-sm text-[10px] mt-0.5">Search</span>
+</a>
+<!-- Trips (ACTIVE Destination: Exact match for My Trips Screen) -->
+<a class="flex flex-col items-center justify-center text-secondary-container dark:text-secondary-container font-bold relative after:content-[''] after:w-1.5 after:h-1.5 after:bg-secondary-container after:rounded-full after:mt-1 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">directions_car</span>
+<span class="text-label-sm font-label-sm text-[10px] mt-0.5">Trips</span>
+</a>
+<!-- Profile (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-tertiary-container hover:text-on-tertiary active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">person</span>
+<span class="text-label-sm font-label-sm text-[10px] mt-0.5">Profile</span>
+</a>
+</div>
+</nav>
+</div>
+</body></html>

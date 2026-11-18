@@ -1,0 +1,224 @@
+{% load static %}
+<!-- Fare Breakup Modal -->
+<div id="fare-modal-overlay" class="modal-overlay hidden opacity-0 transition-opacity duration-300" onclick="closeFareBreakup()"></div>
+
+<div id="fare-modal-sheet" class="modal-sheet fixed bottom-0 inset-x-0 max-w-lg mx-auto hidden bg-surface-container-lowest rounded-t-[28px] md:rounded-[28px] md:bottom-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 p-6 sm:p-7 shadow-[0_25px_70px_rgba(0,0,0,0.4)] border border-outline-variant/40 translate-y-full md:translate-y-[-40%] transition-all duration-300 ease-out max-h-[85vh] flex flex-col z-[210]">
+    <!-- Drag Handle -->
+    <div class="md:hidden w-12 h-1 bg-surface-container-highest rounded-full mx-auto mb-4 shrink-0 cursor-pointer" onclick="closeFareBreakup()"></div>
+
+    <!-- Header -->
+    <div class="flex items-center justify-between pb-3.5 border-b border-outline-variant/30 shrink-0">
+        <div>
+            <span class="text-[10px] font-black uppercase tracking-[0.2em] text-primary bg-secondary-container/20 px-2.5 py-0.5 rounded-full border border-secondary-container/30 inline-block mb-1">Transparent Pricing</span>
+            <h3 class="text-lg sm:text-xl font-extrabold text-primary tracking-tight">Fare Breakdown</h3>
+        </div>
+        <button onclick="closeFareBreakup()" class="w-8 h-8 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface flex items-center justify-center transition-colors cursor-pointer" aria-label="Close modal">
+            <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+    </div>
+
+    <!-- Scrollable Content -->
+    <div class="overflow-y-auto flex-1 py-3.5 space-y-4">
+        <!-- Selected Car Preview Mini-Card -->
+        <div class="flex items-center gap-3.5 p-3.5 rounded-2xl bg-surface-container-low border border-outline-variant/40">
+            <img id="fare-car-img" src="{% static 'images/ui/car-placeholder.jpg' %}" alt="Car Image" class="w-18 h-14 object-cover rounded-xl bg-surface-container-lowest border border-outline-variant/20" />
+            <div class="flex-1 min-w-0">
+                <span id="fare-car-badge" class="px-2 py-0.5 rounded-full bg-primary text-secondary-container text-[9px] font-black uppercase tracking-wider">Top Rated</span>
+                <h4 id="fare-car-name" class="text-sm font-extrabold text-primary truncate mt-0.5">Maruti Suzuki Swift</h4>
+                <p id="fare-car-tags" class="text-xs text-on-surface-variant font-medium">Manual • Petrol • 5 Seats</p>
+            </div>
+        </div>
+
+        <!-- Fare Itemization List -->
+        <div class="space-y-2.5">
+            <h4 class="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">Cost Itemization</h4>
+            
+            <!-- Base Rental Fare -->
+            <div class="flex items-center justify-between py-1.5 border-b border-outline-variant/30 text-xs">
+                <div>
+                    <span class="font-bold text-primary">Base Rental Fare</span>
+                    <p id="fare-rate-calculation" class="text-[11px] text-on-surface-variant font-medium">₹80 × 24 hours (1 day)</p>
+                </div>
+                <span id="fare-base-amount" class="font-black text-primary text-sm">₹1,920</span>
+            </div>
+
+            <!-- KM Plan Included -->
+            <div class="flex items-center justify-between py-1.5 border-b border-outline-variant/30 text-xs">
+                <div>
+                    <span id="fare-km-title" class="font-bold text-primary">300 km included</span>
+                    <p id="fare-extra-km-sub" class="text-[11px] text-on-surface-variant font-medium">Extra km charges: ₹7/km</p>
+                </div>
+                <span class="text-[10px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">Included</span>
+            </div>
+
+            <!-- Damage Protection Cover -->
+            <div class="flex items-center justify-between py-1.5 border-b border-outline-variant/30 text-xs">
+                <div>
+                    <span class="font-bold text-primary">Standard Protection Cover</span>
+                    <p class="text-[11px] text-on-surface-variant font-medium">Zero liability up to ₹5,000 damages</p>
+                </div>
+                <span class="font-black text-primary text-sm">₹199</span>
+            </div>
+
+            <!-- Convenience Fee -->
+            <div class="flex items-center justify-between py-1.5 border-b border-outline-variant/30 text-xs">
+                <div>
+                    <span class="font-bold text-primary">Convenience & Platform Fee</span>
+                    <p class="text-[11px] text-on-surface-variant font-medium">24/7 Roadside Assistance & Fleet Care</p>
+                </div>
+                <span class="font-black text-primary text-sm">₹99</span>
+            </div>
+
+            <!-- Taxes / GST -->
+            <div class="flex items-center justify-between py-1.5 border-b border-outline-variant/30 text-xs">
+                <div>
+                    <span class="font-bold text-primary">Goods & Services Tax (GST 18%)</span>
+                    <p class="text-[11px] text-on-surface-variant font-medium">Government Mandated Tax</p>
+                </div>
+                <span id="fare-gst-amount" class="font-black text-primary text-sm">₹399</span>
+            </div>
+
+            <!-- Refundable Security Deposit -->
+            <div class="flex items-center justify-between py-1.5 border-b border-outline-variant/30 text-xs">
+                <div>
+                    <span class="font-bold text-primary">Refundable Security Deposit</span>
+                    <p class="text-[11px] text-emerald-700 font-medium">100% Refunded upon return</p>
+                </div>
+                <span id="fare-deposit-amount" class="font-black text-primary text-sm">₹0</span>
+            </div>
+        </div>
+
+        <!-- Inclusions & Exclusions Accordion -->
+        <div class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/40 text-xs space-y-1.5">
+            <div class="flex items-center gap-1.5 font-bold text-primary">
+                <span class="material-symbols-outlined text-[16px] text-secondary">info</span>
+                <span>Important Trip Notes</span>
+            </div>
+            <ul class="space-y-1 text-[11px] text-on-surface-variant list-disc list-inside">
+                <li><strong>Fuel Policy:</strong> Same-to-same fuel policy. Return at same level.</li>
+                <li><strong>Tolls & FASTag:</strong> Auto-detected and settled at actuals.</li>
+                <li><strong>Free Cancellation:</strong> 100% refund up to 6 hours before trip.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Bottom Sticky Total Bar -->
+    <div class="pt-3.5 border-t border-outline-variant/30 flex items-center justify-between gap-4 shrink-0">
+        <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant block">Total Payable</span>
+            <div class="flex items-baseline gap-1">
+                <span id="fare-total-payable" class="text-xl sm:text-2xl font-black text-primary">₹2,617</span>
+                <span class="text-[10px] text-on-surface-variant font-medium">inc. taxes</span>
+            </div>
+        </div>
+
+        <button type="button" id="fare-proceed-btn" onclick="proceedFromFareBreakup()" class="px-6 py-2.5 bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-fixed font-black rounded-xl transition-all shadow-md active:scale-95 text-xs sm:text-sm flex items-center gap-2 cursor-pointer">
+            <span>Proceed to Book</span>
+            <span class="material-symbols-outlined text-base font-bold">arrow_forward</span>
+        </button>
+    </div>
+</div>
+
+<script>
+let currentSelectedCarId = null;
+
+function openFareBreakup(carData) {
+    currentSelectedCarId = carData.id;
+    
+    // Populate modal fields
+    const nameEl = document.getElementById('fare-car-name');
+    const badgeEl = document.getElementById('fare-car-badge');
+    const imgEl = document.getElementById('fare-car-img');
+    const tagsEl = document.getElementById('fare-car-tags');
+    const baseAmountEl = document.getElementById('fare-base-amount');
+    const rateCalcEl = document.getElementById('fare-rate-calculation');
+    const kmTitleEl = document.getElementById('fare-km-title');
+    const extraKmEl = document.getElementById('fare-extra-km-sub');
+    const gstEl = document.getElementById('fare-gst-amount');
+    const depositEl = document.getElementById('fare-deposit-amount');
+    const totalEl = document.getElementById('fare-total-payable');
+
+    const isUnlimited = window.rentoraCurrentPackage === 'unlimited';
+    const hourly = isUnlimited ? carData.unlimited_hourly : carData.hourly;
+    const daily = isUnlimited ? carData.unlimited_daily : carData.daily;
+    const deposit = carData.deposit || 0;
+    
+    if (nameEl) nameEl.textContent = carData.name;
+    if (badgeEl) badgeEl.textContent = carData.badge || 'Guest Favorite';
+    if (imgEl && carData.image) imgEl.src = carData.image;
+    if (tagsEl) tagsEl.textContent = `${carData.transmission} • ${carData.fuel_type} • ${carData.seats} Seats`;
+    
+    if (kmTitleEl) kmTitleEl.textContent = isUnlimited ? 'Unlimited Kilometers Plan' : `${carData.free_km || 300} km included`;
+    if (extraKmEl) extraKmEl.textContent = isUnlimited ? 'No extra km charges' : `Extra km charge: ₹${carData.extra_km_rate || 7}/km`;
+    
+    const baseFare = daily;
+    const protection = 199;
+    const convenience = 99;
+    const taxable = baseFare + protection + convenience;
+    const gst = Math.round(taxable * 0.18);
+    const total = taxable + gst + deposit;
+
+    if (rateCalcEl) rateCalcEl.textContent = `₹${hourly} × 24 hours (1 day)`;
+    if (baseAmountEl) baseAmountEl.textContent = `₹${baseFare.toLocaleString('en-IN')}`;
+    if (gstEl) gstEl.textContent = `₹${gst.toLocaleString('en-IN')}`;
+    if (depositEl) depositEl.textContent = deposit > 0 ? `₹${deposit.toLocaleString('en-IN')}` : '₹0';
+    if (totalEl) totalEl.textContent = `₹${total.toLocaleString('en-IN')}`;
+
+    const overlay = document.getElementById('fare-modal-overlay');
+    const sheet = document.getElementById('fare-modal-sheet');
+    if (!overlay || !sheet) return;
+    
+    overlay.classList.remove('hidden');
+    sheet.classList.remove('hidden');
+    requestAnimationFrame(() => {
+        overlay.classList.remove('opacity-0');
+        sheet.classList.remove('translate-y-full');
+        sheet.classList.add('translate-y-0');
+    });
+    document.body.style.overflow = 'hidden';
+}
+
+function closeFareBreakup() {
+    const overlay = document.getElementById('fare-modal-overlay');
+    const sheet = document.getElementById('fare-modal-sheet');
+    if (!overlay || !sheet) return;
+    overlay.classList.add('opacity-0');
+    sheet.classList.remove('translate-y-0');
+    sheet.classList.add('translate-y-full');
+    document.body.style.overflow = '';
+    setTimeout(() => {
+        overlay.classList.add('hidden');
+        sheet.classList.add('hidden');
+    }, 300);
+}
+
+function proceedFromFareBreakup() {
+    if (!currentSelectedCarId) return;
+    closeFareBreakup();
+    handleCarBookClick(currentSelectedCarId);
+}
+
+window.triggerFareBreakupForCard = function(btn) {
+    const card = btn.closest('.rentora-car-card');
+    if (!card) return;
+    const carData = {
+        id: card.dataset.carId,
+        name: card.querySelector('h3 a')?.textContent?.trim() || 'Car',
+        image: card.querySelector('.car-main-img')?.src,
+        badge: card.querySelector('.material-symbols-outlined + span')?.textContent?.trim(),
+        transmission: card.dataset.transmission,
+        fuel_type: card.dataset.fuel,
+        seats: card.dataset.seats,
+        rating: card.dataset.rating,
+        hourly: Number(card.dataset.hourly),
+        unlimited_hourly: Number(card.dataset.unlimitedHourly),
+        daily: Number(card.dataset.daily),
+        unlimited_daily: Number(card.dataset.unlimitedDaily),
+        deposit: Number(card.dataset.deposit || 0),
+        free_km: Number(card.dataset.freeKm || 300),
+        extra_km_rate: Number(card.dataset.extraKm || 7)
+    };
+    openFareBreakup(carData);
+};
+</script>
+

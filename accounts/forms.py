@@ -127,7 +127,15 @@ class ProfileForm(forms.Form):
     full_name = forms.CharField(
         max_length=100,
         widget=forms.TextInput(attrs={
-            'class': 'w-full h-12 px-5 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#00c9a7]/20 focus:border-[#00c9a7] transition-all',
+            'placeholder': 'Your Full Name',
+            'class': 'w-full h-12 px-5 rounded-2xl bg-surface-container-low border border-outline-variant/60 text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all',
+        })
+    )
+    email = forms.EmailField(
+        required=False,
+        widget=forms.EmailInput(attrs={
+            'placeholder': 'you@example.com',
+            'class': 'w-full h-12 px-5 rounded-2xl bg-surface-container-low border border-outline-variant/60 text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all',
         })
     )
     phone = forms.CharField(
@@ -135,14 +143,14 @@ class ProfileForm(forms.Form):
         required=False,
         widget=forms.TextInput(attrs={
             'placeholder': '+91XXXXXXXXXX',
-            'class': 'w-full h-12 px-5 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#00c9a7]/20 focus:border-[#00c9a7] transition-all',
+            'class': 'w-full h-12 px-5 rounded-2xl bg-surface-container-low border border-outline-variant/60 text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all',
         })
     )
     date_of_birth = forms.DateField(
         required=False,
         widget=forms.DateInput(attrs={
             'type': 'date',
-            'class': 'w-full h-12 px-5 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#00c9a7]/20 focus:border-[#00c9a7] transition-all',
+            'class': 'w-full h-12 px-5 rounded-2xl bg-surface-container-low border border-outline-variant/60 text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all',
         })
     )
     profile_photo = forms.ImageField(
@@ -156,31 +164,31 @@ class ProfileForm(forms.Form):
         max_length=50,
         required=False,
         widget=forms.TextInput(attrs={
-            'placeholder': 'DL-XXXXXXXXXXXXX',
-            'class': 'w-full h-12 px-5 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00c9a7]/20 focus:border-[#00c9a7] transition-all',
+            'placeholder': 'OD-02-2023-XXXXXXX',
+            'class': 'w-full h-12 px-5 rounded-2xl bg-surface-container-low border border-outline-variant/60 text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-mono',
         })
     )
     aadhaar_number = forms.CharField(
         max_length=12,
         required=False,
         widget=forms.TextInput(attrs={
-            'placeholder': '12 Digit Aadhaar Number',
-            'class': 'w-full h-12 px-5 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00c9a7]/20 focus:border-[#00c9a7] transition-all',
+            'placeholder': '12-digit Aadhaar number',
+            'class': 'w-full h-12 px-5 rounded-2xl bg-surface-container-low border border-outline-variant/60 text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-mono',
         })
     )
     pan_number = forms.CharField(
         max_length=10,
         required=False,
         widget=forms.TextInput(attrs={
-            'placeholder': 'PAN Card Number',
-            'class': 'w-full h-12 px-5 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#00c9a7]/20 focus:border-[#00c9a7] transition-all',
+            'placeholder': 'PAN (e.g. ABCDE1234F)',
+            'class': 'w-full h-12 px-5 rounded-2xl bg-surface-container-low border border-outline-variant/60 text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-mono uppercase',
         })
     )
     license_image = forms.ImageField(
         required=False,
         widget=forms.FileInput(attrs={
-            'class': 'w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all',
-            'accept': 'image/*',
+            'class': 'w-full text-xs text-on-surface-variant file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary file:text-on-primary hover:file:bg-primary-container transition-all cursor-pointer',
+            'accept': 'image/*,.pdf',
         })
     )
 

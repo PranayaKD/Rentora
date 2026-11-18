@@ -1,87 +1,87 @@
-<!DOCTYPE html>
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Rentora - Onboarding</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#00ced1", // Teal accent
-                        "navy-dark": "#0a0f1f",
-                        "background-light": "#f6f6f8",
-                        "background-dark": "#0a0f1f",
-                    },
-                    fontFamily: {
-                        "display": ["Plus Jakarta Sans", "sans-serif"]
-                    },
-                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
-                },
-            },
-        }
-    </script>
-</head>
-<body class="bg-background-dark font-display antialiased text-slate-100">
-<div class="relative flex h-screen w-full flex-col bg-navy-dark overflow-hidden">
-<!-- Layout Container -->
-<div class="layout-container flex h-full grow flex-col">
-<!-- Header Section -->
-<header class="flex items-center justify-between px-6 py-6 lg:px-20">
-<div class="flex items-center gap-3">
-<div class="size-8 text-primary">
-<svg class="w-full h-full" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-<path d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z" fill="currentColor"></path>
-</svg>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Driver License Verification - Rentora{% endblock %}
+
+{% block content %}
+<div class="w-full max-w-md mx-auto px-4 py-12 flex flex-col items-center">
+    <div class="w-full bg-white dark:bg-zinc-900 rounded-[2.5rem] p-6 sm:p-8 border border-slate-200 dark:border-zinc-800 shadow-xl flex flex-col gap-6">
+
+        <!-- Header -->
+        <div class="flex flex-col items-center text-center gap-2">
+            <div class="w-14 h-14 rounded-2xl bg-[#FFF2EA] dark:bg-zinc-800 border border-orange-100 dark:border-zinc-700 flex items-center justify-center text-[#FF5F00] shadow-sm">
+                <span class="material-symbols-outlined text-2xl font-black">badge</span>
+            </div>
+            <span class="text-[10px] font-black uppercase tracking-widest text-[#FF5F00] block mt-1">Identity Verification</span>
+            <h1 class="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Driving Licence KYC</h1>
+            <p class="text-xs text-slate-500 dark:text-zinc-400 font-medium">Government-mandated verification for keyless self-drive unlock</p>
+        </div>
+
+        {% if kyc_status == 'upload' or not kyc_status %}
+        <!-- STATE 1: UPLOAD -->
+        <form action="{% url 'onboarding' %}" method="post" enctype="multipart/form-data" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label class="block text-[11px] font-black uppercase tracking-wider text-slate-500 dark:text-zinc-400 mb-1.5">Driving Licence Number</label>
+                <input type="text" name="license_number" placeholder="KA0120200001234" value="{{ profile.license_number|default:'' }}" required class="w-full uppercase font-mono bg-slate-50 dark:bg-zinc-800/60 border border-slate-200 dark:border-zinc-700 rounded-2xl py-3 px-4 text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#FF5F00]" />
+            </div>
+
+            <div>
+                <label class="block text-[11px] font-black uppercase tracking-wider text-slate-500 dark:text-zinc-400 mb-1.5">Upload Licence Photo (Front)</label>
+                <div class="border-2 border-dashed border-slate-300 dark:border-zinc-700 rounded-2xl p-6 flex flex-col items-center justify-center bg-slate-50 dark:bg-zinc-800/40 cursor-pointer hover:border-[#FF5F00] transition-colors text-center relative">
+                    <input type="file" name="license_front" accept="image/*" required class="absolute inset-0 opacity-0 cursor-pointer" onchange="document.getElementById('file-chosen-text').innerText = this.files[0] ? this.files[0].name : 'Choose file'" />
+                    <span class="material-symbols-outlined text-3xl text-slate-400 mb-2">add_a_photo</span>
+                    <span id="file-chosen-text" class="text-xs font-black text-slate-900 dark:text-white">Tap to capture or upload DL</span>
+                    <span class="text-[10px] text-slate-400 mt-1">JPEG, PNG up to 10MB</span>
+                </div>
+            </div>
+
+            <button type="submit" class="w-full py-3.5 bg-[#FF5F00] hover:bg-[#e05300] text-white font-black rounded-2xl transition-all shadow-md shadow-[#FF5F00]/25 active:scale-[0.99] text-sm flex items-center justify-center gap-2 mt-2">
+                <span>Submit for Verification</span>
+                <span class="material-symbols-outlined text-base font-black">arrow_forward</span>
+            </button>
+        </form>
+
+        {% elif kyc_status == 'pending' %}
+        <!-- STATE 2: PENDING -->
+        <div class="flex flex-col items-center text-center gap-4 py-4">
+            <div class="w-16 h-16 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-600 flex items-center justify-center">
+                <span class="material-symbols-outlined text-3xl animate-spin">sync</span>
+            </div>
+            <div>
+                <h3 class="text-base font-black text-slate-900 dark:text-white">Verification In Progress</h3>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 mt-1 max-w-xs font-medium">Our automated verification engine is reviewing your licence details. This typically completes within 5 minutes.</p>
+            </div>
+            <div class="p-3 bg-slate-50 dark:bg-zinc-800 rounded-2xl w-full text-left border border-slate-100 dark:border-zinc-700">
+                <span class="text-[10px] font-black uppercase text-slate-400 block">Licence Submitted</span>
+                <span class="font-mono text-xs font-black text-slate-900 dark:text-white">{{ profile.license_number }}</span>
+            </div>
+            <a href="{% url 'dashboard' %}" class="w-full py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 text-slate-900 dark:text-white font-black text-xs uppercase tracking-wider flex items-center justify-center transition-colors">
+                <span>Return to Dashboard</span>
+            </a>
+        </div>
+
+        {% elif kyc_status == 'verified' %}
+        <!-- STATE 3: VERIFIED -->
+        <div class="flex flex-col items-center text-center gap-4 py-4">
+            <div class="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 flex items-center justify-center border border-emerald-200 dark:border-emerald-800">
+                <span class="material-symbols-outlined text-3xl font-black">verified</span>
+            </div>
+            <div>
+                <h3 class="text-base font-black text-slate-900 dark:text-white">KYC Approved</h3>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 mt-1 font-medium">Your driving licence has been successfully verified. You are eligible for keyless unlock across all Rentora vehicles.</p>
+            </div>
+            <div class="p-3 bg-emerald-50 dark:bg-emerald-950/40 rounded-2xl w-full text-left border border-emerald-200 dark:border-emerald-800">
+                <span class="text-[10px] font-black uppercase text-emerald-700 dark:text-emerald-400 block">Verified Licence</span>
+                <span class="font-mono text-xs font-black text-emerald-900 dark:text-emerald-300">{{ profile.license_number }}</span>
+            </div>
+            <a href="{% url 'cars' %}" class="w-full py-3.5 bg-[#FF5F00] hover:bg-[#e05300] text-white font-black rounded-2xl transition-all shadow-md shadow-[#FF5F00]/25 text-xs uppercase tracking-wider flex items-center justify-center gap-1.5">
+                <span>Browse Fleet & Book</span>
+                <span class="material-symbols-outlined text-sm font-bold">arrow_forward</span>
+            </a>
+        </div>
+        {% endif %}
+
+    </div>
 </div>
-<h2 class="text-white text-2xl font-extrabold tracking-tight">Rentora</h2>
-</div>
-<a href="{% url 'skip_onboarding' %}" class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-full h-10 px-6 bg-slate-800/50 hover:bg-slate-800 text-slate-300 text-sm font-semibold transition-colors">
-                    Skip
-                </a>
-</header>
-<!-- Main Content -->
-<main class="flex-1 flex flex-col lg:flex-row lg:items-center px-6 lg:px-20 gap-10">
-<!-- Image Section -->
-<div class="flex-1 @container">
-<div class="w-full h-[409px] lg:h-[614px] bg-center bg-no-repeat bg-cover rounded-xl shadow-2xl shadow-primary/10 border border-slate-800" data-alt="Side profile of a sleek black luxury electric sports car" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC50sjhhKzfhFMpEj3v6nrq0c0kcDAkXksWb9BddabIObQh9d5S_bZWJLo5UY8IbPlKXdmYchFbZrnEWSLXLItt-1V4XjdiF8TrbD6X3XDhTtL7SM_Gq6Hi2hzP64kWSXPxQdbnsy5w0aBEnUCjDfk8zofoR5OGCAxrAj1rHRP6GpGQXQ3FqgcW7msk8q9TaAFgiV6E18fSXwitzX1oK5wT5X2Z9t_czDGokz1zVROrv0l_aerw1UeNbUj1MOyuNfHevHNOsqD_8yYm");'>
-</div>
-</div>
-<!-- Text & Actions Section -->
-<div class="flex-1 flex flex-col justify-center space-y-8 max-w-xl">
-<div class="space-y-4">
-<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest">
-                            Premium Selection
-                        </div>
-<h1 class="text-white text-5xl lg:text-7xl font-black leading-[1.1] tracking-tight">
-                            Drive the <span class="text-primary">Future</span> of Luxury
-                        </h1>
-<p class="text-slate-400 text-lg lg:text-xl font-medium leading-relaxed max-w-lg">
-                            Experience unparalleled comfort and performance with Rentora's exclusive fleet of high-end, next-generation vehicles.
-                        </p>
-</div>
-<!-- Progress Indicator -->
-<div class="flex items-center gap-3">
-<div class="h-1.5 w-12 rounded-full bg-primary"></div>
-<div class="h-1.5 w-3 rounded-full bg-slate-700"></div>
-<div class="h-1.5 w-3 rounded-full bg-slate-700"></div>
-<span class="ml-4 text-slate-500 font-bold text-sm">Step 01 / 03</span>
-</div>
-<!-- Footer Action -->
-<div class="flex items-center gap-4 pt-4">
-<a href="{% url 'skip_onboarding' %}" class="group flex min-w-[180px] cursor-pointer items-center justify-center gap-2 rounded-full h-14 px-8 bg-primary text-navy-dark text-lg font-bold transition-all hover:scale-105 active:scale-95">
-<span>Next</span>
-<span class="material-symbols-outlined font-bold group-hover:translate-x-1 transition-transform">arrow_forward</span>
-</a>
-</div>
-</div>
-</main>
-<!-- Bottom Gradient Decor -->
-<div class="h-2 w-full bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
-</div>
-</div>
-</body></html>
+{% endblock %}

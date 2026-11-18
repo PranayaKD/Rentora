@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Rentora - Booking Checkout</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Forms and Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-tint": "#5e5e62",
+            "surface": "#f9f9f9",
+            "tertiary-fixed-dim": "#c6c6cb",
+            "primary-fixed-dim": "#c7c6ca",
+            "tertiary-fixed": "#e2e2e7",
+            "on-secondary-fixed": "#261a00",
+            "on-tertiary-container": "#828489",
+            "on-surface": "#1a1c1c",
+            "secondary-fixed": "#ffdf9f",
+            "on-tertiary-fixed": "#1a1c20",
+            "on-primary": "#ffffff",
+            "on-tertiary-fixed-variant": "#45474b",
+            "on-secondary-container": "#6c5000",
+            "on-surface-variant": "#46464b",
+            "on-primary-fixed": "#1b1b1f",
+            "surface-dim": "#dadada",
+            "outline": "#76777b",
+            "surface-bright": "#f9f9f9",
+            "on-primary-fixed-variant": "#46464a",
+            "inverse-on-surface": "#f0f1f1",
+            "on-tertiary": "#ffffff",
+            "tertiary": "#000000",
+            "primary-container": "#1b1b1f",
+            "on-secondary": "#ffffff",
+            "surface-container-low": "#f3f3f3",
+            "outline-variant": "#c7c6cb",
+            "on-primary-container": "#848387",
+            "on-secondary-fixed-variant": "#5b4300",
+            "secondary-container": "#fdbf13",
+            "primary": "#000000",
+            "surface-container-lowest": "#ffffff",
+            "error-container": "#ffdad6",
+            "on-error": "#ffffff",
+            "on-error-container": "#93000a",
+            "tertiary-container": "#1a1c20",
+            "surface-container": "#eeeeee",
+            "surface-container-high": "#e8e8e8",
+            "inverse-surface": "#2f3131",
+            "on-background": "#1a1c1c",
+            "secondary": "#795900",
+            "surface-variant": "#e2e2e2",
+            "secondary-fixed-dim": "#fabd0d",
+            "inverse-primary": "#c7c6ca",
+            "error": "#ba1a1a",
+            "background": "#f9f9f9",
+            "surface-container-highest": "#e2e2e2",
+            "primary-fixed": "#e3e2e6"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "3xl": "1.5rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter": "1rem",
+            "gutter-lg": "1.25rem",
+            "margin-lg": "1.5rem",
+            "space-sm": "0.5rem",
+            "margin": "1rem",
+            "space-lg": "1.5rem",
+            "gutter-sm": "0.75rem",
+            "space-xs": "0.25rem",
+            "margin-sm": "0.75rem",
+            "space-md": "1rem",
+            "space-xl": "2rem"
+          },
+          "fontFamily": {
+            "body-lg": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-xl-mobile": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-xl": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "price-display": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "body-lg": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+            "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+            "headline-md": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+            "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+            "body-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}],
+            "headline-xl-mobile": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+            "label-sm": ["10px", {"lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700"}],
+            "headline-xl": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.03em", "fontWeight": "800"}],
+            "body-sm": ["12px", {"lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400"}],
+            "headline-sm": ["18px", {"lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+            "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+            "price-display": ["22px", {"lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill {
+      font-variation-settings: 'FILL' 1;
+    }
+    /* Hide scrollbars for clean Indian payment app feel */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md antialiased selection:bg-secondary-container selection:text-primary">
+<!-- Mobile Viewport Container (390x844 simulated max-w-md frame) -->
+<div class="relative w-full max-w-[430px] mx-auto min-h-screen bg-surface flex flex-col shadow-2xl pb-32">
+<!-- 1. Top iOS Status Bar (Simulated) -->
+<header class="sticky top-0 z-40 bg-surface/95 backdrop-blur-md">
+<div class="flex items-center justify-between px-6 pt-3 pb-1 text-primary">
+<span class="font-headline-sm text-body-sm font-bold tracking-tight">12:45</span>
+<!-- Dynamic Island Cutout -->
+<div class="h-4 w-24 bg-primary rounded-full mx-auto shadow-inner flex items-center justify-end px-2">
+<div class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
+</div>
+<div class="flex items-center space-x-1.5">
+<span class="text-[11px] font-bold tracking-wider">5G</span>
+<span class="material-symbols-outlined text-body-sm" data-icon="wifi">wifi</span>
+<div class="flex items-center gap-0.5">
+<span class="text-[10px] font-bold">88%</span>
+<span class="material-symbols-outlined text-body-sm" data-icon="battery_5_bar">battery_5_bar</span>
+</div>
+</div>
+</div>
+<!-- 2. Top Navigation Bar (Checkout Flow) -->
+<nav class="flex items-center justify-between px-4 py-2.5">
+<button aria-label="Go back" class="w-9 h-9 rounded-full bg-surface-container-lowest border border-outline-variant/40 flex items-center justify-center text-primary shadow-sm active:scale-95 transition-transform duration-150" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="arrow_back">arrow_back</span>
+</button>
+<div class="text-center">
+<h1 class="font-headline-sm text-headline-sm text-primary tracking-tight">Booking Checkout</h1>
+<p class="font-label-sm text-[10px] text-on-surface-variant font-medium">Bengaluru • Step 3 of 3</p>
+</div>
+<!-- 256-Bit SSL Security Tag -->
+<div class="flex items-center gap-1 bg-[#10B981]/10 border border-[#10B981]/30 text-[#065F46] px-2.5 py-1 rounded-full">
+<span class="material-symbols-outlined text-[13px] fill" data-icon="verified_user" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span class="font-label-sm text-[10px] font-bold tracking-wide">100% SECURE</span>
+</div>
+</nav>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 px-4 pt-2 space-y-3.5">
+<!-- 3. Booked Vehicle Summary Card -->
+<section class="bg-surface-container-lowest rounded-2xl p-3.5 border border-outline-variant/30 shadow-[0_4px_16px_-2px_rgba(18,19,22,0.04)]">
+<div class="flex gap-3.5 items-start">
+<!-- Thumbnail with https://lh3.googleusercontent.com/aida/ALJJyrCU2owxRQfMqF25eKEY7yrLPFfos_wmb6P2ZISVsjK9xtZ-9nTqMGqlX-z8nLlgGYDrws-MUFxZlmM_v7jLgx47CTKDIUh6Sp7HP2pRrMjaad8AksnrwrvBbyjyhzTErvT3Z0wqh8fQW8KLhDD3GMZLw59rdLujFlC-IFPr1g8VG2Ws1HHowMimLFDORtrIwG40Mi_5sUYuQYdxBmCYdsVFfYkWLuT6LN4xh4bbMGqS9mYVhGty_-ew43c -->
+<div class="relative w-28 h-24 shrink-0 rounded-xl overflow-hidden bg-surface-container-low border border-outline-variant/20">
+<img alt="Mahindra Thar 4x4 Jet Black" class="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-300" src="https://lh3.googleusercontent.com/aida/ALJJyrCU2owxRQfMqF25eKEY7yrLPFfos_wmb6P2ZISVsjK9xtZ-9nTqMGqlX-z8nLlgGYDrws-MUFxZlmM_v7jLgx47CTKDIUh6Sp7HP2pRrMjaad8AksnrwrvBbyjyhzTErvT3Z0wqh8fQW8KLhDD3GMZLw59rdLujFlC-IFPr1g8VG2Ws1HHowMimLFDORtrIwG40Mi_5sUYuQYdxBmCYdsVFfYkWLuT6LN4xh4bbMGqS9mYVhGty_-ew43c"/>
+<span class="absolute bottom-1 left-1 bg-primary/80 backdrop-blur-sm text-on-primary font-label-sm text-[9px] px-1.5 py-0.5 rounded">4x4 MANUAL</span>
+</div>
+<!-- Vehicle Details -->
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between mb-1">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-label-sm font-extrabold uppercase bg-secondary-container/20 text-on-secondary-container border border-secondary-container/40">
+                INSTANT CONFIRMATION
+              </span>
+<span class="inline-flex items-center gap-0.5 text-[#10B981] font-label-sm text-[10px]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#10B981]"></span>
+                Available
+              </span>
+</div>
+<h2 class="font-headline-md text-[15px] leading-tight font-bold text-primary truncate">Mahindra Thar 4x4 LX Hardtop</h2>
+<p class="font-body-sm text-[12px] text-on-surface-variant mt-0.5">Diesel AT • 4 Seats • Low Range 4WD</p>
+<div class="flex items-center gap-1.5 mt-2">
+<div class="inline-flex items-center gap-0.5 bg-primary text-secondary-container px-1.5 py-0.5 rounded text-[11px] font-bold">
+<span class="material-symbols-outlined text-[12px] fill" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+                4.9
+              </div>
+<span class="text-on-surface-variant text-[11px] font-body-sm font-medium">240+ trips • Indiranagar Hub</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. Trip Details & Handover Itinerary Card -->
+<section class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/30 shadow-[0_4px_16px_-2px_rgba(18,19,22,0.04)]">
+<div class="flex items-center justify-between pb-3 border-b border-surface-container">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary" data-icon="schedule">schedule</span>
+<span class="font-headline-sm text-body-md font-bold text-primary">Trip Duration</span>
+</div>
+<span class="px-2.5 py-0.5 bg-surface-container-high rounded-full font-label-sm text-[11px] text-on-surface font-bold">
+            24 Hours Total
+          </span>
+</div>
+<!-- Vertical Timeline -->
+<div class="py-3 relative pl-6 space-y-4">
+<!-- Timeline line connector -->
+<div class="absolute left-2.5 top-5 bottom-4 w-0.5 bg-dashed border-l-2 border-dashed border-outline-variant/60"></div>
+<!-- Pickup Item -->
+<div class="relative">
+<span class="absolute -left-6 top-1 w-3 h-3 rounded-full bg-primary border-2 border-surface-container-lowest shadow-sm"></span>
+<div>
+<div class="flex items-center justify-between">
+<p class="font-label-sm text-[10px] uppercase tracking-wider text-on-surface-variant font-bold">Pickup Time &amp; Hub</p>
+<span class="font-label-md text-[11px] text-primary font-bold">14 Nov, 10:00 AM</span>
+</div>
+<p class="font-body-md text-[13px] font-semibold text-primary">Indiranagar Hub, 100ft Road</p>
+<p class="font-body-sm text-[11px] text-on-surface-variant">Metro Pillar 48, Indiranagar, Bengaluru</p>
+</div>
+</div>
+<!-- Dropoff Item -->
+<div class="relative">
+<span class="absolute -left-6 top-1 w-3 h-3 rounded-full bg-secondary-container border-2 border-primary shadow-sm"></span>
+<div>
+<div class="flex items-center justify-between">
+<p class="font-label-sm text-[10px] uppercase tracking-wider text-on-surface-variant font-bold">Return Schedule</p>
+<span class="font-label-md text-[11px] text-primary font-bold">15 Nov, 10:00 AM</span>
+</div>
+<p class="font-body-md text-[13px] font-semibold text-primary">Indiranagar Hub / Same Location</p>
+<p class="font-body-sm text-[11px] text-on-surface-variant">Self-drive dropoff with keyless locker</p>
+</div>
+</div>
+</div>
+<!-- Handover Delivery & Mileage Row -->
+<div class="pt-3 border-t border-surface-container flex flex-col gap-2">
+<div class="flex items-center justify-between bg-surface-container-low p-2.5 rounded-xl">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-secondary-container fill" data-icon="local_shipping" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
+<div>
+<p class="font-label-md text-[12px] font-bold text-primary">Doorstep Handover</p>
+<p class="font-body-sm text-[10px] text-on-surface-variant">Domlur 2nd Stage, Bengaluru</p>
+</div>
+</div>
+<span class="bg-[#10B981]/15 text-[#065F46] font-label-sm text-[10px] px-2 py-0.5 rounded-md font-bold">FREE DELIVERY</span>
+</div>
+<div class="flex items-center justify-between px-1 text-on-surface-variant font-body-sm text-[11px]">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="speed">speed</span>
+              240 KMs Included
+            </span>
+<span class="font-medium text-primary">Extra KMs @ ₹14/km</span>
+</div>
+</div>
+</section>
+<!-- 5. Protection Cover Addon Selector ('Peace of Mind Protection') -->
+<section class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/30 shadow-[0_4px_16px_-2px_rgba(18,19,22,0.04)]">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[20px] text-secondary-container fill" data-icon="shield" style="font-variation-settings: 'FILL' 1;">shield</span>
+<h2 class="font-headline-sm text-body-md font-bold text-primary">Damage Protection Plan</h2>
+</div>
+<span class="font-label-sm text-[10px] text-on-surface-variant tracking-wider uppercase">Select Plan</span>
+</div>
+<div class="space-y-2.5">
+<!-- Radio Option 1: Selected Zero Liability -->
+<label class="relative block border-2 border-secondary-container bg-secondary-container/5 rounded-xl p-3 cursor-pointer shadow-sm">
+<div class="flex items-start justify-between">
+<div class="flex items-start gap-2.5">
+<!-- Concentric Amber Core Radio -->
+<div class="mt-0.5 w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center shrink-0">
+<div class="w-2 h-2 rounded-full bg-secondary-container"></div>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-[14px] font-bold text-primary">Zero Liability Cover</span>
+<span class="bg-secondary-container text-primary font-label-sm text-[9px] px-1.5 py-0.5 rounded font-extrabold uppercase">RECOMMENDED</span>
+</div>
+<p class="font-body-sm text-[11px] text-on-surface-variant mt-0.5 leading-snug">
+                    Covers 100% accidental damage, body scratches &amp; rim curb rash. Zero security deposit deduction guarantee.
+                  </p>
+</div>
+</div>
+<span class="font-headline-sm text-[13px] font-black text-primary shrink-0">+₹399</span>
+</div>
+<input checked="" class="sr-only" name="protection_plan" type="radio"/>
+</label>
+<!-- Radio Option 2: Standard Cover -->
+<label class="relative block border border-outline-variant/40 bg-surface-container-lowest hover:border-outline-variant rounded-xl p-3 cursor-pointer transition-colors">
+<div class="flex items-start justify-between">
+<div class="flex items-start gap-2.5">
+<div class="mt-0.5 w-4 h-4 rounded-full border border-outline-variant flex items-center justify-center shrink-0">
+</div>
+<div>
+<span class="font-headline-sm text-[14px] font-semibold text-primary">Standard Cover</span>
+<p class="font-body-sm text-[11px] text-on-surface-variant mt-0.5 leading-snug">
+                    Covers major mechanical damage. Customer liability strictly capped at ₹5,000 for minor body damages.
+                  </p>
+</div>
+</div>
+<span class="font-headline-sm text-[13px] font-bold text-on-surface-variant shrink-0">₹0</span>
+</div>
+<input class="sr-only" name="protection_plan" type="radio"/>
+</label>
+</div>
+</section>
+<!-- 6. Transparent Itemized Indian Billing Card ('Fare Breakdown') -->
+<section class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/30 shadow-[0_4px_16px_-2px_rgba(18,19,22,0.04)]">
+<div class="flex items-center justify-between pb-3 border-b border-surface-container">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[19px] text-primary" data-icon="receipt_long">receipt_long</span>
+<h2 class="font-headline-sm text-body-md font-bold text-primary">Fare Breakdown</h2>
+</div>
+<span class="inline-flex items-center gap-1 text-[10px] font-label-sm font-bold text-[#10B981] bg-[#10B981]/10 px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[12px] fill" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+            Zero Hidden Charges
+          </span>
+</div>
+<div class="py-3 space-y-2 text-[13px] font-body-sm">
+<div class="flex justify-between items-center text-on-surface">
+<span class="text-on-surface-variant">Base Rental Fare (24 hrs)</span>
+<span class="font-semibold">₹2,899</span>
+</div>
+<div class="flex justify-between items-center text-on-surface">
+<span class="text-on-surface-variant">Zero Liability Protection</span>
+<span class="font-semibold">₹399</span>
+</div>
+<div class="flex justify-between items-center text-on-surface">
+<span class="flex items-center gap-1 text-on-surface-variant">
+              FASTag Toll Advance
+              <span class="material-symbols-outlined text-[14px] text-outline" data-icon="info" title="Unused FASTag balance automatically refunded">info</span>
+</span>
+<span class="font-semibold">₹300</span>
+</div>
+<div class="flex justify-between items-center text-on-surface">
+<span class="text-on-surface-variant">Doorstep Handover &amp; Sanitization</span>
+<div class="flex items-center gap-1.5">
+<span class="line-through text-outline-variant text-[11px]">₹300</span>
+<span class="text-[#10B981] font-bold">FREE</span>
+</div>
+</div>
+<div class="flex justify-between items-center text-on-surface">
+<span class="text-on-surface-variant">GST (18% on Rental Fare)</span>
+<span class="font-semibold">₹521</span>
+</div>
+<div class="flex justify-between items-center text-on-surface">
+<span class="flex items-center gap-1 text-on-surface-variant">
+              Security Deposit (Refundable)
+              <span class="bg-[#10B981]/15 text-[#065F46] font-label-sm text-[8px] px-1 rounded">WAIVED</span>
+</span>
+<span class="text-[#10B981] font-bold">₹0</span>
+</div>
+<!-- Rentora Wallet Discount Applied -->
+<div class="flex justify-between items-center text-on-surface bg-secondary-container/10 p-2 rounded-lg border border-secondary-container/30">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary fill" data-icon="wallet" style="font-variation-settings: 'FILL' 1;">wallet</span>
+<span class="font-label-sm text-[11px] font-bold text-primary">Rentora Executive Credit</span>
+</div>
+<span class="text-[#065F46] font-bold font-price-display text-[13px]">-₹500</span>
+</div>
+</div>
+<!-- Total Calculation & Savings Footer -->
+<div class="pt-3 border-t border-surface-container flex items-baseline justify-between">
+<div>
+<p class="font-headline-sm text-body-md font-extrabold text-primary">Final Amount</p>
+<p class="font-label-sm text-[11px] text-[#10B981] font-bold">You saved ₹800 on this booking</p>
+</div>
+<div class="text-right">
+<p class="font-price-display text-headline-lg font-black text-primary tracking-tight">₹3,619</p>
+<p class="font-body-sm text-[10px] text-on-surface-variant">Includes all statutory Indian taxes</p>
+</div>
+</div>
+</section>
+<!-- 7. Indian Payment Ecosystem Selector -->
+<section class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/30 shadow-[0_4px_16px_-2px_rgba(18,19,22,0.04)]">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[20px] text-primary" data-icon="account_balance_wallet">account_balance_wallet</span>
+<h2 class="font-headline-sm text-body-md font-bold text-primary">Select Payment Option</h2>
+</div>
+<span class="font-label-sm text-[10px] text-[#10B981] font-bold">FAST CHECKOUT</span>
+</div>
+<!-- Accordion / Tabs: UPI Selected -->
+<div class="space-y-3">
+<!-- UPI Container (Active Highlight) -->
+<div class="border-2 border-primary rounded-xl p-3.5 bg-surface-container-low/40">
+<div class="flex items-center justify-between mb-2.5">
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+</div>
+<span class="font-headline-sm text-[13px] font-bold text-primary">UPI (Google Pay, PhonePe, Paytm, BHIM)</span>
+</div>
+<span class="bg-secondary-container text-primary text-[9px] font-label-sm font-extrabold px-1.5 py-0.5 rounded">FASTEST</span>
+</div>
+<!-- UPI Apps Grid Pill List -->
+<div class="grid grid-cols-4 gap-2 pt-1">
+<!-- GPay (Selected) -->
+<button class="flex flex-col items-center justify-center py-2 px-1 rounded-xl bg-surface-container-lowest border-2 border-secondary-container shadow-xs active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[22px] text-[#4285F4] fill" data-icon="contactless" style="font-variation-settings: 'FILL' 1;">contactless</span>
+<span class="text-[10px] font-label-sm font-bold text-primary mt-1">GPay</span>
+</button>
+<!-- PhonePe -->
+<button class="flex flex-col items-center justify-center py-2 px-1 rounded-xl bg-surface-container-lowest border border-outline-variant/40 hover:border-primary active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[22px] text-[#5f259f] fill" data-icon="account_balance" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+<span class="text-[10px] font-label-sm font-bold text-on-surface mt-1">PhonePe</span>
+</button>
+<!-- Paytm -->
+<button class="flex flex-col items-center justify-center py-2 px-1 rounded-xl bg-surface-container-lowest border border-outline-variant/40 hover:border-primary active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[22px] text-[#002e6e] fill" data-icon="payments" style="font-variation-settings: 'FILL' 1;">payments</span>
+<span class="text-[10px] font-label-sm font-bold text-on-surface mt-1">Paytm</span>
+</button>
+<!-- Any UPI ID -->
+<button class="flex flex-col items-center justify-center py-2 px-1 rounded-xl bg-surface-container-lowest border border-outline-variant/40 hover:border-primary active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[22px] text-outline fill" data-icon="qr_code_2" style="font-variation-settings: 'FILL' 1;">qr_code_2</span>
+<span class="text-[10px] font-label-sm font-bold text-on-surface mt-1">UPI ID</span>
+</button>
+</div>
+<!-- UPI ID Quick Input -->
+<div class="mt-3 relative">
+<input class="w-full h-11 bg-surface-container-lowest border border-outline-variant/60 rounded-xl px-3 text-[12px] font-body-sm text-primary placeholder-on-tertiary-container focus:outline-none focus:border-primary" placeholder="Enter UPI ID (e.g. mobile@okhdfcbank)" type="text" value="rahul.verma@okhdfcbank"/>
+<button class="absolute right-2 top-2 bg-primary text-on-primary font-label-sm text-[10px] px-2.5 py-1.5 rounded-lg font-bold" type="button">
+                VERIFY
+              </button>
+</div>
+</div>
+<!-- Credit / Debit Cards Option -->
+<div class="border border-outline-variant/40 rounded-xl p-3 flex items-center justify-between bg-surface-container-lowest hover:border-outline transition-colors">
+<div class="flex items-center gap-2.5">
+<div class="w-4 h-4 rounded-full border border-outline-variant"></div>
+<div>
+<span class="font-headline-sm text-[13px] font-semibold text-primary">Credit or Debit Card</span>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="font-label-sm text-[9px] uppercase tracking-wider text-on-surface-variant font-bold">Visa • Mastercard • RuPay</span>
+</div>
+</div>
+</div>
+<span class="bg-surface-container-high text-on-surface font-label-sm text-[9px] px-2 py-0.5 rounded font-bold">NO COST EMI</span>
+</div>
+<!-- Net Banking Option -->
+<div class="border border-outline-variant/40 rounded-xl p-3 flex items-center justify-between bg-surface-container-lowest hover:border-outline transition-colors">
+<div class="flex items-center gap-2.5">
+<div class="w-4 h-4 rounded-full border border-outline-variant"></div>
+<div>
+<span class="font-headline-sm text-[13px] font-semibold text-primary">Net Banking</span>
+<p class="font-body-sm text-[10px] text-on-surface-variant">HDFC, ICICI, SBI, Axis, and 40+ banks</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-[18px] text-outline" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- 8. Trust, Security & Cancellation Badges -->
+<section class="bg-surface-container-low/70 rounded-xl p-3 flex items-center justify-between border border-outline-variant/30 text-on-surface-variant text-[11px] font-body-sm">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-[#10B981]" data-icon="check_circle">check_circle</span>
+<span>Free cancellation up to 6 hrs prior</span>
+</div>
+<div class="w-1 h-1 rounded-full bg-outline-variant"></div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="key">key</span>
+<span>Instant DigiLocker Keyless</span>
+</div>
+</section>
+<div class="text-center py-2">
+<p class="text-[10px] font-body-sm text-on-tertiary-container flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[12px] fill" data-icon="lock" style="font-variation-settings: 'FILL' 1;">lock</span>
+          256-Bit Bank-grade encryption. Rentora Mobility Technologies Pvt Ltd.
+        </p>
+</div>
+</main>
+<!-- 9. Sticky Bottom Floating Checkout Payment Bar -->
+<div class="fixed bottom-0 inset-x-0 w-full max-w-[430px] mx-auto z-50 bg-surface-container-lowest/95 backdrop-blur-xl border-t border-outline-variant/30 px-4 py-3 shadow-[0_-8px_24px_rgba(18,19,22,0.06)] flex items-center justify-between">
+<!-- Price Anchor -->
+<div>
+<div class="flex items-baseline gap-1">
+<span class="font-label-sm text-[11px] text-on-surface-variant font-medium">Payable:</span>
+<span class="font-price-display text-headline-md font-black text-primary">₹3,619</span>
+</div>
+<button class="text-[11px] font-label-md text-secondary hover:text-primary font-bold flex items-center gap-0.5" type="button">
+          View Detailed Bill
+          <span class="material-symbols-outlined text-[14px]" data-icon="expand_more">expand_more</span>
+</button>
+</div>
+<!-- Main Obsidian/Gold Pay CTA Button -->
+<button class="bg-secondary-container hover:bg-[#fabd0d] active:scale-95 transition-all text-primary font-headline-sm font-extrabold px-6 py-3.5 rounded-full shadow-[0_4px_16px_rgba(253,191,19,0.35)] flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-[18px] fill" data-icon="lock" style="font-variation-settings: 'FILL' 1;">lock</span>
+<span>Pay via UPI ₹3,619</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</body></html>

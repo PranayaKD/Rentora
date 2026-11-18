@@ -1,512 +1,647 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}User Dashboard - Rentora{% endblock %}
+{% block title %}Dashboard & My Trips - Rentora Mobility{% endblock %}
 
-{% block meta_description %}Manage your car bookings, wishlist, and profile settings on the Rentora dashboard. Track your rewards and referral balance conveniently.{% endblock %}
+{% block meta_description %}Manage your active self-drive rentals, trips history, DigiLocker KYC, and Rentora Wallet balance.{% endblock %}
 
 {% block content %}
-<!-- Dashboard Layout -->
-<div class="bg-primary pt-16 pb-48"></div>
+<div class="bg-surface text-on-surface font-body-md antialiased selection:bg-secondary-container selection:text-primary min-h-screen pb-28 lg:pb-16">
 
-<div class="max-w-7xl mx-auto px-6 -mt-44 relative z-10 pb-20">
-    <div class="grid lg:grid-cols-4 gap-8">
-        
-        <!-- Sidebar Navigation -->
-        <div class="lg:col-span-1">
-            <div class="bg-white dark:bg-slate-900 rounded-3xl p-4 shadow-sm border border-slate-100 dark:border-slate-800 flex overflow-x-auto lg:flex-col lg:overflow-visible gap-2 hide-scrollbar">
-                
-                <a href="{% url 'dashboard' %}" class="flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold transition-all whitespace-nowrap lg:whitespace-normal {% if request.resolver_match.url_name == 'dashboard' %}bg-primary text-white shadow-md{% else %}text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary dark:hover:text-white{% endif %}">
-                    <span class="material-symbols-outlined text-[1.25rem]">grid_view</span>
-                    Overview
-                </a>
-                
-                <a href="{% url 'dashboard_bookings' %}" class="flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold transition-all whitespace-nowrap lg:whitespace-normal {% if request.resolver_match.url_name == 'dashboard_bookings' %}bg-primary text-white shadow-md{% else %}text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary dark:hover:text-white{% endif %}">
-                    <span class="material-symbols-outlined text-[1.25rem]">calendar_month</span>
-                    Bookings
-                </a>
-                
-                <a href="{% url 'wishlist' %}" class="flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold transition-all whitespace-nowrap lg:whitespace-normal {% if request.resolver_match.url_name == 'wishlist' %}bg-primary text-white shadow-md{% else %}text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary dark:hover:text-white{% endif %}">
-                    <span class="material-symbols-outlined text-[1.25rem]">favorite</span>
-                    Wishlist
-                </a>
-                
-                <div class="h-px bg-slate-100 dark:bg-slate-800 my-2 hidden lg:block"></div>
-                
-                <a href="{% url 'profile' %}" class="flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold transition-all whitespace-nowrap lg:whitespace-normal {% if request.resolver_match.url_name == 'profile' %}bg-primary text-white shadow-md{% else %}text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-primary dark:hover:text-white{% endif %}">
-                    <span class="material-symbols-outlined text-[1.25rem]">person</span>
-                    Profile Settings
-                </a>
+  <!-- Desktop & Tablet Sub-Navigation -->
+  <div class="max-w-7xl 2xl:max-w-[1500px] mx-auto px-4 sm:px-6 pt-4 pb-2 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <h1 class="font-headline-md text-xl sm:text-2xl font-extrabold text-primary tracking-tight">
+        {% if request.resolver_match.url_name == 'dashboard_bookings' %}My Trips & Bookings
+        {% elif request.resolver_match.url_name == 'profile' %}Profile & Rentora Wallet
+        {% elif request.resolver_match.url_name == 'wishlist' %}Saved Wishlist
+        {% else %}Executive Dashboard{% endif %}
+      </h1>
+    </div>
 
-                {% if request.user.is_staff %}
-                <a href="{% url 'admin_dashboard' %}" class="flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold transition-all whitespace-nowrap lg:whitespace-normal text-accent hover:bg-slate-50 dark:hover:bg-slate-800">
-                    <span class="material-symbols-outlined text-[1.25rem]">admin_panel_settings</span>
-                    Admin Panel
-                </a>
-                {% endif %}
-                
-                <a href="{% url 'logout' %}" class="flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all whitespace-nowrap lg:whitespace-normal lg:mt-6">
-                    <span class="material-symbols-outlined text-[1.25rem]">logout</span>
-                    Logout
-                </a>
-            </div>
-        </div>
+    <!-- 24/7 Helpline Pill -->
+    <a href="tel:+918001234567" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface-container-lowest border border-outline-variant/40 shadow-xs text-xs font-bold text-on-surface hover:bg-surface-container active:scale-95 transition-all">
+      <span class="material-symbols-outlined text-secondary text-base">support_agent</span>
+      <span class="hidden sm:inline">24/7 Mobility Support</span>
+      <span class="sm:hidden">Support</span>
+    </a>
+  </div>
 
-        <!-- Main Content Area -->
-        <div class="lg:col-span-3 space-y-8">
-            
-            {% if request.resolver_match.url_name == 'dashboard' %}
-            <!-- ================= OVERVIEW ================= -->
-            <div>
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-                    <h2 class="text-2xl font-black text-white">Welcome back, {{ request.user.first_name|default:request.user.username }}!</h2>
-                    {% if profile.is_verified %}
-                    <div class="flex items-center gap-2 bg-green-50 dark:bg-green-900/20 text-green-600 px-4 py-2 rounded-2xl border border-green-100 dark:border-green-800/50">
-                        <span class="material-symbols-outlined text-[1.25rem]">verified</span>
-                        <span class="text-sm font-bold uppercase tracking-wider">Verified Driver</span>
-                    </div>
-                    {% else %}
-                    <a href="{% url 'profile' %}" class="flex items-center gap-2 bg-slate-50 dark:bg-slate-800/50 text-slate-500 px-4 py-2 rounded-2xl border border-slate-100 dark:border-slate-800/50 group hover:border-accent transition-all">
-                        <span class="material-symbols-outlined text-[1.25rem]">mode_edit</span>
-                        <span class="text-sm font-bold uppercase tracking-wider">Complete Profile</span>
-                        <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                    </a>
-                    {% endif %}
-                </div>
-                
-                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 mb-8">
-                    <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-6 shadow-sm group hover:border-primary/30 transition-all">
-                        <div class="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center mb-4">
-                            <span class="material-symbols-outlined text-primary text-2xl">directions_car</span>
-                        </div>
-                        <p class="text-slate-500 font-bold mb-1 text-sm">Active Bookings</p>
-                        <h3 class="text-3xl font-black text-slate-900 dark:text-white">{{ active_bookings.count }}</h3>
-                    </div>
-                    <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-6 shadow-sm group hover:border-accent/30 transition-all">
-                        <div class="w-12 h-12 bg-accent/10 rounded-2xl flex items-center justify-center mb-4">
-                            <span class="material-symbols-outlined text-accent text-2xl">account_balance_wallet</span>
-                        </div>
-                        <p class="text-slate-500 font-bold mb-1 text-sm">Wallet Balance</p>
-                        <h3 class="text-3xl font-black text-slate-900 dark:text-white">₹{{ profile.wallet_balance|floatformat:2 }}</h3>
-                    </div>
-                    <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-6 shadow-sm group hover:border-blue-500/30 transition-all sm:col-span-2 lg:col-span-1">
-                        <div class="w-12 h-12 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-4">
-                            <span class="material-symbols-outlined text-blue-500 text-2xl">history</span>
-                        </div>
-                        <p class="text-slate-500 font-bold mb-1 text-sm">Total Trips</p>
-                        <h3 class="text-3xl font-black text-slate-900 dark:text-white">{{ total_bookings }}</h3>
-                    </div>
-                </div>
-
-
-                <div class="bg-white dark:bg-slate-900 rounded-[2rem] p-6 sm:p-8 border border-slate-100 dark:border-slate-800 shadow-sm">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-xl font-bold">Recent Bookings</h3>
-                        <a href="{% url 'dashboard_bookings' %}" class="text-sm font-bold text-accent">View All</a>
-                    </div>
-                    
-                    <div class="space-y-4">
-                        {% for booking in recent_bookings %}
-                        <div class="flex flex-col p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border {% if booking.status == 'Active' %}border-accent/30 shadow-sm shadow-accent/5{% else %}border-slate-100 dark:border-slate-700{% endif %} gap-4 relative overflow-hidden">
-                            {% if booking.status == 'Active' %}
-                            <div class="absolute top-0 left-0 w-1 h-full bg-accent"></div>
-                            {% endif %}
-                            
-                            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                                <div class="flex items-center gap-4">
-                                    {% if booking.car.image %}
-                                    <img src="{{ booking.car.image.url }}" class="w-16 h-12 rounded object-contain bg-white dark:bg-slate-900">
-                                    {% endif %}
-                                    <div>
-                                        <p class="font-bold mb-0.5">{{ booking.car.brand }} {{ booking.car.name }}</p>
-                                        <p class="text-xs font-bold text-slate-500">{{ booking.pickup_date|date:"M d" }} - {{ booking.dropoff_date|date:"M d, Y" }}</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center justify-between w-full sm:w-auto sm:gap-6">
-                                    <span class="px-3 py-1 text-xs font-bold rounded-full 
-                                        {% if booking.status == 'Completed' %}bg-green-100 text-green-700
-                                        {% elif booking.status == 'Active' %}bg-accent/10 text-accent
-                                        {% elif booking.status == 'Cancelled' %}bg-red-100 text-red-700
-                                        {% else %}bg-yellow-100 text-yellow-700{% endif %}">
-                                        {{ booking.status }}
-                                    </span>
-                                    <a href="{% url 'confirmation' booking.id %}" class="text-sm font-bold text-slate-500 hover:text-primary transition-colors">Details</a>
-                                </div>
-                            </div>
-                            
-                            {% if booking.status == 'Active' or booking.status == 'Pending' %}
-                            <div class="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700 flex flex-col gap-5">
-                                <!-- Doorstep Delivery Tracking -->
-                                <div>
-                                    <div class="flex justify-between items-end mb-2">
-                                        <p class="text-xs font-bold text-slate-500 uppercase tracking-widest">Doorstep Delivery Status</p>
-                                        <p class="text-xs font-bold text-primary dark:text-white">Arriving in 15 mins</p>
-                                    </div>
-                                    <div class="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-                                        <div class="h-full bg-accent w-3/4 rounded-full relative">
-                                            <div class="absolute inset-0 bg-white/20 w-full h-full animate-[shimmer_2s_infinite]"></div>
-                                        </div>
-                                    </div>
-                                    <div class="flex justify-between mt-2 text-[10px] font-bold text-slate-400">
-                                        <span>Confirmed</span>
-                                        <span>Cleaning</span>
-                                        <span class="text-accent">On the Way</span>
-                                        <span>Delivered</span>
-                                    </div>
-                                </div>
-                                
-                                <!-- Safety Actions -->
-                                <div class="flex items-center gap-3">
-                                    <button onclick="alert('Trip tracking link generated! Sharing intent triggered.')" class="flex-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors">
-                                        <span class="material-symbols-outlined text-sm">share</span> Live Share Trip
-                                    </button>
-                                    <button onclick="alert('Emergency SOS triggered! Our 24/7 safety response team is contacting you immediately.')" class="bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/40 text-red-600 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-colors border border-red-100 dark:border-red-800">
-                                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">emergency</span> SOS
-                                    </button>
-                                </div>
-                            </div>
-                            {% endif %}
-                        </div>
-                        {% empty %}
-                        <div class="text-center py-8">
-                            <p class="text-slate-500">You don't have any bookings yet.</p>
-                            <a href="{% url 'cars' %}" class="inline-block mt-4 bg-accent text-white px-6 py-2 rounded-full font-bold text-sm">Rent a car</a>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-                </div>
-
-                <!-- Referral Section -->
-                <div class="mt-8 bg-gradient-to-r from-accent/10 to-transparent rounded-[2rem] p-6 sm:p-8 border border-accent/20 flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden relative">
-                    <div class="relative z-10">
-                        <div class="inline-flex items-center gap-2 bg-accent text-white px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest mb-3">Limited Offer</div>
-                        <h3 class="text-2xl font-black mb-2">Refer and Earn ₹500!</h3>
-                        <p class="text-slate-600 dark:text-slate-400 text-sm max-w-sm">Spread the joy of driving. When your friend completes their first ride, both of you get ₹500 in your wallet.</p>
-                    </div>
-                    <div class="flex flex-col items-center gap-3 shrink-0 relative z-10">
-                        <div class="bg-white dark:bg-slate-800 border-2 border-dashed border-accent px-6 py-3 rounded-2xl font-mono text-xl font-black text-accent select-all cursor-copy" title="Click to copy">
-                            {{ profile.referral_code }}
-                        </div>
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Your Unique Code</p>
-                    </div>
-                    <!-- Decorative element -->
-                    <span class="material-symbols-outlined absolute -right-4 -bottom-4 text-[10rem] text-accent/5 select-none pointer-events-none">redeem</span>
-                </div>
-            </div>
-
-            
-            {% elif request.resolver_match.url_name == 'dashboard_bookings' %}
-            <!-- ================= BOOKINGS HISTORY ================= -->
-            <div>
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-                    <h2 class="text-2xl font-black text-slate-900 dark:text-white">Booking History</h2>
-                    <form action="{% url 'dashboard_bookings' %}" method="get">
-                        <select name="status" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2 font-semibold text-sm focus:ring-accent" onchange="this.form.submit()">
-                            <option value="">All Statuses</option>
-                            <option value="Pending" {% if current_status == 'Pending' %}selected{% endif %}>Pending</option>
-                            <option value="Active" {% if current_status == 'Active' %}selected{% endif %}>Active</option>
-                            <option value="Completed" {% if current_status == 'Completed' %}selected{% endif %}>Completed</option>
-                            <option value="Cancelled" {% if current_status == 'Cancelled' %}selected{% endif %}>Cancelled</option>
-                        </select>
-                    </form>
-                </div>
-
-                <div class="grid md:grid-cols-2 gap-6">
-                    {% for booking in bookings %}
-                    <div class="bg-white dark:bg-slate-900 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-sm p-6 flex flex-col hover:shadow-md transition-shadow">
-                        <div class="flex justify-between items-start mb-4 pb-4 border-b border-slate-100 dark:border-slate-800">
-                            <div>
-                                <p class="text-xs font-bold text-slate-400 mb-1">REF: {{ booking.booking_reference }}</p>
-                                <h3 class="text-lg font-bold leading-tight">{{ booking.car.name }}</h3>
-                            </div>
-                            <span class="px-3 py-1 text-xs font-bold rounded-full whitespace-nowrap
-                                {% if booking.status == 'Completed' %}bg-green-100 text-green-700
-                                {% elif booking.status == 'Active' %}bg-blue-100 text-blue-700
-                                {% elif booking.status == 'Cancelled' %}bg-red-100 text-red-700
-                                {% else %}bg-yellow-100 text-yellow-700{% endif %}">
-                                {{ booking.status }}
-                            </span>
-                        </div>
-                        
-                        <div class="grid grid-cols-2 gap-4 mb-6 relative">
-                            <div class="absolute left-1/2 top-2 bottom-2 w-px border-l border-dashed border-slate-200 dark:border-slate-700"></div>
-                            <div>
-                                <p class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-widest mb-1">Pickup</p>
-                                <p class="text-sm font-bold">{{ booking.pickup_date|date:"d M, Y" }}</p>
-                                <p class="text-xs text-slate-500 truncate mt-1">{{ booking.pickup_location }}</p>
-                            </div>
-                            <div class="pl-2">
-                                <p class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-widest mb-1">Drop-off</p>
-                                <p class="text-sm font-bold">{{ booking.dropoff_date|date:"d M, Y" }}</p>
-                                <p class="text-xs text-slate-500 truncate mt-1">{{ booking.dropoff_location }}</p>
-                            </div>
-                        </div>
-
-                        <div class="mt-auto flex justify-between items-center pt-4">
-                            <p class="font-black text-lg">₹{{ booking.total_price }}</p>
-                            <div class="flex gap-2">
-                                {% if booking.status == 'Completed' and not booking.review %}
-                                <button onclick="document.getElementById('review-modal-{{ booking.id }}').classList.remove('hidden')" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-800 text-xs font-bold px-4 py-2 rounded-full transition-colors flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span> Review
-                                </button>
-                                {% endif %}
-                                <a href="{% url 'confirmation' booking.id %}" class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 py-2 px-4 rounded-full text-xs font-bold transition-colors">Details</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Review Modal -->
-                    {% if booking.status == 'Completed' and not booking.review %}
-                    <div id="review-modal-{{ booking.id }}" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4">
-                        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="this.parentElement.classList.add('hidden')"></div>
-                        <div class="bg-white dark:bg-slate-900 rounded-[2rem] p-8 w-full max-w-md relative z-10">
-                            <h3 class="text-2xl font-black mb-2">Rate your experience</h3>
-                            <p class="text-slate-500 text-sm mb-6">How was your trip with the {{ booking.car.name }}?</p>
-                            
-                            <form action="{% url 'add_review' booking.car.id %}" method="post" class="space-y-4">
-                                {% csrf_token %}
-                                <input type="hidden" name="booking_id" value="{{ booking.id }}">
-                                
-                                <div>
-                                    <label class="block text-sm font-bold mb-2">Rating</label>
-                                    <select name="rating" class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:ring-accent outline-none">
-                                        <option value="5">5 - Excellent</option>
-                                        <option value="4">4 - Very Good</option>
-                                        <option value="3">3 - Average</option>
-                                        <option value="2">2 - Poor</option>
-                                        <option value="1">1 - Terrible</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold mb-2">Comment</label>
-                                    <textarea name="comment" rows="4" class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:ring-accent outline-none" required></textarea>
-                                </div>
-                                
-                                <div class="flex gap-3 pt-4">
-                                    <button type="button" onclick="document.getElementById('review-modal-{{ booking.id }}').classList.add('hidden')" class="flex-1 py-3 bg-slate-100 dark:bg-slate-800 rounded-xl font-bold">Cancel</button>
-                                    <button type="submit" class="flex-1 py-3 bg-accent text-white rounded-xl font-bold">Submit Review</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    {% endif %}
-                    {% empty %}
-                    <div class="md:col-span-2 text-center py-16 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800">
-                        <span class="material-symbols-outlined text-6xl text-slate-300 mb-4">calendar_month</span>
-                        <h3 class="text-xl font-bold mb-2">No bookings found</h3>
-                        <p class="text-slate-500 mb-6">We couldn't find any bookings matching your criteria.</p>
-                        <a href="{% url 'cars' %}" class="bg-primary text-white px-6 py-2 rounded-full font-bold">Browse Cars</a>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-
-            {% elif request.resolver_match.url_name == 'wishlist' %}
-            <!-- ================= WISHLIST ================= -->
-            <div>
-                <h2 class="text-2xl font-black mb-8 text-slate-900 dark:text-white">Your Wishlist</h2>
-                
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {% for item in wishlisted_cars %}
-                    <div class="bg-white dark:bg-slate-900 rounded-3xl overflow-hidden shadow-sm border border-slate-100 dark:border-slate-800 flex flex-col">
-                        <div class="relative h-40 bg-slate-50 dark:bg-slate-800 p-4 flex items-center justify-center">
-                            <button onclick="toggleWishlist({{ item.car.id }}, this)" class="absolute top-4 right-4 text-red-500 z-10">
-                                <span class="material-symbols-outlined filled-heart">favorite</span>
-                            </button>
-                            {% if item.car.image %}
-                            <img src="{{ item.car.image.url }}" class="w-full h-full object-contain drop-shadow">
-                            {% endif %}
-                        </div>
-                        <div class="p-5 flex flex-col flex-1">
-                            <p class="text-xs font-bold text-slate-400 uppercase">{{ item.car.brand }}</p>
-                            <h3 class="text-lg font-bold mb-2">{{ item.car.name }}</h3>
-                            <p class="font-black text-lg mb-4 mt-auto">₹{{ item.car.price_per_day }}<span class="text-xs text-slate-500 font-medium tracking-wide">/day</span></p>
-                            <a href="{% url 'car_detail' item.car.id %}" class="block text-center bg-primary text-white py-2 rounded-xl text-sm font-bold hover:bg-slate-800 w-full transition-colors">Book Now</a>
-                        </div>
-                    </div>
-                    {% empty %}
-                    <div class="md:col-span-2 lg:col-span-3 text-center py-20 bg-white dark:bg-slate-900 rounded-3xl border border-dashed border-slate-200 dark:border-slate-800">
-                        <span class="material-symbols-outlined text-6xl text-slate-300 mb-4">favorite_border</span>
-                        <h3 class="text-xl font-bold mb-2">Wishlist is empty</h3>
-                        <p class="text-slate-500 mb-6">Save your favorite cars here to book them later.</p>
-                        <a href="{% url 'cars' %}" class="bg-primary text-white px-6 py-2 rounded-full font-bold">Browse Cars</a>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-
-            {% elif request.resolver_match.url_name == 'profile' %}
-            <!-- ================= PROFILE ================= -->
-            <div>
-                <h2 class="text-2xl font-black mb-8 text-slate-900 dark:text-white">Profile Settings</h2>
-                
-                <div class="grid md:grid-cols-2 gap-8">
-                    <!-- Basic Info -->
-                    <div class="bg-white dark:bg-slate-900 rounded-[2rem] p-6 lg:p-8 border border-slate-100 dark:border-slate-800 shadow-sm">
-                        <h3 class="font-bold text-lg mb-6 flex items-center gap-2">
-                            <span class="material-symbols-outlined text-primary">person</span> Personal Information
-                        </h3>
-                        <form method="post" enctype="multipart/form-data" class="space-y-4">
-                            {% csrf_token %}
-                            <!-- Avatar upload styling -->
-                            <div class="flex items-center gap-4 mb-6">
-                                <div class="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 overflow-hidden relative group shrink-0">
-                                    {% if request.user.profile.profile_photo %}
-                                    <img src="{{ request.user.profile.profile_photo.url }}" class="w-full h-full object-cover">
-                                    {% else %}
-                                    <span class="material-symbols-outlined text-3xl text-slate-400 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">person</span>
-                                    {% endif %}
-                                    <label class="absolute inset-0 bg-black/50 hidden group-hover:flex items-center justify-center cursor-pointer">
-                                        <span class="material-symbols-outlined text-white text-xl">photo_camera</span>
-                                        {{ profile_form.profile_photo }}
-                                    </label>
-                                </div>
-                                <div>
-                                    <p class="text-sm font-bold">Profile Photo</p>
-                                    <p class="text-xs text-slate-500">Click image to upload new</p>
-                                </div>
-                            </div>
-
-                            <div class="space-y-1.5">
-                                <label class="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest pl-2">Full Name</label>
-                                {{ profile_form.full_name }}
-                            </div>
-                            <div class="space-y-1.5">
-                                <label class="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest pl-2">Phone Number</label>
-                                {{ profile_form.phone }}
-                            </div>
-                            <div class="space-y-1.5">
-                                <label class="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest pl-2">Email</label>
-                                <input type="email" value="{{ request.user.email }}" disabled class="w-full h-12 px-5 rounded-2xl bg-slate-100 dark:bg-slate-800/50 border border-transparent text-slate-500 cursor-not-allowed font-medium">
-                                <p class="text-[0.65rem] text-slate-400 pl-2">Email cannot be changed.</p>
-                            </div>
-
-                            <button type="submit" class="w-full bg-primary text-white h-12 rounded-xl font-bold mt-4 hover:bg-slate-800 transition-colors">Save Changes</button>
-                        </form>
-                    </div>
-
-                    <!-- Identity Verification (KYC) -->
-                    <div class="bg-white dark:bg-slate-900 rounded-[2rem] p-6 lg:p-8 border border-slate-100 dark:border-slate-800 shadow-sm">
-                        <div class="flex justify-between items-start mb-6">
-                        <h3 class="font-bold text-lg flex items-center gap-2">
-                            <span class="material-symbols-outlined text-blue-500">verified_user</span> Account Verification (Optional)
-                        </h3>
-                            {% if profile.is_verified %}
-                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Verified</span>
-                            {% else %}
-                            <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Pending</span>
-                            {% endif %}
-                        </div>
-
-                        <form method="post" enctype="multipart/form-data" class="space-y-5">
-                            {% csrf_token %}
-                            <div class="grid sm:grid-cols-2 gap-4">
-                                <div class="space-y-1.5">
-                                    <label class="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest pl-2">Date of Birth</label>
-                                    {{ profile_form.date_of_birth }}
-                                </div>
-                                <div class="space-y-1.5">
-                                    <label class="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest pl-2">Driving License Number</label>
-                                    {{ profile_form.license_number }}
-                                </div>
-                            </div>
-
-                            <div class="grid sm:grid-cols-2 gap-4">
-                                <div class="space-y-1.5">
-                                    <label class="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest pl-2">Aadhaar Number</label>
-                                    {{ profile_form.aadhaar_number }}
-                                </div>
-                                <div class="space-y-1.5">
-                                    <label class="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest pl-2">PAN Number</label>
-                                    {{ profile_form.pan_number }}
-                                </div>
-                            </div>
-
-
-                            <div class="space-y-1.5">
-                                <label class="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest pl-2">License Front Photo</label>
-                                <div class="mt-1 p-6 border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-2xl text-center">
-                                    {% if profile.license_image %}
-                                    <img src="{{ profile.license_image.url }}" class="mx-auto h-32 w-full object-cover rounded-xl mb-4 shadow-sm">
-                                    <p class="text-[10px] font-bold text-slate-400 uppercase">Change Document:</p>
-                                    {% else %}
-                                    <span class="material-symbols-outlined text-4xl text-slate-300 mb-2">upload_file</span>
-                                    <p class="text-xs text-slate-500 mb-4">Upload a clear photo of your driving license</p>
-                                    {% endif %}
-                                    {{ profile_form.license_image }}
-                                </div>
-                            </div>
-
-                            <button type="submit" class="w-full bg-slate-900 dark:bg-white dark:text-slate-900 text-white h-12 rounded-xl font-bold mt-4 hover:bg-slate-800 transition-colors">
-                                {% if profile.license_number %}Update Documents{% else %}Submit for Verification{% endif %}
-                            </button>
-                        </form>
-                    </div>
-
-                    <!-- Change Password -->
-                    <div class="bg-white dark:bg-slate-900 rounded-[2rem] p-6 lg:p-8 border border-slate-100 dark:border-slate-800 shadow-sm h-fit">
-                        <h3 class="font-bold text-lg mb-6 flex items-center gap-2">
-                            <span class="material-symbols-outlined text-accent">lock</span> Security
-                        </h3>
-                        <form method="post" action="{% url 'profile' %}" class="space-y-4">
-                            {% csrf_token %}
-                            {% if password_form.non_field_errors %}
-                            <div class="bg-red-50 text-red-600 p-3 rounded-xl text-sm font-bold mb-4">
-                                {{ password_form.non_field_errors.0 }}
-                            </div>
-                            {% endif %}
-                            
-                            <div class="space-y-1.5">
-                                <label class="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest pl-2">Current Password</label>
-                                {{ password_form.old_password }}
-                            </div>
-                            <div class="space-y-1.5">
-                                <label class="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest pl-2">New Password</label>
-                                {{ password_form.new_password }}
-                            </div>
-                            <div class="space-y-1.5">
-                                <label class="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest pl-2">Confirm New Password</label>
-                                {{ password_form.confirm_password }}
-                            </div>
-
-                            <button type="submit" class="w-full bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white h-12 rounded-xl font-bold mt-4 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">Update Password</button>
-                        </form>
-                    </div>
-                </div>
+  <div class="max-w-7xl 2xl:max-w-[1500px] mx-auto px-4 sm:px-6 py-4">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      
+      <!-- Left Column: Navigation Sidebar (Desktop & Tablet) -->
+      <aside class="lg:col-span-3 xl:col-span-3">
+        <!-- User Profile Micro-Card -->
+        <div class="bg-surface-container-lowest rounded-3xl p-4 border border-outline-variant/30 shadow-xs flex items-center gap-3 mb-4">
+          <div class="relative w-12 h-12 rounded-full overflow-hidden ring-2 ring-secondary-container/40 bg-surface-container shrink-0">
+            {% if profile.profile_photo %}
+            <img class="w-full h-full object-cover" src="{{ profile.profile_photo.url }}" alt="{{ request.user.username }}"/>
+            {% else %}
+            <div class="w-full h-full bg-primary-container text-secondary-container flex items-center justify-center font-bold text-base">
+              {{ request.user.first_name|default:request.user.username|slice:":1"|upper }}
             </div>
             {% endif %}
-            
+          </div>
+          <div class="min-w-0 flex-1">
+            <h2 class="font-headline-sm text-sm font-bold text-primary truncate">
+              {{ request.user.get_full_name|default:request.user.username }}
+            </h2>
+            {% if profile.is_verified or profile.kyc_status == 'VERIFIED' %}
+            <div class="flex items-center gap-1 text-[11px] text-emerald-600 font-semibold">
+              <span class="material-symbols-outlined text-[14px]">verified</span>
+              <span>DigiLocker Verified</span>
+            </div>
+            {% elif profile.kyc_status == 'PENDING_REVIEW' %}
+            <div class="flex items-center gap-1 text-[11px] text-amber-600 font-semibold">
+              <span class="material-symbols-outlined text-[14px]">schedule</span>
+              <span>KYC In Review</span>
+            </div>
+            {% else %}
+            <a href="{% url 'kyc' %}" class="flex items-center gap-1 text-[11px] text-secondary font-semibold hover:underline">
+              <span class="material-symbols-outlined text-[14px]">bolt</span>
+              <span>Verify KYC (60s)</span>
+            </a>
+            {% endif %}
+          </div>
         </div>
-    </div>
-</div>
 
-<!-- Wishlist Script -->
-<script>
-    function toggleWishlist(carId, btn) {
-        fetch(`/api/wishlist/toggle/${carId}/`, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}',
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            // Remove the card if un-wishlisted from the wishlist page
-            if (!data.wishlisted) {
-                const card = btn.closest('.bg-white, .dark\\:bg-slate-900');
-                if (card) {
-                    card.style.opacity = '0';
-                    setTimeout(() => card.remove(), 300);
+        <!-- Sidebar Navigation Links Strip -->
+        <nav class="bg-surface-container-lowest rounded-3xl p-2.5 border border-outline-variant/30 shadow-xs flex lg:flex-col overflow-x-auto no-scrollbar gap-1.5">
+          
+          <a href="{% url 'dashboard' %}" class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all shrink-0 {% if request.resolver_match.url_name == 'dashboard' %}bg-primary-container text-surface-container-lowest shadow-xs{% else %}text-on-surface-variant hover:bg-surface-container hover:text-primary{% endif %}">
+            <span class="material-symbols-outlined text-lg">grid_view</span>
+            <span>Overview</span>
+          </a>
+
+          <a href="{% url 'dashboard_bookings' %}" class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all shrink-0 {% if request.resolver_match.url_name == 'dashboard_bookings' %}bg-primary-container text-surface-container-lowest shadow-xs{% else %}text-on-surface-variant hover:bg-surface-container hover:text-primary{% endif %}">
+            <span class="material-symbols-outlined text-lg">directions_car</span>
+            <span>My Trips</span>
+          </a>
+
+          <a href="{% url 'profile' %}" class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all shrink-0 {% if request.resolver_match.url_name == 'profile' %}bg-primary-container text-surface-container-lowest shadow-xs{% else %}text-on-surface-variant hover:bg-surface-container hover:text-primary{% endif %}">
+            <span class="material-symbols-outlined text-lg">account_balance_wallet</span>
+            <span>Wallet & Profile</span>
+          </a>
+
+          <a href="{% url 'wishlist' %}" class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all shrink-0 {% if request.resolver_match.url_name == 'wishlist' %}bg-primary-container text-surface-container-lowest shadow-xs{% else %}text-on-surface-variant hover:bg-surface-container hover:text-primary{% endif %}">
+            <span class="material-symbols-outlined text-lg">favorite</span>
+            <span>Wishlist</span>
+          </a>
+
+          <div class="h-px bg-surface-container my-1 hidden lg:block"></div>
+
+          <a href="{% url 'logout' %}" class="flex items-center gap-2.5 px-3.5 py-2.5 rounded-2xl text-xs font-bold text-red-500 hover:bg-red-50 transition-all shrink-0">
+            <span class="material-symbols-outlined text-lg">logout</span>
+            <span>Logout</span>
+          </a>
+        </nav>
+      </aside>
+
+      <!-- Right Column: Main Dynamic Content -->
+      <div class="lg:col-span-9 xl:col-span-9 flex flex-col gap-6">
+
+        {% if request.resolver_match.url_name == 'dashboard_bookings' or request.resolver_match.url_name == 'dashboard' %}
+        <!-- ================= MY TRIPS VIEW (stitch_screens/my_trips.html EXACT) ================= -->
+        
+        <!-- Filter Tabs Strip -->
+        <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+          <a href="{% url 'dashboard_bookings' %}" class="shrink-0 px-4 py-2 rounded-full font-label-md text-xs font-bold shadow-xs flex items-center gap-1.5 transition-all {% if not current_status %}bg-primary-container text-surface-container-lowest{% else %}bg-surface-container-lowest border border-outline-variant/60 text-on-surface-variant{% endif %}">
+            <span>All Trips</span>
+          </a>
+          <a href="{% url 'dashboard_bookings' %}?status=Active" class="shrink-0 px-4 py-2 rounded-full font-label-md text-xs font-bold shadow-xs flex items-center gap-1.5 transition-all {% if current_status == 'Active' or current_status == 'Confirmed' %}bg-primary-container text-surface-container-lowest{% else %}bg-surface-container-lowest border border-outline-variant/60 text-on-surface-variant{% endif %}">
+            <span>Active / Upcoming</span>
+            {% if active_bookings %}
+            <span class="w-4 h-4 rounded-full bg-secondary-container text-tertiary text-[10px] font-bold flex items-center justify-center leading-none">{{ active_bookings.count }}</span>
+            {% endif %}
+          </a>
+          <a href="{% url 'dashboard_bookings' %}?status=Completed" class="shrink-0 px-4 py-2 rounded-full font-label-md text-xs font-bold shadow-xs flex items-center gap-1.5 transition-all {% if current_status == 'Completed' %}bg-primary-container text-surface-container-lowest{% else %}bg-surface-container-lowest border border-outline-variant/60 text-on-surface-variant{% endif %}">
+            <span>Completed</span>
+          </a>
+        </div>
+
+        <!-- 1. ACTIVE ONGOING RENTAL CARD (Stitch Exact Component) -->
+        {% if active_bookings %}
+        {% for b in active_bookings|slice:":1" %}
+        <section class="flex flex-col gap-2.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-600"></span>
+              </span>
+              <h2 class="font-headline-sm text-sm sm:text-base font-bold text-primary tracking-tight">Active Ongoing Rental</h2>
+            </div>
+            <span class="font-label-sm text-[10px] font-bold text-outline uppercase tracking-wider">Live Telemetry</span>
+          </div>
+
+          <!-- Highlight Card -->
+          <article class="relative rounded-3xl bg-surface-container-lowest p-4 sm:p-5 border border-outline-variant/60 shadow-md overflow-hidden">
+            <!-- Top Status Row -->
+            <div class="flex items-center justify-between pb-3 border-b border-surface-container">
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                <span class="font-label-sm text-[10px] font-bold text-emerald-800 tracking-wider uppercase">KEYLESS ACTIVE</span>
+              </div>
+              <div class="flex items-center gap-1 text-on-surface-variant text-[11px] font-medium bg-surface-container-low px-2.5 py-0.5 rounded-md">
+                <span class="material-symbols-outlined text-[14px] text-primary">bluetooth</span>
+                <span>BLE Keyless Connected</span>
+              </div>
+            </div>
+
+            <!-- Vehicle Media + Title -->
+            <div class="py-3 flex gap-3.5 items-center">
+              <div class="w-28 sm:w-32 h-20 rounded-xl overflow-hidden bg-surface-container shrink-0 relative border border-outline-variant/30">
+                {% if b.car.image %}
+                <img src="{{ b.car.image.url }}" alt="{{ b.car.name }}" class="w-full h-full object-cover"/>
+                {% else %}
+                <img src="{% static 'images/ui/car-placeholder.jpg' %}" alt="{{ b.car.name }}" class="w-full h-full object-cover"/>
+                {% endif %}
+                <span class="absolute bottom-1 right-1 bg-tertiary/80 backdrop-blur-sm text-surface-container-lowest text-[9px] font-extrabold px-1 rounded">
+                  {{ b.car.transmission|slice:":4" }}
+                </span>
+              </div>
+
+              <div class="flex-1 min-w-0">
+                <h3 class="font-headline-sm text-base sm:text-lg font-bold text-primary truncate">{{ b.car.brand }} {{ b.car.name }}</h3>
+                <p class="font-body-sm text-xs text-on-surface-variant">{{ b.car.category }} • {{ b.car.fuel_type }} • {{ b.pickup_location }}</p>
+                <div class="mt-1.5 inline-flex items-center gap-1 px-2 py-0.5 rounded border border-on-surface/30 bg-white shadow-xs">
+                  <span class="text-[8px] font-bold text-blue-700 leading-none">IND</span>
+                  <span class="font-headline-sm text-[11px] font-bold tracking-wider text-primary leading-none">OD 02 AB 1948</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Schedule & Hub Details -->
+            <div class="bg-surface-container-low/70 rounded-2xl p-3 flex flex-col gap-2 border border-outline-variant/20 text-xs">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[16px] text-secondary">schedule</span>
+                <span class="font-bold text-on-surface">{{ b.pickup_date|date:"D, d M" }}{% if b.pickup_time %} • {{ b.pickup_time|time:"h:i A" }}{% endif %}</span>
+                <span class="text-outline">→</span>
+                <span class="font-bold text-on-surface">{{ b.dropoff_date|date:"D, d M" }}{% if b.dropoff_time %} • {{ b.dropoff_time|time:"h:i A" }}{% endif %}</span>
+              </div>
+              <div class="flex items-center gap-2 text-on-surface-variant">
+                <span class="material-symbols-outlined text-[16px] text-outline">location_on</span>
+                <span class="truncate">{{ b.pickup_location }}</span>
+              </div>
+            </div>
+
+            <!-- Quick Telemetry Stats Strip -->
+            <div class="grid grid-cols-3 gap-2 mt-3 text-center">
+              <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl py-2 px-1 shadow-xs">
+                <div class="flex items-center justify-center gap-1 text-on-surface-variant mb-0.5">
+                  <span class="material-symbols-outlined text-[14px] text-secondary">local_gas_station</span>
+                  <span class="font-label-sm text-[10px] font-semibold">Fuel Tank</span>
+                </div>
+                <span class="font-headline-sm text-sm font-bold text-primary">85%</span>
+              </div>
+
+              <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl py-2 px-1 shadow-xs">
+                <div class="flex items-center justify-center gap-1 text-on-surface-variant mb-0.5">
+                  <span class="material-symbols-outlined text-[14px] text-outline">speed</span>
+                  <span class="font-label-sm text-[10px] font-semibold">KM Allowance</span>
+                </div>
+                <span class="font-headline-sm text-sm font-bold text-primary">164<span class="text-[10px] font-normal text-on-surface-variant">/240km</span></span>
+              </div>
+
+              <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl py-2 px-1 shadow-xs">
+                <div class="flex items-center justify-center gap-1 text-on-surface-variant mb-0.5">
+                  <span class="material-symbols-outlined text-[14px] text-amber-600">timer</span>
+                  <span class="font-label-sm text-[10px] font-semibold">Trip Status</span>
+                </div>
+                <span class="font-headline-sm text-sm font-bold text-amber-800">Confirmed</span>
+              </div>
+            </div>
+
+            <!-- CTA: Open Live In-Trip Controls -->
+            <a href="{% url 'booking_detail' b.id %}" class="mt-4 w-full h-[48px] rounded-full bg-secondary-container hover:bg-secondary-fixed-dim text-tertiary font-label-lg text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-md active:scale-98 transition-all">
+              <span class="material-symbols-outlined text-[18px]">lock_open</span>
+              <span>Open In-Trip Telematics & Controls</span>
+              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </a>
+          </article>
+        </section>
+        {% endfor %}
+        {% endif %}
+
+        <!-- 2. RECENT / COMPLETED BOOKINGS HISTORY -->
+        <section class="flex flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <h2 class="font-headline-sm text-sm sm:text-base font-bold text-primary">Booking History</h2>
+            <span class="text-xs text-outline font-semibold">Total {{ bookings.count|default:total_bookings }} Trips</span>
+          </div>
+
+          <div class="space-y-3">
+            {% for b in bookings %}
+            <article class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/30 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <div class="w-16 h-12 rounded-xl overflow-hidden bg-surface-container shrink-0 border border-outline-variant/20">
+                  {% if b.car.image %}
+                  <img src="{{ b.car.image.url }}" alt="{{ b.car.name }}" class="w-full h-full object-cover"/>
+                  {% else %}
+                  <img src="{% static 'images/ui/car-placeholder.jpg' %}" alt="{{ b.car.name }}" class="w-full h-full object-cover"/>
+                  {% endif %}
+                </div>
+                <div>
+                  <h3 class="font-bold text-xs sm:text-sm text-primary">{{ b.car.brand }} {{ b.car.name }}</h3>
+                  <p class="text-[11px] text-on-surface-variant">{{ b.pickup_date|date:"d M Y" }} • {{ b.pickup_location }}</p>
+                  <span class="inline-block mt-0.5 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase {% if b.status == 'Confirmed' or b.status == 'Active' %}bg-emerald-50 text-emerald-800{% elif b.status == 'Completed' %}bg-surface-container text-on-surface-variant{% else %}bg-amber-50 text-amber-800{% endif %}">
+                    {{ b.status }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-0 border-surface-container">
+                <div class="text-left sm:text-right">
+                  <span class="font-price-display font-extrabold text-sm text-primary block">₹{{ b.total_price|floatformat:0 }}</span>
+                  <span class="text-[10px] text-outline">Paid in full</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <a href="{% url 'booking_detail' b.id %}" class="px-3 py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-xs font-bold text-primary transition-colors">
+                    View
+                  </a>
+                  {% if b.status == 'Completed' %}
+                  <a href="{% url 'invoice' b.id %}" class="px-3 py-1.5 rounded-full border border-outline-variant/60 text-xs font-bold text-primary hover:bg-surface-container transition-colors">
+                    Invoice
+                  </a>
+                  {% endif %}
+                </div>
+              </div>
+            </article>
+            {% empty %}
+            <div class="py-12 bg-surface-container-lowest rounded-3xl border border-outline-variant/30 text-center p-6">
+              <span class="material-symbols-outlined text-4xl text-outline mb-2">directions_car</span>
+              <h3 class="text-sm font-bold text-primary">No booking records found</h3>
+              <p class="text-xs text-on-surface-variant mt-1 mb-4">Book your first self-drive car in Bhubaneswar with zero security deposit.</p>
+              <a href="{% url 'cars' %}" class="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-secondary-container text-tertiary font-bold text-xs shadow-xs">
+                <span>Browse Fleet</span>
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+              </a>
+            </div>
+            {% endfor %}
+          </div>
+        </section>
+        {% endif %}
+
+        {% if request.resolver_match.url_name == 'profile' %}
+        <!-- ================= WALLET & PROFILE VIEW ================= -->
+        
+        <!-- 1. Rentora Wallet Hub Card -->
+        <section class="bg-primary-container text-on-primary rounded-3xl p-5 sm:p-6 shadow-lg relative overflow-hidden border border-outline/30">
+          <div class="absolute -right-8 -top-8 w-36 h-36 bg-secondary-container/15 rounded-full blur-2xl pointer-events-none"></div>
+          
+          <div class="flex items-center justify-between relative z-10">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-lg bg-surface-container-lowest/10 border border-outline-variant/30 flex items-center justify-center text-secondary-container">
+                <span class="material-symbols-outlined text-[18px]">account_balance_wallet</span>
+              </div>
+              <span class="text-xs font-bold tracking-wider uppercase text-on-primary-container">Rentora Mobility Wallet</span>
+            </div>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-secondary-container/20 text-secondary-container border border-secondary-container/40">
+              FASTAG AUTO-REFUND
+            </span>
+          </div>
+
+          <div class="mt-4 relative z-10">
+            <span class="text-xs text-on-primary-container block">Available Wallet Balance</span>
+            <div class="flex items-baseline gap-1.5 mt-0.5">
+              <span class="text-3xl font-price-display font-extrabold text-secondary-container tracking-tight">₹ {{ profile.wallet_balance|floatformat:2 }}</span>
+              <span class="text-xs text-on-primary-container">INR</span>
+            </div>
+            <p class="text-[11px] text-on-primary-container/80 mt-1">
+              Destination for FASTag toll disputes, fuel adjustments, and booking refunds.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5 mt-5 relative z-10">
+            <button type="button" onclick="alert('Instant UPI withdrawal initiated to your linked VPA.');" class="h-11 rounded-full bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-fixed font-bold text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-[16px]">payments</span>
+              <span>Withdraw UPI</span>
+            </button>
+            <button type="button" onclick="alert('Statement exported for your current billing cycle.');" class="h-11 rounded-full bg-surface-container-lowest/10 hover:bg-surface-container-lowest/20 text-on-primary border border-outline-variant/40 font-semibold text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-[16px]">history</span>
+              <span>Statements</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- 2. Dynamic DigiLocker Driving Licence Verification Card -->
+        <section class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined {% if profile.is_verified or profile.kyc_status == 'VERIFIED' %}text-emerald-600{% elif profile.kyc_status == 'PENDING_REVIEW' %}text-amber-600{% else %}text-secondary{% endif %} text-xl">
+                {% if profile.is_verified or profile.kyc_status == 'VERIFIED' %}verified{% elif profile.kyc_status == 'PENDING_REVIEW' %}schedule{% else %}badge{% endif %}
+              </span>
+              <h3 class="font-headline-sm text-sm font-bold text-primary">DigiLocker Driving Licence Status</h3>
+            </div>
+            {% if profile.is_verified or profile.kyc_status == 'VERIFIED' %}
+            <span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold uppercase tracking-wider">
+              Verified
+            </span>
+            {% elif profile.kyc_status == 'PENDING_REVIEW' %}
+            <span class="px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200 text-[10px] font-bold uppercase tracking-wider">
+              Under Review
+            </span>
+            {% elif profile.kyc_status == 'REJECTED' or profile.kyc_status == 'ACTION_REQUIRED' %}
+            <span class="px-2.5 py-0.5 rounded-full bg-red-50 text-red-800 border border-red-200 text-[10px] font-bold uppercase tracking-wider">
+              Action Required
+            </span>
+            {% else %}
+            <span class="px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-800 border border-blue-200 text-[10px] font-bold uppercase tracking-wider">
+              Not Submitted
+            </span>
+            {% endif %}
+          </div>
+
+          {% if profile.is_verified or profile.kyc_status == 'VERIFIED' %}
+          <div class="p-3 bg-surface-container-low rounded-2xl flex items-center justify-between text-xs">
+            <div>
+              <p class="text-on-surface font-bold">Driving Licence: <span class="font-mono text-primary">{{ profile.license_number|default:"Verified via Parivahan" }}</span></p>
+              <p class="text-outline text-[11px] mt-0.5">Authorised for Light Motor Vehicle (LMV-NT) • Instant Keyless Access Active</p>
+              {% if profile.aadhaar_number %}
+              <p class="text-outline text-[10px] mt-0.5">Aadhaar Linked: <span class="font-mono">•••• •••• {{ profile.aadhaar_number|slice:"-4:" }}</span></p>
+              {% endif %}
+            </div>
+            <span class="material-symbols-outlined text-emerald-600 text-2xl">check_circle</span>
+          </div>
+          {% elif profile.kyc_status == 'PENDING_REVIEW' %}
+          <div class="p-3 bg-amber-50/60 border border-amber-200/80 rounded-2xl text-xs">
+            <p class="text-amber-900 font-bold flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-base text-amber-700">hourglass_top</span>
+              <span>Licence verification in progress</span>
+            </p>
+            <p class="text-amber-800 text-[11px] mt-1">
+              Our Bhubaneswar Hub operations team is reviewing your documents (typically under 15 minutes). You'll receive an SMS confirmation once cleared.
+            </p>
+          </div>
+          {% elif profile.kyc_status == 'REJECTED' or profile.kyc_status == 'ACTION_REQUIRED' %}
+          <div class="p-3 bg-red-50/60 border border-red-200/80 rounded-2xl text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <p class="text-red-900 font-bold">Document Re-upload Needed</p>
+              <p class="text-red-800 text-[11px] mt-0.5">{{ profile.kyc_rejection_reason|default:"The submitted licence was unclear or expired. Please upload a clear photo." }}</p>
+            </div>
+            <a href="{% url 'kyc' %}" class="shrink-0 px-3.5 py-1.5 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-xs text-center">
+              Re-verify Now
+            </a>
+          </div>
+          {% else %}
+          <div class="p-4 bg-surface-container-low rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+            <div>
+              <p class="text-on-surface font-bold">Fast-Track 60-Second DigiLocker KYC</p>
+              <p class="text-on-surface-variant text-[11px] mt-0.5">Zero paper forms. Verify your Indian driving licence instantly to book any self-drive car with ₹0 deposit.</p>
+            </div>
+            <a href="{% url 'kyc' %}" class="shrink-0 px-4 py-2 rounded-full bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-fixed font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all text-center">
+              <span class="material-symbols-outlined text-base">bolt</span>
+              <span>Verify via DigiLocker</span>
+            </a>
+          </div>
+          {% endif %}
+        </section>
+
+        <!-- 3. Personal Information & Profile Settings Form -->
+        <section class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs">
+          <div class="flex items-center justify-between pb-4 border-b border-surface-container">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-xl bg-surface-container flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined text-[20px]">person</span>
+              </div>
+              <div>
+                <h3 class="font-headline-sm text-sm sm:text-base font-bold text-primary">Personal Details & Credentials</h3>
+                <p class="text-xs text-on-surface-variant">Update contact details and identity information for rental agreements.</p>
+              </div>
+            </div>
+          </div>
+
+          <form action="{% url 'profile' %}" method="post" enctype="multipart/form-data" class="mt-5 space-y-4">
+            {% csrf_token %}
+
+            <!-- Profile Photo Row -->
+            <div class="flex items-center gap-4 pb-4 border-b border-surface-container">
+              <div class="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-secondary-container/50 bg-surface-container shrink-0">
+                {% if profile.profile_photo %}
+                <img id="avatar-preview" class="w-full h-full object-cover" src="{{ profile.profile_photo.url }}" alt="{{ request.user.username }}"/>
+                {% else %}
+                <div id="avatar-fallback" class="w-full h-full bg-primary-container text-secondary-container flex items-center justify-center font-bold text-xl">
+                  {{ request.user.first_name|default:request.user.username|slice:":1"|upper }}
+                </div>
+                <img id="avatar-preview" class="w-full h-full object-cover hidden" alt="New Profile Preview"/>
+                {% endif %}
+              </div>
+              <div>
+                <label for="id_profile_photo" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface-container hover:bg-surface-container-high text-xs font-bold text-primary border border-outline-variant/40 shadow-xs cursor-pointer active:scale-95 transition-all">
+                  <span class="material-symbols-outlined text-[16px]">photo_camera</span>
+                  <span>Change Photo</span>
+                </label>
+                <input type="file" name="profile_photo" id="id_profile_photo" class="hidden" accept="image/*" onchange="previewAvatar(this)"/>
+                <p class="text-[11px] text-outline mt-1">JPG or PNG, max 5MB. Used for digital handover matching.</p>
+              </div>
+            </div>
+
+            <!-- Two-Column Form Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <!-- Full Name -->
+              <div>
+                <label for="id_full_name" class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant mb-1 ml-1">
+                  Full Legal Name <span class="text-red-500">*</span>
+                </label>
+                <input type="text" name="full_name" id="id_full_name" required value="{{ profile_form.full_name.value|default:'' }}" class="w-full h-11 px-4 rounded-2xl bg-surface-container-low border border-outline-variant/60 text-on-surface text-xs font-bold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="Alex Morgan"/>
+              </div>
+
+              <!-- Email Address -->
+              <div>
+                <label for="id_email" class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant mb-1 ml-1">
+                  Email Address
+                </label>
+                <input type="email" name="email" id="id_email" value="{{ profile_form.email.value|default:request.user.email|default:'' }}" class="w-full h-11 px-4 rounded-2xl bg-surface-container-low border border-outline-variant/60 text-on-surface text-xs font-bold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="alex@example.com"/>
+              </div>
+
+              <!-- Registered Phone -->
+              <div>
+                <label for="id_phone" class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant mb-1 ml-1">
+                  Mobile Number (OTP Login)
+                </label>
+                <input type="tel" name="phone" id="id_phone" value="{{ profile_form.phone.value|default:profile.phone|default:'' }}" class="w-full h-11 px-4 rounded-2xl bg-surface-container-low border border-outline-variant/60 text-on-surface text-xs font-bold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-mono" placeholder="+91XXXXXXXXXX"/>
+              </div>
+
+              <!-- Date of Birth -->
+              <div>
+                <label for="id_date_of_birth" class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant mb-1 ml-1">
+                  Date of Birth (Min. 21 Years)
+                </label>
+                <input type="date" name="date_of_birth" id="id_date_of_birth" value="{% if profile.date_of_birth %}{{ profile.date_of_birth|date:'Y-m-d' }}{% elif profile_form.date_of_birth.value %}{{ profile_form.date_of_birth.value }}{% endif %}" class="w-full h-11 px-4 rounded-2xl bg-surface-container-low border border-outline-variant/60 text-on-surface text-xs font-bold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"/>
+              </div>
+
+              <!-- Driving Licence Number -->
+              <div>
+                <label for="id_license_number" class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant mb-1 ml-1">
+                  Driving Licence Number
+                </label>
+                <input type="text" name="license_number" id="id_license_number" value="{{ profile_form.license_number.value|default:profile.license_number|default:'' }}" class="w-full h-11 px-4 rounded-2xl bg-surface-container-low border border-outline-variant/60 text-on-surface text-xs font-bold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-mono uppercase" placeholder="OD-02-2023-XXXXXXX"/>
+              </div>
+
+              <!-- Aadhaar Number -->
+              <div>
+                <label for="id_aadhaar_number" class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant mb-1 ml-1">
+                  Aadhaar Number (12 Digits)
+                </label>
+                <input type="text" maxlength="12" name="aadhaar_number" id="id_aadhaar_number" value="{{ profile_form.aadhaar_number.value|default:profile.aadhaar_number|default:'' }}" class="w-full h-11 px-4 rounded-2xl bg-surface-container-low border border-outline-variant/60 text-on-surface text-xs font-bold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-mono" placeholder="12-digit Aadhaar"/>
+              </div>
+
+              <!-- PAN Number -->
+              <div>
+                <label for="id_pan_number" class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant mb-1 ml-1">
+                  PAN Number (10 Characters)
+                </label>
+                <input type="text" maxlength="10" name="pan_number" id="id_pan_number" value="{{ profile_form.pan_number.value|default:profile.pan_number|default:'' }}" class="w-full h-11 px-4 rounded-2xl bg-surface-container-low border border-outline-variant/60 text-on-surface text-xs font-bold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-mono uppercase" placeholder="ABCDE1234F"/>
+              </div>
+
+              <!-- Driving Licence Document Upload -->
+              <div>
+                <label for="id_license_image" class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant mb-1 ml-1">
+                  Licence Copy (Front/Back)
+                </label>
+                <input type="file" name="license_image" id="id_license_image" accept="image/*,.pdf" class="w-full text-xs text-on-surface-variant file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-[11px] file:font-bold file:bg-surface-container-high file:text-primary hover:file:bg-surface-container-highest cursor-pointer"/>
+                {% if profile.license_image %}
+                <p class="text-[10px] text-emerald-700 font-semibold mt-1 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[13px]">check_circle</span>
+                  <span>Document on file</span>
+                </p>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- Submit Button Row -->
+            <div class="pt-2 flex justify-end">
+              <button type="submit" name="update_profile" class="px-6 py-2.5 rounded-full bg-primary hover:bg-black text-secondary-container font-headline-sm text-xs font-extrabold flex items-center gap-1.5 shadow-md active:scale-95 transition-all cursor-pointer">
+                <span class="material-symbols-outlined text-[16px]">save</span>
+                <span>Save Profile Changes</span>
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <!-- 4. Security & Change Password Card -->
+        <section class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs">
+          <div class="flex items-center justify-between pb-4 border-b border-surface-container">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-xl bg-surface-container flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined text-[20px]">lock</span>
+              </div>
+              <div>
+                <h3 class="font-headline-sm text-sm sm:text-base font-bold text-primary">Account Security & Password</h3>
+                <p class="text-xs text-on-surface-variant">Update your password to ensure secure access to your account.</p>
+              </div>
+            </div>
+          </div>
+
+          <form action="{% url 'profile' %}" method="post" class="mt-4 space-y-4">
+            {% csrf_token %}
+            <input type="hidden" name="change_password" value="1">
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label for="id_old_password" class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant mb-1 ml-1">
+                  Current Password
+                </label>
+                <input type="password" name="old_password" id="id_old_password" required placeholder="••••••••" class="w-full h-11 px-4 rounded-2xl bg-surface-container-low border border-outline-variant/60 text-on-surface text-xs font-bold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"/>
+              </div>
+              <div>
+                <label for="id_new_password" class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant mb-1 ml-1">
+                  New Password
+                </label>
+                <input type="password" name="new_password" id="id_new_password" required placeholder="Min. 8 characters" class="w-full h-11 px-4 rounded-2xl bg-surface-container-low border border-outline-variant/60 text-on-surface text-xs font-bold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"/>
+              </div>
+              <div>
+                <label for="id_confirm_password" class="block text-[11px] font-bold uppercase tracking-wider text-on-surface-variant mb-1 ml-1">
+                  Confirm Password
+                </label>
+                <input type="password" name="confirm_password" id="id_confirm_password" required placeholder="Repeat new password" class="w-full h-11 px-4 rounded-2xl bg-surface-container-low border border-outline-variant/60 text-on-surface text-xs font-bold focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"/>
+              </div>
+            </div>
+
+            <div class="pt-1 flex justify-end">
+              <button type="submit" class="px-5 py-2 rounded-full bg-surface-container hover:bg-surface-container-high border border-outline-variant/40 text-primary font-bold text-xs flex items-center gap-1.5 shadow-xs active:scale-95 transition-all cursor-pointer">
+                <span class="material-symbols-outlined text-[16px]">key</span>
+                <span>Update Password</span>
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <!-- 5. FASTag Toll Disputes & Reimbursements -->
+        <section class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/30 shadow-xs">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary shrink-0 border border-outline-variant/20">
+              <span class="material-symbols-outlined text-xl">receipt_long</span>
+            </div>
+            <div>
+              <div class="flex items-center gap-1.5">
+                <h3 class="font-headline-sm text-sm font-bold text-primary">FASTag Toll Dispute Desk</h3>
+                <span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-secondary-container/20 text-secondary border border-secondary-container/30">24H SLA</span>
+              </div>
+              <p class="text-xs text-on-surface-variant leading-relaxed mt-0.5">
+                Double-debited on NH 16 or forced to pay cash at plaza? Upload your receipt for instant wallet credit.
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-4 p-3 rounded-2xl bg-surface-container-low border border-outline-variant/20 flex flex-col gap-1 text-xs">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-on-surface">Puri Toll Plaza (Bhubaneswar-Puri NH 316)</span>
+              <span class="text-emerald-700 font-bold">Reimbursed</span>
+            </div>
+            <p class="text-outline text-[11px]">Trip #RT-8849 • Cash slip audit cleared • <strong class="text-primary">₹145.00 refunded</strong></p>
+          </div>
+        </section>
+
+        <!-- 6. Refer & Earn ₹500 Banner -->
+        <section class="rounded-3xl p-5 bg-gradient-to-br from-[#F5B800] via-[#FDBF13] to-[#E5A800] text-primary shadow-md relative overflow-hidden">
+          <div class="relative z-10">
+            <div class="inline-block px-2.5 py-0.5 rounded-full bg-primary text-secondary-container text-[10px] font-bold uppercase tracking-wider mb-2">
+              Referral Reward
+            </div>
+            <h3 class="font-headline-md text-base sm:text-lg font-bold text-primary tracking-tight">Invite Friends, Earn ₹500</h3>
+            <p class="text-xs text-on-secondary-fixed-variant mt-0.5">
+              Give ₹250 off their first self-drive booking, get ₹500 Rentora Wallet credit upon car return.
+            </p>
+            
+            <div class="mt-3 bg-surface-container-lowest/90 backdrop-blur-xs rounded-xl p-2 flex items-center justify-between border border-primary/10 shadow-xs max-w-sm">
+              <div class="pl-2">
+                <span class="text-[9px] uppercase font-bold text-on-surface-variant block">Your Code</span>
+                <span class="font-extrabold text-sm font-mono text-primary">{{ profile.referral_code|default:"RENTORA-BBI" }}</span>
+              </div>
+              <button type="button" class="h-8 px-3.5 rounded-full bg-primary text-secondary-container text-xs font-bold hover:bg-black active:scale-95 transition-all cursor-pointer" onclick="navigator.clipboard.writeText('{{ profile.referral_code|default:'RENTORA-BBI' }}'); alert('Referral code copied to clipboard!');">
+                Copy
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <script>
+          function previewAvatar(input) {
+            if (input.files && input.files[0]) {
+              const reader = new FileReader();
+              reader.onload = function(e) {
+                const preview = document.getElementById('avatar-preview');
+                const fallback = document.getElementById('avatar-fallback');
+                if (preview) {
+                  preview.src = e.target.result;
+                  preview.classList.remove('hidden');
                 }
+                if (fallback) {
+                  fallback.classList.add('hidden');
+                }
+              };
+              reader.readAsDataURL(input.files[0]);
             }
-        });
-    }
-</script>
-<style>
-    .filled-heart { font-variation-settings: 'FILL' 1; }
-    .hide-scrollbar::-webkit-scrollbar { display: none; }
-    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-</style>
+          }
+        </script>
+        {% endif %}
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
 {% endblock %}

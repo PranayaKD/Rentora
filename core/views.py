@@ -1,4 +1,5 @@
 import logging
+import json
 from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.mail import send_mail
@@ -7,7 +8,7 @@ from django.contrib import messages
 from django.http import JsonResponse, HttpResponse
 from django.core.paginator import Paginator
 from django.db import transaction, models
-from django.db.models import Q, Avg, F
+from django.db.models import Q, Avg, F, Count
 from decimal import Decimal
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
@@ -25,12 +26,17 @@ logger = logging.getLogger(__name__)
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 from core.models import Car, Booking, Review, Wishlist, PromoCode, Profile, Notification
+from accounts.models import UserProfile
 from .forms import BookingLocationForm, BookingDatesForm, ReviewForm, ContactForm
-from core.services import BookingService
+from core.services import (
+    BookingService, RefundService, TripExtensionService, 
+    LateReturnService, TollReconcilerService, EmergencySOSService, 
+    VehicleInspectionService
+)
 
 
 def parse_session_date(date_str):
-    """Robustly parse dates stored in session (ISO, 'Y-m-d H:M', or 'Y-m-d')."""
+    """Parse session date string supporting ISO and Y-m-d formats."""
     if not date_str:
         return None
     # Try ISO format first (from .isoformat())
@@ -168,6 +174,7 @@ def index_view(request):
         wishlisted_car_ids = list(Wishlist.objects.filter(user=request.user).values_list('car_id', flat=True))
 
     context = {
+        'all_available': all_available[:8],
         'budget_cars': budget_cars,
         'electric_cars': electric_cars,
         'city_cars': city_cars,
@@ -178,13 +185,48 @@ def index_view(request):
         'mid_range_cars': mid_range_cars,
         'wishlisted_car_ids': wishlisted_car_ids,
         'contact_form': ContactForm(),
+        'current_city': request.session.get('current_city', 'Bhubaneswar'),
     }
     return render(request, 'index.html', context)
 
 
 def how_it_works_view(request):
-    """How it works information page."""
-    return render(request, 'how-it-works.html')
+    """Dedicated How it Works page featuring the complete 5-step self-drive process."""
+    return render(request, 'how-it-works.html', {'active_tab': 'how_it_works'})
+
+
+def subscription_view(request):
+    """Dedicated Car Subscription (Long-Term Monthly Mobility) page."""
+    featured_cars = Car.objects.filter(is_available=True).order_by('-price_per_day')[:8]
+    context = {
+        'active_tab': 'subscription',
+        'featured_cars': featured_cars,
+        'current_city': request.session.get('current_city', 'Bhubaneswar'),
+    }
+    return render(request, 'subscription.html', context)
+
+
+def airport_transfer_view(request):
+    """Dedicated Airport Transfer (Live Flight Tracking & Terminal Hubs) page."""
+    airport_cars = Car.objects.filter(is_available=True).filter(
+        Q(category__in=['Sedan', 'SUV', 'Premium SUV', 'Luxury Sedan', 'MPV']) |
+        Q(brand__in=['Toyota', 'Maruti Suzuki', 'Hyundai', 'BMW', 'Mercedes-Benz'])
+    )[:8]
+    context = {
+        'active_tab': 'airport_transfer',
+        'airport_cars': airport_cars,
+        'current_city': request.session.get('current_city', 'Bhubaneswar'),
+    }
+    return render(request, 'airport-transfer.html', context)
+
+
+def why_rentora_view(request):
+    """Dedicated Why Rentora page showcasing Rentora's key advantages and value props."""
+    context = {
+        'active_tab': 'why_rentora',
+        'current_city': request.session.get('current_city', 'Bhubaneswar'),
+    }
+    return render(request, 'why-rentora.html', context)
 
 
 def cars_view(request):
@@ -209,7 +251,7 @@ def cars_view(request):
                 # Car overlap check:
                 # Find bookings that cross into our requested range
                 booked_car_ids = Booking.objects.filter(
-                    status__in=['Pending', 'Active'],
+                    status__in=[Booking.Status.PENDING, Booking.Status.CONFIRMED, 'Pending', 'Active', 'Confirmed'],
                     pickup_date__lt=r_dt,
                     dropoff_date__gt=p_dt
                 ).values_list('car_id', flat=True)
@@ -219,8 +261,11 @@ def cars_view(request):
             logger.error(f"Availability Query Error: {e}")
             pass
     
-    # Pre-optimize results
-    cars = cars.prefetch_related('reviews')
+    # Pre-optimize results & eliminate N+1 review queries
+    cars = cars.annotate(
+        annotated_rating=Avg('reviews__rating'),
+        annotated_review_count=Count('reviews')
+    ).prefetch_related('reviews')
 
     # Fleet filter
     fleet = request.GET.get('fleet', '')
@@ -242,6 +287,20 @@ def cars_view(request):
     elif budget == 'above_20000':
         cars = cars.filter(price_per_day__gt=20000)
 
+    # Numeric price range filter
+    min_price = request.GET.get('min_price')
+    max_price = request.GET.get('max_price')
+    if min_price:
+        try:
+            cars = cars.filter(price_per_day__gte=Decimal(min_price))
+        except Exception:
+            pass
+    if max_price:
+        try:
+            cars = cars.filter(price_per_day__lte=Decimal(max_price))
+        except Exception:
+            pass
+
     # Category filter
     category = request.GET.get('category', '')
     if category and category != 'All':
@@ -260,10 +319,40 @@ def cars_view(request):
     if brand and brand != 'All':
         cars = cars.filter(brand=brand)
 
-    # Search
-    q = request.GET.get('q', '')
+    # Search & Location Parsing
+    location_query = request.GET.get('location', '').strip()
+    q = request.GET.get('q', '').strip()
+
+    # Detect if q is a location / neighborhood / city rather than a car model
+    known_loc_terms = [
+        'bhubaneswar', 'bbsr', 'cuttack', 'puri', 'rourkela', 'sambalpur', 'berhampur',
+        'patia', 'khandagiri', 'saheed nagar', 'badambadi', 'marine drive', 'kiit', 'infocity',
+        'aiims', 'master canteen', 'gopalpur', 'burla', 'panposh', 'cda', 'link road',
+        'airport', 'bengaluru', 'bangalore', 'delhi', 'mumbai', 'hyderabad', 'chennai', 'pune'
+    ]
+    if q and any(term in q.lower() for term in known_loc_terms):
+        if not location_query:
+            location_query = q
+        q = ''  # Clear car model search so we don't zero out cars for a location query!
+
+    # Smart Search Detection: If location_query contains a vehicle model, brand, or category
+    if location_query and not q:
+        has_car_match = Car.objects.filter(
+            Q(name__icontains=location_query) | 
+            Q(brand__icontains=location_query) | 
+            Q(category__icontains=location_query)
+        ).exists()
+        if has_car_match:
+            q = location_query
+
+    if location_query:
+        for city in ['Bhubaneswar', 'Cuttack', 'Puri', 'Rourkela', 'Sambalpur', 'Berhampur', 'Bengaluru', 'Delhi NCR', 'Mumbai']:
+            if city.lower() in location_query.lower() or (city == 'Bhubaneswar' and 'bbsr' in location_query.lower()):
+                request.session['current_city'] = city
+                break
+
     if q:
-        cars = cars.filter(Q(name__icontains=q) | Q(brand__icontains=q))
+        cars = cars.filter(Q(name__icontains=q) | Q(brand__icontains=q) | Q(category__icontains=q))
 
     # Fuel type filter
     fuel = request.GET.get('fuel', '')
@@ -283,6 +372,27 @@ def cars_view(request):
     elif seats == '8+':
         cars = cars.filter(seats__gte=8)
 
+    # Transmission filter
+    transmission = request.GET.get('transmission', '')
+    if transmission and transmission != 'All':
+        cars = cars.filter(transmission__icontains=transmission)
+
+    # Tag / Quick Filter
+    tag = request.GET.get('tag', '')
+    if tag == 'guest_favorite':
+        cars = cars.filter(Q(name__icontains='Swift') | Q(name__icontains='Thar') | Q(name__icontains='Baleno') | Q(name__icontains='Nexon'))
+    elif tag == 'super_host':
+        cars = cars.filter(Q(name__icontains='Scorpio') | Q(name__icontains='Innova') | Q(name__icontains='Punch'))
+    elif tag == 'home_delivery':
+        # Default all seeded cars have home delivery available
+        pass
+    elif tag == 'electric':
+        cars = cars.filter(fuel_type__icontains='Electric')
+    elif tag == 'suv':
+        cars = cars.filter(category__icontains='SUV')
+    elif tag == 'automatic':
+        cars = cars.filter(transmission__icontains='Auto')
+
     # Sort
     sort = request.GET.get('sort', '')
     if sort == 'price_low':
@@ -290,12 +400,69 @@ def cars_view(request):
     elif sort == 'price_high':
         cars = cars.order_by('-price_per_day')
     elif sort == 'rating':
-        cars = cars.order_by('-rating')
+        cars = cars.order_by(F('annotated_rating').desc(nulls_last=True))
     else:
         cars = cars.order_by('-created_at')
 
-    # Pagination
-    paginator = Paginator(cars, 9)
+    # Total match count & Smart Fallback Recommendations logic
+    total_match_count = cars.count()
+    is_fallback = False
+    fallback_reason = ""
+    recommended_cars = []
+
+    if total_match_count == 0:
+        is_fallback = True
+        base_pool = Car.objects.filter(is_available=True).annotate(
+            annotated_rating=Avg('reviews__rating'),
+            annotated_review_count=Count('reviews')
+        ).prefetch_related('reviews')
+
+        active_city = request.session.get('current_city', 'Bhubaneswar')
+
+        # Fallback Strategy 1: Match category if specified
+        if category and category != 'All':
+            if 'SUV' in category:
+                recommended_cars = list(base_pool.filter(Q(category__icontains='SUV') | Q(category__icontains='MPV'))[:6])
+                fallback_reason = f"No exact matches for {category} with current filters in {active_city}. Here are verified SUVs & spacious vehicles available."
+            elif category == 'Luxury':
+                recommended_cars = list(base_pool.filter(Q(category__icontains='Sedan') | Q(price_per_day__gte=3500))[:6])
+                fallback_reason = f"No luxury cars matched those exact criteria. Here are executive cars available in {active_city}."
+            elif category == 'Hatchback':
+                recommended_cars = list(base_pool.filter(Q(category__icontains='Hatchback') | Q(price_per_day__lte=2500))[:6])
+                fallback_reason = f"No hatchbacks found with those options. Here are convenient city cars available in {active_city}."
+            else:
+                recommended_cars = list(base_pool.filter(category__icontains=category)[:6])
+                fallback_reason = f"No exact {category} matches with active filters. Here are alternative cars ready for booking."
+
+        # Fallback Strategy 2: Match Brand if specified
+        elif brand and brand != 'All':
+            recommended_cars = list(base_pool.filter(brand__in=['Mahindra', 'Tata', 'Maruti Suzuki', 'Hyundai']).order_by(F('annotated_rating').desc(nulls_last=True))[:6])
+            fallback_reason = f"No {brand} vehicles currently match all filters in {active_city}. Here are reliable alternatives from top Indian automakers."
+
+        # Fallback Strategy 3: Match Seating capacity
+        elif seats:
+            target_seats = int(seats) if seats.isdigit() else 5
+            recommended_cars = list(base_pool.filter(seats__gte=target_seats).order_by('price_per_day')[:6])
+            if not recommended_cars:
+                recommended_cars = list(base_pool.order_by('-seats')[:6])
+            fallback_reason = f"No {seats}-seater cars found matching all criteria. Here are our most spacious alternative vehicles."
+
+        # Fallback Strategy 4: Match Fuel or Transmission
+        elif fuel and fuel != 'All':
+            recommended_cars = list(base_pool.filter(Q(fuel_type__icontains=fuel) | Q(fuel_type='Petrol')).order_by(F('annotated_rating').desc(nulls_last=True))[:6])
+            fallback_reason = f"No {fuel} cars match your exact combination in {active_city}. Here are high-efficiency alternatives available right now."
+        elif transmission and transmission != 'All':
+            recommended_cars = list(base_pool.filter(transmission__icontains=transmission)[:6])
+            fallback_reason = f"No {transmission} cars match all current filters. Here are other smooth {transmission} options."
+
+        # Default Fallback: Top-rated popular cars in Odisha
+        if not recommended_cars:
+            recommended_cars = list(base_pool.order_by(F('annotated_rating').desc(nulls_last=True), '-created_at')[:6])
+            fallback_reason = f"No cars matched your exact filter combination in {active_city}. Here are top-rated vehicles ready for instant booking."
+
+    # Pagination: Paginate either the matched cars or the fallback recommended cars
+    display_cars = recommended_cars if is_fallback else cars
+    paginator = Paginator(display_cars, 9)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -319,15 +486,22 @@ def cars_view(request):
     context = {
         'page_obj': page_obj,
         'cars': page_obj,
+        'total_match_count': total_match_count,
+        'is_fallback': is_fallback,
+        'fallback_reason': fallback_reason,
+        'recommended_cars': recommended_cars,
         'wishlisted_car_ids': wishlisted_car_ids,
         'current_category': category,
         'current_brand': brand,
         'current_budget': budget,
         'current_fuel': fuel,
         'current_seats': seats,
+        'current_transmission': transmission,
+        'current_tag': tag,
         'current_sort': sort,
         'current_fleet': fleet,
         'search_query': q,
+        'current_location': location_query or request.session.get('current_city', 'Bhubaneswar'),
         'categories': categories,
         'brands': brands,
         'fuels': fuels,
@@ -349,11 +523,15 @@ def car_detail_view(request, car_id):
     if request.user.is_authenticated:
         is_wishlisted = Wishlist.objects.filter(user=request.user, car=car).exists()
 
+    current_city = request.session.get('current_city', 'Bhubaneswar')
+
     context = {
         'car': car,
         'reviews': reviews,
         'is_wishlisted': is_wishlisted,
         'review_form': ReviewForm(),
+        'current_city': current_city,
+        'current_location': current_city,
     }
     return render(request, 'car-detail.html', context)
 
@@ -440,16 +618,19 @@ def booking_select_view(request):
     pickup_date_str = request.session['pickup_date']
     dropoff_date_str = request.session['dropoff_date']
     
-    if ' ' in pickup_date_str:
-        pickup_dt = parse_session_date(pickup_date_str)
-        dropoff_dt = parse_session_date(dropoff_date_str)
-    else:
-        pickup_dt = datetime.combine(datetime.strptime(pickup_date_str, '%Y-%m-%d').date(), datetime.min.time())
-        dropoff_dt = datetime.combine(datetime.strptime(dropoff_date_str, '%Y-%m-%d').date(), datetime.max.time())
+    pickup_dt = parse_session_date(pickup_date_str)
+    dropoff_dt = parse_session_date(dropoff_date_str)
+    if not pickup_dt or not dropoff_dt:
+        try:
+            pickup_dt = datetime.combine(datetime.strptime(pickup_date_str, '%Y-%m-%d').date(), datetime.min.time())
+            dropoff_dt = datetime.combine(datetime.strptime(dropoff_date_str, '%Y-%m-%d').date(), datetime.max.time())
+        except Exception:
+            pickup_dt = timezone.now().replace(tzinfo=None)
+            dropoff_dt = pickup_dt + timedelta(days=2)
 
     # Get available cars (excluding already booked ones for selected dates)
     booked_car_ids = Booking.objects.filter(
-        status__in=['Pending', 'Active'],
+        status__in=[Booking.Status.PENDING, Booking.Status.CONFIRMED, 'Pending', 'Active', 'Confirmed'],
         pickup_date__lt=dropoff_dt,
         dropoff_date__gt=pickup_dt
     ).values_list('car_id', flat=True)
@@ -461,7 +642,7 @@ def booking_select_view(request):
         is_outstation = request.POST.get('is_outstation') == 'on'
         if car_id:
             car = get_object_or_404(Car, id=car_id)
-            # Store everything elegantly in the session to avoid db bloat
+            # Save car selection and outstation flag in session
             request.session['booking_car_id'] = car_id
             request.session['is_outstation'] = is_outstation
             return redirect('payment')
@@ -485,7 +666,7 @@ def booking_select_view(request):
 
 @login_required
 def payment_view(request):
-    """Booking Step 4: Payment page utilizing session architecture."""
+    """Booking Step 4: Payment checkout page."""
     car_id = request.session.get('booking_car_id')
     pickup_date_str = request.session.get('pickup_date')
     dropoff_date_str = request.session.get('dropoff_date')
@@ -497,7 +678,7 @@ def payment_view(request):
         messages.warning(request, "Your booking session has expired or is invalid.")
         return redirect('booking_select')
 
-    # KYC check removed — prioritize frictionless booking experience
+    # KYC verification is handled after booking confirmation
     
     car = get_object_or_404(Car, id=car_id)
     
@@ -511,12 +692,12 @@ def payment_view(request):
     days = (dropoff_dt - pickup_dt).days
     if days <= 0: days = 1 # Minimum 1 day charge
     
-    # Use the new Dynamic Pricing Engine (Weekend Surcharges)
+    # Calculate rental subtotal with weekend pricing
     subtotal = car.calculate_rental_price(pickup_dt, dropoff_dt)
     tax = (subtotal * Decimal('0.18')).quantize(Decimal('0.01'))
     total = subtotal + tax
     
-    # Check for applied promo in session (New PromoCode Model)
+    # Check for active promo code in session
     promo_id = request.session.get('applied_promo_id')
     discount_amount = Decimal('0')
     promo_code_str = ""
@@ -536,7 +717,7 @@ def payment_view(request):
         except PromoCode.DoesNotExist:
             del request.session['applied_promo_id']
         
-    final_total = total - discount_amount
+    final_total = max(Decimal('0.00'), total - discount_amount)
 
     context = {
         'car': car,
@@ -554,40 +735,39 @@ def payment_view(request):
     }
 
     if request.method == 'POST':
-        with transaction.atomic():
-            # Lock the car row to prevent race conditions (double-booking)
-            locked_car = Car.objects.select_for_update().get(id=car.id)
-            
-            # Check availability one final time
-            is_available = Car.is_available_for_dates(locked_car.id, pickup_dt, dropoff_dt)
-
-            if not is_available:
-                messages.error(request, "Sorry, this car is no longer available for the selected dates.")
-                return redirect('booking_select')
-
-        # Process Booking Creation
         try:
-            # Create real booking
-            booking = Booking.objects.create(
-                user=request.user,
-                car=locked_car,
-                pickup_location=pickup_location,
-                dropoff_location=dropoff_location,
-                pickup_date=pickup_dt,
-                dropoff_date=dropoff_dt,
-                total_price=final_total,
-                status=Booking.Status.PENDING,
-                is_outstation=is_outstation,
-                promo_code=promo_code_str,
-                discount_amount=discount_amount,
-                is_paid=False
-            )
-            
-            # Clear pending booking logic from session
-            request.session.pop('booking_car_id', None)
-            
-            if promo_id:
-                PromoCode.objects.filter(id=promo_id).update(used_count=F('used_count') + 1)
+            with transaction.atomic():
+                # Lock the car row to prevent race conditions (double-booking)
+                locked_car = Car.objects.select_for_update().get(id=car.id)
+                
+                # Check availability one final time
+                is_available = Car.is_available_for_dates(locked_car.id, pickup_dt, dropoff_dt)
+
+                if not is_available:
+                    messages.error(request, "Sorry, this car is no longer available for the selected dates.")
+                    return redirect('booking_select')
+
+                # Create real booking atomically under row lock
+                booking = Booking.objects.create(
+                    user=request.user,
+                    car=locked_car,
+                    pickup_location=pickup_location,
+                    dropoff_location=dropoff_location,
+                    pickup_date=pickup_dt,
+                    dropoff_date=dropoff_dt,
+                    total_price=final_total,
+                    status=Booking.Status.PENDING,
+                    is_outstation=is_outstation,
+                    promo_code=promo_code_str,
+                    discount_amount=discount_amount,
+                    is_paid=False
+                )
+                
+                # Clear pending booking logic from session
+                request.session.pop('booking_car_id', None)
+                
+                if promo_id:
+                    PromoCode.objects.filter(id=promo_id, used_count__lt=F('usage_limit')).update(used_count=F('used_count') + 1)
 
             payment_method = request.POST.get('payment_method_choice', 'stripe')
             
@@ -617,7 +797,7 @@ def payment_view(request):
             if 'booking' in locals():
                 booking.status = 'Cancelled'
                 booking.save()
-            # Professional error logging with detail for the USER to debug
+            # Return descriptive error message in debug mode
             error_msg = f"Payment Gateway Error: {str(e)}" if settings.DEBUG else "We encountered an issue processing your payment. Please try again."
             messages.error(request, error_msg)
             return redirect('payment')
@@ -714,6 +894,58 @@ def confirmation_view(request, booking_id):
     return render(request, 'confirmation.html', context)
 
 
+@login_required
+def booking_detail_view(request, booking_id):
+    """Detailed view for an individual booking."""
+    booking = get_object_or_404(Booking, id=booking_id, user=request.user)
+
+    can_cancel = booking.status.upper() in ['PENDING', 'CONFIRMED']
+    total = booking.total_with_gst or booking.total_price or Decimal('0.00')
+    gst = booking.gst_amount or (total * Decimal('0.18') / Decimal('1.18')).quantize(Decimal('0.01'))
+    base_fare = (total - gst).quantize(Decimal('0.01'))
+    protection_fee = Decimal('0.00')
+
+    booking.base_fare = base_fare
+    booking.protection_fee = protection_fee
+    booking.taxes = gst
+    booking.total_price = total
+    booking.can_cancel = can_cancel
+    booking.can_extend = False
+
+    context = {
+        'booking': booking,
+        'can_cancel': can_cancel,
+        'base_fare': base_fare,
+        'protection_fee': protection_fee,
+        'taxes': gst,
+        'total_price': total,
+        'refund_message': f"Full refund of ₹{total} will be credited to original payment method in 3-5 business days." if can_cancel else None,
+    }
+    return render(request, 'booking_detail.html', context)
+
+
+@login_required
+@require_POST
+def cancel_booking_view(request, booking_id):
+    """Cancel booking endpoint."""
+    booking = get_object_or_404(Booking, id=booking_id, user=request.user)
+    if booking.status.upper() in ['PENDING', 'CONFIRMED']:
+        booking.status = Booking.Status.CANCELLED
+        booking.save()
+        create_notification(
+            booking.user,
+            'booking',
+            'Booking Cancelled',
+            f'Your booking {booking.booking_reference} has been cancelled.',
+            '/accounts/dashboard/bookings/'
+        )
+        messages.success(request, f"Trip {booking.booking_reference} has been cancelled successfully.")
+    else:
+        messages.warning(request, "This booking cannot be cancelled.")
+    return redirect('dashboard_bookings')
+
+
+@login_required
 def invoice_view(request, booking_id):
     """Render a printable premium GST invoice."""
     booking = get_object_or_404(Booking, id=booking_id, user=request.user)
@@ -787,7 +1019,7 @@ def stripe_webhook(request):
             try:
                 booking = Booking.objects.get(id=booking_id)
                 booking.is_paid = True
-                booking.status = 'Active'
+                booking.status = Booking.Status.CONFIRMED
                 booking.save()
                 send_booking_email(booking)
                 # Auto-create notifications
@@ -850,8 +1082,8 @@ def contact_view(request):
                 logger.error(f"Contact form email error: {e}")
                 messages.warning(request, "Message sent, but we had trouble notifying the team. We'll still check it!")
                 
-            return redirect('index')
-    return redirect('index')
+            return redirect('contact')
+    return render(request, 'contact.html')
 
 
 @login_required
@@ -860,7 +1092,7 @@ def add_review_view(request, car_id):
     """Add review for a completed booking."""
     car = get_object_or_404(Car, id=car_id)
     booking_id = request.POST.get('booking_id')
-    booking = get_object_or_404(Booking, id=booking_id, user=request.user, car=car, status='Completed')
+    booking = get_object_or_404(Booking, id=booking_id, user=request.user, car=car, status__in=[Booking.Status.COMPLETED, 'Completed', 'COMPLETED'])
 
     # Check if review already exists
     if Review.objects.filter(booking=booking).exists():
@@ -891,13 +1123,23 @@ def add_review_view(request, car_id):
 def api_cars_search(request):
     """Search cars via JSON API."""
     q = request.GET.get('q', '')
+    brand = request.GET.get('brand', '')
+    category = request.GET.get('category', '')
+    fuel = request.GET.get('fuel', '')
     cars = Car.objects.filter(is_available=True)
     if q:
         cars = cars.filter(Q(name__icontains=q) | Q(brand__icontains=q))
+    if brand:
+        cars = cars.filter(brand__iexact=brand)
+    if category:
+        cars = cars.filter(category__iexact=category)
+    if fuel:
+        cars = cars.filter(fuel_type__iexact=fuel)
 
     data = [{
         'id': car.id,
         'name': f"{car.brand} {car.name}",
+        'brand': car.brand,
         'category': car.category,
         'price_per_day': str(car.price_per_day),
         'seats': car.seats,
@@ -919,6 +1161,9 @@ def api_check_availability(request):
     pickup_date = request.POST.get('pickup_date')
     dropoff_date = request.POST.get('dropoff_date')
 
+    if not car_id or not pickup_date or not dropoff_date:
+        return JsonResponse({'error': 'Missing required fields: car_id, pickup_date, and dropoff_date are required.'}, status=400)
+
     try:
         car = Car.objects.get(id=car_id, is_available=True)
         # Precision check: handle both 'Y-m-d' and 'Y-m-d H:M'
@@ -931,7 +1176,7 @@ def api_check_availability(request):
 
         existing = Booking.objects.filter(
             car=car,
-            status__in=['Pending', 'Active'],
+            status__in=[Booking.Status.PENDING, Booking.Status.CONFIRMED, 'Pending', 'Active', 'Confirmed'],
             pickup_date__lt=dropoff,
             dropoff_date__gt=pickup
         ).exists()
@@ -1037,11 +1282,34 @@ def api_notification_count(request):
 
 # ===================== Onboarding Views =====================
 
+@login_required
 def onboarding_view(request):
-    """Show onboarding slides to new users."""
-    if request.session.get('onboarding_done'):
-        return redirect('/')
-    return render(request, 'onboarding.html')
+    """Driving Licence KYC onboarding view."""
+    profile, _ = UserProfile.objects.get_or_create(user=request.user)
+
+    if request.method == 'POST':
+        license_number = request.POST.get('license_number', '').strip().upper()
+        license_front = request.FILES.get('license_front')
+
+        if license_number:
+            profile.license_number = license_number
+        if license_front:
+            profile.license_image = license_front
+        profile.save()
+        messages.success(request, "Driving licence submitted successfully! Verification in progress.")
+        return redirect('onboarding')
+
+    kyc_status = 'upload'
+    if profile.is_verified:
+        kyc_status = 'verified'
+    elif profile.license_number and profile.license_image:
+        kyc_status = 'pending'
+
+    context = {
+        'profile': profile,
+        'kyc_status': kyc_status,
+    }
+    return render(request, 'onboarding.html', context)
 
 
 def skip_onboarding(request):
@@ -1125,3 +1393,260 @@ def get_booked_dates(request, car_id):
             current_date += timedelta(days=1)
             
     return JsonResponse({'booked_dates': list(set(booked_dates))})
+
+@require_POST
+def set_city_view(request):
+    """
+    Saves selected Odisha city/hub to session and returns JSON response.
+    Defaults to Bhubaneswar (BBSR).
+    """
+    city = 'Bhubaneswar'
+    valid_cities = ['Bhubaneswar', 'Cuttack', 'Puri', 'Rourkela', 'Sambalpur', 'Berhampur']
+    try:
+        if request.content_type == 'application/json':
+            data = json.loads(request.body.decode('utf-8'))
+            candidate = data.get('city', 'Bhubaneswar').strip()
+        else:
+            candidate = request.POST.get('city', 'Bhubaneswar').strip()
+        
+        # Match case-insensitively or BBSR alias
+        if candidate.lower() in ['bbsr', 'bhubaneshwar']:
+            city = 'Bhubaneswar'
+        else:
+            matched = next((c for c in valid_cities if c.lower() == candidate.lower()), None)
+            city = matched if matched else candidate or 'Bhubaneswar'
+    except Exception:
+        pass
+        
+    request.session['current_city'] = city
+    if hasattr(request.session, 'modified'):
+        request.session.modified = True
+    return JsonResponse({'status': 'success', 'city': city})
+
+def terms_view(request):
+    """Terms of Service static view."""
+    return render(request, 'legal/terms.html', {'title': 'Terms of Service - Rentora'})
+
+def privacy_view(request):
+    """Privacy Policy static view."""
+    return render(request, 'legal/privacy.html', {'title': 'Privacy Policy - Rentora'})
+
+def health_check_view(request):
+    """
+    Lightweight health check endpoint for monitoring, load balancers,
+    and keep-alive pings (prevents Render instance from sleeping).
+    """
+    return JsonResponse({
+        'status': 'healthy',
+        'service': 'rentora',
+        'timestamp': timezone.now().isoformat(),
+    })
+
+
+# ===================== ADVANCED INDIAN MOBILITY API ENDPOINTS =====================
+
+@login_required
+@require_POST
+def api_trip_inspection(request, booking_id):
+    """
+    Submit digital pre-trip or post-trip vehicle checklist with 4-side exterior photos,
+    odometer reading, and fuel percentage. Prevents damage disputes.
+    """
+    booking = get_object_or_404(Booking, id=booking_id)
+    if booking.user != request.user and not request.user.is_staff:
+        return JsonResponse({'success': False, 'error': 'Unauthorized'}, status=403)
+
+    stage = request.POST.get('stage', 'PRE_TRIP').upper()
+    try:
+        odometer = int(request.POST.get('odometer', 0))
+        fuel_percent = int(request.POST.get('fuel_percent', 100))
+    except (ValueError, TypeError):
+        return JsonResponse({'success': False, 'error': 'Invalid odometer or fuel percent values'}, status=400)
+
+    damage_notes = request.POST.get('damage_notes', '').strip()
+    lat = request.POST.get('latitude')
+    lng = request.POST.get('longitude')
+    
+    photo_front = request.FILES.get('photo_front')
+    photo_rear = request.FILES.get('photo_rear')
+    photo_left = request.FILES.get('photo_left')
+    photo_right = request.FILES.get('photo_right')
+
+    if stage == 'PRE_TRIP':
+        inspection = VehicleInspectionService.submit_pre_trip(
+            booking=booking,
+            user=request.user,
+            odometer=odometer,
+            fuel_percent=fuel_percent,
+            photo_front=photo_front,
+            photo_rear=photo_rear,
+            photo_left=photo_left,
+            photo_right=photo_right,
+            damage_notes=damage_notes,
+            lat=lat,
+            lng=lng
+        )
+        return JsonResponse({
+            'success': True,
+            'stage': 'PRE_TRIP',
+            'booking_status': booking.status,
+            'message': 'Pre-trip inspection logged. Vehicle unlocked. Have a safe drive!'
+        })
+    elif stage == 'POST_TRIP':
+        has_damage = request.POST.get('has_damage', 'false').lower() in ('true', '1', 'yes')
+        cleanliness = int(request.POST.get('cleanliness', 5))
+        inspection = VehicleInspectionService.submit_post_trip(
+            booking=booking,
+            user=request.user,
+            odometer=odometer,
+            fuel_percent=fuel_percent,
+            has_damage=has_damage,
+            damage_notes=damage_notes,
+            cleanliness_rating=cleanliness,
+            photo_front=photo_front,
+            photo_rear=photo_rear,
+            photo_left=photo_left,
+            photo_right=photo_right,
+            lat=lat,
+            lng=lng
+        )
+        return JsonResponse({
+            'success': True,
+            'stage': 'POST_TRIP',
+            'booking_status': booking.status,
+            'has_damage': has_damage,
+            'message': 'Drop-off inspection approved. Trip completed!'
+        })
+    else:
+        return JsonResponse({'success': False, 'error': 'Invalid inspection stage'}, status=400)
+
+
+@login_required
+def api_trip_extend(request, booking_id):
+    """
+    Check extension availability and price, or confirm trip extension directly from phone.
+    """
+    booking = get_object_or_404(Booking, id=booking_id)
+    if booking.user != request.user and not request.user.is_staff:
+        return JsonResponse({'success': False, 'error': 'Unauthorized'}, status=403)
+
+    if request.method == 'GET':
+        hours = int(request.GET.get('hours', 2))
+        is_avail, new_dropoff, cost = TripExtensionService.check_availability(booking, hours)
+        return JsonResponse({
+            'available': is_avail,
+            'requested_hours': hours,
+            'new_dropoff': new_dropoff.strftime('%d %b %Y, %I:%M %p'),
+            'cost': float(cost),
+            'wallet_balance': float(request.user.profile.wallet_balance) if hasattr(request.user, 'profile') else 0.0
+        })
+
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8')) if request.content_type == 'application/json' else request.POST
+            hours = int(data.get('hours', 2))
+            channel = data.get('channel', 'wallet')
+            success, msg = TripExtensionService.confirm_extension(booking, hours, payment_channel=channel)
+            return JsonResponse({'success': success, 'message': msg})
+        except Exception as e:
+            logger.error(f"Trip extension error for Booking #{booking_id}: {str(e)}")
+            return JsonResponse({'success': False, 'error': str(e)}, status=400)
+
+
+@login_required
+@require_POST
+def api_trip_sos(request, booking_id):
+    """
+    Trigger emergency SOS for highway breakdowns, punctures, or accidents.
+    Automatically pauses billing meter and logs GPS coordinates.
+    """
+    booking = get_object_or_404(Booking, id=booking_id)
+    if booking.user != request.user and not request.user.is_staff:
+        return JsonResponse({'success': False, 'error': 'Unauthorized'}, status=403)
+
+    try:
+        data = json.loads(request.body.decode('utf-8')) if request.content_type == 'application/json' else request.POST
+        issue_type = data.get('issue_type', 'OTHER')
+        lat = Decimal(str(data.get('latitude', 12.9716)))
+        lng = Decimal(str(data.get('longitude', 77.5946)))
+        address = data.get('location_address', 'Highway breakdown point')
+        note = data.get('note', '')
+
+        sos = EmergencySOSService.trigger_sos(
+            booking=booking,
+            user=request.user,
+            issue_type=issue_type,
+            latitude=lat,
+            longitude=lng,
+            location_address=address,
+            user_note=note
+        )
+        return JsonResponse({
+            'success': True,
+            'sos_id': sos.id,
+            'issue_type': sos.get_issue_type_display(),
+            'message': 'Roadside assistance dispatched. Billing timer paused from this moment.'
+        })
+    except Exception as e:
+        logger.error(f"Emergency SOS error: {str(e)}")
+        return JsonResponse({'success': False, 'error': str(e)}, status=400)
+
+
+@login_required
+@require_POST
+def api_toll_dispute(request, booking_id):
+    """
+    Submit cash toll slip photo when FASTag scanner failed, preventing double deductions.
+    """
+    booking = get_object_or_404(Booking, id=booking_id)
+    if booking.user != request.user and not request.user.is_staff:
+        return JsonResponse({'success': False, 'error': 'Unauthorized'}, status=403)
+
+    cash_amount = request.POST.get('cash_amount')
+    receipt_img = request.FILES.get('receipt_image')
+    notes = request.POST.get('notes', '')
+
+    if not cash_amount or not receipt_img:
+        return JsonResponse({'success': False, 'error': 'Toll amount and receipt image are required'}, status=400)
+
+    try:
+        dispute, msg = TollReconcilerService.submit_cash_toll_dispute(
+            booking=booking,
+            user=request.user,
+            cash_receipt_img=receipt_img,
+            cash_amount=cash_amount,
+            user_notes=notes
+        )
+        return JsonResponse({
+            'success': True,
+            'dispute_id': dispute.id,
+            'status': dispute.status,
+            'message': msg
+        })
+    except Exception as e:
+        logger.error(f"Toll dispute error: {str(e)}")
+        return JsonResponse({'success': False, 'error': str(e)}, status=400)
+
+
+@login_required
+@require_POST
+def api_cancel_booking_sla(request, booking_id):
+    """
+    Cancel booking with tiered Indian rental SLA matrix:
+    >24h: 100% refund, 6-24h: 50% refund, <6h: 1-day rental retained.
+    """
+    booking = get_object_or_404(Booking, id=booking_id)
+    if booking.user != request.user and not request.user.is_staff:
+        return JsonResponse({'success': False, 'error': 'Unauthorized'}, status=403)
+
+    reason = request.POST.get('reason', 'Customer initiated cancellation')
+    refund_tx, sla_note = RefundService.process_cancellation_with_sla(booking, reason=reason)
+    
+    return JsonResponse({
+        'success': True,
+        'booking_status': booking.status,
+        'refund_amount': float(refund_tx.amount) if refund_tx else 0.0,
+        'channel': refund_tx.get_channel_display() if refund_tx else 'N/A',
+        'sla_note': sla_note
+    })
+

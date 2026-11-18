@@ -5,6 +5,9 @@ urlpatterns = [
     # Landing
     path('', views.index_view, name='index'),
     path('how-it-works/', views.how_it_works_view, name='how_it_works'),
+    path('subscription/', views.subscription_view, name='subscription'),
+    path('airport-transfer/', views.airport_transfer_view, name='airport_transfer'),
+    path('why-rentora/', views.why_rentora_view, name='why_rentora'),
 
     # Cars
     path('cars/', views.cars_view, name='cars'),
@@ -17,6 +20,8 @@ urlpatterns = [
     path('booking/select/', views.booking_select_view, name='booking_select'),
     path('booking/payment/', views.payment_view, name='payment'),
     path('booking/confirmation/<int:booking_id>/', views.confirmation_view, name='confirmation'),
+    path('booking/<int:booking_id>/detail/', views.booking_detail_view, name='booking_detail'),
+    path('booking/<int:booking_id>/cancel/', views.cancel_booking_view, name='cancel_booking'),
     path('booking/invoice/<int:booking_id>/', views.invoice_view, name='invoice'),
     path('booking/receipt/<int:booking_id>/', views.download_receipt_view, name='download_receipt'),
 
@@ -44,7 +49,19 @@ urlpatterns = [
     path('api/notifications/mark-all-read/', views.api_mark_all_notifications_read, name='api_mark_all_notifications_read'),
     path('api/notifications/count/', views.api_notification_count, name='api_notification_count'),
 
+    # Static & Legal
+    path('terms/', views.terms_view, name='terms'),
+    path('privacy/', views.privacy_view, name='privacy'),
+    path('api/city/set/', views.set_city_view, name='set_city'),
+
     # Onboarding
     path('onboarding/', views.onboarding_view, name='onboarding'),
     path('onboarding/skip/', views.skip_onboarding, name='skip_onboarding'),
+
+    # Advanced Indian Mobility APIs
+    path('api/trip/<int:booking_id>/inspection/', views.api_trip_inspection, name='api_trip_inspection'),
+    path('api/trip/<int:booking_id>/extend/', views.api_trip_extend, name='api_trip_extend'),
+    path('api/trip/<int:booking_id>/sos/', views.api_trip_sos, name='api_trip_sos'),
+    path('api/trip/<int:booking_id>/toll-dispute/', views.api_toll_dispute, name='api_toll_dispute'),
+    path('api/trip/<int:booking_id>/cancel-sla/', views.api_cancel_booking_sla, name='api_cancel_booking_sla'),
 ]

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} | Rentora{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-6 py-12 md:py-20">
+    <div class="bg-surface-container-lowest rounded-3xl p-8 md:p-12 border border-surface-container-high shadow-sm">
+        <h1 class="font-headline text-3xl font-bold text-on-surface mb-6">Privacy Policy</h1>
+        <p class="text-sm text-secondary mb-8">Last updated: November 2026</p>
+
+        <div class="space-y-6 text-sm text-on-surface leading-relaxed">
+            <section>
+                <h2 class="font-headline text-lg font-bold text-on-surface mb-2">1. Information We Collect</h2>
+                <p class="text-secondary">We collect information provided directly by you, including contact numbers, driving licence details for identity verification, booking itineraries, and transaction records required to facilitate keyless vehicle dispatch.</p>
+            </section>
+
+            <section>
+                <h2 class="font-headline text-lg font-bold text-on-surface mb-2">2. How We Use Your Information</h2>
+                <p class="text-secondary">Your data is used solely to authenticate your access, deliver self-drive vehicles, provide 24/7 roadside assistance, calculate trip pricing, and comply with statutory motor vehicle safety regulations.</p>
+            </section>
+
+            <section>
+                <h2 class="font-headline text-lg font-bold text-on-surface mb-2">3. Data Security & Storage</h2>
+                <p class="text-secondary">All sensitive documents and identity credentials are encrypted both in transit and at rest. We never sell or lease user information to third-party marketing entities.</p>
+            </section>
+
+            <section>
+                <h2 class="font-headline text-lg font-bold text-on-surface mb-2">4. User Rights and Controls</h2>
+                <p class="text-secondary">You may review, update, or request deletion of your account information at any time by navigating to Profile Settings or contacting privacy@rentora.in.</p>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

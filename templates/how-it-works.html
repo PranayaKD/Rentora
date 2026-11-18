@@ -1,163 +1,181 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}How it Works | Rentora Car Rentals{% endblock %}
+{% block title %}How It Works | Rentora Self-Drive Car Rentals Odisha{% endblock %}
+{% block meta_description %}Learn how Rentora works in 5 simple steps: Select your Odisha hub, pick KM plans, book with phone OTP, get doorstep delivery, and drive with keyless phone unlock.{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="relative pt-32 pb-20 bg-[#050811] overflow-hidden">
-    <div class="absolute inset-0 opacity-20">
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,#1e293b,transparent)]"></div>
-        <div class="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
-    </div>
-    
-    <div class="relative z-10 max-w-7xl mx-auto px-6 text-center">
-        <h1 class="text-white font-black text-5xl md:text-7xl mb-6 tracking-tight">The Rentora <span class="text-accent">Way</span>.</h1>
-        <p class="text-slate-400 text-lg max-w-2xl mx-auto font-medium">From browsing to blooming miles – discover how we've simplified premium car rentals in India.</p>
-    </div>
-</section>
+<div class="w-full bg-surface min-h-screen text-on-surface antialiased flex flex-col pb-24 lg:pb-16">
 
-<!-- The Process -->
-<section class="py-24 bg-white dark:bg-slate-900">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-20 items-center mb-32">
-            <div>
-                <span class="text-accent font-bold tracking-widest uppercase text-xs mb-4 block">Step 01</span>
-                <h2 class="text-4xl font-black mb-6">Find Your Perfect Match</h2>
-                <p class="text-slate-500 text-lg mb-8 leading-relaxed">Whether you need a swift hatchback for city zipping, a rugged SUV for the mountains, or an ultra-luxury sedan for a grand arrival – our curated fleet has it all. Use our smart filters to find cars available for your exact dates.</p>
-                <ul class="space-y-4">
-                    <li class="flex items-center gap-3 text-slate-700 dark:text-slate-300 font-bold">
-                        <span class="material-symbols-outlined text-accent">check_circle</span>
-                        Verified Car Conditions
-                    </li>
-                    <li class="flex items-center gap-3 text-slate-700 dark:text-slate-300 font-bold">
-                        <span class="material-symbols-outlined text-accent">check_circle</span>
-                        Real-time Availability
-                    </li>
-                </ul>
+    <!-- ================= HERO SECTION (STITCH DESIGN TOKENS) ================= -->
+    <section class="relative w-full bg-surface-container-low/70 pt-8 lg:pt-14 pb-16 lg:pb-20 border-b border-outline-variant/30 overflow-hidden text-center reveal-on-scroll">
+        <!-- Ambient Atmospheric Glows -->
+        <div class="absolute -top-32 right-0 w-[550px] h-[550px] bg-secondary-container/15 rounded-full blur-[130px] pointer-events-none"></div>
+        <div class="absolute bottom-0 left-10 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 relative z-10 flex flex-col items-center">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface-container-lowest border border-outline-variant/40 shadow-xs mb-5">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="text-[11px] font-bold text-primary uppercase tracking-wider">Self-Drive Flow Guide</span>
             </div>
-            <div class="step-image opacity-0 translate-y-12 bg-slate-50 dark:bg-slate-800 rounded-[3rem] overflow-hidden aspect-square flex items-center justify-center shadow-2xl transition-all duration-700">
-                <img src="{% static 'images/how-it-works/step1.png' %}" alt="Find Your Car" loading="lazy" class="w-full h-full object-cover">
-            </div>
+
+            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-primary tracking-tight leading-[1.15]">
+                How Rentora Works
+            </h1>
+
+            <p class="text-sm sm:text-base text-on-surface-variant mt-3 max-w-2xl leading-relaxed">
+                From selecting your vehicle in Bhubaneswar or Puri to doorstep delivery and keyless start, book your self-drive trip in 5 simple steps.
+            </p>
         </div>
+    </section>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-20 items-center mb-32 md:flex-row-reverse">
-            <div class="step-content opacity-0 -translate-x-12 md:order-2">
-                <span class="text-blue-500 font-bold tracking-widest uppercase text-xs mb-4 block">Step 02</span>
-                <h2 class="text-4xl font-black mb-6">Book & Verify</h2>
-                <p class="text-slate-500 text-lg mb-8 leading-relaxed">Once you've made your choice, booking is a breeze. Provide your basic details and complete our lightning-fast 1-minute KYC process. We value your time as much as your journey.</p>
-                <div class="bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/30 p-6 rounded-2xl">
-                    <p class="text-blue-600 dark:text-blue-400 font-bold text-sm flex items-center gap-2">
-                        <span class="material-symbols-outlined">info</span>
-                        KYC requires only a valid DL and Aadhar card.
-                    </p>
+    <!-- ================= 5-STEP INTERACTIVE ROADMAP ================= -->
+    <section class="py-14 sm:py-20 border-b border-outline-variant/30 reveal-on-scroll">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-14">
+                <span class="text-xs font-bold uppercase tracking-widest text-primary bg-secondary-container/20 border border-secondary-container/40 px-3 py-1 rounded-full inline-block mb-2">Step-by-Step Flow</span>
+                <h2 class="text-2xl sm:text-4xl font-extrabold text-primary tracking-tight">Your Journey From Booking to Ignition</h2>
+                <p class="text-xs sm:text-sm text-on-surface-variant font-medium max-w-xl mx-auto mt-2">Zero paperwork queues, transparent pricing packages, and express doorstep handover.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-5">
+                <!-- Step 1 -->
+                <div class="relative p-6 rounded-3xl bg-surface-container-lowest border border-outline-variant/50 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group">
+                    <span class="absolute top-3 right-4 text-4xl font-black text-outline-variant/40 select-none">01</span>
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-surface-container-low text-primary flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+                            <span class="material-symbols-outlined text-2xl font-black">location_on</span>
+                        </div>
+                        <span class="text-[10px] font-extrabold uppercase tracking-wider text-primary bg-secondary-container/20 px-2.5 py-0.5 rounded-full border border-secondary-container/30">Step 1</span>
+                        <h3 class="text-base font-extrabold text-primary mt-3 mb-1.5">Pick Odisha Hub</h3>
+                        <p class="text-xs text-on-surface-variant font-medium leading-relaxed">Select Bhubaneswar Airport, Janpath, Cuttack, Puri Marine Drive, or choose doorstep delivery.</p>
+                    </div>
+                    <div class="mt-5 pt-3 border-t border-outline-variant/30 text-[11px] font-bold text-primary group-hover:text-secondary transition-colors flex items-center gap-1">
+                        <span>Odisha Hubs</span>
+                        <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative p-6 rounded-3xl bg-surface-container-lowest border border-outline-variant/50 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group">
+                    <span class="absolute top-3 right-4 text-4xl font-black text-outline-variant/40 select-none">02</span>
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-surface-container-low text-primary flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+                            <span class="material-symbols-outlined text-2xl font-black">tune</span>
+                        </div>
+                        <span class="text-[10px] font-extrabold uppercase tracking-wider text-primary bg-secondary-container/20 px-2.5 py-0.5 rounded-full border border-secondary-container/30">Step 2</span>
+                        <h3 class="text-base font-extrabold text-primary mt-3 mb-1.5">Choose KM Plan</h3>
+                        <p class="text-xs text-on-surface-variant font-medium leading-relaxed">Choose standard 300 km/day or Unlimited km package for long road trips across NH-16.</p>
+                    </div>
+                    <div class="mt-5 pt-3 border-t border-outline-variant/30 text-[11px] font-bold text-primary group-hover:text-secondary transition-colors flex items-center gap-1">
+                        <span>Flexible Packages</span>
+                        <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative p-6 rounded-3xl bg-surface-container-lowest border border-outline-variant/50 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group">
+                    <span class="absolute top-3 right-4 text-4xl font-black text-outline-variant/40 select-none">03</span>
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-surface-container-low text-primary flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+                            <span class="material-symbols-outlined text-2xl font-black">touch_app</span>
+                        </div>
+                        <span class="text-[10px] font-extrabold uppercase tracking-wider text-primary bg-secondary-container/20 px-2.5 py-0.5 rounded-full border border-secondary-container/30">Step 3</span>
+                        <h3 class="text-base font-extrabold text-primary mt-3 mb-1.5">60s DigiLocker KYC</h3>
+                        <p class="text-xs text-on-surface-variant font-medium leading-relaxed">Fast OTP phone login, digital driving license check, and instant approval with ₹0 security deposit.</p>
+                    </div>
+                    <div class="mt-5 pt-3 border-t border-outline-variant/30 text-[11px] font-bold text-primary group-hover:text-secondary transition-colors flex items-center gap-1">
+                        <span>Instant Approval</span>
+                        <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="relative p-6 rounded-3xl bg-surface-container-lowest border border-outline-variant/50 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group">
+                    <span class="absolute top-3 right-4 text-4xl font-black text-outline-variant/40 select-none">04</span>
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-surface-container-low text-primary flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+                            <span class="material-symbols-outlined text-2xl font-black">home_pin</span>
+                        </div>
+                        <span class="text-[10px] font-extrabold uppercase tracking-wider text-primary bg-secondary-container/20 px-2.5 py-0.5 rounded-full border border-secondary-container/30">Step 4</span>
+                        <h3 class="text-base font-extrabold text-primary mt-3 mb-1.5">Doorstep Handover</h3>
+                        <p class="text-xs text-on-surface-variant font-medium leading-relaxed">Your sanitized car arrives at your address. Inspect with digital photo checklist on your phone.</p>
+                    </div>
+                    <div class="mt-5 pt-3 border-t border-outline-variant/30 text-[11px] font-bold text-primary group-hover:text-secondary transition-colors flex items-center gap-1">
+                        <span>Digital Checklist</span>
+                        <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="relative p-6 rounded-3xl bg-surface-container-lowest border border-outline-variant/50 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group">
+                    <span class="absolute top-3 right-4 text-4xl font-black text-outline-variant/40 select-none">05</span>
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-surface-container-low text-primary flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+                            <span class="material-symbols-outlined text-2xl font-black">sports_score</span>
+                        </div>
+                        <span class="text-[10px] font-extrabold uppercase tracking-wider text-primary bg-secondary-container/20 px-2.5 py-0.5 rounded-full border border-secondary-container/30">Step 5</span>
+                        <h3 class="text-base font-extrabold text-primary mt-3 mb-1.5">Keyless Unlock & Return</h3>
+                        <p class="text-xs text-on-surface-variant font-medium leading-relaxed">Lock and unlock via Bluetooth on your phone. Return at your scheduled time with automated checkout.</p>
+                    </div>
+                    <div class="mt-5 pt-3 border-t border-outline-variant/30 text-[11px] font-bold text-primary group-hover:text-secondary transition-colors flex items-center gap-1">
+                        <span>Express Return</span>
+                        <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                    </div>
                 </div>
             </div>
-            <div class="step-image opacity-0 -translate-x-12 bg-slate-50 dark:bg-slate-800 rounded-[3rem] overflow-hidden aspect-square flex items-center justify-center shadow-2xl md:order-1 transition-all duration-700">
-                <img src="{% static 'images/how-it-works/step2.png' %}" alt="Verify Identity" loading="lazy" class="w-full h-full object-cover">
-            </div>
-        </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
-            <div class="step-content opacity-0 translate-x-12">
-                <span class="text-purple-500 font-bold tracking-widest uppercase text-xs mb-4 block">Step 03</span>
-                <h2 class="text-4xl font-black mb-6">Drive Your Story</h2>
-                <p class="text-slate-500 text-lg mb-8 leading-relaxed">Meet our friendly concierge at the pick-up point or have the car delivered to your doorstep. Get a quick walkthrough, grab the keys, and the road is yours. No hidden charges, no surprises.</p>
-                <a href="{% url 'cars' %}" class="inline-flex items-center gap-3 bg-primary text-white px-8 py-4 rounded-full font-bold hover:bg-accent hover:text-primary transition-all group">
-                    Start Your Search 
-                    <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            <!-- CTA Row -->
+            <div class="mt-14 text-center">
+                <a href="{% url 'cars' %}" class="inline-flex items-center gap-2 px-8 py-3.5 bg-primary hover:bg-primary-container text-on-primary font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-md active:scale-95">
+                    <span>Browse Verified Cars</span>
+                    <span class="material-symbols-outlined text-base text-secondary-container">arrow_forward</span>
                 </a>
             </div>
-            <div class="step-image opacity-0 translate-y-12 bg-slate-50 dark:bg-slate-800 rounded-[3rem] overflow-hidden aspect-square flex items-center justify-center shadow-2xl transition-all duration-700">
-                <img src="{% static 'images/how-it-works/step3.png' %}" alt="Start Driving" loading="lazy" class="w-full h-full object-cover">
+        </div>
+    </section>
+
+    <!-- ================= FAQS SECTION ================= -->
+    <section class="py-14 sm:py-20 reveal-on-scroll">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <span class="text-xs font-bold uppercase tracking-widest text-primary bg-secondary-container/20 border border-secondary-container/40 px-3 py-1 rounded-full inline-block mb-2">Got Questions?</span>
+                <h2 class="text-2xl sm:text-4xl font-extrabold text-primary tracking-tight">Frequently Asked Questions</h2>
+            </div>
+
+            <div class="space-y-3">
+                <details class="p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs group cursor-pointer">
+                    <summary class="font-extrabold text-xs sm:text-sm text-primary flex items-center justify-between">
+                        <span>What documents are required to rent a car?</span>
+                        <span class="material-symbols-outlined text-on-surface-variant group-open:rotate-180 transition-transform">expand_more</span>
+                    </summary>
+                    <p class="text-xs text-on-surface-variant font-medium mt-3 leading-relaxed">
+                        You only need an original valid Driving Licence (minimum 1 year old) and Aadhaar or Passport verification via DigiLocker during OTP signup. Zero physical copies needed.
+                    </p>
+                </details>
+
+                <details class="p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs group cursor-pointer">
+                    <summary class="font-extrabold text-xs sm:text-sm text-primary flex items-center justify-between">
+                        <span>How does the fuel policy work?</span>
+                        <span class="material-symbols-outlined text-on-surface-variant group-open:rotate-180 transition-transform">expand_more</span>
+                    </summary>
+                    <p class="text-xs text-on-surface-variant font-medium mt-3 leading-relaxed">
+                        We follow a transparent same-to-same fuel policy. The fuel level at the start of your booking will be documented digitally on the app checklist, and you simply return the vehicle at the same level.
+                    </p>
+                </details>
+
+                <details class="p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs group cursor-pointer">
+                    <summary class="font-extrabold text-xs sm:text-sm text-primary flex items-center justify-between">
+                        <span>Is a security deposit mandatory?</span>
+                        <span class="material-symbols-outlined text-on-surface-variant group-open:rotate-180 transition-transform">expand_more</span>
+                    </summary>
+                    <p class="text-xs text-on-surface-variant font-medium mt-3 leading-relaxed">
+                        Rentora offers ₹0 Security Deposit options on verified profiles and standard vehicles. For select premium cars, deposits are refunded instantly within 24 hours of return.
+                    </p>
+                </details>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- Safety Section -->
-<section class="py-24 bg-slate-50 dark:bg-slate-900/50">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="bg-primary dark:bg-slate-800 rounded-[3rem] p-8 md:p-20 text-white overflow-hidden relative">
-            <div class="absolute top-0 right-0 w-64 h-64 bg-accent/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
-            
-            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div>
-                    <h2 class="text-4xl font-black mb-8 leading-tight">Your Safety is Our <span class="text-accent">Priority</span>.</h2>
-                    <div class="space-y-6">
-                        <div class="flex gap-6">
-                            <div class="w-12 h-12 shrink-0 rounded-2xl bg-white/10 flex items-center justify-center">
-                                <span class="material-symbols-outlined text-accent">sanitizer</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-lg mb-1">Deep Cleaned</h4>
-                                <p class="text-white/60 text-sm">Every car undergoes a 50-point sanitization process before delivery.</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-6">
-                            <div class="w-12 h-12 shrink-0 rounded-2xl bg-white/10 flex items-center justify-center">
-                                <span class="material-symbols-outlined text-accent">support_agent</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-lg mb-1">24/7 RSA</h4>
-                                <p class="text-white/60 text-sm">On-road assistance available nationwide, any time of the day.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10 text-center">
-                        <p class="text-3xl font-black text-accent mb-2">10k+</p>
-                        <p class="text-white/60 text-xs font-bold uppercase tracking-widest">Happy Clients</p>
-                    </div>
-                    <div class="bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10 text-center">
-                        <p class="text-3xl font-black text-accent mb-2">500+</p>
-                        <p class="text-white/60 text-xs font-bold uppercase tracking-widest">Premium Cars</p>
-                    </div>
-                    <div class="bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10 text-center">
-                        <p class="text-3xl font-black text-accent mb-2">15+</p>
-                        <p class="text-white/60 text-xs font-bold uppercase tracking-widest">Major Cities</p>
-                    </div>
-                    <div class="bg-white/5 backdrop-blur-md p-8 rounded-3xl border border-white/10 text-center">
-                        <p class="text-3xl font-black text-accent mb-2">4.9/5</p>
-                        <p class="text-white/60 text-xs font-bold uppercase tracking-widest">Average Rating</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-<script>
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Fade in sections
-    gsap.utils.toArray('.step-content').forEach(content => {
-        gsap.to(content, {
-            opacity: 1,
-            x: 0,
-            duration: 1,
-            scrollTrigger: {
-                trigger: content,
-                start: "top 80%",
-            }
-        });
-    });
-
-    gsap.utils.toArray('.step-image').forEach(image => {
-        gsap.to(image, {
-            opacity: 1,
-            y: 0,
-            x: 0,
-            duration: 1.2,
-            ease: "power2.out",
-            scrollTrigger: {
-                trigger: image,
-                start: "top 80%",
-            }
-        });
-    });
-</script>
+</div>
 {% endblock %}

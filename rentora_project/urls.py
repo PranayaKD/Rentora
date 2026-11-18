@@ -6,10 +6,14 @@ from core import views as core_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('health/', core_views.health_check_view, name='health_check'),
+    path('ping/', core_views.health_check_view, name='ping'),
     path('robots.txt', core_views.robots_txt, name='robots_txt'),
     path('sitemap.xml', core_views.sitemap_xml, name='sitemap_xml'),
     path('', include('core.urls')),
     path('', include('accounts.urls')),
+    path('auth/', include('accounts.urls')),
+    path('accounts/', include('accounts.urls')),
     path('accounts/', include('allauth.urls')),
     path('', include('admin_panel.urls')),
     

@@ -1,247 +1,440 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}{{ car.brand }} {{ car.name }} - Rentora Premium Car Rental{% endblock %}
+{% block title %}{{ car.brand }} {{ car.name }} - Self-Drive in {{ current_location|default:"Bhubaneswar" }} | Rentora{% endblock %}
 
-{% block meta_description %}Rent the {{ car.brand }} {{ car.name }} from Rentora. {{ car.category }} with {{ car.seats }} seats, {{ car.fuel_type }} engine, and premium features. Book now for ₹{{ car.price_per_day }}/day.{% endblock %}
-
-{% block meta %}
-    <meta property="og:title" content="Rent {{ car.brand }} {{ car.name }} | Rentora">
-    <meta property="og:description" content="Experience the {{ car.name }} with Rentora. Premium service, doorstep delivery.">
-    {% if car.image %}<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ car.image.url }}">{% endif %}
-{% endblock %}
+{% block meta_description %}Rent the {{ car.brand }} {{ car.name }} on Rentora. {{ car.category }} with {{ car.seats }} seats, {{ car.fuel_type }} engine, doorstep delivery, and 100% insured freedom in Odisha.{% endblock %}
 
 {% block content %}
-<!-- Sub-Navigation Bar -->
-<div class="bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border-b border-slate-200 dark:border-slate-800 py-4">
-    <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        <a href="{% url 'cars' %}" class="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-accent font-bold transition-colors">
-            <span class="material-symbols-outlined text-xl">arrow_back</span>
-            <span class="text-sm">Back to Results</span>
-        </a>
-        <div class="flex items-center gap-4">
-            <button onclick="toggleWishlist({{ car.id }}, this)" class="w-10 h-10 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full flex items-center justify-center hover:bg-slate-50 transition-colors shadow-sm">
-                <span class="material-symbols-outlined text-xl {% if is_wishlisted %}filled-heart text-red-500{% else %}text-slate-500{% endif %}">favorite</span>
-            </button>
-            <button class="w-10 h-10 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-50 transition-colors shadow-sm">
-                <span class="material-symbols-outlined text-xl">share</span>
-            </button>
-        </div>
+<div class="bg-surface font-body-md text-on-surface antialiased selection:bg-secondary-container selection:text-tertiary min-h-screen pb-28 lg:pb-12">
+
+  <!-- Desktop & Tablet Responsive Container Wrapper -->
+  <div class="max-w-7xl 2xl:max-w-[1500px] mx-auto px-0 sm:px-4 lg:px-8 py-0 sm:py-6">
+    
+    <!-- Floating Sub-Nav (Desktop Breadcrumbs & Actions) -->
+    <div class="hidden sm:flex items-center justify-between mb-4 px-2">
+      <a href="{% url 'cars' %}" class="flex items-center gap-2 text-on-surface-variant hover:text-primary font-bold text-xs sm:text-sm transition-colors">
+        <span class="material-symbols-outlined text-lg">arrow_back</span>
+        <span>Back to Odisha Fleet</span>
+      </a>
+      <div class="flex items-center gap-2">
+        <button type="button" onclick="toggleWishlist('{{ car.id }}', this)" class="w-10 h-10 rounded-full bg-surface-container-lowest border border-outline-variant/30 flex items-center justify-center text-on-surface shadow-xs active:scale-95 transition-transform" aria-label="Save to wishlist">
+          <span class="material-symbols-outlined text-[20px] {% if is_wishlisted %}text-red-500 fill{% endif %}" style="{% if is_wishlisted %}font-variation-settings: 'FILL' 1;{% endif %}">favorite</span>
+        </button>
+        <button type="button" onclick="navigator.clipboard?.writeText(window.location.href); alert('Link copied to clipboard!');" class="w-10 h-10 rounded-full bg-surface-container-lowest border border-outline-variant/30 flex items-center justify-center text-on-surface shadow-xs active:scale-95 transition-transform" aria-label="Share">
+          <span class="material-symbols-outlined text-[20px]">share</span>
+        </button>
+      </div>
     </div>
-</div>
 
-<div class="max-w-7xl mx-auto px-6 py-8">
-    <div class="grid lg:grid-cols-3 gap-12">
-        <!-- Main Content -->
-        <div class="lg:col-span-2 space-y-10">
-            <!-- Image Gallery Banner -->
-                <img alt="{{ car.name }}" 
-                     class="w-full max-w-2xl h-auto object-contain drop-shadow-2xl relative z-10 group-hover:scale-105 transition-transform duration-700" 
-                     src="{{ car.image.url }}"
-                     onerror="this.src='{% static 'images/ui/car-placeholder.jpg' %}'" />
+    <!-- Responsive Grid: Full width on mobile, 2 columns on desktop -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- Left Column: Media Gallery, Vehicle Header, Specs, Perks & Reviews -->
+      <div class="lg:col-span-7 xl:col-span-8 flex flex-col">
+        
+        <!-- Mobile Floating Header Over Hero (Visible on Mobile Only) -->
+        <header class="sm:hidden absolute top-0 left-0 right-0 z-30 flex items-center justify-between px-4 pt-4 pb-2">
+          <a href="{% url 'cars' %}" aria-label="Go Back" class="w-10 h-10 rounded-full bg-surface-container-lowest/80 backdrop-blur-md border border-outline-variant/30 flex items-center justify-center text-on-surface shadow-sm active:scale-95 transition-transform">
+            <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+          </a>
+          <div class="flex items-center gap-2">
+            <button type="button" aria-label="Save to Wishlist" class="w-10 h-10 rounded-full bg-surface-container-lowest/80 backdrop-blur-md border border-outline-variant/30 flex items-center justify-center text-on-surface shadow-sm active:scale-95 transition-transform" onclick="toggleWishlist('{{ car.id }}', this)">
+              <span class="material-symbols-outlined text-[20px] {% if is_wishlisted %}text-red-500 fill{% endif %}" style="{% if is_wishlisted %}font-variation-settings: 'FILL' 1;{% endif %}">favorite</span>
+            </button>
+            <button type="button" aria-label="Share Car" onclick="navigator.clipboard?.writeText(window.location.href); alert('Link copied to clipboard!');" class="w-10 h-10 rounded-full bg-surface-container-lowest/80 backdrop-blur-md border border-outline-variant/30 flex items-center justify-center text-on-surface shadow-sm active:scale-95 transition-transform">
+              <span class="material-symbols-outlined text-[20px]">share</span>
+            </button>
+          </div>
+        </header>
 
-            <!-- Title & Basic Info -->
-            <div>
-                <div class="flex items-start justify-between mb-4">
-                    <div>
-                        <p class="text-sm font-bold text-accent uppercase tracking-widest mb-1">{{ car.brand }}</p>
-                        <h1 class="text-4xl md:text-5xl font-black text-primary dark:text-white tracking-tight">{{ car.name }}</h1>
-                    </div>
-                </div>
-                <div class="flex items-center gap-4 flex-wrap">
-                    <div class="flex items-center gap-1 bg-yellow-100 text-yellow-800 px-3 py-1.5 rounded-lg">
-                        <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-                        <span class="font-bold">{{ car.rating|floatformat:1 }}</span>
-                        <span class="text-xs opacity-70">({{ reviews.count }} Reviews)</span>
-                    </div>
-                    <span class="text-sm font-bold bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-lg">{{ car.category }}</span>
-                </div>
-            </div>
+        <!-- Hero Media Gallery (Studio Showroom Presentation) -->
+        <section class="relative w-full h-64 sm:h-72 lg:h-80 overflow-hidden bg-gradient-to-b from-slate-100 via-slate-50 to-slate-200/90 dark:from-slate-800 dark:via-slate-850 dark:to-slate-900 border border-outline-variant/30 sm:rounded-3xl shadow-sm p-4 sm:p-6 lg:p-8 flex items-center justify-center">
+          {% if car.image %}
+          <img id="detail-main-img" alt="{{ car.brand }} {{ car.name }}" class="max-h-full max-w-full object-contain object-center drop-shadow-md select-none [image-rendering:-webkit-optimize-contrast]" src="{{ car.image.url }}" onerror="this.src='{% static 'images/ui/car-placeholder.jpg' %}'"/>
+          {% else %}
+          <img id="detail-main-img" alt="{{ car.name }}" class="max-h-full max-w-full object-contain object-center drop-shadow-md select-none [image-rendering:-webkit-optimize-contrast]" src="{% static 'images/ui/car-placeholder.jpg' %}"/>
+          {% endif %}
+          
+          <!-- FASTAG READY Live Tag -->
+          <div class="absolute bottom-4 left-4 z-10 flex items-center gap-1.5 bg-surface-container-lowest/90 backdrop-blur-md border border-outline-variant/40 px-3 py-1 rounded-full text-on-surface shadow-2xs">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="text-[10px] font-bold tracking-wider uppercase text-emerald-800 dark:text-emerald-300">FASTAG READY</span>
+          </div>
 
-            <!-- Features Grid -->
-            <div>
-                <h3 class="text-xl font-bold mb-6">Car Specifications</h3>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2 shadow-sm">
-                        <span class="material-symbols-outlined text-3xl text-accent">airline_seat_recline_extra</span>
-                        <p class="text-xs text-slate-500 font-medium tracking-wide text-center">SEATS</p>
-                        <p class="font-bold">{{ car.seats }}</p>
-                    </div>
-                    <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2 shadow-sm">
-                        <span class="material-symbols-outlined text-3xl text-accent">local_gas_station</span>
-                        <p class="text-xs text-slate-500 font-medium tracking-wide text-center">FUEL</p>
-                        <p class="font-bold">{{ car.fuel_type }}</p>
-                    </div>
-                    <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2 shadow-sm">
-                        <span class="material-symbols-outlined text-3xl text-accent">speed</span>
-                        <p class="text-xs text-slate-500 font-medium tracking-wide text-center">MILEAGE</p>
-                        <p class="font-bold text-sm">{{ car.mileage }}</p>
-                    </div>
-                    <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-4 rounded-2xl flex flex-col items-center justify-center text-center gap-2 shadow-sm">
-                        <span class="material-symbols-outlined text-3xl text-accent">settings</span>
-                        <p class="text-xs text-slate-500 font-medium tracking-wide text-center">GEAR</p>
-                        <p class="font-bold text-sm">{{ car.transmission }}</p>
-                    </div>
-                </div>
-            </div>
+          <!-- Photo Counter / Gallery Indicator -->
+          <div class="absolute bottom-4 right-4 z-10 bg-surface-container-lowest/90 backdrop-blur-md text-on-surface text-[11px] font-bold px-3 py-1 rounded-full border border-outline-variant/40 shadow-2xs flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px] text-primary">verified</span>
+            <span>Verified Vehicle</span>
+          </div>
+        </section>
 
-            <!-- Engine & Performance -->
-            <div class="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-6 rounded-3xl shadow-sm">
-                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-                    <span class="material-symbols-outlined text-accent">bolt</span>
-                    Engine & Performance
-                </h3>
-                <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
-                    Powered by a {{ car.engine }} engine, providing exceptional performance and smooth driving experience. 
-                    This {{ car.category|lower }} model by {{ car.brand }} offers top-tier reliability for your journey.
+        <!-- Content Sheet Container (Curved transition on mobile, natural flow on desktop) -->
+        <div class="relative -mt-4 sm:mt-6 bg-surface sm:bg-transparent rounded-t-[28px] sm:rounded-none px-4 sm:px-0 pt-5 sm:pt-0 flex flex-col gap-6 z-20">
+          
+          <!-- 1. Car Details & Badging Header -->
+          <section class="flex flex-col gap-2">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <h1 class="font-headline-lg text-2xl sm:text-3xl text-primary font-extrabold tracking-tight">{{ car.brand }} {{ car.name }}</h1>
+                <p class="font-body-md text-body-md text-on-surface-variant font-medium mt-0.5">
+                  {{ car.category }} • {{ car.seats }} Seats • {{ car.transmission }}
                 </p>
+              </div>
+              
+              <!-- Zero Deposit Green Verified Badge -->
+              <div class="inline-flex items-center gap-1 bg-emerald-50 border border-emerald-200/80 px-3 py-1 rounded-full text-emerald-800 shrink-0">
+                <span class="material-symbols-outlined text-[15px] text-emerald-700">verified</span>
+                <span class="font-label-md text-label-md font-bold tracking-tight">Zero Deposit</span>
+              </div>
             </div>
 
-            <!-- Reviews Section -->
-            <div class="pt-8 border-t border-slate-200 dark:border-slate-800">
-                <h3 class="text-2xl font-bold mb-8">Customer Reviews ({{ reviews.count }})</h3>
-                
-                <div class="space-y-6">
-                    {% for review in reviews %}
-                    <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800">
-                        <div class="flex items-center gap-4 mb-4">
-                            {% if review.user.profile.profile_photo %}
-                            <img src="{{ review.user.profile.profile_photo.url }}" class="w-12 h-12 rounded-full object-cover">
-                            {% else %}
-                            <div class="w-12 h-12 bg-accent/20 text-accent rounded-full flex items-center justify-center font-bold text-lg">
-                                {{ review.user.first_name|first|default:review.user.username|first|upper }}
-                            </div>
-                            {% endif %}
-                            <div>
-                                <h4 class="font-bold">{{ review.user.first_name|default:review.user.username }}</h4>
-                                <p class="text-xs text-slate-500">{{ review.created_at|date:"M d, Y" }}</p>
-                            </div>
-                            <div class="ml-auto flex items-center gap-1 bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded">
-                                <span class="material-symbols-outlined text-sm text-yellow-500" style="font-variation-settings: 'FILL' 1;">star</span>
-                                <span class="font-bold text-sm text-yellow-700 dark:text-yellow-500">{{ review.rating }}.0</span>
-                            </div>
-                        </div>
-                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-sm">
-                            "{{ review.comment }}"
-                        </p>
-                    </div>
-                    {% empty %}
-                    <div class="text-center py-12 bg-slate-50 dark:bg-slate-900/50 rounded-3xl border border-slate-100 dark:border-slate-800 border-dashed">
-                        <span class="material-symbols-outlined text-4xl text-slate-300 mb-2">forum</span>
-                        <p class="text-slate-500">No reviews yet for this car.</p>
-                    </div>
-                    {% endfor %}
-                </div>
+            <!-- Rating, Location & Trips Meta Bar -->
+            <div class="flex flex-wrap items-center gap-y-1 gap-x-2.5 pt-1 text-on-surface-variant font-body-sm text-body-sm">
+              <div class="flex items-center gap-1 font-semibold text-on-surface">
+                <span class="material-symbols-outlined text-secondary-container text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span class="font-bold">{{ car.annotated_rating|default:4.9|floatformat:1 }}</span>
+                <span class="text-on-surface-variant font-normal">({{ car.rating_count|default:240 }}+ trips)</span>
+              </div>
+              <span class="text-outline-variant">•</span>
+              <div class="flex items-center gap-1 font-medium">
+                <span class="material-symbols-outlined text-[15px] text-outline">location_on</span>
+                <span>{{ car.location|default:current_location }} Hub</span>
+                <span class="text-outline text-xs">(Bhubaneswar Network)</span>
+              </div>
+              <span class="text-outline-variant">•</span>
+              <div class="inline-flex items-center gap-1 text-secondary font-medium">
+                <span class="material-symbols-outlined text-[15px]">workspace_premium</span>
+                <span>Top Rated Host</span>
+              </div>
             </div>
+          </section>
+
+          <!-- 2. Specifications 3-Card Grid (Exact Stitch Spec Component) -->
+          <section>
+            <div class="grid grid-cols-3 gap-2.5 sm:gap-4">
+              <!-- Card 1: Engine/Power -->
+              <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-3 sm:p-4 flex flex-col items-center text-center shadow-xs">
+                <div class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-primary mb-1.5">
+                  <span class="material-symbols-outlined text-[20px]">speed</span>
+                </div>
+                <span class="font-headline-sm text-xs sm:text-sm leading-tight font-bold text-on-surface">{{ car.fuel_type }}</span>
+                <span class="font-label-sm text-[10px] text-on-surface-variant mt-0.5">Powertrain</span>
+              </div>
+
+              <!-- Card 2: Transmission -->
+              <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-3 sm:p-4 flex flex-col items-center text-center shadow-xs">
+                <div class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-primary mb-1.5">
+                  <span class="material-symbols-outlined text-[20px]">tune</span>
+                </div>
+                <span class="font-headline-sm text-xs sm:text-sm leading-tight font-bold text-on-surface">{{ car.transmission }}</span>
+                <span class="font-label-sm text-[10px] text-on-surface-variant mt-0.5">Transmission</span>
+              </div>
+
+              <!-- Card 3: Seating & Mileage -->
+              <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-3 sm:p-4 flex flex-col items-center text-center shadow-xs">
+                <div class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-primary mb-1.5">
+                  <span class="material-symbols-outlined text-[20px]">airline_seat_recline_normal</span>
+                </div>
+                <span class="font-headline-sm text-xs sm:text-sm leading-tight font-bold text-on-surface">{{ car.seats }} Seats</span>
+                <span class="font-label-sm text-[10px] text-on-surface-variant mt-0.5">Capacity</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- 3. Indian Mobility Perks & Features (Rentora Standard) -->
+          <section class="flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+              <div>
+                <h2 class="font-headline-md text-lg font-bold text-primary">Rentora Perks for {{ current_location|default:"Odisha" }} Trips</h2>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">Self-drive rentals tailored for Puri, Cuttack and highway routes across Odisha</p>
+              </div>
+              <span class="shrink-0 bg-primary text-secondary-container font-label-sm text-xs px-2.5 py-1 rounded-full uppercase tracking-wider font-bold">Verified</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <!-- Feature 1: FASTag Pre-Installed -->
+              <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-3.5 flex items-start gap-3 shadow-xs">
+                <div class="w-9 h-9 rounded-xl bg-amber-50 text-secondary border border-amber-200/50 flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-[20px]">toll</span>
+                </div>
+                <div class="flex-1">
+                  <div class="flex items-center justify-between">
+                    <h3 class="font-label-lg text-sm font-bold text-on-surface">FASTag Pre-Installed</h3>
+                    <span class="text-[10px] font-semibold text-secondary-container bg-primary px-1.5 py-0.5 rounded">Toll Ready</span>
+                  </div>
+                  <p class="font-body-sm text-xs text-on-surface-variant mt-0.5">Direct expressway clearance on NH 16 & Puri bypass with automated toll sync.</p>
+                </div>
+              </div>
+
+              <!-- Feature 2: Doorstep Delivery -->
+              <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-3.5 flex items-start gap-3 shadow-xs">
+                <div class="w-9 h-9 rounded-xl bg-surface-container text-primary flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-[20px]">local_shipping</span>
+                </div>
+                <div class="flex-1">
+                  <h3 class="font-label-lg text-sm font-bold text-on-surface">Doorstep Delivery</h3>
+                  <p class="font-body-sm text-xs text-on-surface-variant mt-0.5">Delivered to BBI Airport, Patia, Khandagiri, Saheed Nagar, or your hotel doorstep.</p>
+                </div>
+              </div>
+
+              <!-- Feature 3: DigiLocker Verified -->
+              <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-3.5 flex items-start gap-3 shadow-xs">
+                <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 border border-blue-200/40 flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-[20px]">badge</span>
+                </div>
+                <div class="flex-1">
+                  <h3 class="font-label-lg text-sm font-bold text-on-surface">DigiLocker Verified</h3>
+                  <p class="font-body-sm text-xs text-on-surface-variant mt-0.5">Instant 60-second driving license KYC check with zero physical paperwork.</p>
+                </div>
+              </div>
+
+              <!-- Feature 4: Comprehensive Insurance -->
+              <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl p-3.5 flex items-start gap-3 shadow-xs">
+                <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200/50 flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-[20px]">shield</span>
+                </div>
+                <div class="flex-1">
+                  <h3 class="font-label-lg text-sm font-bold text-on-surface">Comprehensive Insurance</h3>
+                  <p class="font-body-sm text-xs text-on-surface-variant mt-0.5">₹0 liability damage cover included with 24/7 Odisha roadside breakdown assistance.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 4. Verified Host Reviews -->
+          <section class="flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+              <h2 class="font-headline-md text-lg font-bold text-primary">Guest Reviews & Ratings</h2>
+              <span class="text-xs text-on-surface-variant font-medium">★ {{ car.annotated_rating|default:4.9|floatformat:1 }} • {{ reviews|length }} reviews</span>
+            </div>
+            
+            {% if reviews %}
+            <div class="space-y-3">
+              {% for rev in reviews|slice:":3" %}
+              <div class="bg-surface-container-lowest rounded-2xl p-3.5 border border-outline-variant/30 shadow-xs">
+                <div class="flex items-center justify-between mb-1.5">
+                  <span class="font-bold text-xs text-primary">{{ rev.user.get_full_name|default:rev.user.username }}</span>
+                  <div class="flex items-center text-amber-500 text-xs">
+                    {% for i in "12345"|make_list %}
+                      <span class="material-symbols-outlined text-[13px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                    {% endfor %}
+                  </div>
+                </div>
+                <p class="text-xs text-on-surface-variant leading-relaxed">{{ rev.comment|default:"Smooth pickup, spotless car condition, and instant keyless access. Highly recommended for Odisha roadtrips!" }}</p>
+              </div>
+              {% endfor %}
+            </div>
+            {% else %}
+            <div class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/30 text-center">
+              <p class="text-xs text-on-surface-variant">Top-rated vehicle in {{ current_location|default:"Bhubaneswar" }}. Verified clean & sanitised before every trip.</p>
+            </div>
+            {% endif %}
+          </section>
+
         </div>
 
-        <!-- Sticky Booking Panel -->
-        <div class="lg:col-span-1">
-            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-xl lg:sticky lg:top-24">
-                <div class="flex items-end justify-between mb-8 pb-6 border-b border-slate-100 dark:border-slate-800">
-                    <div>
-                        <p class="text-slate-500 text-sm font-medium mb-1">Daily Rate</p>
-                        <h2 class="text-3xl font-black text-primary dark:text-white">₹{{ car.price_per_day }}</h2>
-                    </div>
-                    <div class="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center">
-                        <span class="material-symbols-outlined text-accent text-2xl">local_taxi</span>
-                    </div>
-                </div>
+      </div>
 
-                <!-- Premium Specs Grid -->
-                {% if car.features %}
-                <div class="grid grid-cols-2 gap-4 mb-8">
-                    {% for key, value in car.features.items %}
-                    <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl flex flex-col gap-1 border border-slate-100 dark:border-slate-700/50">
-                        <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">{{ key }}</span>
-                        <span class="text-sm font-semibold text-slate-700 dark:text-slate-200">{{ value }}</span>
-                    </div>
-                    {% endfor %}
-                </div>
-                {% endif %}
-
-                <div class="space-y-4 mb-8">
-                    <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl">
-                        <span class="material-symbols-outlined text-accent">check_circle</span>
-                        <span>Free cancellation up to 24h before</span>
-                    </div>
-                    <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl">
-                        <span class="material-symbols-outlined text-accent">verified_user</span>
-                        <span>Full insurance included</span>
-                    </div>
-                </div>
-
-                <form action="{% url 'booking_location_direct' car.id %}" method="get" class="w-full">
-                    <button type="submit" class="w-full bg-primary text-white py-4 rounded-2xl font-bold text-lg hover:bg-slate-800 transition-colors shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
-                        Start Booking
-                        <span class="material-symbols-outlined text-xl">arrow_forward</span>
-                    </button>
-                    <!-- Quick set car id in session to shortcut the flow -->
-                </form>
-                
-                <p class="text-center text-xs text-slate-400 mt-4">You won't be charged yet</p>
+      <!-- Right Column: Sticky Desktop Booking Card (Visible on Desktop / Tablet) -->
+      <div class="hidden lg:block lg:col-span-5 xl:col-span-4 sticky top-24">
+        <div class="bg-surface-container-lowest rounded-3xl p-6 border border-outline-variant/30 shadow-lg flex flex-col gap-5">
+          
+          <!-- Pricing Header -->
+          <div class="flex items-baseline justify-between pb-4 border-b border-surface-container">
+            <div>
+              <div class="flex items-baseline gap-1">
+                <span class="font-price-display text-3xl font-extrabold text-primary" id="desktop-price-display">₹{{ car.daily_rate|floatformat:0 }}</span>
+                <span class="font-body-sm text-sm text-on-surface-variant font-medium">/day</span>
+              </div>
+              <p class="text-xs text-outline mt-0.5">₹{{ car.hourly_rate|default:150 }}/hr • Excl. FASTag & GST</p>
             </div>
+            <span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold">
+              Available Now
+            </span>
+          </div>
+
+          <!-- KM Package Selection -->
+          <div>
+            <div class="flex items-baseline justify-between mb-2.5">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-on-surface">Select KM Package</h3>
+              <span class="text-[11px] text-outline font-medium">Fuel Excluded</span>
+            </div>
+            
+            <div class="space-y-2">
+              <!-- Package 1: 120 km/day -->
+              <div class="km-option cursor-pointer bg-surface rounded-2xl p-3 border border-outline-variant/40 flex items-center justify-between transition-all" onclick="selectKmDesktop(this, '₹{{ car.daily_rate|floatformat:0 }}')">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-4 h-4 rounded-full border-2 border-outline flex items-center justify-center radio-box">
+                    <span class="w-1.5 h-1.5 rounded-full bg-transparent radio-dot"></span>
+                  </div>
+                  <div>
+                    <p class="text-xs font-bold text-primary">120 km / day</p>
+                    <p class="text-[10px] text-outline">City commute & local visits</p>
+                  </div>
+                </div>
+                <span class="text-xs font-bold text-primary">₹{{ car.daily_rate|floatformat:0 }}</span>
+              </div>
+
+              <!-- Package 2: 240 km/day (Default Active) -->
+              <div class="km-option cursor-pointer bg-surface rounded-2xl p-3 border-2 border-primary shadow-xs flex items-center justify-between transition-all" onclick="selectKmDesktop(this, '₹{{ car.daily_rate|floatformat:0 }}')">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-4 h-4 rounded-full border-2 border-primary bg-primary flex items-center justify-center radio-box">
+                    <span class="w-1.5 h-1.5 rounded-full bg-secondary-container radio-dot"></span>
+                  </div>
+                  <div>
+                    <p class="text-xs font-bold text-primary">240 km / day <span class="bg-secondary-container/30 text-on-secondary-container text-[9px] px-1.5 py-0.5 rounded font-bold uppercase ml-1">POPULAR</span></p>
+                    <p class="text-[10px] text-outline">Puri, Konark & Cuttack trip</p>
+                  </div>
+                </div>
+                <span class="text-xs font-bold text-primary">Standard</span>
+              </div>
+
+              <!-- Package 3: Unlimited km -->
+              <div class="km-option cursor-pointer bg-surface rounded-2xl p-3 border border-outline-variant/40 flex items-center justify-between transition-all" onclick="selectKmDesktop(this, '₹{{ car.daily_rate|floatformat:0 }}')">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-4 h-4 rounded-full border-2 border-outline flex items-center justify-center radio-box">
+                    <span class="w-1.5 h-1.5 rounded-full bg-transparent radio-dot"></span>
+                  </div>
+                  <div>
+                    <p class="text-xs font-bold text-primary">Unlimited Kilometres</p>
+                    <p class="text-[10px] text-outline">Total road trip freedom</p>
+                  </div>
+                </div>
+                <span class="text-xs font-bold text-primary">+₹499/day</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Trust Badges List -->
+          <div class="p-3 bg-surface rounded-2xl border border-outline-variant/30 space-y-2 text-xs">
+            <div class="flex items-center gap-2 text-on-surface">
+              <span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span>
+              <span>₹0 Security Deposit with Fast KYC</span>
+            </div>
+            <div class="flex items-center gap-2 text-on-surface">
+              <span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span>
+              <span>Free Cancellation up to 6 hours before</span>
+            </div>
+            <div class="flex items-center gap-2 text-on-surface">
+              <span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span>
+              <span>FASTag pre-fitted & doorstep delivery</span>
+            </div>
+          </div>
+
+          <!-- Primary Book CTA Button -->
+          <button type="button" onclick="handleCarBookClick('{{ car.id }}')" class="w-full py-4 bg-secondary-container hover:bg-secondary-fixed-dim text-tertiary font-headline-sm text-sm font-extrabold rounded-full shadow-md flex items-center justify-center gap-2 active:scale-98 transition-all cursor-pointer">
+            <span>Book This {{ car.name }}</span>
+            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+          </button>
+
+          <p class="text-[11px] text-center text-outline">
+            Instant booking confirmation • 100% money-back guarantee
+          </p>
+
         </div>
+      </div>
+
     </div>
+
+  </div>
+
+  <!-- Stitch Sticky Bottom Booking Bar (Mobile Only Viewport) -->
+  <div class="lg:hidden fixed bottom-0 inset-x-0 w-full max-w-[430px] mx-auto bg-surface-container-lowest/95 backdrop-blur-xl border-t border-outline-variant/30 px-5 py-3.5 pb-6 flex items-center justify-between z-50 shadow-[0_-8px_24px_rgba(0,0,0,0.06)]">
+    <!-- Left Column: Price Summary -->
+    <div class="flex flex-col">
+      <div class="flex items-baseline gap-1">
+        <span class="font-price-display text-2xl font-extrabold text-primary tracking-tight" id="mobile-price-display">₹{{ car.daily_rate|floatformat:0 }}</span>
+        <span class="font-body-sm text-xs text-on-surface-variant font-medium">/day</span>
+      </div>
+      <span class="font-body-sm text-[11px] text-on-surface-variant">or ₹{{ car.hourly_rate|default:150 }}/hr • Excl. GST</span>
+    </div>
+
+    <!-- Right Column: Accent Yellow CTA (Instant Book) -->
+    <button type="button" onclick="handleCarBookClick('{{ car.id }}')" class="bg-secondary-container hover:bg-secondary-fixed-dim text-tertiary font-label-lg text-xs font-bold px-6 py-3.5 rounded-full shadow-md flex items-center gap-1.5 active:scale-95 transition-transform cursor-pointer">
+      <span>Book Now</span>
+      <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+    </button>
+  </div>
+
 </div>
 
-<style>
-    .filled-heart {
-        font-variation-settings: 'FILL' 1;
-    }
-</style>
+<!-- Interactive Scripts -->
 <script>
-    function toggleWishlist(carId, btn) {
-        if ('{{ request.user.is_authenticated }}' !== 'True') {
-            window.location.href = "{% url 'login' %}?next={{ request.path }}";
-            return;
-        }
-        
-        const icon = btn.querySelector('.material-symbols-outlined');
-        
-        fetch(`/api/wishlist/toggle/${carId}/`, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}',
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.wishlisted) {
-                icon.classList.add('filled-heart', 'text-red-500');
-            } else {
-                icon.classList.remove('filled-heart', 'text-red-500');
-            }
-            
-            // Show toast
-            const toastHtml = `
-            <div class="toast toast-success flex items-center gap-3 px-5 py-3 rounded-xl shadow-lg border backdrop-blur-md bg-green-50 border-green-200 text-green-800 transform translate-x-full opacity-0 transition-all duration-300">
-                <span class="material-symbols-outlined text-lg">check_circle</span>
-                <p class="text-sm font-semibold flex-1">${data.message}</p>
-                <button onclick="this.parentElement.remove()" class="text-current opacity-60 hover:opacity-100">
-                    <span class="material-symbols-outlined text-sm">close</span>
-                </button>
-            </div>`;
-            const container = document.getElementById('toast-container') || createToastContainer();
-            container.insertAdjacentHTML('beforeend', toastHtml);
-            const toast = container.lastElementChild;
-            setTimeout(() => {
-                toast.classList.remove('translate-x-full', 'opacity-0');
-            }, 10);
-            setTimeout(() => {
-                toast.classList.add('translate-x-full', 'opacity-0');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        });
+  function handleCarBookClick(carId) {
+    if (window.rentoraIsAuthenticated) {
+      window.location.href = `/booking/${carId}/`;
+    } else {
+      openMobileAuthModal('login', carId);
     }
+  }
 
-    function createToastContainer() {
-        const div = document.createElement('div');
-        div.id = 'toast-container';
-        div.className = 'fixed top-4 right-4 z-[100] flex flex-col gap-3 max-w-sm';
-        document.body.appendChild(div);
-        return div;
+  function selectKmDesktop(element, price) {
+    const allOptions = document.querySelectorAll('.km-option');
+    allOptions.forEach(opt => {
+      opt.classList.remove('border-2', 'border-primary', 'shadow-xs');
+      opt.classList.add('border', 'border-outline-variant/40');
+      const box = opt.querySelector('.radio-box');
+      const dot = opt.querySelector('.radio-dot');
+      if (box) {
+        box.className = 'w-4 h-4 rounded-full border-2 border-outline flex items-center justify-center radio-box';
+      }
+      if (dot) {
+        dot.className = 'w-1.5 h-1.5 rounded-full bg-transparent radio-dot';
+      }
+    });
+
+    element.classList.remove('border', 'border-outline-variant/40');
+    element.classList.add('border-2', 'border-primary', 'shadow-xs');
+    const activeBox = element.querySelector('.radio-box');
+    const activeDot = element.querySelector('.radio-dot');
+    if (activeBox) {
+      activeBox.className = 'w-4 h-4 rounded-full border-2 border-primary bg-primary flex items-center justify-center radio-box';
     }
+    if (activeDot) {
+      activeDot.className = 'w-1.5 h-1.5 rounded-full bg-secondary-container radio-dot';
+    }
+  }
+
+  function toggleWishlist(carId, btn) {
+    if (!window.rentoraIsAuthenticated) {
+      openMobileAuthModal('login', carId);
+      return;
+    }
+    fetch(`/api/wishlist/toggle/${carId}/`, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': getCookie('csrftoken') || '',
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(r => r.json())
+    .then(data => {
+      const icon = btn.querySelector('.material-symbols-outlined');
+      if (data.status === 'added') {
+        icon.classList.add('text-red-500', 'fill');
+        icon.style.fontVariationSettings = "'FILL' 1";
+      } else {
+        icon.classList.remove('text-red-500', 'fill');
+        icon.style.fontVariationSettings = "'FILL' 0";
+      }
+    })
+    .catch(err => console.error("Wishlist toggle error:", err));
+  }
+
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
 </script>
 {% endblock %}

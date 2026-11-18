@@ -1,3 +1,4 @@
+import rentora_project.compat  # noqa: F401
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
@@ -29,6 +30,16 @@ class UserProfile(models.Model):
     )
     is_verified = models.BooleanField(default=False)
     
+    KYC_STATUS_CHOICES = [
+        ('NOT_SUBMITTED', 'Not Submitted'),
+        ('PENDING_REVIEW', 'Under Verification'),
+        ('VERIFIED', 'Verified'),
+        ('ACTION_REQUIRED', 'Re-upload Needed'),
+        ('REJECTED', 'Rejected'),
+    ]
+    kyc_status = models.CharField(max_length=20, choices=KYC_STATUS_CHOICES, default='NOT_SUBMITTED')
+    kyc_rejection_reason = models.TextField(blank=True, default='')
+    
     # Referral System
     referral_code = models.CharField(max_length=20, unique=True, blank=True, null=True)
     referred_by = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='referrals')
@@ -36,10 +47,19 @@ class UserProfile(models.Model):
     
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        constraints = [
+            models.CheckConstraint(check=models.Q(wallet_balance__gte=0), name='userprofile_wallet_balance_positive'),
+        ]
+
     def save(self, *args, **kwargs):
         if not self.referral_code:
             import random, string
-            self.referral_code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+            for _ in range(10):
+                code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+                if not UserProfile.objects.filter(referral_code=code).exists():
+                    self.referral_code = code
+                    break
         super().save(*args, **kwargs)
 
     @property

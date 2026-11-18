@@ -1,889 +1,1589 @@
-{% extends "base.html" %}
-{% load static cache %}
+{% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Rentora | Premium Car Rentals India{% endblock %}
-
-{% block meta_description %}Rent premium and budget cars in India with Rentora. Self-drive or with a driver, doorstep delivery, and 24/7 support. Book your luxury ride today.{% endblock %}
-
-{% block extra_head %}
-<style>
-    /* Compact Calendar Styling */
-    .flatpickr-calendar {
-        transform: scale(0.85) !important;
-        transform-origin: top center !important;
-    }
-    .flatpickr-day {
-        height: 32px !important;
-        line-height: 32px !important;
-        max-width: 32px !important;
-    }
-    .flatpickr-months .flatpickr-month {
-        height: 30px !important;
-    }
-    
-</style>
-{% endblock %}
-
-{% block structured_data %}
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "CarRentalBusiness",
-  "name": "Rentora",
-  "image": "https://rentora.in/static/images/hero/hero-main.webp",
-  "@id": "https://rentora.in",
-  "url": "https://rentora.in",
-  "telephone": "+91-XXXXXXXXXX",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Connaught Place",
-    "addressLocality": "New Delhi",
-    "postalCode": "110001",
-    "addressCountry": "IN"
-  },
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": 28.6139,
-    "longitude": 77.2090
-  },
-  "openingHoursSpecification": {
-    "@type": "OpeningHoursSpecification",
-    "dayOfWeek": [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday"
-    ],
-    "opens": "00:00",
-    "closes": "23:59"
-  },
-  "sameAs": [
-    "https://www.facebook.com/rentora",
-    "https://www.instagram.com/rentora",
-    "https://www.linkedin.com/company/rentora"
-  ],
-  "priceRange": "₹₹",
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "4.9",
-    "reviewCount": "1280"
-  }
-}
-</script>
-{% endblock %}
+{% block title %}Rentora - Premium Self-Drive Rentals in Odisha{% endblock %}
+{% block meta_description %}Experience keyless self-drive car rentals across Bhubaneswar, Cuttack, Puri, and Odisha with
+Rentora. Doorstep delivery, verified fleet, zero paperwork.{% endblock %}
 
 {% block content %}
-<!-- Page content starts below -->
+<div class="w-full bg-surface min-h-screen text-on-surface antialiased flex flex-col pb-28 lg:pb-16 overflow-x-hidden">
 
-<!-- Hero Section -->
-{% cache 3600 hero_section %}
-<section id="hero" class="relative min-h-screen flex flex-col items-center justify-start overflow-hidden bg-[#09090b] pt-40 pb-20">
-    <!-- Clean Dark Overlay & Hero Background -->
-    <div class="absolute inset-0">
-        <div class="absolute inset-0 bg-black/60 z-[1]"></div>
-        <div class="hero-car absolute inset-0 bg-cover bg-center" style="background-image: url('{% static 'images/hero/hero-main.webp' %}');"></div>
+  <!-- ================= DESKTOP HERO & COMMAND CONSOLE (ODISHA COASTAL HIGHWAY) ================= -->
+  <section
+    class="relative w-full min-h-[calc(100vh-4.5rem)] flex flex-col justify-between pt-4 lg:pt-6 pb-6 lg:pb-8 border-b border-outline-variant/30 overflow-hidden reveal-on-scroll bg-surface">
+
+    <!-- Hero Scenic Background: Tropical Coastal Shoreline (Pure Unblurred Image, No White Gradient) -->
+    <div class="absolute inset-0 z-0">
+      <picture class="block w-full h-full overflow-hidden">
+        <source srcset="{% static 'images/hero/odisha_coastal_hero.webp' %}?v={% now 'U' %}" type="image/webp">
+        <img src="{% static 'images/hero/odisha_coastal_hero.jpg' %}?v={% now 'U' %}"
+          alt="Rentora Self-Drive Scenic Coastal Shoreline Odisha"
+          class="hero-kenburns w-full h-full object-cover object-center select-none pointer-events-none [image-rendering:-webkit-optimize-contrast]" />
+      </picture>
     </div>
 
-    <!-- Main Content Container -->
-    <div class="relative z-10 max-w-7xl mx-auto px-6 w-full flex flex-col items-center text-center">
-        <!-- Badge -->
-        <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-12 shadow-2xl">
-            <span class="flex h-2.5 w-2.5 rounded-full bg-accent shadow-[0_0_10px_#00c9a7]"></span>
-            <span class="text-white/90 text-[11px] font-black uppercase tracking-[0.3em]">Premium Rental Experience</span>
-        </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 flex-1 flex flex-col justify-between">
 
-        <!-- Heading -->
-        <h1 id="hero-title" class="text-white font-[900] text-[3.5rem] md:text-[6rem] lg:text-[8rem] leading-[0.85] tracking-[-0.05em] mb-16 drop-shadow-2xl uppercase">
-            <span class="hero-line block">RIDE <span class="text-accent">SMARTER</span>.</span>
-            <span class="hero-line block">EXPLORE MORE.</span>
+      <!-- Top/Middle Headline Container (Clean, Open Beach View, No Obstructing Cards) -->
+      <div class="max-w-2xl space-y-4 my-auto py-4">
+
+        <!-- Main Headline Block -->
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black text-black tracking-tight leading-[1.12]">
+          Premium Self-Drive Freedom Across Odisha.
         </h1>
+        <p class="text-sm sm:text-base text-black max-w-xl leading-relaxed font-semibold">
+          Explore Bhubaneswar, Puri Marine Drive, Chilika, and beyond with spotless SUVs, executive sedans, and smart
+          EVs. Transparent pricing with ₹0 security deposit.
+        </p>
 
-        <!-- Driver Toggle -->
-        <div class="flex items-center gap-1 bg-white/5 backdrop-blur-2xl p-1.5 rounded-full border border-white/10 mb-16 shadow-lg">
-            <button type="button" onclick="toggleDriver('without')" id="btn-without-driver" class="px-10 py-3 rounded-full text-xs font-black uppercase tracking-widest transition-all bg-accent text-primary shadow-xl shadow-accent/20">Self Drive</button>
-            <button type="button" onclick="toggleDriver('with')" id="btn-with-driver" class="px-10 py-3 rounded-full text-xs font-black uppercase tracking-widest transition-all text-white/50 hover:text-white">With Driver</button>
+        <!-- Verified Trust Badges -->
+        <div class="flex items-center gap-2.5 pt-1 flex-wrap text-xs text-on-surface-variant">
+          <span
+            class="inline-flex items-center gap-1.5 font-bold text-emerald-800 bg-emerald-50/95 backdrop-blur-sm px-3 py-1.5 rounded-full border border-emerald-200 shadow-2xs">
+            <span class="material-symbols-outlined text-[16px] text-emerald-600">verified</span>
+            <span>DigiLocker 60s KYC</span>
+          </span>
+          <span
+            class="inline-flex items-center gap-1.5 font-bold text-primary bg-surface-container-lowest/95 backdrop-blur-sm px-3 py-1.5 rounded-full border border-outline-variant/40 shadow-2xs">
+            <span class="material-symbols-outlined text-[16px] text-secondary">toll</span>
+            <span>Preloaded FASTag</span>
+          </span>
+          <span
+            class="hidden sm:inline-flex items-center gap-1.5 font-bold text-primary bg-surface-container-lowest/95 backdrop-blur-sm px-3 py-1.5 rounded-full border border-outline-variant/40 shadow-2xs">
+            <span class="material-symbols-outlined text-[16px] text-primary">key</span>
+            <span>100% Keyless Unlock</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Bottom Reservation Console: Slim, Compact, Glass-Accented Bar -->
+      <div
+        class="bg-surface-container-lowest/95 backdrop-blur-md rounded-2xl border border-outline-variant/50 shadow-md p-3 sm:p-3.5 mt-1 max-w-5xl mx-auto w-full">
+
+        <!-- Top Compact Controls: Delivery Mode Pill Only -->
+        <div class="flex items-center justify-between gap-2 pb-2 mb-2 border-b border-outline-variant/20">
+          <div class="inline-flex p-0.5 rounded-full bg-surface-container-low gap-1 border border-outline-variant/20">
+            <button type="button"
+              class="px-3 py-1 rounded-full bg-primary text-on-primary text-[11px] font-bold shadow-2xs flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[14px]">local_shipping</span>
+              <span>Doorstep Delivery</span>
+            </button>
+            <button type="button" onclick="openCityModal()"
+              class="px-3 py-1 rounded-full text-on-surface-variant hover:text-on-surface text-[11px] font-semibold flex items-center gap-1.5 transition-colors">
+              <span class="material-symbols-outlined text-[14px]">storefront</span>
+              <span>Hub Pickup (Airport & Janpath)</span>
+            </button>
+          </div>
+          <div class="hidden sm:flex items-center gap-1 text-[11px] font-medium text-on-surface-variant">
+            <span class="material-symbols-outlined text-[14px] text-emerald-600">bolt</span>
+            <span>Instant Confirmation</span>
+          </div>
         </div>
 
-        <!-- The Search Pill (Capsule) -->
-        <div id="hero-pill" class="booking-bar w-full max-w-[1200px] mt-auto">
-            <form action="{% url 'cars' %}" method="get" class="bg-white rounded-[4rem] p-4 md:p-6 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.6)] border border-white/20">
-                <div class="flex flex-col md:flex-row items-center">
-                    <!-- Segment 1: Location -->
-                    <div class="flex-[1.2] w-full px-8 py-4 text-left group cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-[2rem] transition-colors relative">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center text-accent">
-                                <span class="material-symbols-outlined font-bold">location_on</span>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">City / Location</p>
-                                <input name="q" id="location-input" type="text" placeholder="Enter City or Location" autocomplete="off" class="w-full bg-transparent border-none p-0 text-slate-900 dark:text-white text-lg font-bold placeholder:text-slate-300 focus:ring-0" value="">
-                            </div>
-                        </div>
-                        
-                        <!-- Modern Location Suggestions Dropdown -->
-                        <div id="location-suggestions" class="absolute top-[calc(100%+1rem)] left-0 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl rounded-[2rem] border border-white/20 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] p-6 z-[100] opacity-0 invisible translate-y-4 transition-all duration-300 max-h-[400px] overflow-y-auto custom-scrollbar">
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">Popular Cities</p>
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
-                                <button type="button" onclick="selectLocation('New Delhi')" class="flex items-center gap-3 p-3 rounded-2xl hover:bg-accent/5 transition-colors text-left group">
-                                    <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-colors">
-                                        <span class="material-symbols-outlined text-sm">home_pin</span>
-                                    </div>
-                                    <span class="font-bold text-sm">New Delhi</span>
-                                </button>
-                                <button type="button" onclick="selectLocation('Mumbai')" class="flex items-center gap-3 p-3 rounded-2xl hover:bg-accent/5 transition-colors text-left group">
-                                    <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-colors">
-                                        <span class="material-symbols-outlined text-sm">apartment</span>
-                                    </div>
-                                    <span class="font-bold text-sm">Mumbai</span>
-                                </button>
-                                <button type="button" onclick="selectLocation('Goa')" class="flex items-center gap-3 p-3 rounded-2xl hover:bg-accent/5 transition-colors text-left group">
-                                    <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-colors">
-                                        <span class="material-symbols-outlined text-sm">beach_access</span>
-                                    </div>
-                                    <span class="font-bold text-sm">Goa</span>
-                                </button>
-                                <button type="button" onclick="selectLocation('Dubai')" class="flex items-center gap-3 p-3 rounded-2xl hover:bg-accent/5 transition-colors text-left group">
-                                    <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-colors">
-                                        <span class="material-symbols-outlined text-sm">location_city</span>
-                                    </div>
-                                    <span class="font-bold text-sm">Dubai</span>
-                                </button>
-                                <button type="button" onclick="selectLocation('Bangalore')" class="flex items-center gap-3 p-3 rounded-2xl hover:bg-accent/5 transition-colors text-left group">
-                                    <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-colors">
-                                        <span class="material-symbols-outlined text-sm">rocket_launch</span>
-                                    </div>
-                                    <span class="font-bold text-sm">Bangalore</span>
-                                </button>
-                                <button type="button" onclick="selectLocation('Hyderabad')" class="flex items-center gap-3 p-3 rounded-2xl hover:bg-accent/5 transition-colors text-left group">
-                                    <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-colors">
-                                        <span class="material-symbols-outlined text-sm">castle</span>
-                                    </div>
-                                    <span class="font-bold text-sm">Hyderabad</span>
-                                </button>
-                                <button type="button" onclick="selectLocation('Pune')" class="flex items-center gap-3 p-3 rounded-2xl hover:bg-accent/5 transition-colors text-left group">
-                                    <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-colors">
-                                        <span class="material-symbols-outlined text-sm">history_edu</span>
-                                    </div>
-                                    <span class="font-bold text-sm">Pune</span>
-                                </button>
-                                <button type="button" onclick="selectLocation('Chennai')" class="flex items-center gap-3 p-3 rounded-2xl hover:bg-accent/5 transition-colors text-left group">
-                                    <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-colors">
-                                        <span class="material-symbols-outlined text-sm">water</span>
-                                    </div>
-                                    <span class="font-bold text-sm">Chennai</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+        <!-- Search Inputs Grid: Streamlined compact inputs -->
+        <form action="{% url 'cars' %}" method="get"
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 items-center">
 
-                    <!-- Divider -->
-                    <div class="hidden md:block w-px h-12 bg-slate-100 dark:bg-slate-800 shrink-0 mx-2"></div>
+          <!-- Location Picker -->
+          <div onclick="openCityModal()"
+            class="px-3 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container border border-outline-variant/30 cursor-pointer transition-colors flex items-center gap-2.5 h-12">
+            <div
+              class="w-7 h-7 rounded-lg bg-surface-container-lowest flex items-center justify-center text-primary shadow-2xs shrink-0">
+              <span class="material-symbols-outlined text-[18px]">location_on</span>
+            </div>
+            <div class="flex flex-col min-w-0">
+              <span class="text-[9px] uppercase font-bold text-on-surface-variant tracking-wider leading-none">City / Hub</span>
+              <span class="text-xs font-bold text-primary truncate current-city-label leading-tight mt-0.5">{{ current_city|default:"Bhubaneswar Hub (BBI)" }}</span>
+            </div>
+          </div>
 
-                    <!-- Segment 2: Pick UP -->
-                    <div id="segment-pickup" class="flex-1 w-full px-8 py-4 text-left group cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-[2rem] transition-colors relative h-full">
-                        <div class="flex items-center gap-4 h-full">
-                            <div class="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center text-accent">
-                                <span class="material-symbols-outlined font-bold">calendar_today</span>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Pick-up</p>
-                                <div class="relative min-h-[1.75rem] flex items-center">
-                                    <span class="text-lg font-bold text-slate-900 dark:text-white block pointer-events-none" id="display-pickup">Select Date & Time</span>
-                                    <input name="pickup_date" id="pickup_picker" type="text" required class="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+          <!-- Pickup Date & Time -->
+          <div
+            class="px-3 py-2 rounded-xl bg-surface-container-low border border-outline-variant/30 flex items-center gap-2.5 h-12">
+            <div
+              class="w-7 h-7 rounded-lg bg-surface-container-lowest flex items-center justify-center text-secondary shadow-2xs shrink-0">
+              <span class="material-symbols-outlined text-[18px]">calendar_today</span>
+            </div>
+            <div class="flex flex-col min-w-0">
+              <span
+                class="text-[9px] uppercase font-bold text-on-surface-variant tracking-wider leading-none">Pick-up</span>
+              <span class="text-xs font-bold text-primary truncate leading-tight mt-0.5">Today, 10:00 AM</span>
+            </div>
+          </div>
 
-                    <!-- Divider -->
-                    <div class="hidden md:block w-px h-12 bg-slate-100 dark:bg-slate-800 shrink-0 mx-2"></div>
+          <!-- Dropoff Date & Time -->
+          <div
+            class="px-3 py-2 rounded-xl bg-surface-container-low border border-outline-variant/30 flex items-center gap-2.5 h-12">
+            <div
+              class="w-7 h-7 rounded-lg bg-surface-container-lowest flex items-center justify-center text-secondary shadow-2xs shrink-0">
+              <span class="material-symbols-outlined text-[18px]">event_available</span>
+            </div>
+            <div class="flex flex-col min-w-0">
+              <span
+                class="text-[9px] uppercase font-bold text-on-surface-variant tracking-wider leading-none">Drop-off</span>
+              <span class="text-xs font-bold text-primary truncate leading-tight mt-0.5">Tomorrow, 10:00 AM</span>
+            </div>
+          </div>
 
-                    <!-- Segment 3: Return -->
-                    <div id="segment-return" class="flex-1 w-full px-8 py-4 text-left group cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-[2rem] transition-colors relative h-full">
-                        <div class="flex items-center gap-4 h-full">
-                            <div class="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center text-accent">
-                                <span class="material-symbols-outlined font-bold">event</span>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Return</p>
-                                <div class="relative min-h-[1.75rem] flex items-center">
-                                    <span class="text-lg font-bold text-slate-900 dark:text-white block pointer-events-none" id="display-return">Select Date & Time</span>
-                                    <input name="return_date" id="return_picker" type="text" required class="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+          <!-- Search CTA Button -->
+          <div>
+            <button type="submit"
+              class="w-full h-12 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-bold text-xs sm:text-sm shadow-sm hover:shadow-md active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer">
+              <span class="material-symbols-outlined text-[18px] text-secondary-container">search</span>
+              <span>Find Available Fleet</span>
+            </button>
+          </div>
 
-                    <!-- Action Button -->
-                    <div class="w-full md:w-auto p-2">
-                        <button type="submit" class="w-full md:w-[220px] h-16 md:h-20 bg-accent hover:bg-black hover:text-white text-black font-black text-xl rounded-full transition-all flex items-center justify-center gap-4 group/btn shadow-2xl shadow-accent/40">
-                            <span>Find Cars</span>
-                            <span class="material-symbols-outlined font-black group-hover:translate-x-1 transition-transform text-2xl">search</span>
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
+        </form>
+
+      </div>
+
     </div>
-</section>
-{% endcache %}
+  </section>
 
+  <!-- ================= MAIN BODY CONTAINER ================= -->
+  <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12 overflow-x-hidden">
 
+    <!-- 1. About Rentora (Left Text with Scroll Reveal, Right High-Definition Visual with Transitions) -->
+    <section class="reveal-on-scroll py-2 sm:py-4 border-b border-outline-variant/30">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
 
-<!-- Custom Flatpickr Styling (White Theme) -->
-<style>
-    .flatpickr-calendar {
-        background: #ffffff !important;
-        border-radius: 1.5rem !important;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
-        border: 1px solid rgba(0,0,0,0.05) !important;
-        font-family: 'Plus Jakarta Sans', sans-serif !important;
-        padding: 0.8rem !important;
-        transform: scale(1);
-        transform-origin: top center;
-    }
-    .flatpickr-day.selected {
-        background: #00c9a7 !important;
-        border-color: #00c9a7 !important;
-        color: #fff !important;
-        border-radius: 0.75rem !important;
-    }
-    .flatpickr-day:hover {
-        background: rgba(0,201,167,0.1) !important;
-    }
-    .flatpickr-time {
-        border-top: 1px solid rgba(0,0,0,0.05) !important;
-        padding-top: 0.5rem !important;
-    }
-    .flatpickr-current-month .flatpickr-monthDropdown-months {
-        font-weight: 800 !important;
-    }
-    .flatpickr-calendar.arrowTop:before, .flatpickr-calendar.arrowTop:after {
-        border-bottom-color: #ffffff !important;
-    }
-</style>
+        <!-- Left Column: Story, Values, Verified Metrics -->
+        <div class="lg:col-span-7 space-y-5 reveal-slide-left">
+          <div
+            class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-secondary-container/20 border border-secondary-container/30 text-primary text-[11px] font-extrabold uppercase tracking-wider">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>About Rentora • Odisha's Self-Drive Network</span>
+          </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    // Encapsulate Flatpickr and GSAP logic tightly to avoid global window pollution
-    const initBookingBar = () => {
-        const config = {
-            enableTime: true,
-            dateFormat: "Y-m-d H:i",
-            minDate: "today",
-            time_24hr: true,
-            monthSelectorType: "static",
-            animate: true,
-            position: "auto",
-            onChange: function(selectedDates, dateStr, instance) {
-                const displayId = instance.element.id === 'pickup_picker' ? 'display-pickup' : 'display-return';
-                const display = document.getElementById(displayId);
-                if (selectedDates.length > 0) {
-                    const date = selectedDates[0];
-                    display.innerText = date.toLocaleDateString('en-IN', { 
-                        day: 'numeric', 
-                        month: 'short', 
-                        hour: '2-digit', 
-                        minute: '2-digit' 
-                    });
-                    display.classList.remove('text-red-500');
-                }
-            }
-        };
+          <h2
+            class="text-2xl sm:text-3xl lg:text-4xl font-black text-primary tracking-tight leading-tight reveal-word-float">
+            Redefining Self-Drive Mobility Across Odisha.
+          </h2>
 
-        const pickupPicker = flatpickr("#pickup_picker", {
-            ...config,
-            placeholder: "Select Pick-up",
-        });
+          <p class="scroll-scrub-text text-sm sm:text-base font-semibold leading-relaxed">
+            Built in Bhubaneswar, Rentora was created for roadtrippers, business commuters, and families who demand
+            privacy, transparent pricing, and instant access. Whether navigating the Twin Cities, cruising the
+            sun-kissed Puri-Konark Marine Drive, or exploring Chilika Lake, our verified fleet gives you complete
+            driving independence.
+          </p>
 
-        const returnPicker = flatpickr("#return_picker", {
-            ...config,
-            placeholder: "Select Return",
-            onOpen: function(selectedDates, dateStr, instance) {
-                const pickupDate = pickupPicker.selectedDates[0];
-                if (pickupDate) {
-                    instance.set('minDate', pickupDate);
-                }
-            }
-        });
+          <p class="scroll-scrub-text text-xs sm:text-sm font-medium leading-relaxed">
+            Every vehicle arrives sanitized, 25-point safety inspected, and equipped with a preloaded FASTag for
+            automated toll clearance. With 100% keyless smartphone unlock and 60-second DigiLocker verification, there
+            are zero paperwork queues, zero chaperones, and zero security deposit holds.
+          </p>
 
-        // Lexical scope hover triggers instead of global window bindings
-        const triggerHover = (segId, inputId, pickerInstance) => {
-            const seg = document.getElementById(segId);
-            const input = document.getElementById(inputId);
-            if (seg && input) {
-                [seg, input].forEach(el => {
-                    el.addEventListener('mouseenter', () => {
-                        pickerInstance.input.focus();
-                        pickerInstance.open();
-                    });
-                });
-            }
-        };
-        
-        triggerHover('segment-pickup', 'pickup_picker', pickupPicker);
-        triggerHover('segment-return', 'return_picker', returnPicker);
-    };
-
-    initBookingBar();
-
-    // GSAP Animations (Nike style entry + ScrollTriggers)
-    gsap.from(".navbar-logo", {
-        opacity: 0,
-        y: -30,
-        duration: 0.8,
-        delay: 0.2
-    });
-
-    gsap.from(".hero-line", {
-        opacity: 0,
-        y: 80,
-        duration: 1,
-        stagger: 0.15,
-        delay: 0.6,
-        ease: "power4.out"
-    });
-
-    gsap.from(".hero-car", {
-        opacity: 0,
-        scale: 1.1,
-        duration: 1.5,
-        delay: 0.3,
-        ease: "power2.out"
-    });
-
-    gsap.from(".booking-bar", {
-        opacity: 0,
-        y: 60,
-        duration: 0.8,
-        delay: 1.0,
-        ease: "power2.out"
-    });
-
-
-
-    // Location Suggestion Logic
-    const locationInput = document.getElementById('location-input');
-    const suggestions = document.getElementById('location-suggestions');
-
-    if (locationInput && suggestions) {
-        locationInput.addEventListener('focus', () => {
-            suggestions.classList.remove('invisible', 'opacity-0', 'translate-y-4');
-            suggestions.classList.add('visible', 'opacity-100', 'translate-y-0');
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!locationInput.contains(e.target) && !suggestions.contains(e.target)) {
-                suggestions.classList.add('invisible', 'opacity-0', 'translate-y-4');
-                suggestions.classList.remove('visible', 'opacity-100', 'translate-y-0');
-            }
-        });
-    }
-
-    // Scroll to Top Button Logic
-    const scrollBtn = document.getElementById('scroll-to-hero');
-    if (scrollBtn) {
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 500) {
-                gsap.to(scrollBtn, { opacity: 1, y: 0, pointerEvents: 'auto', duration: 0.4, ease: "back.out(1.7)" });
-            } else {
-                gsap.to(scrollBtn, { opacity: 0, y: 20, pointerEvents: 'none', duration: 0.3 });
-            }
-        });
-
-        scrollBtn.addEventListener('click', () => {
-            gsap.to(window, { duration: 1, scrollTo: "#hero", ease: "power4.inOut" });
-        });
-    }
-
-    gsap.utils.toArray(".section-title").forEach(title => {
-        gsap.from(title, {
-            opacity: 0,
-            x: -80,
-            duration: 1,
-            scrollTrigger: {
-                trigger: title,
-                start: "top 85%"
-            }
-        });
-    });
-});
-
-function toggleDriver(type) {
-    const btnWith = document.getElementById('btn-with-driver');
-    const btnWithout = document.getElementById('btn-without-driver');
-    const input = document.getElementById('driver-type-input');
-    
-    if (type === 'with') {
-        btnWith.className = 'px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all bg-accent text-primary shadow-lg shadow-accent/20';
-        btnWithout.className = 'px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all text-white/60 hover:text-white';
-        input.value = 'with';
-    } else {
-        btnWithout.className = 'px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all bg-accent text-primary shadow-lg shadow-accent/20';
-        btnWith.className = 'px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all text-white/60 hover:text-white';
-        input.value = 'without';
-    }
-}
-</script>
-
-<style>
-/* Global Shimmer Animation */
-@keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-}
-.skeleton {
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite linear;
-}
-.dark .skeleton {
-    background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
-    background-size: 200% 100%;
-}
-
-@keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-}
-
-@keyframes marquee-reverse {
-    0% { transform: translateX(-50%); }
-    100% { transform: translateX(0); }
-}
-
-.animate-marquee {
-    animation: marquee 40s linear infinite;
-}
-
-.animate-marquee-reverse {
-    animation: marquee-reverse 40s linear infinite;
-}
-</style>
-
-
-
-<!-- How it Works Section -->
-{% cache 86400 how_it_works %}
-<section id="how-it-works" class="py-24 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="text-center mb-16">
-            <span class="text-accent font-bold tracking-[0.2em] uppercase text-[10px] mb-4 block">Process</span>
-            <h2 class="text-4xl lg:text-5xl font-black mb-4">How Rentora Works</h2>
-            <p class="text-slate-500 font-medium max-w-xl mx-auto">Three simple steps to get you on the road with India's most premium car rental fleet.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-16">
-            <!-- Step 1 -->
-            <div class="flex flex-col items-center text-center group">
-                <div class="relative w-24 h-24 mb-10">
-                    <div class="absolute inset-0 bg-accent/10 rounded-[2rem] rotate-6 group-hover:rotate-12 transition-transform duration-500"></div>
-                    <div class="absolute inset-0 bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 flex items-center justify-center shadow-sm group-hover:shadow-2xl transition-all duration-500">
-                        <span class="material-symbols-outlined text-4xl text-accent font-black">search</span>
-                    </div>
-                </div>
-                <h3 class="text-2xl font-bold mb-4">1. Select a Car</h3>
-                <p class="text-slate-500 font-medium leading-relaxed">Browse our curated collection of 84+ premium vehicles across India.</p>
+          <!-- 4 Pillars Micro-Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+            <div
+              class="p-3.5 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 shadow-2xs hover:border-primary/40 transition-colors">
+              <span class="material-symbols-outlined text-primary text-xl mb-1">key</span>
+              <div class="text-lg font-black text-primary">100%</div>
+              <div class="text-[10px] font-bold text-slate-700 uppercase tracking-wider">Keyless Phone Unlock</div>
             </div>
-
-            <!-- Step 2 -->
-            <div class="flex flex-col items-center text-center group">
-                <div class="relative w-24 h-24 mb-10">
-                    <div class="absolute inset-0 bg-accent/10 rounded-[2rem] -rotate-3 group-hover:-rotate-6 transition-transform duration-500"></div>
-                    <div class="absolute inset-0 bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 flex items-center justify-center shadow-sm group-hover:shadow-2xl transition-all duration-500">
-                        <span class="material-symbols-outlined text-4xl text-accent font-black">event_available</span>
-                    </div>
-                </div>
-                <h3 class="text-2xl font-bold mb-4">2. Book Instantly</h3>
-                <p class="text-slate-500 font-medium leading-relaxed">Pick your dates, complete KYC, and secure your ride in minutes.</p>
+            <div
+              class="p-3.5 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 shadow-2xs hover:border-primary/40 transition-colors">
+              <span class="material-symbols-outlined text-emerald-600 text-xl mb-1">payments</span>
+              <div class="text-lg font-black text-primary">₹0</div>
+              <div class="text-[10px] font-bold text-slate-700 uppercase tracking-wider">Zero Deposit Hold</div>
             </div>
-
-            <!-- Step 3 -->
-            <div class="flex flex-col items-center text-center group">
-                <div class="relative w-24 h-24 mb-10">
-                    <div class="absolute inset-0 bg-accent/10 rounded-[2rem] rotate-12 group-hover:rotate-45 transition-transform duration-500"></div>
-                    <div class="absolute inset-0 bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 flex items-center justify-center shadow-sm group-hover:shadow-2xl transition-all duration-500">
-                        <span class="material-symbols-outlined text-4xl text-accent font-black">key</span>
-                    </div>
-                </div>
-                <h3 class="text-2xl font-bold mb-4">3. Drive Away</h3>
-                <p class="text-slate-500 font-medium leading-relaxed">Doorstep delivery or easy pickup. Grab the keys and explore.</p>
+            <div
+              class="p-3.5 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 shadow-2xs hover:border-primary/40 transition-colors">
+              <span class="material-symbols-outlined text-secondary text-xl mb-1">verified</span>
+              <div class="text-lg font-black text-primary">60 Sec</div>
+              <div class="text-[10px] font-bold text-slate-700 uppercase tracking-wider">DigiLocker KYC</div>
             </div>
-        </div>
-    </div>
-</section>
-{% endcache %}
-
-<!-- Brand Logo Carousel -->
-<section class="py-20 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 overflow-hidden">
-    <div class="max-w-7xl mx-auto px-6 mb-12 text-center">
-        <span class="text-accent font-bold tracking-[0.2em] uppercase text-[10px] mb-4 block">Our Partners</span>
-        <h2 class="text-3xl font-black">Browse by Brand</h2>
-    </div>
-
-    {% cache 86400 brand_carousel %}
-    <!-- Row 1: Luxury (Right to Left) -->
-    <div class="relative flex items-center mb-12">
-        <div class="flex animate-marquee whitespace-nowrap py-6">
-            <!-- Set 1 -->
-            <div class="flex items-center gap-12 md:gap-20 px-12">
-                <a href="{% url 'cars' %}?brand=Audi" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
-                    <img src="{% static 'images/brands/audi.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Audi" loading="lazy" decoding="async">
-                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Audi</span>
-                </a>
-                <a href="{% url 'cars' %}?brand=BMW" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
-                    <img src="{% static 'images/brands/bmw.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="BMW" loading="lazy" decoding="async">
-                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">BMW</span>
-                </a>
-                <a href="{% url 'cars' %}?brand=Mercedes-Benz" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
-                    <img src="{% static 'images/brands/mercedes.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Mercedes" loading="lazy" decoding="async">
-                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Mercedes</span>
-                </a>
-                <a href="{% url 'cars' %}?brand=Porsche" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
-                    <img src="{% static 'images/brands/porsche.jpg' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Porsche" loading="lazy" decoding="async">
-                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Porsche</span>
-                </a>
-                <a href="{% url 'cars' %}?brand=Bentley" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
-                    <img src="{% static 'images/brands/bentley.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Bentley" loading="lazy" decoding="async">
-                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Bentley</span>
-                </a>
-                <a href="{% url 'cars' %}?brand=Rolls Royce" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
-                    <img src="{% static 'images/brands/rollsroyce.jpg' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Rolls Royce" loading="lazy" decoding="async">
-                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Rolls Royce</span>
-                </a>
-                <a href="{% url 'cars' %}?brand=Range Rover" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
-                    <img src="{% static 'images/brands/landrover.jpg' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Range Rover" loading="lazy" decoding="async">
-                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Range Rover</span>
-                </a>
-                <a href="{% url 'cars' %}?brand=Tesla" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
-                    <img src="{% static 'images/brands/tesla.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Tesla" loading="lazy" decoding="async">
-                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Tesla</span>
-                </a>
+            <div
+              class="p-3.5 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 shadow-2xs hover:border-primary/40 transition-colors">
+              <span class="material-symbols-outlined text-amber-600 text-xl mb-1">local_shipping</span>
+              <div class="text-lg font-black text-primary">Doorstep</div>
+              <div class="text-[10px] font-bold text-slate-700 uppercase tracking-wider">Airport / Hub Handover</div>
             </div>
-            <!-- Set 2 -->
-            <div class="flex items-center gap-12 md:gap-20 px-12">
-                <a href="{% url 'cars' %}?brand=Audi" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
-                    <img src="{% static 'images/brands/audi.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Audi" loading="lazy" decoding="async">
-                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Audi</span>
-                </a>
-                <a href="{% url 'cars' %}?brand=BMW" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
-                    <img src="{% static 'images/brands/bmw.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="BMW" loading="lazy" decoding="async">
-                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">BMW</span>
-                </a>
-                <a href="{% url 'cars' %}?brand=Mercedes-Benz" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
-                    <img src="{% static 'images/brands/mercedes.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Mercedes" loading="lazy" decoding="async">
-                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Mercedes</span>
-                </a>
-            </div>
-        </div>
-    </div>
+          </div>
 
-    <!-- Row 2: Indian/Budget (Left to Right) -->
-    <div class="relative flex items-center">
-        <div class="flex animate-marquee-reverse whitespace-nowrap py-6">
-            <!-- Set 1 -->
-            <div class="flex items-center gap-12 md:gap-20 px-12">
-                <a href="{% url 'cars' %}?brand=Maruti Suzuki" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
-                    <img src="{% static 'images/brands/maruti.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Maruti Suzuki" loading="lazy" decoding="async">
-                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Maruti</span>
-                </a>
-                <a href="{% url 'cars' %}?brand=Tata" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
-                    <img src="{% static 'images/brands/tata.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Tata" loading="lazy" decoding="async">
-                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Tata</span>
-                </a>
-                <a href="{% url 'cars' %}?brand=Mahindra" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
-                    <img src="{% static 'images/brands/mahindra.jpg' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Mahindra" loading="lazy" decoding="async">
-                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Mahindra</span>
-                </a>
-                <a href="{% url 'cars' %}?brand=Hyundai" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
-                    <img src="{% static 'images/brands/hyundai.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Hyundai" loading="lazy" decoding="async">
-                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Hyundai</span>
-                </a>
-                <a href="{% url 'cars' %}?brand=Kia" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
-                    <img src="{% static 'images/brands/kia.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Kia" loading="lazy" decoding="async">
-                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Kia</span>
-                </a>
-                <a href="{% url 'cars' %}?brand=Toyota" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
-                    <img src="{% static 'images/brands/toyota.jpg' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Toyota" loading="lazy" decoding="async">
-                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Toyota</span>
-                </a>
-                <a href="{% url 'cars' %}?brand=Honda" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
-                    <img src="{% static 'images/brands/honda.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Honda" loading="lazy" decoding="async">
-                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Honda</span>
-                </a>
-            </div>
-            <!-- Set 2 -->
-            <div class="flex items-center gap-12 md:gap-20 px-12">
-                <a href="{% url 'cars' %}?brand=Maruti Suzuki" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
-                    <img src="{% static 'images/brands/maruti.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Maruti Suzuki" loading="lazy" decoding="async">
-                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Maruti</span>
-                </a>
-                <a href="{% url 'cars' %}?brand=Tata" class="group flex flex-col items-center justify-center w-32 md:w-48 h-20 md:h-28">
-                    <img src="{% static 'images/brands/tata.png' %}" class="max-h-16 md:max-h-20 max-w-[80%] object-contain transition-all duration-300 group-hover:scale-110" alt="Tata" loading="lazy" decoding="async">
-                    <span class="text-[10px] font-bold text-slate-500 opacity-0 group-hover:opacity-100 mt-2 transition-opacity uppercase">Tata</span>
-                </a>
-            </div>
-        </div>
-    </div>
-    {% endcache %}
-</section>
-
-<style>
-.brand-logo-item {
-    opacity: 0.8;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    padding: 12px 24px;
-}
-.brand-logo-item:hover {
-    opacity: 1;
-    transform: scale(1.1);
-}
-</style>
-
-<!-- Budget Cars Section -->
-<section class="py-24 bg-background-light dark:bg-slate-900/50">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 text-center md:text-left">
-            <div>
-                <span class="text-accent font-bold tracking-[0.2em] uppercase text-[10px] mb-4 block">Everyday Value</span>
-                <h2 class="section-title text-4xl lg:text-5xl font-bold text-primary dark:text-white mb-4">Budget Selection</h2>
-                <p class="text-slate-500 font-medium max-w-xl">Reliable, efficient, and pocket-friendly daily drivers for your everyday needs starting from ₹999/day.</p>
-            </div>
-            <a href="{% url 'cars' %}?budget=under_1500" class="group flex items-center gap-2 text-primary dark:text-white font-bold hover:text-accent transition-all">
-                View All Budget <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform font-bold">arrow_forward</span>
+          <!-- CTAs -->
+          <div class="flex items-center gap-3 pt-2 flex-wrap">
+            <a href="{% url 'cars' %}"
+              class="px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-container text-on-primary text-xs sm:text-sm font-bold shadow-xs hover:shadow-md active:scale-95 transition-all flex items-center gap-2">
+              <span>Find Available Fleet</span>
+              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
             </a>
+            <a href="{% url 'why_rentora' %}"
+              class="px-5 py-2.5 rounded-xl bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant/50 text-primary text-xs sm:text-sm font-bold shadow-2xs transition-all flex items-center gap-1.5">
+              <span>Why Rentora</span>
+              <span class="material-symbols-outlined text-[16px]">info</span>
+            </a>
+          </div>
         </div>
-        
-        <div class="cars-section grid md:grid-cols-2 lg:grid-cols-3 gap-12">
-{% for car in budget_cars %}
-    {% include 'components/car_card.html' with car=car %}
-{% endfor %}
+
+        <!-- Right Column: Interactive Visual Showcase with Transitions & Floating Badges -->
+        <div class="lg:col-span-5 reveal-slide-right">
+          <div class="relative group">
+            <!-- Image Card Container (Pure, Sharp Visual, No Foggy Gradient) -->
+            <div
+              class="relative rounded-3xl overflow-hidden border border-outline-variant/40 shadow-xl bg-surface-container-low aspect-[16/11] group-hover:shadow-2xl transition-all duration-500">
+              <picture>
+                <source srcset="{% static 'images/about/about_rentora_coastal.webp' %}?v={% now 'U' %}"
+                  type="image/webp">
+                <img src="{% static 'images/about/about_rentora_coastal.jpg' %}?v={% now 'U' %}"
+                  alt="Rentora Self-Drive SUV on Odisha Coastal Beach Shoreline"
+                  class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out select-none [image-rendering:-webkit-optimize-contrast]"
+                  loading="lazy" />
+              </picture>
+
+              <!-- Floating Inspection Badge Bottom Left -->
+              <div
+                class="absolute bottom-3.5 left-3.5 bg-surface-container-lowest/95 backdrop-blur-md px-3.5 py-2 rounded-2xl border border-outline-variant/40 shadow-lg flex items-center gap-2.5 transition-transform duration-300 group-hover:translate-y-[-2px]">
+                <div
+                  class="w-8 h-8 rounded-xl bg-emerald-500/15 text-emerald-700 flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-[18px]">verified_user</span>
+                </div>
+                <div>
+                  <div class="text-xs font-black text-primary leading-tight">25-Point Inspected</div>
+                  <div class="text-[9px] font-bold text-slate-700 uppercase tracking-wider">Spotless & Sanitized</div>
+                </div>
+              </div>
+
+              <!-- Floating Network Chip Top Right -->
+              <div
+                class="absolute top-3.5 right-3.5 bg-surface-container-lowest/95 backdrop-blur-md px-3 py-1.5 rounded-full border border-outline-variant/40 shadow-md flex items-center gap-1.5 text-xs font-bold text-primary transition-transform duration-300 group-hover:scale-105">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>Odisha Network</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 2. Top Indian Car Brands Carousel / Marquee (Slightly Bigger, Clearly Visible Cards) -->
+    <section class="space-y-4 reveal-on-scroll">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-lg sm:text-xl font-extrabold text-primary">Top Fleet Brands</h2>
+          <p class="text-xs text-on-surface-variant font-medium">Select from India's most trusted automotive
+            manufacturers</p>
+        </div>
+        <a class="text-xs font-bold text-primary hover:text-secondary flex items-center gap-0.5 transition-colors"
+          href="{% url 'cars' %}">
+          <span>View All Fleet</span>
+          <span class="material-symbols-outlined text-sm">chevron_right</span>
+        </a>
+      </div>
+
+      <!-- Continuous Right-to-Left Brand Logo Marquee with Larger, High-Contrast Cards -->
+      <div class="relative w-full overflow-hidden py-1">
+        <!-- Edge Gradient Fades -->
+        <div
+          class="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-surface via-surface/80 to-transparent z-10">
+        </div>
+        <div
+          class="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-surface via-surface/80 to-transparent z-10">
+        </div>
+
+        <div class="animate-marquee flex items-center gap-4 py-1.5">
+          <!-- Marquee Loop Item Set 1: Honda, MG, Skoda, BMW, Mercedes-Benz, Audi, Land Rover, Maruti Suzuki, Mahindra, Tata, Hyundai, Toyota, Kia, Volkswagen -->
+          <a href="{% url 'cars' %}?brand=Honda"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/honda.png' %}" alt="Honda"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">Honda</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=MG"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/mg.png' %}" alt="MG"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">MG</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=Skoda"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/skoda.png' %}" alt="Skoda"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">Skoda</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=BMW"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/bmw.png' %}" alt="BMW"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">BMW</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=Mercedes-Benz"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/mercedes.png' %}" alt="Mercedes-Benz"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">Mercedes-Benz</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=Audi"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/audi.png' %}" alt="Audi"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">Audi</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=Land+Rover"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/landrover.jpg' %}" alt="Land Rover"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">Land
+              Rover</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=Maruti+Suzuki"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/maruti.png' %}" alt="Maruti Suzuki"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">Maruti
+              Suzuki</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=Mahindra"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/mahindra.jpg' %}" alt="Mahindra"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">Mahindra</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=Tata"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/tata.png' %}" alt="Tata Motors"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">Tata
+              Motors</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=Hyundai"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/hyundai.png' %}" alt="Hyundai"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">Hyundai</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=Toyota"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/toyota.jpg' %}" alt="Toyota"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">Toyota</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=Kia"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/kia.png' %}" alt="Kia"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">Kia</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=Volkswagen"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/volkswagen.png' %}" alt="Volkswagen"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">Volkswagen</span>
+          </a>
+
+          <!-- Marquee Loop Item Set 2 (Duplicated for seamless infinite right-to-left scroll) -->
+          <a href="{% url 'cars' %}?brand=Honda"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group"
+            aria-hidden="true">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/honda.png' %}" alt="Honda"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">Honda</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=MG"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group"
+            aria-hidden="true">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/mg.png' %}" alt="MG"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">MG</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=Skoda"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group"
+            aria-hidden="true">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/skoda.png' %}" alt="Skoda"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">Skoda</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=BMW"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group"
+            aria-hidden="true">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/bmw.png' %}" alt="BMW"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">BMW</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=Mercedes-Benz"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group"
+            aria-hidden="true">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/mercedes.png' %}" alt="Mercedes-Benz"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">Mercedes-Benz</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=Audi"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group"
+            aria-hidden="true">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/audi.png' %}" alt="Audi"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">Audi</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=Land+Rover"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group"
+            aria-hidden="true">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/landrover.jpg' %}" alt="Land Rover"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">Land
+              Rover</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=Maruti+Suzuki"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group"
+            aria-hidden="true">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/maruti.png' %}" alt="Maruti Suzuki"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">Maruti
+              Suzuki</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=Mahindra"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group"
+            aria-hidden="true">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/mahindra.jpg' %}" alt="Mahindra"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">Mahindra</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=Tata"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group"
+            aria-hidden="true">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/tata.png' %}" alt="Tata Motors"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">Tata
+              Motors</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=Hyundai"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group"
+            aria-hidden="true">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/hyundai.png' %}" alt="Hyundai"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">Hyundai</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=Toyota"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group"
+            aria-hidden="true">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/toyota.jpg' %}" alt="Toyota"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">Toyota</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=Kia"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group"
+            aria-hidden="true">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/kia.png' %}" alt="Kia"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">Kia</span>
+          </a>
+
+          <a href="{% url 'cars' %}?brand=Volkswagen"
+            class="flex items-center gap-3.5 px-5 py-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/50 hover:border-primary shadow-2xs brand-card-hover shrink-0 group"
+            aria-hidden="true">
+            <div
+              class="w-12 h-12 rounded-xl bg-surface-container-low p-2 flex items-center justify-center shrink-0 border border-outline-variant/30 group-hover:scale-105 transition-transform">
+              <img src="{% static 'images/brands/volkswagen.png' %}" alt="Volkswagen"
+                class="w-full h-full object-contain [image-rendering:-webkit-optimize-contrast]" />
+            </div>
+            <span
+              class="text-sm font-bold text-primary whitespace-nowrap group-hover:text-secondary transition-colors">Volkswagen</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Explore by Journey / Category Grid (Stitch 6-Category Showcase) -->
+    <section class="space-y-4 reveal-on-scroll">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-lg sm:text-xl font-extrabold text-primary">Explore by Journey</h2>
+          <p class="text-xs text-on-surface-variant font-medium">Find the right vehicle matched to your specific road
+            trip or city commute</p>
+        </div>
+        <a class="text-xs font-bold text-primary hover:text-secondary flex items-center gap-0.5 transition-colors"
+          href="{% url 'cars' %}">
+          <span>All Categories</span>
+          <span class="material-symbols-outlined text-sm">chevron_right</span>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 reveal-stagger">
+        <!-- Cat 1: City Commute -->
+        <a href="{% url 'cars' %}?category=Hatchback"
+          class="p-4 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 hover:border-primary shadow-xs hover:shadow-md transition-all group flex flex-col justify-between">
+          <div>
+            <div
+              class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors mb-3">
+              <span class="material-symbols-outlined text-xl">directions_car</span>
+            </div>
+            <h3 class="text-xs sm:text-sm font-extrabold text-primary">City Commute</h3>
+            <p class="text-[11px] text-on-surface-variant mt-0.5">Swift, Baleno, i20</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+            <div class="flex items-baseline gap-1">
+              <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">From</span>
+              <span class="text-base sm:text-lg font-black text-primary">₹59</span>
+              <span class="text-[10px] font-semibold text-slate-500">/hr</span>
+            </div>
+            <span
+              class="w-6 h-6 rounded-full bg-surface-container-low group-hover:bg-primary group-hover:text-white flex items-center justify-center text-primary transition-all">
+              <span
+                class="material-symbols-outlined text-sm group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+            </span>
+          </div>
+        </a>
+
+        <!-- Cat 2: Coastal & Weekend SUVs -->
+        <a href="{% url 'cars' %}?category=SUV"
+          class="p-4 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 hover:border-primary shadow-xs hover:shadow-md transition-all group flex flex-col justify-between">
+          <div>
+            <div
+              class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors mb-3">
+              <span class="material-symbols-outlined text-xl">landscape</span>
+            </div>
+            <h3 class="text-xs sm:text-sm font-extrabold text-primary">Weekend SUVs</h3>
+            <p class="text-[11px] text-on-surface-variant mt-0.5">Creta, Grand Vitara</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+            <div class="flex items-baseline gap-1">
+              <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">From</span>
+              <span class="text-base sm:text-lg font-black text-primary">₹99</span>
+              <span class="text-[10px] font-semibold text-slate-500">/hr</span>
+            </div>
+            <span
+              class="w-6 h-6 rounded-full bg-surface-container-low group-hover:bg-primary group-hover:text-white flex items-center justify-center text-primary transition-all">
+              <span
+                class="material-symbols-outlined text-sm group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+            </span>
+          </div>
+        </a>
+
+        <!-- Cat 3: Off-Road 4x4 -->
+        <a href="{% url 'cars' %}?category=SUV"
+          class="p-4 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 hover:border-primary shadow-xs hover:shadow-md transition-all group flex flex-col justify-between">
+          <div>
+            <div
+              class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors mb-3">
+              <span class="material-symbols-outlined text-xl">terrain</span>
+            </div>
+            <h3 class="text-xs sm:text-sm font-extrabold text-primary">4x4 Off-Road</h3>
+            <p class="text-[11px] text-on-surface-variant mt-0.5">Thar, Scorpio-N</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+            <div class="flex items-baseline gap-1">
+              <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">From</span>
+              <span class="text-base sm:text-lg font-black text-primary">₹139</span>
+              <span class="text-[10px] font-semibold text-slate-500">/hr</span>
+            </div>
+            <span
+              class="w-6 h-6 rounded-full bg-surface-container-low group-hover:bg-primary group-hover:text-white flex items-center justify-center text-primary transition-all">
+              <span
+                class="material-symbols-outlined text-sm group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+            </span>
+          </div>
+        </a>
+
+        <!-- Cat 4: Eco Electric EV -->
+        <a href="{% url 'cars' %}?category=Electric"
+          class="p-4 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 hover:border-primary shadow-xs hover:shadow-md transition-all group flex flex-col justify-between">
+          <div>
+            <div
+              class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors mb-3">
+              <span class="material-symbols-outlined text-xl">electric_bolt</span>
+            </div>
+            <h3 class="text-xs sm:text-sm font-extrabold text-primary">Electric EV</h3>
+            <p class="text-[11px] text-on-surface-variant mt-0.5">Nexon EV, Punch EV</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+            <div class="flex items-baseline gap-1">
+              <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">From</span>
+              <span class="text-base sm:text-lg font-black text-primary">₹79</span>
+              <span class="text-[10px] font-semibold text-slate-500">/hr</span>
+            </div>
+            <span
+              class="w-6 h-6 rounded-full bg-surface-container-low group-hover:bg-primary group-hover:text-white flex items-center justify-center text-primary transition-all">
+              <span
+                class="material-symbols-outlined text-sm group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+            </span>
+          </div>
+        </a>
+
+        <!-- Cat 5: 7-Seater Family MPV -->
+        <a href="{% url 'cars' %}?category=MPV"
+          class="p-4 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 hover:border-primary shadow-xs hover:shadow-md transition-all group flex flex-col justify-between">
+          <div>
+            <div
+              class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors mb-3">
+              <span class="material-symbols-outlined text-xl">groups</span>
+            </div>
+            <h3 class="text-xs sm:text-sm font-extrabold text-primary">7-Seater MPV</h3>
+            <p class="text-[11px] text-on-surface-variant mt-0.5">Innova Crysta, Ertiga</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+            <div class="flex items-baseline gap-1">
+              <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">From</span>
+              <span class="text-base sm:text-lg font-black text-primary">₹129</span>
+              <span class="text-[10px] font-semibold text-slate-500">/hr</span>
+            </div>
+            <span
+              class="w-6 h-6 rounded-full bg-surface-container-low group-hover:bg-primary group-hover:text-white flex items-center justify-center text-primary transition-all">
+              <span
+                class="material-symbols-outlined text-sm group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+            </span>
+          </div>
+        </a>
+
+        <!-- Cat 6: Executive Luxury -->
+        <a href="{% url 'cars' %}?category=Luxury+Sedan"
+          class="p-4 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 hover:border-primary shadow-xs hover:shadow-md transition-all group flex flex-col justify-between">
+          <div>
+            <div
+              class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors mb-3">
+              <span class="material-symbols-outlined text-xl">star</span>
+            </div>
+            <h3 class="text-xs sm:text-sm font-extrabold text-primary">Executive</h3>
+            <p class="text-[11px] text-on-surface-variant mt-0.5">BMW, Mercedes, Audi</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+            <div class="flex items-baseline gap-1">
+              <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">From</span>
+              <span class="text-base sm:text-lg font-black text-primary">₹249</span>
+              <span class="text-[10px] font-semibold text-slate-500">/hr</span>
+            </div>
+            <span
+              class="w-6 h-6 rounded-full bg-surface-container-low group-hover:bg-primary group-hover:text-white flex items-center justify-center text-primary transition-all">
+              <span
+                class="material-symbols-outlined text-sm group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+            </span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 3. Featured Vehicles in Odisha (Stitch Exact Responsive 4-Column Grid) -->
+    <section class="space-y-4 reveal-on-scroll">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-lg sm:text-xl font-extrabold text-primary">Featured Fleet in <span
+              class="current-city-label">{{ current_city|default:"Bhubaneswar" }}</span></h2>
+          <p class="text-xs text-on-surface-variant font-medium">Instant booking with doorstep handover across Odisha
+          </p>
+        </div>
+        <a href="{% url 'cars' %}"
+          class="px-4 py-1.5 rounded-full bg-surface-container-low hover:bg-surface-container border border-outline-variant/40 text-xs font-bold text-primary transition-colors">
+          View All Fleet →
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 reveal-stagger">
+        {% for car in all_available|slice:":8" %}
+        {% include 'components/car_card.html' with car=car %}
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- 4. Exclusive Offers & Mobility Passes (2 High-Impact Side-by-Side Banners) -->
+    <section class="space-y-4 py-2">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <h2 class="text-lg sm:text-xl font-extrabold text-primary tracking-tight">Exclusive Offers & Mobility Passes
+          </h2>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+        <!-- Left Banner: Airport Express Handover -->
+        <a href="{% url 'cars' %}?hub=Bhubaneswar"
+          class="banner-glass-sheen group block relative rounded-2xl sm:rounded-3xl overflow-hidden border border-outline-variant/40 shadow-xs hover:shadow-lg transition-all duration-300 focus:outline-none"
+          aria-label="Bhubaneswar Airport Curb Delivery">
+          <picture>
+            <source srcset="{% static 'images/banners/banner_airport_curb.webp' %}?v={% now 'U' %}" type="image/webp">
+            <img src="{% static 'images/banners/banner_airport_curb.jpg' %}?v={% now 'U' %}"
+              alt="Bhubaneswar Airport (BBI) Curb Delivery - Self Drive Rentals"
+              class="w-full h-auto aspect-[16/9] object-cover object-center group-hover:scale-[1.02] transition-transform duration-500 select-none"
+              loading="eager" />
+          </picture>
+
+          <!-- Interactive Overlay Button (matching banner aesthetic) -->
+          <div class="absolute bottom-[9%] left-[3.2%] sm:bottom-[11%] sm:left-[3.5%] z-10 pointer-events-none">
+            <span
+              class="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-4 sm:py-2 md:px-5 md:py-2.5 rounded-full bg-white text-slate-900 font-extrabold text-[11px] sm:text-xs md:text-sm shadow-[0_4px_16px_rgba(245,158,11,0.5)] border border-amber-200/60 group-hover:scale-105 group-hover:shadow-[0_6px_22px_rgba(245,158,11,0.7)] transition-all duration-200 tracking-tight select-none">
+              <span>Book Airport Car</span>
+              <span class="text-amber-500 text-sm sm:text-base font-black transition-transform duration-200 group-hover:translate-x-1">→</span>
+            </span>
+          </div>
+        </a>
+
+        <!-- Right Banner: Coastal Expedition Pass -->
+        <a href="{% url 'cars' %}?category=SUV"
+          class="banner-glass-sheen group block relative rounded-2xl sm:rounded-3xl overflow-hidden border border-outline-variant/40 shadow-xs hover:shadow-lg transition-all duration-300 focus:outline-none"
+          aria-label="Puri Marine Drive Unlimited KM">
+          <picture>
+            <source srcset="{% static 'images/banners/banner_unlimited_km.webp' %}?v={% now 'U' %}" type="image/webp">
+            <img src="{% static 'images/banners/banner_unlimited_km.jpg' %}?v={% now 'U' %}"
+              alt="Puri Marine Drive & Konark: Unlimited KM - Self Drive Thar 4x4"
+              class="w-full h-auto aspect-[16/9] object-cover object-center group-hover:scale-[1.02] transition-transform duration-500 select-none"
+              loading="eager" />
+          </picture>
+
+          <!-- Interactive Overlay Button (matching banner aesthetic) -->
+          <div class="absolute bottom-[9%] left-[3.2%] sm:bottom-[11%] sm:left-[3.5%] z-10 pointer-events-none">
+            <span
+              class="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-4 sm:py-2 md:px-5 md:py-2.5 rounded-full bg-white text-slate-900 font-extrabold text-[11px] sm:text-xs md:text-sm shadow-[0_4px_16px_rgba(6,182,212,0.5)] border border-cyan-200/60 group-hover:scale-105 group-hover:shadow-[0_6px_22px_rgba(6,182,212,0.7)] transition-all duration-200 tracking-tight select-none">
+              <span>Explore Roadtrip SUVs</span>
+              <span class="text-cyan-500 text-sm sm:text-base font-black transition-transform duration-200 group-hover:translate-x-1">→</span>
+            </span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 5. How Rentora Works (3-Step Quick Journey & 2 Companion Banners) -->
+    <section class="space-y-6 pt-4">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+        <div>
+          <h2 class="text-lg sm:text-2xl font-black text-primary">How Rentora Works</h2>
+          <p class="text-xs text-black font-semibold">From choosing your car to phone unlock and ignition in minutes</p>
+        </div>
+        <a href="{% url 'how_it_works' %}"
+          class="text-xs font-bold text-primary hover:text-secondary flex items-center gap-1 transition-colors self-start sm:self-auto">
+          <span>Read Full Guide</span>
+          <span class="material-symbols-outlined text-sm">arrow_forward</span>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 reveal-stagger">
+        <!-- Step 1 -->
+        <div
+          class="p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs relative overflow-hidden group">
+          <span class="absolute top-4 right-4 text-4xl font-black text-outline-variant/30 select-none">01</span>
+          <div
+            class="w-12 h-12 rounded-xl bg-surface-container-low flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors mb-4">
+            <span class="material-symbols-outlined text-2xl font-black">car_rental</span>
+          </div>
+          <span
+            class="text-[10px] font-extrabold uppercase tracking-wider text-primary bg-secondary-container/20 px-2 py-0.5 rounded-full">Step
+            1</span>
+          <h3 class="text-sm sm:text-base font-extrabold text-primary mt-2.5 mb-1.5">Select Car & Odisha Hub</h3>
+          <p class="text-xs text-black font-medium leading-relaxed">
+            Choose from verified hatchbacks, SUVs, EVs, and sedans. Pick up at Bhubaneswar Airport, Janpath Hub, or
+            request doorstep delivery to your address.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div
+          class="p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs relative overflow-hidden group">
+          <span class="absolute top-4 right-4 text-4xl font-black text-outline-variant/30 select-none">02</span>
+          <div
+            class="w-12 h-12 rounded-xl bg-surface-container-low flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors mb-4">
+            <span class="material-symbols-outlined text-2xl font-black">badge</span>
+          </div>
+          <span
+            class="text-[10px] font-extrabold uppercase tracking-wider text-primary bg-secondary-container/20 px-2 py-0.5 rounded-full">Step
+            2</span>
+          <h3 class="text-sm sm:text-base font-extrabold text-primary mt-2.5 mb-1.5">60s DigiLocker KYC</h3>
+          <p class="text-xs text-black font-medium leading-relaxed">
+            Log in with mobile OTP and verify your Driving License digitally in under a minute. Zero physical paperwork
+            and eligible for ₹0 security deposit.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div
+          class="p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs relative overflow-hidden group">
+          <span class="absolute top-4 right-4 text-4xl font-black text-outline-variant/30 select-none">03</span>
+          <div
+            class="w-12 h-12 rounded-xl bg-surface-container-low flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors mb-4">
+            <span class="material-symbols-outlined text-2xl font-black">lock_open</span>
+          </div>
+          <span
+            class="text-[10px] font-extrabold uppercase tracking-wider text-primary bg-secondary-container/20 px-2 py-0.5 rounded-full">Step
+            3</span>
+          <h3 class="text-sm sm:text-base font-extrabold text-primary mt-2.5 mb-1.5">Keyless Phone Unlock & Drive</h3>
+          <p class="text-xs text-black font-medium leading-relaxed">
+            Inspect the vehicle on your smartphone, tap unlock via encrypted Bluetooth, and start driving. Highway tolls
+            auto-clear through pre-loaded FASTag.
+          </p>
+        </div>
+      </div>
+
+      <!-- How It Works Highlights (2 Side-by-Side Banners: Zero Deposit & EV Green Drive) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 pt-2">
+        <!-- Left Banner: ₹0 Security Deposit Across Odisha -->
+        <a href="{% url 'cars' %}"
+          class="banner-glass-sheen group block relative rounded-2xl sm:rounded-3xl overflow-hidden border border-outline-variant/40 shadow-xs hover:shadow-lg transition-all duration-300 focus:outline-none"
+          aria-label="Drive With ₹0 Security Deposit Across Odisha">
+          <picture>
+            <source srcset="{% static 'images/banners/banner_zero_deposit.webp' %}?v={% now 'U' %}" type="image/webp">
+            <img src="{% static 'images/banners/banner_zero_deposit.jpg' %}?v={% now 'U' %}"
+              alt="Drive With ₹0 Security Deposit Across Odisha - Verified DigiLocker KYC"
+              class="w-full h-auto aspect-[16/9] object-cover object-center group-hover:scale-[1.02] transition-transform duration-500 select-none"
+              loading="eager" />
+          </picture>
+
+          <!-- Interactive Overlay Button (matching banner aesthetic) -->
+          <div class="absolute bottom-[9%] left-[3.2%] sm:bottom-[11%] sm:left-[3.5%] z-10 pointer-events-none">
+            <span
+              class="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-4 sm:py-2 md:px-5 md:py-2.5 rounded-full bg-white text-slate-900 font-extrabold text-[11px] sm:text-xs md:text-sm shadow-[0_4px_16px_rgba(16,185,129,0.5)] border border-emerald-200/60 group-hover:scale-105 group-hover:shadow-[0_6px_22px_rgba(16,185,129,0.7)] transition-all duration-200 tracking-tight select-none">
+              <span>Browse Verified Fleet</span>
+              <span class="text-emerald-500 text-sm sm:text-base font-black transition-transform duration-200 group-hover:translate-x-1">→</span>
+            </span>
+          </div>
+        </a>
+
+        <!-- Right Banner: Drive Green Across Odisha: Save 75% on Fuel -->
+        <a href="{% url 'cars' %}?category=Electric"
+          class="banner-glass-sheen group block relative rounded-2xl sm:rounded-3xl overflow-hidden border border-outline-variant/40 shadow-xs hover:shadow-lg transition-all duration-300 focus:outline-none"
+          aria-label="Drive Green Across Odisha">
+          <picture>
+            <source srcset="{% static 'images/banners/banner_ev_cars.webp' %}?v={% now 'U' %}" type="image/webp">
+            <img src="{% static 'images/banners/banner_ev_cars.jpg' %}?v={% now 'U' %}"
+              alt="Drive Green Across Odisha: Save 75% on Fuel - 100% Electric Self-Drive"
+              class="w-full h-auto aspect-[16/9] object-cover object-center group-hover:scale-[1.02] transition-transform duration-500 select-none"
+              loading="eager" />
+          </picture>
+
+          <!-- Interactive Overlay Button (matching banner aesthetic) -->
+          <div class="absolute bottom-[9%] left-[3.2%] sm:bottom-[11%] sm:left-[3.5%] z-10 pointer-events-none">
+            <span
+              class="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-4 sm:py-2 md:px-5 md:py-2.5 rounded-full bg-white text-slate-900 font-extrabold text-[11px] sm:text-xs md:text-sm shadow-[0_4px_16px_rgba(34,197,94,0.5)] border border-green-200/60 group-hover:scale-105 group-hover:shadow-[0_6px_22px_rgba(34,197,94,0.7)] transition-all duration-200 tracking-tight select-none">
+              <span>Rent an Electric Car</span>
+              <span class="text-emerald-600 text-sm sm:text-base font-black transition-transform duration-200 group-hover:translate-x-1">→</span>
+            </span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 6. Popular Scenic Roadtrips from Odisha -->
+    <section class="space-y-6 pt-4 reveal-on-scroll">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+        <div>
+          <h2 class="text-lg sm:text-2xl font-black text-primary">Popular Roadtrips from Odisha</h2>
+          <p class="text-xs text-on-surface-variant font-medium">Recommended self-drive routes starting from Bhubaneswar
+            Hub</p>
+        </div>
+        <a href="{% url 'cars' %}"
+          class="text-xs font-bold text-primary hover:text-secondary flex items-center gap-1 transition-colors self-start sm:self-auto">
+          <span>Find Roadtrip Cars</span>
+          <span class="material-symbols-outlined text-sm">arrow_forward</span>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 reveal-stagger">
+        <!-- Trip 1: Puri Marine Drive -->
+        <div
+          class="rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs overflow-hidden flex flex-col justify-between group hover:border-primary/50 transition-all">
+          <div class="relative h-40 w-full bg-surface-container-low overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=700&q=80"
+              alt="Puri Marine Drive beach road"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div
+              class="absolute top-2.5 left-2.5 bg-primary text-secondary-container text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full shadow-xs">
+              Coastal Highway
+            </div>
+            <div
+              class="absolute bottom-2.5 left-2.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-[11px] font-bold text-white flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs text-secondary-container">timer</span>
+              <span>1 hr 20 min</span>
+            </div>
+          </div>
+          <div class="p-4 space-y-2 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider">NH-316 • 65 km</div>
+              <h3 class="text-sm font-extrabold text-primary mt-0.5">Bhubaneswar to Puri Marine Drive</h3>
+              <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">
+                Cruise along the palm-fringed coast from Dhauli Shanti Stupa to Golden Beach and Jagannath Temple.
+              </p>
+            </div>
+            <div class="pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+              <span class="text-[11px] font-bold text-primary">Recommended: Creta / Thar</span>
+              <a href="{% url 'cars' %}?category=SUV"
+                class="text-xs font-bold text-primary hover:text-secondary flex items-center gap-0.5">
+                <span>Book</span>
+                <span class="material-symbols-outlined text-xs">chevron_right</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trip 2: Konark Sun Temple Loop -->
+        <div
+          class="rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs overflow-hidden flex flex-col justify-between group hover:border-primary/50 transition-all">
+          <div class="relative h-40 w-full bg-surface-container-low overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=700&q=80"
+              alt="Konark scenic road"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div
+              class="absolute top-2.5 left-2.5 bg-primary text-secondary-container text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full shadow-xs">
+              Heritage Circuit
+            </div>
+            <div
+              class="absolute bottom-2.5 left-2.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-[11px] font-bold text-white flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs text-secondary-container">timer</span>
+              <span>1 hr 35 min</span>
+            </div>
+          </div>
+          <div class="p-4 space-y-2 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider">Pipili Route • 72 km
+              </div>
+              <h3 class="text-sm font-extrabold text-primary mt-0.5">Konark & Chandrabhaga Beach</h3>
+              <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">
+                Stop at Pipili applique craft village, visit the 13th-century Sun Temple, and catch ocean breeze at
+                Chandrabhaga.
+              </p>
+            </div>
+            <div class="pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+              <span class="text-[11px] font-bold text-primary">Recommended: Nexon EV / Sedan</span>
+              <a href="{% url 'cars' %}?category=Electric"
+                class="text-xs font-bold text-primary hover:text-secondary flex items-center gap-0.5">
+                <span>Book</span>
+                <span class="material-symbols-outlined text-xs">chevron_right</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trip 3: Chilika Lake & Mangalajodi -->
+        <div
+          class="rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs overflow-hidden flex flex-col justify-between group hover:border-primary/50 transition-all">
+          <div class="relative h-40 w-full bg-surface-container-low overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=700&q=80"
+              alt="Chilika Lake wetlands"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div
+              class="absolute top-2.5 left-2.5 bg-primary text-secondary-container text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full shadow-xs">
+              Eco Wetland
+            </div>
+            <div
+              class="absolute bottom-2.5 left-2.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-[11px] font-bold text-white flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs text-secondary-container">timer</span>
+              <span>1 hr 45 min</span>
+            </div>
+          </div>
+          <div class="p-4 space-y-2 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider">NH-16 South • 85 km
+              </div>
+              <h3 class="text-sm font-extrabold text-primary mt-0.5">Chilika Lake & Mangalajodi</h3>
+              <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">
+                Asia's largest brackish lagoon. Perfect for birdwatching, Kalijai Temple island boat rides, and fresh
+                seafood.
+              </p>
+            </div>
+            <div class="pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+              <span class="text-[11px] font-bold text-primary">Recommended: Innova / Scorpio</span>
+              <a href="{% url 'cars' %}?category=MPV"
+                class="text-xs font-bold text-primary hover:text-secondary flex items-center gap-0.5">
+                <span>Book</span>
+                <span class="material-symbols-outlined text-xs">chevron_right</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trip 4: Gopalpur on Sea -->
+        <div
+          class="rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs overflow-hidden flex flex-col justify-between group hover:border-primary/50 transition-all">
+          <div class="relative h-40 w-full bg-surface-container-low overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=700&q=80"
+              alt="Gopalpur coastal highway"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div
+              class="absolute top-2.5 left-2.5 bg-primary text-secondary-container text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full shadow-xs">
+              Weekend Beach
+            </div>
+            <div
+              class="absolute bottom-2.5 left-2.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-[11px] font-bold text-white flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs text-secondary-container">timer</span>
+              <span>3 hrs 10 min</span>
+            </div>
+          </div>
+          <div class="p-4 space-y-2 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider">NH-16 Ganjam • 165 km
+              </div>
+              <h3 class="text-sm font-extrabold text-primary mt-0.5">Gopalpur-on-Sea & Tampara Lake</h3>
+              <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">
+                Quiet colonial lighthouse, pristine sandy shores, and water sports at Tampara Lake near Berhampur.
+              </p>
+            </div>
+            <div class="pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+              <span class="text-[11px] font-bold text-primary">Recommended: Grand Vitara</span>
+              <a href="{% url 'cars' %}?category=SUV"
+                class="text-xs font-bold text-primary hover:text-secondary flex items-center gap-0.5">
+                <span>Book</span>
+                <span class="material-symbols-outlined text-xs">chevron_right</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Why Drive With Rentora (Consolidated Trust & Pricing Standards) -->
+    <section class="space-y-6 pt-4 reveal-on-scroll">
+      <div>
+        <h2 class="text-lg sm:text-2xl font-black text-primary">Why Drive With Rentora</h2>
+        <p class="text-xs text-on-surface-variant font-medium">Built for transparent self-drive mobility across Odisha with verified cars and zero hidden fees</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 reveal-stagger">
+        <!-- Feature 1: Keyless -->
+        <div class="p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs space-y-2.5 hover:border-primary/40 transition-colors">
+          <div class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary">
+            <span class="material-symbols-outlined text-2xl">key</span>
+          </div>
+          <h3 class="text-sm font-extrabold text-primary">100% Keyless Phone Unlock</h3>
+          <p class="text-xs text-on-surface-variant leading-relaxed">
+            Lock and unlock your car directly through your smartphone using secure encrypted Bluetooth. No waiting for physical keys.
+          </p>
+        </div>
+
+        <!-- Feature 2: Zero Deposit -->
+        <div class="p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs space-y-2.5 hover:border-primary/40 transition-colors">
+          <div class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary">
+            <span class="material-symbols-outlined text-2xl">verified_user</span>
+          </div>
+          <h3 class="text-sm font-extrabold text-primary">Zero Security Deposit</h3>
+          <p class="text-xs text-on-surface-variant leading-relaxed">
+            Paperless DigiLocker KYC clears you for zero credit card holds. Pay strictly for the hours you drive.
+          </p>
+        </div>
+
+        <!-- Feature 3: Same-to-Same Fuel -->
+        <div class="p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs space-y-2.5 hover:border-primary/40 transition-colors">
+          <div class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary">
+            <span class="material-symbols-outlined text-2xl">local_gas_station</span>
+          </div>
+          <h3 class="text-sm font-extrabold text-primary">Same-to-Same Fuel Policy</h3>
+          <p class="text-xs text-on-surface-variant leading-relaxed">
+            Take the car with whatever fuel is in the tank, return at the exact same level. No inflated per-litre penalties.
+          </p>
+        </div>
+
+        <!-- Feature 4: FASTag Auto-Pass -->
+        <div class="p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs space-y-2.5 hover:border-primary/40 transition-colors">
+          <div class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary">
+            <span class="material-symbols-outlined text-2xl">toll</span>
+          </div>
+          <h3 class="text-sm font-extrabold text-primary">FASTag Auto-Pass</h3>
+          <p class="text-xs text-on-surface-variant leading-relaxed">
+            Zip past NH-16 and Puri Marine Drive toll booths without stopping. Tolls auto-deduct transparently from your wallet.
+          </p>
+        </div>
+
+        <!-- Feature 5: Instant Settlement -->
+        <div class="p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs space-y-2.5 hover:border-primary/40 transition-colors">
+          <div class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary">
+            <span class="material-symbols-outlined text-2xl">credit_card_off</span>
+          </div>
+          <h3 class="text-sm font-extrabold text-primary">Instant Settlement Guarantee</h3>
+          <p class="text-xs text-on-surface-variant leading-relaxed">
+            Where deposits apply on select luxury categories, funds return automatically to your source bank account within 4 hours.
+          </p>
+        </div>
+
+        <!-- Feature 6: 24/7 Roadside Cover -->
+        <div class="p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs space-y-2.5 hover:border-primary/40 transition-colors">
+          <div class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary">
+            <span class="material-symbols-outlined text-2xl">support_agent</span>
+          </div>
+          <h3 class="text-sm font-extrabold text-primary">24/7 Roadside Cover</h3>
+          <p class="text-xs text-on-surface-variant leading-relaxed">
+            Pan-Odisha on-demand mechanical assistance and replacement car guarantee so your road trip never gets derailed.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. All-Inclusive Monthly Car Subscriptions (Drive Pass Section) -->
+    <section class="space-y-4 pt-4">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+        <div>
+          <h2 class="text-lg sm:text-2xl font-black text-primary">All-Inclusive Monthly Car Subscriptions</h2>
+          <p class="text-xs text-on-surface-variant font-medium">Drive a personal car by the month across Bhubaneswar &
+            Cuttack with zero down payment and maintenance included.</p>
+        </div>
+        <a href="{% url 'subscription' %}"
+          class="text-xs font-bold text-primary hover:text-secondary flex items-center gap-1 transition-colors self-start sm:self-auto">
+          <span>View Subscription Plans</span>
+          <span class="material-symbols-outlined text-sm">arrow_forward</span>
+        </a>
+      </div>
+
+      <div class="w-full">
+        <a href="{% url 'subscription' %}"
+          class="banner-glass-sheen group block relative rounded-2xl sm:rounded-3xl overflow-hidden border border-outline-variant/40 shadow-xs hover:shadow-lg transition-all duration-300 focus:outline-none"
+          aria-label="All-Inclusive Monthly Car Subscriptions">
+          <picture>
+            <source srcset="{% static 'images/banners/banner_monthly_subscription.webp' %}?v={% now 'U' %}" type="image/webp">
+            <img src="{% static 'images/banners/banner_monthly_subscription.jpg' %}?v={% now 'U' %}"
+              alt="All-Inclusive Monthly Car Subscriptions - 30 Days Pass Rentora"
+              class="w-full h-auto aspect-[16/9] object-cover object-center group-hover:scale-[1.01] transition-transform duration-500 select-none"
+              loading="eager" />
+          </picture>
+
+          <!-- Interactive Overlay Button (matching banner aesthetic) -->
+          <div class="absolute bottom-[9%] left-[3.2%] sm:bottom-[11%] sm:left-[3.5%] z-10 pointer-events-none">
+            <span
+              class="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-4 sm:py-2 md:px-5 md:py-2.5 rounded-full bg-white text-slate-900 font-extrabold text-[11px] sm:text-xs md:text-sm shadow-[0_4px_16px_rgba(6,182,212,0.5)] border border-cyan-200/60 group-hover:scale-105 group-hover:shadow-[0_6px_22px_rgba(6,182,212,0.7)] transition-all duration-200 tracking-tight select-none">
+              <span>View Subscription Plans</span>
+              <span class="text-cyan-500 text-sm sm:text-base font-black transition-transform duration-200 group-hover:translate-x-1">→</span>
+            </span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- 9. Odisha Regional Hubs & Doorstep Coverage Grid -->
+    <section class="space-y-6 pt-4 reveal-on-scroll">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+        <div>
+          <h2 class="text-lg sm:text-2xl font-black text-primary">Odisha Hubs & Doorstep Coverage</h2>
+          <p class="text-xs text-on-surface-variant font-medium">Pick up at an authorized hub or get express doorstep
+            delivery anywhere in the city</p>
+        </div>
+        <button type="button" onclick="openCityModal()"
+          class="text-xs font-bold text-primary hover:text-secondary flex items-center gap-1 transition-colors self-start sm:self-auto cursor-pointer">
+          <span>Switch Hub</span>
+          <span class="material-symbols-outlined text-sm">swap_horiz</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 reveal-stagger">
+        <!-- Hub 1: Bhubaneswar Central & Airport -->
+        <div class="p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-black text-primary">Bhubaneswar Hub (BBI)</span>
+            <span
+              class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold border border-emerald-200">24/7
+              Live</span>
+          </div>
+          <p class="text-xs text-on-surface-variant leading-relaxed">
+            Biju Patnaik International Airport (Curbside Terminal 1), Janpath Central Hub, and Patia Infocity.
+          </p>
+          <div class="text-[11px] font-semibold text-primary flex items-center gap-1 pt-1">
+            <span class="material-symbols-outlined text-[14px] text-secondary">local_shipping</span>
+            <span>Doorstep delivery available across all BBSR pincodes</span>
+          </div>
+        </div>
+
+        <!-- Hub 2: Cuttack Millenium Hub -->
+        <div class="p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-black text-primary">Cuttack Hub</span>
+            <span
+              class="px-2 py-0.5 rounded-full bg-surface-container-low text-primary text-[10px] font-bold border border-outline-variant/30">Active</span>
+          </div>
+          <p class="text-xs text-on-surface-variant leading-relaxed">
+            Badambadi Central Bus Station, Link Road Junction, and CDA Sector 6 residential pickup.
+          </p>
+          <div class="text-[11px] font-semibold text-primary flex items-center gap-1 pt-1">
+            <span class="material-symbols-outlined text-[14px] text-secondary">local_shipping</span>
+            <span>30-minute express handover in central Cuttack</span>
+          </div>
+        </div>
+
+        <!-- Hub 3: Puri Marine Drive Hub -->
+        <div class="p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-black text-primary">Puri Hub</span>
+            <span
+              class="px-2 py-0.5 rounded-full bg-surface-container-low text-primary text-[10px] font-bold border border-outline-variant/30">Active</span>
+          </div>
+          <p class="text-xs text-on-surface-variant leading-relaxed">
+            VIP Road, Puri Railway Station, and Golden Beach Marine Drive resort pickup points.
+          </p>
+          <div class="text-[11px] font-semibold text-primary flex items-center gap-1 pt-1">
+            <span class="material-symbols-outlined text-[14px] text-secondary">local_shipping</span>
+            <span>Direct hotel and beach resort doorstep drop-off</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. Real Traveler Reviews from Odisha -->
+    <section class="space-y-6 pt-4 reveal-on-scroll">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+        <div>
+          <h2 class="text-lg sm:text-2xl font-black text-primary">Experiences on the Road</h2>
+          <p class="text-xs text-on-surface-variant font-medium">Real feedback from verified self-drive travelers across
+            Odisha</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 reveal-stagger">
+        <!-- Review 1 -->
+        <div
+          class="p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs flex flex-col justify-between space-y-4">
+          <div class="space-y-2.5">
+            <div class="flex items-center gap-1 text-secondary-container">
+              <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+              <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+              <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+              <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+              <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+            </div>
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              "Rented a Thar for a 3-day road trip to Chilika and Gopalpur. The keyless phone unlock worked flawlessly,
+              and having pre-installed FASTag saved so much time at the toll plazas on NH-16. Zero deposit was the best
+              part."
+            </p>
+          </div>
+          <div class="pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+            <div>
+              <span class="text-xs font-extrabold text-primary block">Soumya Ranjan P.</span>
+              <span class="text-[10px] text-on-surface-variant">Trip to Chilika • Mahindra Thar</span>
+            </div>
+            <span class="material-symbols-outlined text-emerald-600 text-lg" title="Verified Driver">verified</span>
+          </div>
+        </div>
+
+        <!-- Review 2 -->
+        <div
+          class="p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs flex flex-col justify-between space-y-4">
+          <div class="space-y-2.5">
+            <div class="flex items-center gap-1 text-secondary-container">
+              <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+              <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+              <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+              <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+              <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+            </div>
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              "Landed at Bhubaneswar Airport at 10 PM. The car was delivered right to the terminal curb with a full
+              tank. Completed the digital checklist in 2 minutes and drove straight to Puri Marine Drive. Extremely
+              smooth service."
+            </p>
+          </div>
+          <div class="pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+            <div>
+              <span class="text-xs font-extrabold text-primary block">Priyanka Mohanty</span>
+              <span class="text-[10px] text-on-surface-variant">Airport Handover • Hyundai Creta</span>
+            </div>
+            <span class="material-symbols-outlined text-emerald-600 text-lg" title="Verified Driver">verified</span>
+          </div>
+        </div>
+
+        <!-- Review 3 -->
+        <div
+          class="p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs flex flex-col justify-between space-y-4">
+          <div class="space-y-2.5">
+            <div class="flex items-center gap-1 text-secondary-container">
+              <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+              <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+              <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+              <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+              <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+            </div>
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              "Needed an economical car for client visits around Patia Infocity and Cuttack. Booked a Swift with
+              doorstep delivery to my office. Transparent hourly rates and no hidden fuel surcharges. Highly
+              recommended."
+            </p>
+          </div>
+          <div class="pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+            <div>
+              <span class="text-xs font-extrabold text-primary block">Alok Kumar Nayak</span>
+              <span class="text-[10px] text-on-surface-variant">Corporate Commute • Maruti Swift</span>
+            </div>
+            <span class="material-symbols-outlined text-emerald-600 text-lg" title="Verified Driver">verified</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. Frequently Asked Questions (Homepage Accordion) -->
+    <section class="space-y-6 pt-4 reveal-on-scroll">
+      <div class="text-center max-w-2xl mx-auto">
+        <h2 class="text-lg sm:text-2xl font-black text-primary">Frequently Asked Questions</h2>
+        <p class="text-xs text-on-surface-variant font-medium mt-1">Everything you need to know about renting a car with
+          Rentora in Odisha</p>
+      </div>
+
+      <div class="max-w-3xl mx-auto space-y-3">
+        <details
+          class="faq-accordion p-4 sm:p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs group cursor-pointer">
+          <summary class="font-extrabold text-xs sm:text-sm text-primary flex items-center justify-between">
+            <span>What documents are required to book and drive?</span>
+            <span
+              class="material-symbols-outlined text-on-surface-variant group-open:rotate-180 transition-transform">expand_more</span>
+          </summary>
+          <div class="faq-answer">
+            <p class="text-xs text-on-surface-variant font-medium mt-2.5 leading-relaxed">
+              You need an original Indian Driving License (valid for at least 1 year) and an Aadhaar Card or Passport.
+              Verification takes 60 seconds via our digital DigiLocker integration. Zero physical photocopies needed.
+            </p>
+          </div>
+        </details>
+
+        <details
+          class="faq-accordion p-4 sm:p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs group cursor-pointer">
+          <summary class="font-extrabold text-xs sm:text-sm text-primary flex items-center justify-between">
+            <span>How does the ₹0 security deposit work?</span>
+            <span
+              class="material-symbols-outlined text-on-surface-variant group-open:rotate-180 transition-transform">expand_more</span>
+          </summary>
+          <div class="faq-answer">
+            <p class="text-xs text-on-surface-variant font-medium mt-2.5 leading-relaxed">
+              Verified users with completed DigiLocker KYC qualify for ₹0 security deposit on hatchbacks, sedans, and
+              standard SUVs. No credit card block is placed. You pay only for your rental duration.
+            </p>
+          </div>
+        </details>
+
+        <details
+          class="faq-accordion p-4 sm:p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs group cursor-pointer">
+          <summary class="font-extrabold text-xs sm:text-sm text-primary flex items-center justify-between">
+            <span>How do I unlock the vehicle without a physical key?</span>
+            <span
+              class="material-symbols-outlined text-on-surface-variant group-open:rotate-180 transition-transform">expand_more</span>
+          </summary>
+          <div class="faq-answer">
+            <p class="text-xs text-on-surface-variant font-medium mt-2.5 leading-relaxed">
+              Once your booking starts and you complete the 2-minute digital photo inspection on your phone, an "Unlock"
+              button appears in your dashboard. It communicates via secure encrypted Bluetooth directly with the vehicle's
+              onboard telematics.
+            </p>
+          </div>
+        </details>
+
+        <details
+          class="faq-accordion p-4 sm:p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs group cursor-pointer">
+          <summary class="font-extrabold text-xs sm:text-sm text-primary flex items-center justify-between">
+            <span>Can I pick up at Bhubaneswar Airport and drop off in Puri?</span>
+            <span
+              class="material-symbols-outlined text-on-surface-variant group-open:rotate-180 transition-transform">expand_more</span>
+          </summary>
+          <div class="faq-answer">
+            <p class="text-xs text-on-surface-variant font-medium mt-2.5 leading-relaxed">
+              Yes. We support inter-hub drop-offs between Bhubaneswar, Cuttack, and Puri. Simply select your chosen
+              drop-off hub when configuring your reservation.
+            </p>
+          </div>
+        </details>
+
+        <details
+          class="faq-accordion p-4 sm:p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs group cursor-pointer">
+          <summary class="font-extrabold text-xs sm:text-sm text-primary flex items-center justify-between">
+            <span>How are highway toll charges handled?</span>
+            <span
+              class="material-symbols-outlined text-on-surface-variant group-open:rotate-180 transition-transform">expand_more</span>
+          </summary>
+          <div class="faq-answer">
+            <p class="text-xs text-on-surface-variant font-medium mt-2.5 leading-relaxed">
+              All Rentora vehicles are equipped with an active commercial FASTag. When you cross NH-16 or state highway
+              toll plazas, the gates open automatically. The exact toll amounts are settled transparently at trip checkout
+              without extra fees.
+            </p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- 13. Instant Keyless Booking Call-To-Action Banner -->
+    <section class="pt-4 reveal-on-scroll">
+      <div
+        class="rounded-3xl bg-surface-container-low border border-outline-variant/50 p-6 sm:p-10 text-center space-y-4">
+        <span
+          class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-lowest border border-outline-variant/40 text-primary text-[11px] font-bold uppercase tracking-wider shadow-xs">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          Ready For Your Next Journey
+        </span>
+        <h2 class="text-2xl sm:text-4xl font-black text-primary tracking-tight">
+          Experience Keyless Self-Drive in Odisha
+        </h2>
+        <p class="text-xs sm:text-sm text-on-surface-variant max-w-xl mx-auto leading-relaxed">
+          Book online in under 2 minutes, get doorstep handover, and enjoy 100% private cabin freedom across
+          Bhubaneswar, Puri, and beyond.
+        </p>
+
+        <div class="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a href="{% url 'cars' %}"
+            class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-primary hover:bg-primary-container text-on-primary font-bold text-xs uppercase tracking-wider shadow-md active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer">
+            <span>Explore All Fleet</span>
+            <span class="material-symbols-outlined text-base text-secondary-container">arrow_forward</span>
+          </a>
+          <button type="button" onclick="openCityModal()"
+            class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-surface-container-lowest hover:bg-surface-container border border-outline-variant/40 text-primary font-bold text-xs tracking-wider transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer">
+            <span>Select Odisha Hub</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Floating Bottom Navigation Dock (Visible on Mobile only) -->
+  <nav
+    class="lg:hidden fixed bottom-0 left-0 right-0 z-40 flex justify-around items-center px-4 py-3 max-w-[430px] mx-auto pointer-events-none">
+    <div
+      class="w-full bg-primary-container/95 backdrop-blur-xl rounded-full border border-outline-variant/20 shadow-[0_16px_36px_-6px_rgba(18,19,22,0.35)] py-2.5 px-4 flex justify-around items-center pointer-events-auto">
+      <a href="{% url 'index' %}"
+        class="flex flex-col items-center justify-center text-secondary-container font-bold relative after:content-[''] after:w-1.5 after:h-1.5 after:bg-secondary-container after:rounded-full after:mt-1 active:scale-90 transition-transform">
+        <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">explore</span>
+        <span class="text-[10px]">Home</span>
+      </a>
+      <a href="{% url 'cars' %}"
+        class="flex flex-col items-center justify-center text-on-primary-container hover:text-white active:scale-90 transition-transform">
+        <span class="material-symbols-outlined text-xl">directions_car</span>
+        <span class="text-[10px]">Fleet</span>
+      </a>
+      <a href="{% url 'dashboard_bookings' %}"
+        class="flex flex-col items-center justify-center text-on-primary-container hover:text-white active:scale-90 transition-transform">
+        <span class="material-symbols-outlined text-xl">confirmation_number</span>
+        <span class="text-[10px]">Trips</span>
+      </a>
+      <a href="{% url 'dashboard' %}"
+        class="flex flex-col items-center justify-center text-on-primary-container hover:text-white active:scale-90 transition-transform">
+        <span class="material-symbols-outlined text-xl">person</span>
+        <span class="text-[10px]">Profile</span>
+      </a>
+    </div>
+  </nav>
+
 </div>
-    </div>
-</section>
-
-
-<!-- Mid Range Section -->
-<section class="py-24 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 text-center md:text-left">
-            <div>
-                <span class="text-accent font-bold tracking-[0.2em] uppercase text-[10px] mb-4 block">The Sweet Spot</span>
-                <h2 class="section-title text-4xl lg:text-5xl font-bold text-primary dark:text-white mb-4">Mid-Range Selection</h2>
-                <p class="text-slate-500 font-medium max-w-xl">The perfect balance of comfort, performance, and price. From ₹1,500 to ₹5,000/day.</p>
-            </div>
-            <a href="{% url 'cars' %}?budget=1500_3000" class="group flex items-center gap-2 text-primary dark:text-white font-bold hover:text-accent transition-all">
-                View Mid-Range <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform font-bold">arrow_forward</span>
-            </a>
-        </div>
-        
-        <div class="cars-section grid md:grid-cols-2 lg:grid-cols-3 gap-12">
-            {% for car in mid_range_cars %}
-                {% include 'components/car_card.html' with car=car %}
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
-<!-- Luxury Section -->
-<section class="py-32 bg-slate-900 text-white relative overflow-hidden">
-    <!-- Premium Accents -->
-    <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-[#00c9a71a] rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
-    <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#00c9a733] rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2"></div>
-    
-    <div class="max-w-7xl mx-auto px-6 relative z-10">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
-            <div class="max-w-2xl">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent text-primary text-[10px] font-bold uppercase tracking-widest mb-6 shadow-xl shadow-accent/20">
-                    The Elite Fleet
-                </div>
-                <h2 class="section-title text-5xl lg:text-7xl font-black mb-6 tracking-tight">Luxury Collection</h2>
-                <p class="text-slate-400 text-lg font-medium leading-relaxed">Make every arrival an event. Experience the pinnacle of automotive engineering and comfort with our curated selection of high-end vehicles.</p>
-            </div>
-            <a href="{% url 'cars' %}?fleet=premium" class="group h-14 px-8 rounded-2xl border border-white/10 flex items-center gap-3 hover:bg-white hover:text-primary transition-all font-bold">
-                View Premium Fleet <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
-            </a>
-        </div>
-        
-        <div class="cars-section grid md:grid-cols-3 gap-12">
-            {% for car in luxury_cars %}
-                {% include 'components/car_card.html' with car=car %}
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
-
-<!-- Trip Types Section -->
-{% cache 86400 trip_types %}
-<section class="py-32 bg-slate-50 dark:bg-slate-900/40">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="text-center max-w-3xl mx-auto mb-20">
-            <h2 class="text-5xl lg:text-7xl font-black mb-8 tracking-tight">Built for every journey</h2>
-            <p class="text-slate-500 font-medium text-lg leading-relaxed">Whether it's a quick city hop or an epic interstate road trip, we have the perfect ride waiting for you.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <!-- Local City -->
-            <div class="group bg-white dark:bg-slate-800 p-8 rounded-[3rem] border border-white hover:border-accent/10 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
-                <div class="w-16 h-16 bg-accent/10 dark:bg-accent/20 rounded-3xl flex items-center justify-center text-accent mb-8 group-hover:scale-110 transition-transform">
-                    <span class="material-symbols-outlined text-3xl font-bold">location_city</span>
-                </div>
-                <h3 class="text-2xl font-bold mb-4">Local Rental</h3>
-                <p class="text-slate-500 text-sm leading-relaxed mb-8">Perfect for errands, meetings, or a night out. Flexible hourly and daily plans tailored for urban commute.</p>
-                <div class="flex gap-2 opacity-20 group-hover:opacity-100 transition-opacity">
-                    <span class="material-symbols-outlined text-xl">directions_car</span>
-                    <span class="material-symbols-outlined text-xl">electric_car</span>
-                </div>
-            </div>
-
-            <!-- Outstation -->
-            <div class="group bg-white dark:bg-slate-800 p-8 rounded-[3rem] border border-white hover:border-accent/10 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
-                <div class="w-16 h-16 bg-green-50 dark:bg-green-900/20 rounded-3xl flex items-center justify-center text-green-600 mb-8 group-hover:scale-110 transition-transform">
-                    <span class="material-symbols-outlined text-3xl font-bold">distance</span>
-                </div>
-                <h3 class="text-2xl font-bold mb-4">Outstation</h3>
-                <p class="text-slate-500 text-sm leading-relaxed mb-8">Take the highway. Our long-distance fleet comes with 24/7 roadside assistance and unlimited kilometers.</p>
-                <div class="flex gap-2 opacity-20 group-hover:opacity-100 transition-opacity">
-                    <span class="material-symbols-outlined text-xl">minor_crash</span>
-                    <span class="material-symbols-outlined text-xl">speed</span>
-                </div>
-            </div>
-
-            <!-- Airport -->
-            <div class="group bg-white dark:bg-slate-800 p-8 rounded-[3rem] border border-white hover:border-accent/10 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
-                <div class="w-16 h-16 bg-purple-50 dark:bg-purple-900/20 rounded-3xl flex items-center justify-center text-purple-600 mb-8 group-hover:scale-110 transition-transform">
-                    <span class="material-symbols-outlined text-3xl font-bold">flight_takeoff</span>
-                </div>
-                <h3 class="text-2xl font-bold mb-4">Airport Transfer</h3>
-                <p class="text-slate-500 text-sm leading-relaxed mb-8">Skip the cab line. Have a car waiting at the terminal when you land. Reliable 24/7 airport luxury.</p>
-                <div class="flex gap-2 opacity-20 group-hover:opacity-100 transition-opacity">
-                    <span class="material-symbols-outlined text-xl">luggage</span>
-                    <span class="material-symbols-outlined text-xl">airplane_ticket</span>
-                </div>
-            </div>
-
-            <!-- Monthly -->
-            <div class="group bg-white dark:bg-slate-800 p-8 rounded-[3rem] border border-white hover:border-accent/10 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
-                <div class="w-16 h-16 bg-orange-50 dark:bg-orange-900/20 rounded-3xl flex items-center justify-center text-orange-600 mb-8 group-hover:scale-110 transition-transform">
-                    <span class="material-symbols-outlined text-3xl font-bold">event_repeat</span>
-                </div>
-                <h3 class="text-2xl font-bold mb-4">Subscriptions</h3>
-                <p class="text-slate-500 text-sm leading-relaxed mb-8">All the perks of owning without the headache. Zero downpayment plans with doorstep maintenance.</p>
-                <div class="flex gap-2 opacity-20 group-hover:opacity-100 transition-opacity">
-                    <span class="material-symbols-outlined text-xl">key</span>
-                    <span class="material-symbols-outlined text-xl">calendar_month</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-{% endcache %}
-
-<!-- Electric Section -->
-<section class="py-24 bg-background-dark text-white relative overflow-hidden">
-    <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 20% 30%, #00c9a7 0%, transparent 50%);"></div>
-    
-    <div class="max-w-7xl mx-auto px-6 relative z-10">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-            <div>
-                <span class="text-accent font-bold tracking-[0.2em] uppercase text-[10px] mb-4 block">Sustainable Mobility</span>
-                <h2 class="text-4xl lg:text-5xl font-black mb-4">Electric Future</h2>
-                <p class="text-slate-400 font-medium max-w-xl">Silent, powerful, and clean. Explore our range of EVs with free charging across our network.</p>
-            </div>
-            <a href="{% url 'cars' %}?fuel=Electric" class="group flex items-center gap-2 text-accent font-bold hover:text-white transition-all">
-                The EV Fleet <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform font-bold">bolt</span>
-            </a>
-        </div>
-        
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {% for car in electric_cars %}
-                {% include 'components/car_card.html' with car=car %}
-            {% endfor %}
-        </div>
-    </div>
-</section>
-
-
-<!-- Why Choose Us / Contact -->
-{% cache 86400 contact_section %}
-<section id="contact" class="py-24 bg-white dark:bg-background-dark">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="grid lg:grid-cols-2 gap-20 items-center">
-            <div>
-                <h2 class="text-4xl lg:text-6xl font-black text-primary dark:text-white mb-8 leading-tight">Why the world loves <span class="text-accent">Rentora</span></h2>
-                <div class="space-y-10">
-                    <div class="flex gap-6">
-                        <div class="size-16 shrink-0 bg-slate-50 dark:bg-slate-800 rounded-3xl flex items-center justify-center text-accent">
-                            <span class="material-symbols-outlined text-3xl">verified_user</span>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-bold mb-2">Completely Insured</h3>
-                            <p class="text-slate-500 leading-relaxed">Every rental includes comprehensive insurance and 24/7 roadside assistance as standard.</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-6">
-                        <div class="size-16 shrink-0 bg-slate-50 dark:bg-slate-800 rounded-3xl flex items-center justify-center text-accent">
-                            <span class="material-symbols-outlined text-3xl">key</span>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-bold mb-2">Home Delivery</h3>
-                            <p class="text-slate-500 leading-relaxed">Book a car and have it delivered and picked up from your doorstep in as little as 4 hours.</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-6">
-                        <div class="size-16 shrink-0 bg-slate-50 dark:bg-slate-800 rounded-3xl flex items-center justify-center text-accent">
-                            <span class="material-symbols-outlined text-3xl">payments</span>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-bold mb-2">Transparent Pricing</h3>
-                            <p class="text-slate-500 leading-relaxed">No hidden charges, no platform fees. What you see is exactly what you pay.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="relative">
-                <div class="absolute inset-0 bg-accent rounded-full blur-[120px] opacity-10"></div>
-                <div class="bg-slate-100 dark:bg-slate-900 p-8 rounded-[3rem] relative z-10 border border-slate-200 dark:border-slate-800">
-                    <div class="bg-white dark:bg-background-dark p-10 rounded-[2.5rem] shadow-xl">
-                        <h4 class="text-2xl font-black mb-6">Need a custom plan?</h4>
-                        <p class="text-slate-500 mb-8">Our concierge team is available 24/7 to help you find the perfect vehicle for your wedding, shoot, or corporate event.</p>
-                        <form action="{% url 'contact' %}" method="post" class="space-y-4">
-                            {% csrf_token %}
-                            <input type="text" placeholder="Your Name" class="w-full bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-2xl px-6 py-4 focus:ring-accent font-bold">
-                            <input type="email" placeholder="Email Address" class="w-full bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-2xl px-6 py-4 focus:ring-accent font-bold">
-                            <textarea placeholder="How can we help?" rows="3" class="w-full bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-2xl px-6 py-4 focus:ring-accent font-bold"></textarea>
-                            <button type="submit" class="w-full bg-accent text-white py-4 rounded-2xl font-black text-lg hover:bg-primary transition-all shadow-lg shadow-accent/20">Send Request</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-{% endcache %}
-
-<!-- Floating Scroll Top Button -->
-<button id="scroll-to-hero" class="fixed bottom-8 right-8 z-[90] w-14 h-14 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl shadow-2xl flex items-center justify-center text-primary dark:text-white hover:bg-accent hover:text-white transition-all opacity-0 translate-y-10 pointer-events-none group">
-    <span class="material-symbols-outlined font-black group-hover:-translate-y-1 transition-transform">keyboard_double_arrow_up</span>
-</button>
 
 <script>
-function selectLocation(city) {
-    const input = document.getElementById('location-input');
-    const suggestions = document.getElementById('location-suggestions');
-    if (input) {
-        input.value = city;
-        if (suggestions) {
-            suggestions.classList.add('invisible', 'opacity-0', 'translate-y-4');
-            suggestions.classList.remove('visible', 'opacity-100', 'translate-y-0');
-        }
-    }
-}
-</script>
+  function goToCarDetail(carId) {
+    window.location.href = `/cars/${carId}/`;
+  }
 
+  function handleCarBookClick(carId) {
+    if (window.rentoraIsAuthenticated) {
+      window.location.href = `/booking/${carId}/`;
+    } else {
+      openMobileAuthModal('login', carId);
+    }
+  }
+</script>
 {% endblock %}

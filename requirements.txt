@@ -1,7 +1,6 @@
-﻿aiodns==3.1.1
 aiohappyeyeballs==2.6.1
-aiohttp==3.13.3
 aiohttp-retry==2.9.1
+aiohttp==3.13.3
 aiosignal==1.4.0
 annotated-types==0.7.0
 anyio==4.12.1
@@ -17,6 +16,7 @@ certifi==2025.8.3
 cffi==2.0.0
 charset-normalizer==3.4.3
 click==8.3.1
+cloudinary==1.47.0
 colorama==0.4.6
 crispy-bootstrap5==2025.6
 crispy-tailwind==1.0.3
@@ -25,10 +25,10 @@ cssselect2==0.9.0
 defusedxml==0.7.1
 distro==1.9.0
 dj-database-url==3.0.1
-Django==5.2.4
 django-allauth==65.11.1
 django-auto-logout==0.5.1
 django-ckeditor==6.7.3
+django-cloudinary-storage==0.3.0
 django-comments-xtd==2.10.9
 django-contrib-comments==2.2.0
 django-cors-headers==4.9.0
@@ -41,6 +41,7 @@ django-recaptcha==4.1.0
 django-storages==1.14.6
 django-taggit==6.1.0
 django-widget-tweaks==1.5.0
+Django==5.2.4
 djangorestframework==3.16.1
 dnspython==2.8.0
 docutils==0.22
@@ -51,13 +52,13 @@ frozenlist==1.8.0
 google-ai-generativelanguage==0.6.15
 google-api-core==2.29.0
 google-api-python-client==2.189.0
-google-auth==2.48.0
 google-auth-httplib2==0.3.0
+google-auth==2.48.0
 google-genai==1.62.0
 google-generativeai==0.8.6
 googleapis-common-protos==1.72.0
-grpcio==1.78.0
 grpcio-status==1.71.2
+grpcio==1.78.0
 gunicorn==23.0.0
 h11==0.16.0
 html5lib==1.1
@@ -81,8 +82,8 @@ pluggy==1.6.0
 propcache==0.4.1
 proto-plus==1.27.1
 protobuf==5.29.6
-psycopg2==2.9.10
 psycopg2-binary==2.9.10
+psycopg2==2.9.10
 py-vapid==1.9.4
 pyasn1==0.6.2
 pyasn1_modules==0.4.2
@@ -92,8 +93,8 @@ pycparser==2.22
 pydantic==2.12.5
 pydantic_core==2.41.5
 Pygments==2.19.2
-pyHanko==0.34.1
 pyhanko-certvalidator==0.30.1
+pyHanko==0.34.1
 PyJWT==2.10.1
 pymongo==4.5.0
 PyMySQL==1.1.1
@@ -111,8 +112,8 @@ pywebpush==2.3.0
 PyYAML==6.0.3
 razorpay==2.0.1
 reportlab==4.4.10
-requests==2.32.5
 requests-oauthlib==2.0.0
+requests==2.32.5
 rlPyCairo==0.4.0
 rsa==4.9.1
 s3transfer==0.16.0
@@ -143,3 +144,4 @@ websockets==15.0.1
 whitenoise==6.9.0
 xhtml2pdf==0.2.17
 yarl==1.22.0
+﻿aiodns==3.1.1

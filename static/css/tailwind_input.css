@@ -2,4 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-/* You can add custom CSS here if needed */
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar,
+  .hide-scrollbar::-webkit-scrollbar,
+  #product-mode-tabs::-webkit-scrollbar,
+  #quick-filter-pills::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    background: transparent !important;
+    -webkit-appearance: none !important;
+  }
+  .no-scrollbar,
+  .hide-scrollbar,
+  #product-mode-tabs,
+  #quick-filter-pills {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+  }
+}

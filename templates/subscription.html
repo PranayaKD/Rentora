@@ -1,0 +1,460 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Car Subscriptions Odisha | Drive Monthly with Zero Down Payment | Rentora{% endblock %}
+{% block meta_description %}Subscribe to verified personal cars on flexible monthly plans with Rentora across Bhubaneswar, Cuttack, and Odisha. Zero down payment, zero road tax, free maintenance, and zero-dep insurance included.{% endblock %}
+
+{% block content %}
+<div class="w-full bg-surface min-h-screen text-on-surface antialiased flex flex-col pb-24 lg:pb-16">
+
+    <!-- ================= SUBSCRIPTION HERO SECTION (STITCH DESIGN TOKENS) ================= -->
+    <section class="relative w-full bg-surface-container-low/70 pt-8 lg:pt-14 pb-16 lg:pb-20 border-b border-outline-variant/30 overflow-hidden reveal-on-scroll">
+        <!-- Ambient Atmospheric Glows -->
+        <div class="absolute -top-32 right-0 w-[550px] h-[550px] bg-secondary-container/15 rounded-full blur-[130px] pointer-events-none"></div>
+        <div class="absolute bottom-0 left-10 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center flex flex-col items-center">
+            
+            <!-- Live Status Pill -->
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface-container-lowest border border-outline-variant/40 shadow-xs mb-5">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="text-[11px] font-bold text-primary uppercase tracking-wider">Rentora Drive Pass • Zero Down Payment • 1 to 36 Months</span>
+            </div>
+
+            <!-- Headline -->
+            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-primary tracking-tight leading-[1.12] max-w-4xl">
+                Your Personal Car, By The Month. <br/>
+                <span class="text-primary">Zero Long-Term Lock-in.</span>
+            </h1>
+
+            <p class="text-sm sm:text-base text-on-surface-variant mt-4 max-w-2xl leading-relaxed">
+                Skip the 5-year auto loan, down payment, road tax, and routine maintenance bills. Choose your car, select your monthly tenure, and get it delivered directly to your doorstep in Odisha with all-inclusive insurance.
+            </p>
+
+            <!-- Tenure Selection Switcher Bar (Stitch Segmented Pills) -->
+            <div class="w-full max-w-2xl bg-surface-container-lowest p-1.5 rounded-2xl sm:rounded-full border border-outline-variant/50 shadow-md flex flex-wrap sm:flex-nowrap items-center justify-between gap-1.5 mt-8 mb-10">
+                <button type="button" onclick="setTenure('1', this)" class="tenure-btn flex-1 py-2.5 px-3 rounded-xl sm:rounded-full text-xs font-bold transition-all bg-primary text-white shadow-xs">
+                    1 Month
+                </button>
+                <button type="button" onclick="setTenure('3', this)" class="tenure-btn flex-1 py-2.5 px-3 rounded-xl sm:rounded-full text-xs font-semibold text-on-surface-variant hover:text-primary transition-all">
+                    3 Months
+                </button>
+                <button type="button" onclick="setTenure('6', this)" class="tenure-btn flex-1 py-2.5 px-3 rounded-xl sm:rounded-full text-xs font-semibold text-on-surface-variant hover:text-primary transition-all">
+                    6 Months <span class="hidden md:inline text-[10px] text-amber-700 font-extrabold">(Save 10%)</span>
+                </button>
+                <button type="button" onclick="setTenure('12', this)" class="tenure-btn flex-1 py-2.5 px-3 rounded-xl sm:rounded-full text-xs font-semibold text-on-surface-variant hover:text-primary transition-all">
+                    12 Months <span class="hidden md:inline text-[10px] text-emerald-700 font-extrabold">(Save 18%)</span>
+                </button>
+                <button type="button" onclick="setTenure('24', this)" class="tenure-btn flex-1 py-2.5 px-3 rounded-xl sm:rounded-full text-xs font-semibold text-on-surface-variant hover:text-primary transition-all">
+                    24+ Mo <span class="hidden md:inline text-[10px] text-emerald-700 font-extrabold">(Save 25%)</span>
+                </button>
+            </div>
+
+            <!-- Quick Trust Metrics Strip -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-4xl text-left">
+                <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-4 shadow-xs">
+                    <span class="material-symbols-outlined text-secondary text-2xl mb-1">payments</span>
+                    <div class="text-xl sm:text-2xl font-black text-primary">₹0</div>
+                    <div class="text-[11px] text-on-surface-variant font-bold uppercase tracking-wider">Down Payment</div>
+                </div>
+                <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-4 shadow-xs">
+                    <span class="material-symbols-outlined text-emerald-600 text-2xl mb-1">verified_user</span>
+                    <div class="text-xl sm:text-2xl font-black text-primary">100% Free</div>
+                    <div class="text-[11px] text-on-surface-variant font-bold uppercase tracking-wider">Zero-Dep Insurance</div>
+                </div>
+                <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-4 shadow-xs">
+                    <span class="material-symbols-outlined text-primary text-2xl mb-1">home_repair_service</span>
+                    <div class="text-xl sm:text-2xl font-black text-primary">Doorstep</div>
+                    <div class="text-[11px] text-on-surface-variant font-bold uppercase tracking-wider">Free Scheduled Service</div>
+                </div>
+                <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-2xl p-4 shadow-xs">
+                    <span class="material-symbols-outlined text-amber-500 text-2xl mb-1">sync_alt</span>
+                    <div class="text-xl sm:text-2xl font-black text-primary">Anytime</div>
+                    <div class="text-[11px] text-on-surface-variant font-bold uppercase tracking-wider">Car Swaps & Upgrades</div>
+                </div>
+            </div>
+
+            <!-- Subscription Showcase Banner (30 Days Pass Defender 110) -->
+            <div class="w-full max-w-4xl mt-8">
+                <a href="#subscription-fleet"
+                   class="group block relative rounded-2xl sm:rounded-3xl overflow-hidden border border-outline-variant/40 shadow-sm hover:shadow-lg transition-all duration-300 focus:outline-none"
+                   aria-label="View Subscription Plans">
+                    <picture>
+                        <source srcset="{% static 'images/banners/banner_monthly_subscription.webp' %}?v={% now 'U' %}" type="image/webp">
+                        <img src="{% static 'images/banners/banner_monthly_subscription.jpg' %}?v={% now 'U' %}" 
+                             alt="All-Inclusive Monthly Car Subscriptions - 30 Days Pass Rentora" 
+                             class="w-full h-auto aspect-[16/9] object-cover object-center group-hover:scale-[1.01] transition-transform duration-500 select-none" 
+                             loading="eager" />
+                    </picture>
+
+                    <!-- Interactive Overlay Button (matching banner aesthetic) -->
+                    <div class="absolute bottom-[9%] left-[3.2%] sm:bottom-[11%] sm:left-[3.5%] z-10 pointer-events-none">
+                        <span class="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-4 sm:py-2 md:px-5 md:py-2.5 rounded-full bg-white text-slate-900 font-extrabold text-[11px] sm:text-xs md:text-sm shadow-[0_4px_16px_rgba(6,182,212,0.5)] border border-cyan-200/60 group-hover:scale-105 group-hover:shadow-[0_6px_22px_rgba(6,182,212,0.7)] transition-all duration-200 tracking-tight select-none">
+                            <span>View Subscription Plans</span>
+                            <span class="text-cyan-500 text-sm sm:text-base font-black transition-transform duration-200 group-hover:translate-x-1">→</span>
+                        </span>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ================= COMPARISON TABLE: RENTORA VS BUYING ================= -->
+    <section class="py-14 sm:py-20 border-b border-outline-variant/30 reveal-on-scroll">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="text-xs font-bold uppercase tracking-widest text-primary bg-secondary-container/20 border border-secondary-container/40 px-3 py-1 rounded-full inline-block mb-2">Smart Mobility Economics</span>
+                <h2 class="text-2xl sm:text-4xl font-extrabold text-primary tracking-tight">Why Rentora Subscription Beats Buying</h2>
+                <p class="text-xs sm:text-sm text-on-surface-variant font-medium max-w-xl mx-auto mt-2">See how much capital, depreciation, and hassle you save compared to a standard 5-year auto loan.</p>
+            </div>
+
+            <div class="overflow-x-auto rounded-3xl border border-outline-variant/50 bg-surface-container-lowest shadow-sm">
+                <table class="w-full text-left text-xs sm:text-sm">
+                    <thead>
+                        <tr class="border-b border-outline-variant/40 bg-surface-container-low/70">
+                            <th class="py-4 px-6 font-black text-primary uppercase tracking-wider text-[11px]">Feature / Cost Head</th>
+                            <th class="py-4 px-6 font-bold text-on-surface-variant uppercase tracking-wider text-[11px]">Traditional Car Buying</th>
+                            <th class="py-4 px-6 font-black text-primary uppercase tracking-wider text-[11px] bg-secondary-container/10 border-l border-secondary-container/30">Rentora Drive Pass</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-outline-variant/30 text-on-surface font-medium">
+                        <tr>
+                            <td class="py-4 px-6 font-bold text-primary">Upfront Down Payment</td>
+                            <td class="py-4 px-6 text-red-600 font-bold">₹1,50,000 to ₹4,00,000+</td>
+                            <td class="py-4 px-6 text-emerald-700 font-extrabold bg-secondary-container/10 border-l border-secondary-container/30">₹0 (Zero Down Payment)</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-6 font-bold text-primary">Bank Loan & Long-Term Lock-in</td>
+                            <td class="py-4 px-6 text-red-600 font-bold">5 to 7 Years fixed EMI</td>
+                            <td class="py-4 px-6 text-emerald-700 font-extrabold bg-secondary-container/10 border-l border-secondary-container/30">1 to 36 Months flexible tenure</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-6 font-bold text-primary">Road Tax & RTO Registration</td>
+                            <td class="py-4 px-6 text-on-surface-variant">₹80,000 - ₹2,50,000 out-of-pocket</td>
+                            <td class="py-4 px-6 text-emerald-700 font-extrabold bg-secondary-container/10 border-l border-secondary-container/30">Included in monthly pass</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-6 font-bold text-primary">Zero-Dep Insurance Cover</td>
+                            <td class="py-4 px-6 text-on-surface-variant">₹25,000 - ₹60,000 every single year</td>
+                            <td class="py-4 px-6 text-emerald-700 font-extrabold bg-secondary-container/10 border-l border-secondary-container/30">100% Zero-Dep Included</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-6 font-bold text-primary">Periodic Maintenance & Wear</td>
+                            <td class="py-4 px-6 text-on-surface-variant">You pay all service & brake pad bills</td>
+                            <td class="py-4 px-6 text-emerald-700 font-extrabold bg-secondary-container/10 border-l border-secondary-container/30">Free Scheduled Doorstep Service</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-6 font-bold text-primary">Freedom to Upgrade / Switch</td>
+                            <td class="py-4 px-6 text-on-surface-variant">Heavy 30-40% resale depreciation</td>
+                            <td class="py-4 px-6 text-emerald-700 font-extrabold bg-secondary-container/10 border-l border-secondary-container/30">Swap to SUV, Sedan or EV anytime</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-6 font-bold text-primary">Tax Savings for Business / GST</td>
+                            <td class="py-4 px-6 text-on-surface-variant">Complex multi-year depreciation</td>
+                            <td class="py-4 px-6 text-emerald-700 font-extrabold bg-secondary-container/10 border-l border-secondary-container/30">100% Tax Deductible Operating Expense</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= SUBSCRIPTION FLEET SHOWCASE ================= -->
+    <section id="subscription-fleet" class="py-14 sm:py-20 border-b border-outline-variant/30 reveal-on-scroll">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-primary bg-secondary-container/20 border border-secondary-container/40 px-3 py-1 rounded-full inline-block mb-2">Curated Fleet</span>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold text-primary tracking-tight">Choose Your Subscription Vehicle</h2>
+                    <p class="text-xs sm:text-sm text-on-surface-variant font-medium mt-1">Brand-new and low-mileage verified vehicles ready for handover in {{ current_city|default:"Bhubaneswar" }}.</p>
+                </div>
+                <div class="flex items-center gap-1.5 bg-surface-container-low p-1 rounded-full border border-outline-variant/30">
+                    <button type="button" onclick="filterFleet('all')" class="fleet-filter-btn px-4 py-1.5 rounded-full bg-primary text-white text-xs font-bold transition-all">All</button>
+                    <button type="button" onclick="filterFleet('suv')" class="fleet-filter-btn px-4 py-1.5 rounded-full text-on-surface-variant hover:text-primary text-xs font-semibold transition-all">SUVs</button>
+                    <button type="button" onclick="filterFleet('sedan')" class="fleet-filter-btn px-4 py-1.5 rounded-full text-on-surface-variant hover:text-primary text-xs font-semibold transition-all">Sedans</button>
+                    <button type="button" onclick="filterFleet('ev')" class="fleet-filter-btn px-4 py-1.5 rounded-full text-on-surface-variant hover:text-primary text-xs font-semibold transition-all">Electric</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                <!-- Tier 1: Daily Urban Hatchback -->
+                <div class="fleet-card p-6 rounded-3xl bg-surface-container-lowest border border-outline-variant/50 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between group" data-category="hatchback">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-2.5 py-0.5 rounded-full bg-surface-container-low text-primary text-[10px] font-extrabold uppercase tracking-wider border border-outline-variant/30">City Commuter</span>
+                            <span class="text-xs font-bold text-on-surface-variant">1,500 km/mo incl.</span>
+                        </div>
+                        <div class="h-44 rounded-2xl overflow-hidden bg-surface-container-low p-3 mb-5 flex items-center justify-center border border-outline-variant/20">
+                            <img src="/media/cars/marutiswift.webp" alt="Maruti Swift" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" onerror="this.src='{% static 'images/ui/car-placeholder.jpg' %}'">
+                        </div>
+                        <h3 class="text-lg font-black text-primary mb-1">Maruti Suzuki Swift / Baleno</h3>
+                        <p class="text-xs text-on-surface-variant font-medium mb-4">Petrol • Manual/AMT • 22.5 km/l • 5 Seater</p>
+                        
+                        <div class="space-y-2 py-3.5 border-t border-b border-outline-variant/30 text-xs text-on-surface">
+                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Zero Security Deposit</div>
+                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Zero-Dep Comprehensive Cover</div>
+                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Free Doorstep Pickup & Delivery</div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-2 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] uppercase font-bold text-on-surface-variant block">Starting at</span>
+                            <div class="text-xl sm:text-2xl font-black text-primary">₹16,999<span class="text-xs text-on-surface-variant font-normal">/mo</span></div>
+                        </div>
+                        <button type="button" onclick="openSubscriptionInquiry('Maruti Swift / Baleno', '16,999')" class="px-5 py-2.5 rounded-full bg-primary hover:bg-primary-container text-on-primary font-bold text-xs uppercase tracking-wider transition-all shadow-xs active:scale-95 cursor-pointer">
+                            Subscribe
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tier 2: Compact & Lifestyle SUV -->
+                <div class="fleet-card p-6 rounded-3xl bg-surface-container-lowest border-2 border-secondary shadow-md hover:shadow-lg transition-all duration-300 flex flex-col justify-between group relative" data-category="suv">
+                    <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-secondary text-on-secondary-fixed text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-full shadow-xs">
+                        Most Popular Choice
+                    </span>
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-2.5 py-0.5 rounded-full bg-secondary-container/20 text-secondary border border-secondary-container/40 text-[10px] font-extrabold uppercase tracking-wider">Lifestyle SUV</span>
+                            <span class="text-xs font-bold text-on-surface-variant">2,000 km/mo incl.</span>
+                        </div>
+                        <div class="h-44 rounded-2xl overflow-hidden bg-surface-container-low p-3 mb-5 flex items-center justify-center border border-outline-variant/20">
+                            <img src="/media/cars/thar.webp" alt="Mahindra Thar 4x4" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" onerror="this.src='{% static 'images/ui/car-placeholder.jpg' %}'">
+                        </div>
+                        <h3 class="text-lg font-black text-primary mb-1">Mahindra Thar 4x4 / Creta</h3>
+                        <p class="text-xs text-on-surface-variant font-medium mb-4">Diesel / Petrol • Automatic • 4WD • Sunroof</p>
+                        
+                        <div class="space-y-2 py-3.5 border-t border-b border-outline-variant/30 text-xs text-on-surface">
+                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Zero Down Payment & Zero EMI</div>
+                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Unlimited Highway Breakdown Towing</div>
+                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Free Weekend Swap for Roadtrips</div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-2 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] uppercase font-bold text-on-surface-variant block">Starting at</span>
+                            <div class="text-xl sm:text-2xl font-black text-primary">₹28,499<span class="text-xs text-on-surface-variant font-normal">/mo</span></div>
+                        </div>
+                        <button type="button" onclick="openSubscriptionInquiry('Mahindra Thar / Creta', '28,499')" class="px-5 py-2.5 rounded-full bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-fixed font-black text-xs uppercase tracking-wider transition-all shadow-xs active:scale-95 cursor-pointer">
+                            Subscribe
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tier 3: Electric EV Green Pass -->
+                <div class="fleet-card p-6 rounded-3xl bg-surface-container-lowest border border-outline-variant/50 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between group" data-category="ev">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-extrabold uppercase tracking-wider border border-emerald-200">Zero Emissions</span>
+                            <span class="text-xs font-bold text-on-surface-variant">2,500 km/mo incl.</span>
+                        </div>
+                        <div class="h-44 rounded-2xl overflow-hidden bg-surface-container-low p-3 mb-5 flex items-center justify-center border border-outline-variant/20">
+                            <img src="/media/cars/tatanexonev.webp" alt="Tata Nexon EV" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" onerror="this.src='{% static 'images/ui/car-placeholder.jpg' %}'">
+                        </div>
+                        <h3 class="text-lg font-black text-primary mb-1">Tata Nexon EV / MG ZS EV</h3>
+                        <p class="text-xs text-on-surface-variant font-medium mb-4">100% Electric • 450 km Range • Fast DC Charge</p>
+                        
+                        <div class="space-y-2 py-3.5 border-t border-b border-outline-variant/30 text-xs text-on-surface">
+                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Home Fast-Charger Box Installed</div>
+                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> ₹1.10 / km running cost (90% fuel savings)</div>
+                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Battery Degradation Warranty Covered</div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-2 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] uppercase font-bold text-on-surface-variant block">Starting at</span>
+                            <div class="text-xl sm:text-2xl font-black text-primary">₹24,999<span class="text-xs text-on-surface-variant font-normal">/mo</span></div>
+                        </div>
+                        <button type="button" onclick="openSubscriptionInquiry('Tata Nexon EV', '24,999')" class="px-5 py-2.5 rounded-full bg-primary hover:bg-primary-container text-on-primary font-bold text-xs uppercase tracking-wider transition-all shadow-xs active:scale-95 cursor-pointer">
+                            Subscribe
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= 4-STEP SUBSCRIPTION HOW IT WORKS ================= -->
+    <section class="py-14 sm:py-20 border-b border-outline-variant/30 reveal-on-scroll">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-14">
+                <span class="text-xs font-bold uppercase tracking-widest text-primary bg-secondary-container/20 border border-secondary-container/40 px-3 py-1 rounded-full inline-block mb-2">Subscription Workflow</span>
+                <h2 class="text-2xl sm:text-4xl font-extrabold text-primary tracking-tight">How To Start Driving In 4 Simple Steps</h2>
+                <p class="text-xs sm:text-sm text-on-surface-variant font-medium max-w-xl mx-auto mt-2">Zero bank loans, simple monthly billing, and flexible vehicle swaps anytime.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs">
+                    <div class="w-10 h-10 rounded-xl bg-secondary-container text-on-secondary-fixed flex items-center justify-center font-black text-sm mb-4">01</div>
+                    <h3 class="text-sm font-extrabold text-primary mb-1.5">Select Car & Tenure</h3>
+                    <p class="text-xs text-on-surface-variant leading-relaxed">Pick any hatchback, SUV, EV, or executive sedan. Choose your preferred tenure from 1 to 36 months.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs">
+                    <div class="w-10 h-10 rounded-xl bg-secondary-container text-on-secondary-fixed flex items-center justify-center font-black text-sm mb-4">02</div>
+                    <h3 class="text-sm font-extrabold text-primary mb-1.5">DigiLocker KYC</h3>
+                    <p class="text-xs text-on-surface-variant leading-relaxed">Instant verification via Aadhaar and Driving License. Zero physical paperwork required.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs">
+                    <div class="w-10 h-10 rounded-xl bg-secondary-container text-on-secondary-fixed flex items-center justify-center font-black text-sm mb-4">03</div>
+                    <h3 class="text-sm font-extrabold text-primary mb-1.5">Doorstep Handover</h3>
+                    <p class="text-xs text-on-surface-variant leading-relaxed">Your sanitized vehicle arrives at your residence or workplace in Odisha with all documentation ready.</p>
+                </div>
+                <div class="p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs">
+                    <div class="w-10 h-10 rounded-xl bg-secondary-container text-on-secondary-fixed flex items-center justify-center font-black text-sm mb-4">04</div>
+                    <h3 class="text-sm font-extrabold text-primary mb-1.5">Drive, Swap, or Cancel</h3>
+                    <p class="text-xs text-on-surface-variant leading-relaxed">Extend your plan, swap to a 7-seater SUV for a road trip, or return anytime with simple notice.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= DIRECT INQUIRY FORM SECTION ================= -->
+    <section class="py-14 sm:py-20 bg-surface-container-low/70 border-b border-outline-variant/30 text-center reveal-on-scroll">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl sm:text-4xl font-extrabold text-primary tracking-tight mb-2">Claim Your Monthly Car Pass</h2>
+            <p class="text-on-surface-variant text-xs sm:text-sm max-w-xl mx-auto mb-8 font-medium">Join drivers across Odisha enjoying the freedom of month-to-month car subscriptions.</p>
+            
+            <form action="{% url 'contact' %}" method="post" class="bg-surface-container-lowest p-6 sm:p-8 rounded-3xl border border-outline-variant/50 max-w-xl mx-auto text-left shadow-lg space-y-4">
+                {% csrf_token %}
+                <input type="hidden" name="subject" value="Car Subscription Inquiry">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-primary mb-1.5">Your Name</label>
+                        <input type="text" name="name" required placeholder="Subhashree Das" style="outline: none !important; box-shadow: none !important;" class="w-full h-11 bg-surface-container-low border border-outline-variant/60 rounded-xl px-3.5 text-primary text-xs font-bold focus:border-primary outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-primary mb-1.5">Mobile Number</label>
+                        <input type="tel" name="phone" required placeholder="+91 98765 43210" style="outline: none !important; box-shadow: none !important;" class="w-full h-11 bg-surface-container-low border border-outline-variant/60 rounded-xl px-3.5 text-primary text-xs font-bold focus:border-primary outline-none">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-primary mb-1.5">Odisha Hub</label>
+                        <select name="city" style="outline: none !important; box-shadow: none !important;" class="w-full h-11 bg-surface-container-low border border-outline-variant/60 rounded-xl px-3.5 text-primary text-xs font-bold focus:border-primary outline-none cursor-pointer">
+                            <option value="Bhubaneswar" selected>Bhubaneswar Hub (Airport / Janpath)</option>
+                            <option value="Cuttack">Cuttack Hub</option>
+                            <option value="Puri">Puri Marine Drive Hub</option>
+                            <option value="Rourkela">Rourkela Hub</option>
+                            <option value="Sambalpur">Sambalpur Hub</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-primary mb-1.5">Preferred Tenure</label>
+                        <select name="tenure" id="inquiry-tenure-select" style="outline: none !important; box-shadow: none !important;" class="w-full h-11 bg-surface-container-low border border-outline-variant/60 rounded-xl px-3.5 text-primary text-xs font-bold focus:border-primary outline-none cursor-pointer">
+                            <option value="1 Month">1 Month</option>
+                            <option value="3 Months">3 Months</option>
+                            <option value="6 Months" selected>6 Months (Save 10%)</option>
+                            <option value="12 Months">12 Months (Save 18%)</option>
+                            <option value="24 Months">24+ Months (Save 25%)</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-primary mb-1.5">Car Model / Category</label>
+                    <input type="text" name="car_preference" id="inquiry-car-input" placeholder="e.g. Mahindra Thar, Nexon EV, Creta" style="outline: none !important; box-shadow: none !important;" class="w-full h-11 bg-surface-container-low border border-outline-variant/60 rounded-xl px-3.5 text-primary text-xs font-bold focus:border-primary outline-none">
+                </div>
+                <button type="submit" class="w-full h-12 rounded-xl bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-fixed font-black text-xs sm:text-sm uppercase tracking-wider transition-all shadow-md active:scale-95 cursor-pointer">
+                    Submit Subscription Request
+                </button>
+                <p class="text-[11px] text-center text-on-surface-variant font-medium">Our subscription manager calls within 30 minutes with available car chassis numbers and pricing.</p>
+            </form>
+        </div>
+    </section>
+
+    <!-- ================= FAQS SECTION ================= -->
+    <section class="py-14 sm:py-20 reveal-on-scroll">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <span class="text-xs font-bold uppercase tracking-widest text-primary bg-secondary-container/20 border border-secondary-container/40 px-3 py-1 rounded-full inline-block mb-2">Got Questions?</span>
+                <h2 class="text-2xl sm:text-4xl font-extrabold text-primary tracking-tight">Frequently Asked Questions</h2>
+            </div>
+
+            <div class="space-y-3">
+                <details class="p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs group cursor-pointer">
+                    <summary class="font-extrabold text-xs sm:text-sm text-primary flex items-center justify-between">
+                        <span>What documents are required for Rentora car subscription?</span>
+                        <span class="material-symbols-outlined text-on-surface-variant group-open:rotate-180 transition-transform">expand_more</span>
+                    </summary>
+                    <p class="text-xs text-on-surface-variant font-medium mt-3 leading-relaxed">
+                        You only need a valid original Indian Driving License (min. 1 year old) and Aadhaar card or Passport for identity and address verification. For registered businesses, GSTIN and PAN are required for tax invoicing.
+                    </p>
+                </details>
+
+                <details class="p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs group cursor-pointer">
+                    <summary class="font-extrabold text-xs sm:text-sm text-primary flex items-center justify-between">
+                        <span>Is zero-depreciation insurance included?</span>
+                        <span class="material-symbols-outlined text-on-surface-variant group-open:rotate-180 transition-transform">expand_more</span>
+                    </summary>
+                    <p class="text-xs text-on-surface-variant font-medium mt-3 leading-relaxed">
+                        Yes. Every Rentora subscription vehicle comes with commercial zero-dep insurance. In the rare event of damage, maximum customer liability is capped at ₹9,999.
+                    </p>
+                </details>
+
+                <details class="p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs group cursor-pointer">
+                    <summary class="font-extrabold text-xs sm:text-sm text-primary flex items-center justify-between">
+                        <span>Can I extend my tenure or return the car early?</span>
+                        <span class="material-symbols-outlined text-on-surface-variant group-open:rotate-180 transition-transform">expand_more</span>
+                    </summary>
+                    <p class="text-xs text-on-surface-variant font-medium mt-3 leading-relaxed">
+                        Absolutely. You can extend your subscription at any time directly through your Rentora dashboard. If you need to return early, simply give a 15-day notice with zero hidden cancellation penalties.
+                    </p>
+                </details>
+
+                <details class="p-5 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs group cursor-pointer">
+                    <summary class="font-extrabold text-xs sm:text-sm text-primary flex items-center justify-between">
+                        <span>Who takes care of vehicle maintenance and routine servicing?</span>
+                        <span class="material-symbols-outlined text-on-surface-variant group-open:rotate-180 transition-transform">expand_more</span>
+                    </summary>
+                    <p class="text-xs text-on-surface-variant font-medium mt-3 leading-relaxed">
+                        Rentora takes care of 100% of periodic servicing, engine oil changes, brake pads, and wear-and-tear items. Our authorized technicians pick up and drop off the vehicle from your doorstep at zero cost to you.
+                    </p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<script>
+function setTenure(months, btn) {
+    document.querySelectorAll('.tenure-btn').forEach(b => {
+        b.className = "tenure-btn flex-1 py-2.5 px-3 rounded-xl sm:rounded-full text-xs font-semibold text-on-surface-variant hover:text-primary transition-all";
+    });
+    btn.className = "tenure-btn flex-1 py-2.5 px-3 rounded-xl sm:rounded-full text-xs font-bold transition-all bg-primary text-white shadow-xs";
+    
+    const select = document.getElementById('inquiry-tenure-select');
+    if (select) {
+        if (months === '1') select.value = '1 Month';
+        else if (months === '3') select.value = '3 Months';
+        else if (months === '6') select.value = '6 Months (Save 10%)';
+        else if (months === '12') select.value = '12 Months (Save 18%)';
+        else select.value = '24+ Months (Save 25%)';
+    }
+}
+
+function openSubscriptionInquiry(carName, price) {
+    const input = document.getElementById('inquiry-car-input');
+    if (input) input.value = `${carName} (₹${price}/mo)`;
+    const form = document.querySelector('form[action*="contact"]');
+    if (form) form.scrollIntoView({ behavior: 'smooth' });
+}
+
+function filterFleet(cat) {
+    document.querySelectorAll('.fleet-filter-btn').forEach(b => {
+        b.className = "fleet-filter-btn px-4 py-1.5 rounded-full text-on-surface-variant hover:text-primary text-xs font-semibold transition-all";
+    });
+    event.target.className = "fleet-filter-btn px-4 py-1.5 rounded-full bg-primary text-white text-xs font-bold transition-all";
+
+    document.querySelectorAll('.fleet-card').forEach(card => {
+        if (cat === 'all' || card.dataset.category === cat) {
+            card.style.display = 'flex';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+</script>
+{% endblock %}

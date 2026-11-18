@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Help & Contact Us | Rentora{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-20 pb-28 md:pb-20">
+    <div class="bg-surface-container-lowest rounded-3xl p-8 md:p-12 border border-surface-container-high shadow-sm space-y-8">
+        <div>
+            <h1 class="font-headline text-3xl font-bold text-on-surface mb-2">Help & Customer Support</h1>
+            <p class="text-sm text-secondary">Have questions or need assistance with your booking? We're here 24/7.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="p-5 rounded-2xl bg-surface-container-low border border-surface-container-high flex flex-col gap-2">
+                <span class="material-symbols-outlined text-primary text-2xl">mail</span>
+                <h3 class="font-bold text-sm text-on-surface">Email Support</h3>
+                <p class="text-xs text-secondary">support@rentora.in</p>
+                <span class="text-[11px] text-secondary/80">Average response: 1-2 hours</span>
+            </div>
+            <div class="p-5 rounded-2xl bg-surface-container-low border border-surface-container-high flex flex-col gap-2">
+                <span class="material-symbols-outlined text-primary text-2xl">call</span>
+                <h3 class="font-bold text-sm text-on-surface">24/7 Emergency Line</h3>
+                <p class="text-xs text-secondary">+91 80 4567 8900</p>
+                <span class="text-[11px] text-secondary/80">Roadside assistance & accidents</span>
+            </div>
+            <div class="p-5 rounded-2xl bg-surface-container-low border border-surface-container-high flex flex-col gap-2">
+                <span class="material-symbols-outlined text-primary text-2xl">location_on</span>
+                <h3 class="font-bold text-sm text-on-surface">Headquarters</h3>
+                <p class="text-xs text-secondary">Indiranagar, Bengaluru</p>
+                <span class="text-[11px] text-secondary/80">Karnataka, India</span>
+            </div>
+        </div>
+
+        <div class="pt-6 border-t border-surface-container-high">
+            <h2 class="font-headline text-lg font-bold text-on-surface mb-4">Send Us a Message</h2>
+            <form action="{% url 'contact' %}" method="post" class="space-y-4">
+                {% csrf_token %}
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-secondary mb-1.5">First Name</label>
+                        <input type="text" name="first_name" required placeholder="John" class="w-full bg-surface-container-low border border-surface-container-high rounded-2xl py-3 px-4 text-sm font-semibold text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" />
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-secondary mb-1.5">Last Name</label>
+                        <input type="text" name="last_name" required placeholder="Doe" class="w-full bg-surface-container-low border border-surface-container-high rounded-2xl py-3 px-4 text-sm font-semibold text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" />
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-secondary mb-1.5">Email Address</label>
+                    <input type="email" name="email" required placeholder="john.doe@example.com" class="w-full bg-surface-container-low border border-surface-container-high rounded-2xl py-3 px-4 text-sm font-semibold text-on-surface focus:outline-none focus:ring-1 focus:ring-primary" />
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-secondary mb-1.5">Message</label>
+                    <textarea name="message" rows="4" required placeholder="How can we help you today?" class="w-full bg-surface-container-low border border-surface-container-high rounded-2xl py-3 px-4 text-sm font-semibold text-on-surface focus:outline-none focus:ring-1 focus:ring-primary"></textarea>
+                </div>
+                <button type="submit" class="w-full sm:w-auto min-h-[48px] px-8 bg-primary-container text-[#0F172A] hover:bg-[#FF5F00] active:scale-[0.98] font-bold text-xs uppercase tracking-wider rounded-full transition-all shadow-sm flex items-center justify-center gap-2">
+                    <span>Submit Query</span>
+                    <span class="material-symbols-outlined text-base">send</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

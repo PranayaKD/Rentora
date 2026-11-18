@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Page Not Found (404) | Rentora{% endblock %}
+
+{% block content %}
+<div class="min-h-[70vh] flex items-center justify-center px-4 py-16">
+    <div class="max-w-md w-full text-center">
+        <div class="w-20 h-20 rounded-3xl bg-slate-100 dark:bg-zinc-800 flex items-center justify-center text-slate-800 dark:text-zinc-200 mx-auto mb-6 shadow-sm border border-slate-200 dark:border-zinc-700">
+            <span class="material-symbols-outlined text-4xl">travel_explore</span>
+        </div>
+        <p class="text-xs font-black uppercase tracking-[0.25em] text-accent mb-2">404 Error</p>
+        <h1 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white mb-3">Road Not Found</h1>
+        <p class="text-sm text-slate-500 dark:text-zinc-400 mb-8 leading-relaxed">
+            The page you're searching for might have taken a detour, been moved, or does not exist.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <a href="{% url 'index' %}" class="w-full sm:w-auto px-6 py-3 bg-zinc-950 hover:bg-zinc-800 text-white dark:bg-white dark:text-zinc-950 font-black rounded-xl text-xs uppercase tracking-wider transition-all shadow-sm">
+                Go to Homepage
+            </a>
+            <a href="{% url 'cars' %}" class="w-full sm:w-auto px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-zinc-800 dark:text-zinc-200 font-bold rounded-xl text-xs uppercase tracking-wider transition-all">
+                Browse Fleet
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

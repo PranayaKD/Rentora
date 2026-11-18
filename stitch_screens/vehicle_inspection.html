@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pre-Trip Vehicle Inspection - Rentora</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "background": "#f9f9f9",
+            "inverse-on-surface": "#f0f1f1",
+            "on-primary-container": "#848387",
+            "on-primary": "#ffffff",
+            "primary-fixed": "#e3e2e6",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-high": "#e8e8e8",
+            "error-container": "#ffdad6",
+            "surface-container-low": "#f3f3f3",
+            "secondary": "#795900",
+            "on-primary-fixed-variant": "#46464a",
+            "on-tertiary-fixed": "#1a1c20",
+            "outline": "#76777b",
+            "primary-container": "#1b1b1f",
+            "on-surface": "#1a1c1c",
+            "secondary-container": "#fdbf13",
+            "surface-bright": "#f9f9f9",
+            "on-background": "#1a1c1c",
+            "tertiary-container": "#1a1c20",
+            "on-primary-fixed": "#1b1b1f",
+            "on-secondary-container": "#6c5000",
+            "on-tertiary-container": "#828489",
+            "on-error": "#ffffff",
+            "secondary-fixed": "#ffdf9f",
+            "tertiary": "#000000",
+            "surface-tint": "#5e5e62",
+            "tertiary-fixed": "#e2e2e7",
+            "on-surface-variant": "#46464b",
+            "tertiary-fixed-dim": "#c6c6cb",
+            "surface-container-highest": "#e2e2e2",
+            "error": "#ba1a1a",
+            "on-secondary": "#ffffff",
+            "surface-variant": "#e2e2e2",
+            "on-secondary-fixed": "#261a00",
+            "inverse-surface": "#2f3131",
+            "outline-variant": "#c7c6cb",
+            "on-tertiary": "#ffffff",
+            "secondary-fixed-dim": "#fabd0d",
+            "on-error-container": "#93000a",
+            "surface-dim": "#dadada",
+            "primary": "#000000",
+            "surface-container": "#eeeeee",
+            "on-secondary-fixed-variant": "#5b4300",
+            "surface": "#f9f9f9",
+            "on-tertiary-fixed-variant": "#45474b",
+            "inverse-primary": "#c7c6ca",
+            "primary-fixed-dim": "#c7c6ca"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter": "1rem",
+            "gutter-lg": "1.25rem",
+            "margin-lg": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-xl": "2rem",
+            "gutter-sm": "0.75rem",
+            "space-md": "1rem",
+            "space-xs": "0.25rem",
+            "space-lg": "1.5rem",
+            "margin": "1rem",
+            "margin-sm": "0.75rem"
+          },
+          "fontFamily": {
+            "label-sm": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "headline-xl-mobile": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "price-display": ["Plus Jakarta Sans"],
+            "headline-xl": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-xl-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-md": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "price-display": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+            "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      background-color: #f1f2f4;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .fill-icon {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    /* Hide scrollbars for clean mobile feel */
+    ::-webkit-scrollbar {
+      display: none;
+    }
+    * {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="flex justify-center items-start min-h-screen p-0 sm:py-6 text-on-surface antialiased">
+<!-- Mobile Frame Container (390px x 844px target) -->
+<main class="w-full max-w-[390px] min-h-screen sm:min-h-[844px] bg-background relative flex flex-col shadow-2xl sm:rounded-[44px] overflow-hidden border border-outline-variant/30">
+<!-- 1. iOS Status Bar -->
+<header class="w-full h-11 pt-2 px-6 flex justify-between items-center z-50 bg-surface/90 backdrop-blur-md select-none shrink-0">
+<span class="font-headline-sm text-body-sm font-bold text-primary tracking-tight">12:45</span>
+<!-- Dynamic Island Capsule -->
+<div class="w-24 h-5 bg-tertiary-container rounded-full mx-auto flex items-center justify-end px-2">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+</div>
+<div class="flex items-center space-x-1.5 text-primary text-body-sm">
+<span class="material-symbols-outlined text-[15px]" data-icon="signal_cellular_alt">signal_cellular_alt</span>
+<span class="material-symbols-outlined text-[15px]" data-icon="wifi">wifi</span>
+<div class="flex items-center space-x-0.5">
+<span class="text-[10px] font-bold">88%</span>
+<span class="material-symbols-outlined text-[17px]" data-icon="battery_5_bar">battery_5_bar</span>
+</div>
+</div>
+</header>
+<!-- 2. Top Navigation Bar (Task-Focused Header, Shell Prohibited) -->
+<div class="px-margin py-space-sm flex items-center justify-between bg-surface/90 backdrop-blur-md sticky top-0 z-40 border-b border-outline-variant/20">
+<button aria-label="Go Back" class="w-10 h-10 rounded-full border border-outline-variant/40 bg-surface-container-lowest flex items-center justify-center text-primary active:scale-95 transition-transform duration-150 shadow-sm" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="chevron_left">chevron_left</span>
+</button>
+<div class="flex flex-col items-center">
+<h1 class="font-headline-sm text-headline-sm text-primary font-bold tracking-tight">Pre-Trip Inspection</h1>
+<span class="font-label-sm text-[9px] uppercase tracking-wider text-outline">Mandatory Step • Rental Guard</span>
+</div>
+<button aria-label="Emergency Help SOS" class="flex items-center space-x-1 px-3 py-1.5 rounded-full bg-error-container/40 border border-error/20 active:scale-95 transition-transform duration-150" type="button">
+<span class="w-2 h-2 rounded-full bg-error animate-ping mr-0.5"></span>
+<span class="font-label-sm text-label-sm text-error font-bold tracking-normal">SOS</span>
+</button>
+</div>
+<!-- Scrollable Screen Canvas -->
+<div class="flex-1 overflow-y-auto px-margin pt-space-md pb-28 space-y-space-md">
+<!-- 3. Vehicle Context Summary Card -->
+<section class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/30 shadow-[0_4px_16px_-2px_rgba(18,19,22,0.04)]">
+<div class="flex items-start justify-between gap-3">
+<div class="flex-1">
+<!-- Geofence Verified Badge -->
+<div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/60 mb-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+<span class="font-label-sm text-[10px] font-bold tracking-wide">GPS &amp; Time Geofence Verified</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-primary font-extrabold tracking-tight">Mahindra Thar 4x4</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant font-medium">LX Hardtop Automatic • Diesel</p>
+<!-- Indian Registration Plate Pill -->
+<div class="mt-2.5 inline-flex items-center gap-2">
+<div class="inline-flex items-center border border-black/80 rounded bg-white px-2 py-0.5 shadow-xs">
+<span class="font-label-sm text-[8px] font-black text-blue-900 border-r border-black/20 pr-1 mr-1">IND</span>
+<span class="font-label-md text-label-md font-extrabold tracking-wider text-black">KA05 MB 4912</span>
+</div>
+<span class="font-body-sm text-[11px] text-outline flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[13px] text-outline" data-icon="location_on">location_on</span>
+                Indiranagar Hub
+              </span>
+</div>
+</div>
+<!-- Vehicle Thumbnail from Prompt Placeholder -->
+<div class="w-20 h-20 rounded-xl overflow-hidden shrink-0 border border-outline-variant/40 bg-surface-container-low shadow-inner relative">
+<img alt="Mahindra Thar 4x4 self-drive vehicle parked at scenic viewpoint in Karnataka" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/ALJJyrCU2owxRQfMqF25eKEY7yrLPFfos_wmb6P2ZISVsjK9xtZ-9nTqMGqlX-z8nLlgGYDrws-MUFxZlmM_v7jLgx47CTKDIUh6Sp7HP2pRrMjaad8AksnrwrvBbyjyhzTErvT3Z0wqh8fQW8KLhDD3GMZLw59rdLujFlC-IFPr1g8VG2Ws1HHowMimLFDORtrIwG40Mi_5sUYuQYdxBmCYdsVFfYkWLuT6LN4xh4bbMGqS9mYVhGty_-ew43c"/>
+<span class="absolute bottom-1 right-1 bg-black/70 backdrop-blur-xs text-[8px] font-bold text-white px-1 rounded">FASTag</span>
+</div>
+</div>
+<div class="mt-3 pt-3 border-t border-surface-container-high flex items-center justify-between text-[11px] text-on-surface-variant">
+<span class="flex items-center gap-1 font-body-sm">
+<span class="material-symbols-outlined text-[14px] text-emerald-600 fill-icon" data-icon="verified_user">verified_user</span>
+            ₹0 Security Deposit Covered
+          </span>
+<span class="font-label-sm text-[10px] text-outline font-semibold">BOOKING #RT-8849</span>
+</div>
+</section>
+<!-- 4. Step 1: Exterior 4-Side Photography Section -->
+<section class="space-y-2">
+<div class="flex items-baseline justify-between">
+<h3 class="font-headline-sm text-headline-sm text-primary font-bold">1. Exterior 4-Side Photos</h3>
+<span class="font-label-md text-label-md text-secondary font-extrabold">2 of 4 done</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+          Protects you from false damage liability for pre-existing scratches &amp; dent disputes.
+        </p>
+<!-- 2x2 Photo Capture Grid -->
+<div class="grid grid-cols-2 gap-2.5 pt-1">
+<!-- 1. Front View (Completed) -->
+<div class="relative rounded-2xl bg-surface-container-lowest border border-outline-variant/30 p-2.5 flex flex-col justify-between h-44 shadow-sm overflow-hidden">
+<div class="w-full h-24 rounded-lg overflow-hidden relative bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A realistic high-definition mobile smartphone photo capturing the front view of a black Mahindra Thar 4x4 parked in an outdoor Bangalore rental hub. Natural bright morning sunlight illuminates the front bumper, round headlights, and signature front grill with crisp clarity. Neutral professional automotive styling, clean concrete background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7_wcrB6phLWoLiJ3qk_Ug--KlnnHZYsg0VUrj4J10yT-vGzvIqfIB-QFl0zws5QBYeDxe8BFDlwsQScaZNWQEH1e0xoeD57ym8XYE216_taDq9N6Ao1E1njSEaeCsDsBCCkIuvkngx_yx0pQ82X15Nnz7e2s4_r31NdlcjjyPntPFWydiWvXtq1HzJL7C9GKEhQlf8L9ppkWgANR0Qp9rghSOAq7AYFrmErQ6AGR5ebfDBLcenzmlfZMFWq7YVLJwLH83pNvA8t8"/>
+<span class="absolute top-1.5 left-1.5 bg-emerald-600 text-white rounded-full p-0.5 flex items-center justify-center shadow">
+<span class="material-symbols-outlined text-[14px]" data-icon="check">check</span>
+</span>
+</div>
+<div class="mt-1.5 flex items-center justify-between">
+<div>
+<p class="font-label-lg text-label-lg text-primary font-bold">Front View</p>
+<p class="font-label-sm text-[9px] text-emerald-700 font-semibold">Captured 10:02 AM</p>
+</div>
+<button class="text-on-surface-variant text-[11px] font-semibold underline underline-offset-2 hover:text-primary" type="button">Retake</button>
+</div>
+</div>
+<!-- 2. Right Side (Completed) -->
+<div class="relative rounded-2xl bg-surface-container-lowest border border-outline-variant/30 p-2.5 flex flex-col justify-between h-44 shadow-sm overflow-hidden">
+<div class="w-full h-24 rounded-lg overflow-hidden relative bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A sharp mobile photo capturing the right side profile of a rugged black SUV at an executive car pickup location. High-contrast ambient daylight showing immaculate alloy wheels, door panels, and side footstep with pristine texture and zero glare. Modern minimalist light-mode mobility aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAe2yrL5Aq3a31Ti8eNdmco9kwHuiDPWQdi7lgWqFVq0bheF33aDz-T6fp9iDds73vnnfYWsPkY7kExQYMi9fPRfTOZALtQBeBZEY1TFCsWl6lX5NaXJ8LTE_LcHakggcYYlTZRScOZ35Bk6zHDdzQ3rxMGfBcimxWISdBKHgVCA8ib0f2yK8_J6lmutRvBYoI8YvO8m51Gz4wfQwf_A4YxyATOZDuWcmNgZzMWHY6MibiXNIfkBqneVARm4PCKJ6Cx-jNuBydn0YI"/>
+<span class="absolute top-1.5 left-1.5 bg-emerald-600 text-white rounded-full p-0.5 flex items-center justify-center shadow">
+<span class="material-symbols-outlined text-[14px]" data-icon="check">check</span>
+</span>
+</div>
+<div class="mt-1.5 flex items-center justify-between">
+<div>
+<p class="font-label-lg text-label-lg text-primary font-bold">Right Side</p>
+<p class="font-label-sm text-[9px] text-emerald-700 font-semibold">Captured 10:03 AM</p>
+</div>
+<button class="text-on-surface-variant text-[11px] font-semibold underline underline-offset-2 hover:text-primary" type="button">Retake</button>
+</div>
+</div>
+<!-- 3. Left Side (Active / Pending with Amber accent) -->
+<div class="relative rounded-2xl bg-amber-50/50 border-2 border-dashed border-secondary-container p-3 flex flex-col items-center justify-center h-44 cursor-pointer hover:bg-amber-100/40 active:scale-[0.98] transition-all" role="button" tabindex="0">
+<span class="absolute top-2 right-2 px-1.5 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-[9px] font-extrabold uppercase">
+              Pending
+            </span>
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-primary shadow-md mb-2">
+<span class="material-symbols-outlined text-[24px]" data-icon="photo_camera">photo_camera</span>
+</div>
+<p class="font-label-lg text-label-lg text-primary font-bold">Left Side Profile</p>
+<p class="font-body-sm text-[11px] text-secondary font-medium mt-0.5 text-center">Tap to capture</p>
+</div>
+<!-- 4. Rear View (Pending) -->
+<div class="relative rounded-2xl bg-surface-container-lowest border-2 border-dashed border-outline-variant p-3 flex flex-col items-center justify-center h-44 cursor-pointer hover:border-outline active:scale-[0.98] transition-all" role="button" tabindex="0">
+<div class="w-11 h-11 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface-variant mb-2">
+<span class="material-symbols-outlined text-[22px]" data-icon="add_a_photo">add_a_photo</span>
+</div>
+<p class="font-label-lg text-label-lg text-primary font-bold">Rear View</p>
+<p class="font-body-sm text-[10px] text-outline text-center mt-0.5">Bumper &amp; spare wheel</p>
+</div>
+</div>
+</section>
+<!-- 5. Step 2: Odometer & Fuel Check Section -->
+<section class="space-y-2">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-primary font-bold">2. Odometer &amp; Fuel Reading</h3>
+<span class="inline-flex items-center gap-1 font-label-sm text-[9px] px-2 py-0.5 rounded-md bg-secondary-container/20 text-on-secondary-container border border-secondary-container/40">
+<span class="material-symbols-outlined text-[11px]" data-icon="auto_awesome">auto_awesome</span> AI Verified
+          </span>
+</div>
+<div class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/30 shadow-sm space-y-4">
+<!-- Odometer Tile -->
+<div class="flex items-center justify-between bg-surface-container-low/70 p-3 rounded-xl border border-outline-variant/20">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-lg overflow-hidden bg-primary-container shrink-0 border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="Close-up crisp automotive photography of a backlit modern digital dashboard cluster showing an odometer reading in sharp amber and white digits. Crisp high-tech dials with clear contrast in a dark instrument binnacle." src="https://lh3.googleusercontent.com/aida-public/AB6AXuATmHMkM-H4c3_48t7-RX6rSiB_tNZMzdMuYxcMTYPM39zjdIA0_y8th1hfN8PHDoh9fV7Tx8104yGib1Dh8lXjRa-rlXu3iz6AlYCkpOxpuy6KrmSUw75Xd2Z8OSQv_Kk6mb0PP4L5Nt-2KsViU0o6UNvgBhIyUxoLmGC6zNm-RJkYBiJRIriE7-3MP-JyMhmlvX9ZHsi5u4PrXcG0TAeD8iVi7v-ttSCbxGTMSubkV7qBvD-gaQhVUOqvLx28W8Iv0Zg9TlhLIN0"/>
+</div>
+<div>
+<span class="font-label-sm text-[10px] text-outline uppercase tracking-wider">Odometer Reading</span>
+<div class="font-price-display text-price-display text-primary font-extrabold tracking-tight">24,180 <span class="text-sm font-semibold text-outline">km</span></div>
+</div>
+</div>
+<div class="text-right">
+<span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+<span class="material-symbols-outlined text-[13px] fill-icon" data-icon="check_circle">check_circle</span>
+                Telematics Sync
+              </span>
+<p class="font-body-sm text-[10px] text-outline mt-1">Live OBD-II Match</p>
+</div>
+</div>
+<!-- Fuel Indicator Bar -->
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-secondary" data-icon="local_gas_station">local_gas_station</span>
+<span class="font-label-lg text-label-lg font-bold text-primary">85% Fuel Level (Diesel)</span>
+</div>
+<span class="font-label-md text-label-md text-emerald-700 font-extrabold bg-emerald-50 px-2 py-0.5 rounded">Optimal</span>
+</div>
+<!-- Progress Bar -->
+<div class="w-full bg-surface-container h-3.5 rounded-full overflow-hidden p-0.5 border border-outline-variant/30">
+<div class="h-full bg-gradient-to-r from-secondary-container to-amber-500 rounded-full w-[85%] relative flex justify-end items-center pr-1">
+<span class="w-1.5 h-1.5 bg-black rounded-full shadow-xs"></span>
+</div>
+</div>
+<div class="flex items-center justify-between text-[11px] text-outline pt-0.5">
+<span>E (Empty)</span>
+<span class="text-on-surface-variant font-medium">Return at ≥85% for ₹0 fuel fee</span>
+<span>F (Full)</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 6. Step 3: Scratch / Damage Pre-Log Section -->
+<section class="space-y-2">
+<h3 class="font-headline-sm text-headline-sm text-primary font-bold">3. Pre-Existing Blemishes</h3>
+<!-- Pre-logged Damage Note -->
+<div class="bg-amber-50/70 border border-secondary-container/40 rounded-2xl p-3.5 flex items-start gap-3 shadow-xs">
+<div class="p-1.5 bg-secondary-container text-primary rounded-full shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[16px]" data-icon="info">info</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md font-bold text-primary">Host Pre-Logged Blemish</span>
+<span class="font-label-sm text-[9px] bg-white border border-secondary-container px-1.5 py-0.2 rounded font-bold text-secondary">EXEMPTED</span>
+</div>
+<p class="font-body-sm text-[12px] text-on-surface-variant mt-1 leading-snug">
+              Minor 2cm surface scuff on rear-left plastic wheel arch flare. Confirmed not chargeable at checkout.
+            </p>
+</div>
+</div>
+<!-- Add Another Scratch Action -->
+<button class="w-full py-3 rounded-xl border border-dashed border-outline-variant hover:border-primary bg-surface-container-lowest flex items-center justify-center gap-2 text-primary font-label-lg text-label-lg active:scale-[0.99] transition-transform" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="add_circle">add_circle</span>
+<span>+ Report another scratch / dent</span>
+</button>
+</section>
+<!-- 7. Inspection Audit Stamp & Location Pin -->
+<section class="bg-surface-container-low rounded-2xl p-3.5 border border-outline-variant/30 space-y-2 text-[11px]">
+<div class="flex items-start gap-2.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px] text-primary shrink-0" data-icon="pin_drop">pin_drop</span>
+<div>
+<p class="font-label-md text-label-md text-primary font-bold">Indiranagar 100ft Hub, Bengaluru</p>
+<p class="font-body-sm text-[11px] text-outline">Geo-coords: 12.9716° N, 77.6412° E • Precision: ±2.4m</p>
+</div>
+</div>
+<div class="flex items-center justify-between pt-2 border-t border-outline-variant/20 text-outline">
+<span class="flex items-center gap-1 font-body-sm text-[11px]">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span>
+            Timestamp: 14 Nov 2026, 10:04 AM IST
+          </span>
+<span class="font-label-sm text-[10px] text-primary font-semibold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[13px] text-secondary" data-icon="mark_email_read">mark_email_read</span> Auto-Emailed
+          </span>
+</div>
+</section>
+</div>
+<!-- 8. Sticky Bottom Action Bar (Floating Luxury Pill CTAs) -->
+<div class="sticky bottom-0 left-0 right-0 bg-surface/90 backdrop-blur-xl border-t border-outline-variant/20 px-margin py-3 pb-6 z-50 shadow-[0_-8px_24px_rgba(0,0,0,0.06)]">
+<!-- Progress Context -->
+<div class="flex items-center justify-between mb-2.5 px-1 text-body-sm">
+<span class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+          2 of 4 photos taken • Odometer recorded
+        </span>
+<span class="font-label-sm text-label-sm font-extrabold text-primary">STEP 1/2</span>
+</div>
+<!-- Main Action CTA: Confirm & Unlock Car Keyless -->
+<button class="w-full h-[52px] rounded-full bg-secondary-container text-tertiary font-label-lg font-extrabold text-label-lg flex items-center justify-between px-5 shadow-lg active:scale-95 transition-all duration-150 hover:brightness-105" type="button">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]" data-icon="key">key</span>
+<span>Confirm &amp; Unlock Car Keyless</span>
+</div>
+<span class="material-symbols-outlined text-[20px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<!-- Subtext Guarantee -->
+<p class="text-center font-label-sm text-[9px] text-outline mt-2 tracking-wide uppercase">
+        Encrypted Bluetooth Keyless Telematics Handshake Active
+      </p>
+</div>
+</main>
+</body></html>

@@ -9,7 +9,7 @@
         .header { background-color: #0f172a; color: #ffffff; padding: 24px 30px; }
         .header h1 { margin: 0; font-size: 22px; letter-spacing: 2px; }
         .header .ref { font-size: 14px; color: #94a3b8; margin-top: 6px; }
-        .badge { display: inline-block; background-color: #00c9a7; color: #0f172a; font-size: 10px; font-weight: bold; padding: 4px 14px; border-radius: 10px; letter-spacing: 1px; text-transform: uppercase; }
+        .badge { display: inline-block; background-color: #FF5F00; color: #0f172a; font-size: 10px; font-weight: bold; padding: 4px 14px; border-radius: 10px; letter-spacing: 1px; text-transform: uppercase; }
         .section-title { font-size: 10px; font-weight: bold; letter-spacing: 1.5px; text-transform: uppercase; color: #94a3b8; margin: 20px 0 8px 0; }
         table.details { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
         table.details td { padding: 10px 14px; border-bottom: 1px solid #e2e8f0; font-size: 12px; }
@@ -17,7 +17,7 @@
         table.details td.value { color: #0f172a; font-weight: 600; text-align: right; }
         .total-row { background-color: #0f172a; color: #ffffff; }
         .total-row td { padding: 14px; border: none; }
-        .total-row td.value { color: #00c9a7; font-size: 16px; font-weight: bold; }
+        .total-row td.value { color: #FF5F00; font-size: 16px; font-weight: bold; }
         .addresses { width: 100%; margin-bottom: 16px; }
         .addresses td { vertical-align: top; padding: 10px 0; width: 50%; }
         .addresses .label { font-size: 10px; font-weight: bold; letter-spacing: 1.5px; text-transform: uppercase; color: #94a3b8; margin-bottom: 6px; }
@@ -31,7 +31,7 @@
     <!-- Header -->
     <div class="header">
         <table width="100%"><tr>
-            <td><h1>REN<span style="color: #00c9a7;">TORA</span></h1></td>
+            <td><h1>REN<span style="color: #FF5F00;">TORA</span></h1></td>
             <td style="text-align: right;"><span class="badge">TAX INVOICE</span></td>
         </tr></table>
         <div class="ref">#{{ booking.booking_reference }} &bull; {{ booking.created_at|date:"d M Y" }}</div>
@@ -69,11 +69,11 @@
         </tr>
         <tr>
             <td class="label">Pickup</td>
-            <td class="value">{{ booking.pickup_date|date:"d M Y, H:i" }}<br><span style="font-weight:normal; color:#64748b; font-size:11px;">{{ booking.pickup_location }}</span></td>
+            <td class="value">{{ booking.pickup_date|date:"d M Y" }}{% if booking.pickup_time %}, {{ booking.pickup_time|time:"H:i" }}{% endif %}<br><span style="font-weight:normal; color:#64748b; font-size:11px;">{{ booking.pickup_location }}</span></td>
         </tr>
         <tr>
             <td class="label">Drop-off</td>
-            <td class="value">{{ booking.dropoff_date|date:"d M Y, H:i" }}<br><span style="font-weight:normal; color:#64748b; font-size:11px;">{{ booking.dropoff_location }}</span></td>
+            <td class="value">{{ booking.dropoff_date|date:"d M Y" }}{% if booking.dropoff_time %}, {{ booking.dropoff_time|time:"H:i" }}{% endif %}<br><span style="font-weight:normal; color:#64748b; font-size:11px;">{{ booking.dropoff_location }}</span></td>
         </tr>
         <tr>
             <td class="label">Duration</td>

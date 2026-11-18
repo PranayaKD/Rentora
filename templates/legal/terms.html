@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} | Rentora{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-6 py-12 md:py-20">
+    <div class="bg-surface-container-lowest rounded-3xl p-8 md:p-12 border border-surface-container-high shadow-sm">
+        <h1 class="font-headline text-3xl font-bold text-on-surface mb-6">Terms of Service</h1>
+        <p class="text-sm text-secondary mb-8">Last updated: November 2026</p>
+
+        <div class="space-y-6 text-sm text-on-surface leading-relaxed">
+            <section>
+                <h2 class="font-headline text-lg font-bold text-on-surface mb-2">1. Acceptance of Terms</h2>
+                <p class="text-secondary">By accessing and using Rentora's self-drive mobility services, web application, or fleet booking system, you agree to comply with and be bound by these Terms of Service. If you do not agree, please do not use our services.</p>
+            </section>
+
+            <section>
+                <h2 class="font-headline text-lg font-bold text-on-surface mb-2">2. Driver Eligibility & KYC Requirements</h2>
+                <p class="text-secondary">To operate a Rentora vehicle, drivers must be at least 21 years of age, hold a valid Indian Driving Licence (or recognized International Driving Permit), and successfully complete our Driving Licence verification protocol prior to trip departure.</p>
+            </section>
+
+            <section>
+                <h2 class="font-headline text-lg font-bold text-on-surface mb-2">3. Fuel and Kilometre Policy</h2>
+                <p class="text-secondary">Rentora operates on transparent same-to-same fuel policy. Selected KM package limits (300 km included or Unlimited km) apply strictly to the booking reservation. Overage beyond booked kilometres is billed at the vehicle's standard extra-km rate.</p>
+            </section>
+
+            <section>
+                <h2 class="font-headline text-lg font-bold text-on-surface mb-2">4. Cancellations and Refunds</h2>
+                <p class="text-secondary">Free cancellation is available up to 6 hours before scheduled trip start time. Cancellations requested within 6 hours of pickup are subject to standard cancellation adjustments as outlined in your booking breakdown.</p>
+            </section>
+
+            <section>
+                <h2 class="font-headline text-lg font-bold text-on-surface mb-2">5. Contact and Support</h2>
+                <p class="text-secondary">For any queries regarding these Terms, contact Rentora Support at support@rentora.in or via our 24/7 in-app emergency line.</p>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

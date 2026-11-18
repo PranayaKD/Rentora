@@ -1,0 +1,46 @@
+{% load static %}
+<!-- 4-Tab Bottom Navigation: Visible on mobile only, hidden on desktop -->
+<nav id="mobile-bottom-nav"
+    class="fixed bottom-0 left-0 right-0 z-40 bg-surface-container-lowest/95 backdrop-blur-xl border-t border-surface-container-highest safe-area-bottom shadow-[0_-4px_20px_rgba(0,0,0,0.04)] md:hidden">
+    <div class="flex items-center justify-around h-16 max-w-md mx-auto px-4">
+        <!-- Tab 1: Home -->
+        <a href="{% url 'index' %}"
+            class="flex flex-col items-center justify-center gap-1 min-w-[64px] min-h-[48px] {% if active_tab == 'home' %}text-primary font-bold{% else %}text-secondary hover:text-on-surface{% endif %} transition-colors"
+            aria-label="Home">
+            <span
+                class="material-symbols-outlined text-2xl {% if active_tab == 'home' %}text-primary{% endif %}">home</span>
+            <span class="text-[11px] font-semibold tracking-tight">Home</span>
+        </a>
+
+        <!-- Tab 2: Search -->
+        <a href="{% url 'cars' %}"
+            class="flex flex-col items-center justify-center gap-1 min-w-[64px] min-h-[48px] {% if active_tab == 'search' %}text-primary font-bold{% else %}text-secondary hover:text-on-surface{% endif %} transition-colors"
+            aria-label="Search">
+            <span
+                class="material-symbols-outlined text-2xl {% if active_tab == 'search' %}text-primary{% endif %}">search</span>
+            <span class="text-[11px] font-semibold tracking-tight">Search</span>
+        </a>
+
+        <!-- Tab 3: Bookings (Redirects to login with ?next= when unauthenticated) -->
+        <a href="{% if is_authenticated %}{% url 'dashboard_bookings' %}{% else %}{% url 'login' %}?next={% url 'dashboard_bookings' %}{% endif %}"
+            onclick="{% if not is_authenticated %}event.preventDefault(); openMobileAuthModal('login');{% endif %}"
+            class="flex flex-col items-center justify-center gap-1 min-w-[64px] min-h-[48px] {% if active_tab == 'bookings' or request.resolver_match.url_name == 'dashboard_bookings' %}text-primary font-bold{% else %}text-outline hover:text-primary{% endif %} transition-colors"
+            aria-label="Bookings">
+            <span
+                class="material-symbols-outlined text-2xl {% if active_tab == 'bookings' or request.resolver_match.url_name == 'dashboard_bookings' %}text-primary{% endif %}">calendar_today</span>
+            <span class="text-[11px] font-semibold tracking-tight">Bookings</span>
+        </a>
+
+        <!-- Tab 4: Profile (Redirects to login with ?next= when unauthenticated) -->
+        <a href="{% if is_authenticated %}{% url 'profile' %}{% else %}{% url 'login' %}?next={% url 'profile' %}{% endif %}"
+            onclick="{% if not is_authenticated %}event.preventDefault(); openMobileAuthModal('login');{% endif %}"
+            class="flex flex-col items-center justify-center gap-1 min-w-[64px] min-h-[48px] {% if active_tab == 'profile' or request.resolver_match.url_name == 'profile' or request.resolver_match.url_name == 'dashboard' %}text-primary font-bold{% else %}text-outline hover:text-primary{% endif %} transition-colors"
+            aria-label="Profile">
+            <span
+                class="material-symbols-outlined text-2xl {% if active_tab == 'profile' or request.resolver_match.url_name == 'profile' or request.resolver_match.url_name == 'dashboard' %}text-primary{% endif %}">person</span>
+            <span class="text-[11px] font-semibold tracking-tight">{% if is_authenticated %}Profile{% else %}Login{% endif %}</span>
+        </a>
+    </div>
+</nav>
+<!-- Spacer for Bottom Nav (Mobile Only) -->
+<div class="h-20 w-full shrink-0 md:hidden"></div>

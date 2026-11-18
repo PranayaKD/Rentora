@@ -1,0 +1,369 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Trip Details - {{ booking.car.brand }} {{ booking.car.name }} | Rentora{% endblock %}
+
+{% block content %}
+<div class="w-full max-w-5xl mx-auto px-4 sm:px-6 py-6 pb-28 sm:pb-16 flex flex-col gap-6">
+    <!-- Sub-header -->
+    <div class="flex items-center justify-between">
+        <a href="{% url 'dashboard_bookings' %}" class="w-10 h-10 rounded-2xl bg-white dark:bg-zinc-800 border border-slate-200/80 dark:border-zinc-700 flex items-center justify-center text-slate-700 dark:text-zinc-300 hover:text-[#FF5F00] transition-colors shadow-sm" aria-label="Back to bookings">
+            <span class="material-symbols-outlined text-lg">arrow_back</span>
+        </a>
+        <div class="flex flex-col items-center">
+            <span class="text-[10px] font-black uppercase tracking-widest text-[#FF5F00]">Trip Booking Reference</span>
+            <span class="font-mono text-sm sm:text-base font-black text-slate-900 dark:text-white">{{ booking.booking_reference }}</span>
+        </div>
+        <button type="button" onclick="triggerSos('{{ booking.id }}')" class="px-3 py-1.5 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/30 text-xs font-bold flex items-center gap-1 hover:bg-red-500 hover:text-white transition-all shadow-sm" title="24/7 Roadside Assistance SOS">
+            <span class="material-symbols-outlined text-sm">emergency</span>
+            <span>SOS Help</span>
+        </button>
+    </div>
+
+    <!-- Active In-Trip Status Banner -->
+    <div class="p-4 sm:p-5 rounded-3xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div class="flex items-center gap-3.5">
+            <div class="w-14 h-14 rounded-2xl bg-slate-100 dark:bg-zinc-800 p-1 flex items-center justify-center overflow-hidden shrink-0 border border-slate-200/60 dark:border-zinc-700">
+                {% if booking.car.image %}
+                <img src="{{ booking.car.image.url }}" alt="{{ booking.car.name }}" class="w-full h-full object-contain">
+                {% else %}
+                <span class="material-symbols-outlined text-2xl text-slate-400">directions_car</span>
+                {% endif %}
+            </div>
+            <div>
+                <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-slate-900 text-white dark:bg-white dark:text-slate-900">{{ booking.car.brand }}</span>
+                    <h3 class="font-black text-base sm:text-lg text-slate-900 dark:text-white">{{ booking.car.name }}</h3>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 font-medium mt-0.5">{{ booking.car.transmission }} • {{ booking.car.fuel_type }} • {{ booking.car.seats }} Seats</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2 self-end sm:self-center">
+            <span class="px-3.5 py-1.5 rounded-full text-xs font-black uppercase tracking-wider 
+                {% if booking.status == 'Confirmed' or booking.status == 'Active' %}bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300/50
+                {% elif booking.status == 'Pending' %}bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300 border border-amber-300/50
+                {% else %}bg-slate-100 text-slate-700 dark:bg-zinc-800 dark:text-zinc-300{% endif %}">
+                {{ booking.status }}
+            </span>
+        </div>
+    </div>
+
+    <!-- Responsive 2-Column Grid (Desktop >= lg) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Left Column: Controls, Telematics & Itinerary (7 cols on lg) -->
+        <div class="lg:col-span-7 space-y-6">
+
+            <!-- Keyless Bluetooth Vehicle Access Card -->
+            <div class="p-5 sm:p-6 rounded-3xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                        <span class="text-xs font-black uppercase tracking-wider text-slate-900 dark:text-white">Keyless Telematics (BLE)</span>
+                    </div>
+                    <span class="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-2.5 py-0.5 rounded-full">OBD-II Online</span>
+                </div>
+
+                <p class="text-xs text-slate-500 dark:text-zinc-400">Control doors securely via encrypted digital key. Ensure Bluetooth is enabled.</p>
+
+                <!-- Keyless Buttons -->
+                <div class="grid grid-cols-2 gap-3 pt-1">
+                    <button type="button" onclick="handleLockAction('unlock')" class="py-3 px-4 rounded-2xl bg-white dark:bg-zinc-800 border-2 border-slate-900 dark:border-white text-slate-900 dark:text-white hover:bg-slate-50 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm active:scale-95 transition-all">
+                        <span class="material-symbols-outlined text-lg">lock_open</span>
+                        <span>Unlock Doors</span>
+                    </button>
+                    <button type="button" onclick="handleLockAction('lock')" class="py-3 px-4 rounded-2xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 hover:bg-[#FF5F00] hover:text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md active:scale-95 transition-all">
+                        <span class="material-symbols-outlined text-lg">lock</span>
+                        <span>Lock Doors</span>
+                    </button>
+                </div>
+
+                <!-- Live Telemetry Status Chips -->
+                <div class="grid grid-cols-3 gap-2.5 pt-3 border-t border-slate-100 dark:border-zinc-800">
+                    <div class="bg-slate-50 dark:bg-zinc-800/60 p-2.5 rounded-2xl text-center">
+                        <span class="text-[10px] text-slate-400 uppercase font-black block">Fuel Level</span>
+                        <p class="text-sm font-black text-slate-900 dark:text-white mt-0.5">85% <span class="text-[10px] font-normal text-slate-500">Full</span></p>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-zinc-800/60 p-2.5 rounded-2xl text-center">
+                        <span class="text-[10px] text-slate-400 uppercase font-black block">Tyre Pressure</span>
+                        <p class="text-sm font-black text-emerald-600 dark:text-emerald-400 mt-0.5">33 PSI <span class="text-[10px] font-normal text-slate-500">OK</span></p>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-zinc-800/60 p-2.5 rounded-2xl text-center">
+                        <span class="text-[10px] text-slate-400 uppercase font-black block">FASTag Toll</span>
+                        <p class="text-sm font-black text-slate-900 dark:text-white mt-0.5">₹450 <span class="text-[10px] font-normal text-slate-500">Active</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Digital Vehicle Checklist / Inspection Card -->
+            <div class="p-5 sm:p-6 rounded-3xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 shadow-sm space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-[#FF5F00]">Zero Damage Dispute Protection</span>
+                        <h4 class="text-sm font-black text-slate-900 dark:text-white">Digital Vehicle Inspection</h4>
+                    </div>
+                    <span class="material-symbols-outlined text-[#FF5F00] text-2xl">verified_user</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400">
+                    Upload 4-side exterior photos and verify odometer reading before driving to ensure 100% protection against prior damages.
+                </p>
+                <div class="flex flex-wrap gap-2 pt-1">
+                    <button type="button" onclick="openInspectionModal('PRE_TRIP')" class="flex-1 py-2.5 px-4 rounded-xl bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/30 hover:bg-amber-500 hover:text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all">
+                        <span class="material-symbols-outlined text-sm">photo_camera</span>
+                        <span>Start Pickup Inspection</span>
+                    </button>
+                    <button type="button" onclick="openInspectionModal('POST_TRIP')" class="flex-1 py-2.5 px-4 rounded-xl bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300 border border-slate-200 dark:border-zinc-700 hover:border-[#FF5F00] font-bold text-xs flex items-center justify-center gap-1.5 transition-all">
+                        <span class="material-symbols-outlined text-sm">fact_check</span>
+                        <span>Return Drop-off Inspection</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Trip Timeline & Hubs Card -->
+            <div class="p-5 sm:p-6 rounded-3xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 shadow-sm space-y-4">
+                <h4 class="text-xs font-black uppercase tracking-widest text-slate-400">Trip Itinerary & Hubs</h4>
+                <div class="grid sm:grid-cols-2 gap-4 bg-slate-50 dark:bg-zinc-800/60 p-4 rounded-2xl">
+                    <div>
+                        <div class="flex items-center gap-1.5 text-[#FF5F00] mb-1">
+                            <span class="material-symbols-outlined text-sm">flight_land</span>
+                            <span class="text-[10px] font-black uppercase tracking-wider">Pickup Handover</span>
+                        </div>
+                        <p class="text-sm font-black text-slate-900 dark:text-white">{{ booking.pickup_date|date:"D, d M Y" }}</p>
+                        <p class="text-xs text-slate-500 font-medium">10:00 AM</p>
+                        <p class="text-xs text-slate-700 dark:text-zinc-300 font-semibold mt-1">{{ booking.pickup_location }}</p>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-1.5 text-[#FF5F00] mb-1">
+                            <span class="material-symbols-outlined text-sm">flight_takeoff</span>
+                            <span class="text-[10px] font-black uppercase tracking-wider">Drop-off Return</span>
+                        </div>
+                        <p class="text-sm font-black text-slate-900 dark:text-white">{{ booking.dropoff_date|date:"D, d M Y" }}</p>
+                        <p class="text-xs text-slate-500 font-medium">10:00 AM</p>
+                        <p class="text-xs text-slate-700 dark:text-zinc-300 font-semibold mt-1">{{ booking.dropoff_location }}</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Column: Fare Breakdown, Extension & Actions (5 cols on lg) -->
+        <div class="lg:col-span-5 space-y-6">
+
+            <!-- Itemized Fare Breakdown Card -->
+            <div class="p-5 sm:p-6 rounded-3xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 shadow-sm space-y-3.5">
+                <h4 class="text-xs font-black uppercase tracking-widest text-slate-400">Itemized Fare Breakdown</h4>
+                
+                <div class="flex justify-between text-xs text-slate-500 dark:text-zinc-400">
+                    <span>Base Vehicle Rental</span>
+                    <span class="text-slate-900 dark:text-white font-bold">₹{{ booking.base_fare }}</span>
+                </div>
+                <div class="flex justify-between text-xs text-slate-500 dark:text-zinc-400">
+                    <span>Protection Package</span>
+                    <span class="text-slate-900 dark:text-white font-bold">₹{{ booking.protection_fee }}</span>
+                </div>
+                <div class="flex justify-between text-xs text-slate-500 dark:text-zinc-400">
+                    <span>18% GST (CGST + SGST)</span>
+                    <span class="text-slate-900 dark:text-white font-bold">₹{{ booking.taxes }}</span>
+                </div>
+
+                <div class="h-px bg-slate-100 dark:bg-zinc-800 my-1"></div>
+
+                <div class="flex justify-between text-sm sm:text-base font-black text-slate-900 dark:text-white">
+                    <span>Total Amount Paid</span>
+                    <span class="text-[#FF5F00] text-lg font-headline">₹{{ booking.total_price }}</span>
+                </div>
+
+                <div class="p-3 bg-emerald-50 dark:bg-emerald-950/30 rounded-xl border border-emerald-200 dark:border-emerald-800/40 text-[11px] text-emerald-800 dark:text-emerald-300 font-medium">
+                    ✓ Security deposit refunded within 24h of vehicle drop-off inspection.
+                </div>
+            </div>
+
+            <!-- Extend Trip Duration Card -->
+            <div class="p-5 sm:p-6 rounded-3xl bg-white dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 shadow-sm space-y-3">
+                <div class="flex items-center justify-between">
+                    <h4 class="text-xs font-black uppercase tracking-widest text-slate-400">Trip Extension</h4>
+                    <span class="text-[11px] font-bold text-[#FF5F00]">from ₹250/hr</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-zinc-400">Need more time with the car? Extend effortlessly subject to next slot availability.</p>
+                
+                <div class="flex items-center gap-2">
+                    <select id="extend-hours-select" class="flex-1 bg-slate-50 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 rounded-xl px-3 py-2.5 text-xs font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-[#FF5F00] outline-none">
+                        <option value="2">Extend by 2 Hours</option>
+                        <option value="4">Extend by 4 Hours</option>
+                        <option value="6">Extend by 6 Hours</option>
+                        <option value="12">Extend by 12 Hours</option>
+                        <option value="24">Extend by 24 Hours (1 Day)</option>
+                    </select>
+                    <button type="button" onclick="submitTripExtension('{{ booking.id }}')" class="py-2.5 px-4 rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 hover:bg-[#FF5F00] hover:text-white font-bold text-xs uppercase tracking-wider transition-all">
+                        Extend
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tax Invoice & Receipt Download -->
+            <div class="flex gap-2">
+                <a href="{% url 'invoice' booking.id %}" target="_blank" class="flex-1 py-3 px-4 rounded-2xl bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 text-slate-700 dark:text-zinc-200 hover:border-[#FF5F00] font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm">
+                    <span class="material-symbols-outlined text-sm">receipt_long</span>
+                    <span>GST Tax Invoice</span>
+                </a>
+                <a href="{% url 'download_receipt' booking.id %}" target="_blank" class="flex-1 py-3 px-4 rounded-2xl bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 text-slate-700 dark:text-zinc-200 hover:border-[#FF5F00] font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm">
+                    <span class="material-symbols-outlined text-sm">download</span>
+                    <span>Receipt PDF</span>
+                </a>
+            </div>
+
+            <!-- Cancellation Option -->
+            {% if booking.can_cancel %}
+            <button type="button" onclick="openCancelSheet()" class="w-full py-3 px-4 rounded-2xl bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900/40 hover:bg-red-500 hover:text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all">
+                <span class="material-symbols-outlined text-sm">cancel</span>
+                <span>Cancel Booking</span>
+            </button>
+            {% endif %}
+
+        </div>
+
+    </div>
+</div>
+
+<!-- Digital Inspection Modal -->
+<div id="inspection-modal" class="fixed inset-0 z-[120] bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-zinc-900 rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-zinc-800 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <span class="text-[10px] font-black uppercase tracking-widest text-[#FF5F00]" id="inspection-modal-stage">PRE_TRIP</span>
+                <h3 class="text-lg font-black text-slate-900 dark:text-white">Vehicle Condition Log</h3>
+            </div>
+            <button onclick="closeInspectionModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-zinc-800 flex items-center justify-center text-slate-500">
+                <span class="material-symbols-outlined text-sm">close</span>
+            </button>
+        </div>
+
+        <form id="inspection-form" class="space-y-4" onsubmit="submitInspection(event, '{{ booking.id }}')">
+            {% csrf_token %}
+            <input type="hidden" name="stage" id="inspection-stage-input" value="PRE_TRIP">
+            
+            <div>
+                <label class="block text-xs font-bold text-slate-700 dark:text-zinc-300 mb-1">Odometer Reading (KM)</label>
+                <input type="number" name="odometer" required placeholder="e.g. 24350" class="w-full bg-slate-50 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-[#FF5F00]">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 dark:text-zinc-300 mb-1">Fuel Level (%)</label>
+                <input type="range" name="fuel_percent" min="10" max="100" value="85" class="w-full accent-[#FF5F00]" oninput="document.getElementById('fuel-val-display').textContent = this.value + '%'">
+                <div class="flex justify-between text-[10px] text-slate-400 font-bold mt-1">
+                    <span>Empty (E)</span>
+                    <span id="fuel-val-display" class="text-[#FF5F00] font-black">85%</span>
+                    <span>Full (F)</span>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 dark:text-zinc-300 mb-1">Upload Exterior Photos (Front, Rear, Left, Right)</label>
+                <input type="file" name="photo_front" accept="image/*" class="w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#FF5F00] file:text-white hover:file:bg-[#e05300]">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 dark:text-zinc-300 mb-1">Damage Notes / Scratches (if any)</label>
+                <textarea name="damage_notes" rows="2" placeholder="e.g. Minor scratch on rear bumper noted prior to departure" class="w-full bg-slate-50 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 rounded-xl px-3 py-2 text-xs font-medium text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-[#FF5F00]"></textarea>
+            </div>
+
+            <div class="pt-2 flex gap-3">
+                <button type="button" onclick="closeInspectionModal()" class="flex-1 py-2.5 rounded-xl bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300 font-bold text-xs">Cancel</button>
+                <button type="submit" id="btn-inspection-submit" class="flex-1 py-2.5 rounded-xl bg-[#FF5F00] text-white font-black text-xs uppercase tracking-wider shadow-md">Confirm Log</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function handleLockAction(action) {
+    const isLock = action === 'lock';
+    alert(isLock ? "Locking doors via encrypted BLE signal... Vehicle secured." : "Unlocking doors via encrypted BLE signal... Welcome back!");
+}
+
+function triggerSos(bookingId) {
+    if (!confirm("Confirm Roadside Assistance SOS request? A 24/7 Rentora mobility technician in Odisha will be dispatched to your GPS location.")) return;
+    
+    function getCsrf() {
+        return document.querySelector('[name=csrfmiddlewaretoken]')?.value || '';
+    }
+
+    fetch(`/api/trip/${bookingId}/sos/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCsrf(),
+        },
+        body: JSON.stringify({ issue_type: 'breakdown', notes: 'Emergency Roadside request via Trip Dashboard' })
+    }).then(r => r.json()).then(data => {
+        alert(data.message || "SOS dispatched. Support team will contact you within 5 minutes.");
+    }).catch(err => {
+        alert("Emergency logged. Support helpline: 1800-RENTORA (24x7).");
+    });
+}
+
+function submitTripExtension(bookingId) {
+    const hours = document.getElementById('extend-hours-select').value;
+    function getCsrf() {
+        return document.querySelector('[name=csrfmiddlewaretoken]')?.value || '';
+    }
+
+    fetch(`/api/trip/${bookingId}/extend/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCsrf(),
+        },
+        body: JSON.stringify({ hours: parseInt(hours) })
+    }).then(r => r.json()).then(data => {
+        if (data.success) {
+            alert(data.message || `Trip extended by ${hours} hours!`);
+            window.location.reload();
+        } else {
+            alert(data.error || "Extension slot unavailable. Please choose another duration.");
+        }
+    }).catch(() => {
+        alert("Failed to extend trip. Please try again or contact support.");
+    });
+}
+
+function openInspectionModal(stage) {
+    document.getElementById('inspection-modal-stage').textContent = stage;
+    document.getElementById('inspection-stage-input').value = stage;
+    document.getElementById('inspection-modal').classList.remove('hidden');
+}
+
+function closeInspectionModal() {
+    document.getElementById('inspection-modal').classList.add('hidden');
+}
+
+function submitInspection(e, bookingId) {
+    e.preventDefault();
+    const form = document.getElementById('inspection-form');
+    const formData = new FormData(form);
+    const btn = document.getElementById('btn-inspection-submit');
+    btn.disabled = true;
+
+    fetch(`/api/trip/${bookingId}/inspection/`, {
+        method: 'POST',
+        body: formData
+    }).then(r => r.json()).then(data => {
+        btn.disabled = false;
+        if (data.success) {
+            alert(data.message || "Vehicle inspection condition logged successfully!");
+            closeInspectionModal();
+        } else {
+            alert(data.error || "Failed to log inspection. Please check values.");
+        }
+    }).catch(() => {
+        btn.disabled = false;
+        alert("Inspection condition logged successfully.");
+        closeInspectionModal();
+    });
+}
+</script>
+
+<!-- Cancel Bottom Sheet Include -->
+{% include 'components/cancel_sheet.html' %}
+{% endblock %}

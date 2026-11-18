@@ -1,0 +1,556 @@
+{% load static %}
+<!-- Rentora 2-Column Side-by-Side Promotional Showcase (Left & Right Banners, 3-Second Infinite Forward Loop) -->
+<section class="relative w-full max-w-7xl mx-auto overflow-hidden my-4 select-none group/carousel min-w-0"
+  id="{{ carousel_id|default:'rentora-banner-carousel' }}">
+
+  <!-- Carousel Header / Live Tag -->
+  <section class="relative w-full max-w-7xl mx-auto overflow-hidden my-4 select-none group/showcase min-w-0"
+    id="{{ carousel_id|default:'rentora-promo-showcase' }}">
+
+    <!-- Showcase Header / Live Tag -->
+    <div class="flex items-center justify-between px-1.5 sm:px-2.5 mb-2.5">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span class="text-xs sm:text-sm font-extrabold text-primary tracking-tight">Exclusive Offers & Mobility
+          Passes</span>
+      </div>
+    </div>
+
+    <!-- Viewport Window (Zero horizontal scrollbars, hardware-accelerated clipping) -->
+    <div class="relative w-full overflow-hidden rounded-2xl sm:rounded-3xl min-w-0">
+
+      <!-- Sliding Track: On md+ displays 2 banners side-by-side (50% each); on mobile displays 1 banner (100%) -->
+      <div class="carousel-track flex transition-transform duration-700 ease-out will-change-transform min-w-0"
+        style="transform: translateX(0%);">
+
+        <div class="promo-track flex transition-transform duration-600 ease-out will-change-transform min-w-0"
+          style="transform: translateX(0%);">
+
+          <!-- Slide 0: All-Inclusive Monthly Car Subscriptions -->
+          <div class="carousel-slide w-full md:w-1/2 shrink-0 flex-none px-1.5 sm:px-2.5">
+            <div class="promo-slide w-full md:w-1/2 shrink-0 flex-none px-1.5 sm:px-2.5">
+              <a href="{% url 'subscription' %}"
+                class="block w-full h-full relative rounded-2xl sm:rounded-3xl overflow-hidden border border-outline-variant/30 shadow-sm hover:shadow-lg transition-all duration-300 bg-surface-container-low group/banner focus:outline-none"
+                aria-label="All-Inclusive Monthly Car Subscriptions">
+                <picture>
+                  <source srcset="{% static 'images/banners/banner_monthly_subscription.webp' %}?v={% now 'U' %}"
+                    type="image/webp">
+                  <img src="{% static 'images/banners/banner_monthly_subscription.jpg' %}?v={% now 'U' %}"
+                    alt="All-Inclusive Monthly Car Subscriptions - 30 Days Pass Rentora"
+                    class="w-full h-auto aspect-[16/9] object-cover object-center group-hover/banner:scale-[1.02] transition-transform duration-500 ease-out select-none"
+                    loading="eager" />
+                  <source srcset="{% static 'images/banners/banner_monthly_subscription.webp' %}?v=5.1"
+                    type="image/webp">
+                  <img src="{% static 'images/banners/banner_monthly_subscription.jpg' %}?v=5.1"
+                    alt="All-Inclusive Monthly Car Subscriptions - 30 Days Pass Rentora"
+                    class="w-full h-auto aspect-[16/9] object-cover object-center group-hover/banner:scale-[1.02] transition-transform duration-500 ease-out select-none"
+                    loading="eager" decoding="async" />
+                </picture>
+              </a>
+            </div>
+
+            <!-- Slide 1: Bhubaneswar Airport (BBI) Curb Delivery -->
+            <div class="carousel-slide w-full md:w-1/2 shrink-0 flex-none px-1.5 sm:px-2.5">
+              <div class="promo-slide w-full md:w-1/2 shrink-0 flex-none px-1.5 sm:px-2.5">
+                <a href="{% url 'cars' %}?hub=Bhubaneswar"
+                  class="block w-full h-full relative rounded-2xl sm:rounded-3xl overflow-hidden border border-outline-variant/30 shadow-sm hover:shadow-lg transition-all duration-300 bg-surface-container-low group/banner focus:outline-none"
+                  aria-label="Bhubaneswar Airport Curb Delivery">
+                  <picture>
+                    <source srcset="{% static 'images/banners/banner_airport_curb.webp' %}?v={% now 'U' %}"
+                      type="image/webp">
+                    <img src="{% static 'images/banners/banner_airport_curb.jpg' %}?v={% now 'U' %}"
+                      alt="Bhubaneswar Airport Curb Delivery - Self Drive Rentals"
+                      class="w-full h-auto aspect-[16/9] object-cover object-center group-hover/banner:scale-[1.02] transition-transform duration-500 ease-out select-none"
+                      loading="eager" />
+                    <source srcset="{% static 'images/banners/banner_airport_curb.webp' %}?v=5.1" type="image/webp">
+                    <img src="{% static 'images/banners/banner_airport_curb.jpg' %}?v=5.1"
+                      alt="Bhubaneswar Airport Curb Delivery - Self Drive Rentals"
+                      class="w-full h-auto aspect-[16/9] object-cover object-center group-hover/banner:scale-[1.02] transition-transform duration-500 ease-out select-none"
+                      loading="eager" decoding="async" />
+                  </picture>
+                </a>
+              </div>
+
+              <!-- Slide 2: Puri Marine Drive & Konark: Unlimited KM -->
+              <div class="carousel-slide w-full md:w-1/2 shrink-0 flex-none px-1.5 sm:px-2.5">
+                <div class="promo-slide w-full md:w-1/2 shrink-0 flex-none px-1.5 sm:px-2.5">
+                  <a href="{% url 'cars' %}?category=SUV"
+                    class="block w-full h-full relative rounded-2xl sm:rounded-3xl overflow-hidden border border-outline-variant/30 shadow-sm hover:shadow-lg transition-all duration-300 bg-surface-container-low group/banner focus:outline-none"
+                    aria-label="Puri Marine Drive Unlimited KM">
+                    <picture>
+                      <source srcset="{% static 'images/banners/banner_unlimited_km.webp' %}?v={% now 'U' %}"
+                        type="image/webp">
+                      <img src="{% static 'images/banners/banner_unlimited_km.jpg' %}?v={% now 'U' %}"
+                        alt="Puri Marine Drive & Konark: Unlimited KM - Self Drive Thar 4x4"
+                        class="w-full h-auto aspect-[16/9] object-cover object-center group-hover/banner:scale-[1.02] transition-transform duration-500 ease-out select-none"
+                        loading="lazy" />
+                      <source srcset="{% static 'images/banners/banner_unlimited_km.webp' %}?v=5.1" type="image/webp">
+                      <img src="{% static 'images/banners/banner_unlimited_km.jpg' %}?v=5.1"
+                        alt="Puri Marine Drive & Konark: Unlimited KM - Self Drive Thar 4x4"
+                        class="w-full h-auto aspect-[16/9] object-cover object-center group-hover/banner:scale-[1.02] transition-transform duration-500 ease-out select-none"
+                        loading="eager" decoding="async" />
+                    </picture>
+                  </a>
+                </div>
+
+                <!-- Slide 3: Drive With ₹0 Security Deposit Across Odisha -->
+                <div class="carousel-slide w-full md:w-1/2 shrink-0 flex-none px-1.5 sm:px-2.5">
+                  <div class="promo-slide w-full md:w-1/2 shrink-0 flex-none px-1.5 sm:px-2.5">
+                    <a href="{% url 'cars' %}"
+                      class="block w-full h-full relative rounded-2xl sm:rounded-3xl overflow-hidden border border-outline-variant/30 shadow-sm hover:shadow-lg transition-all duration-300 bg-surface-container-low group/banner focus:outline-none"
+                      aria-label="Odisha Drives with Zero Deposit">
+                      <picture>
+                        <source srcset="{% static 'images/banners/banner_zero_deposit.webp' %}?v={% now 'U' %}"
+                          type="image/webp">
+                        <img src="{% static 'images/banners/banner_zero_deposit.jpg' %}?v={% now 'U' %}"
+                          alt="Drive With ₹0 Security Deposit Across Odisha - Verified DigiLocker KYC"
+                          class="w-full h-auto aspect-[16/9] object-cover object-center group-hover/banner:scale-[1.02] transition-transform duration-500 ease-out select-none"
+                          loading="lazy" />
+                        <source srcset="{% static 'images/banners/banner_zero_deposit.webp' %}?v=5.1" type="image/webp">
+                        <img src="{% static 'images/banners/banner_zero_deposit.jpg' %}?v=5.1"
+                          alt="Drive With ₹0 Security Deposit Across Odisha - Verified DigiLocker KYC"
+                          class="w-full h-auto aspect-[16/9] object-cover object-center group-hover/banner:scale-[1.02] transition-transform duration-500 ease-out select-none"
+                          loading="eager" decoding="async" />
+                      </picture>
+                    </a>
+                  </div>
+
+                  <!-- Slide 4: Drive Green Across Odisha: Save 75% on Fuel -->
+                  <div class="carousel-slide w-full md:w-1/2 shrink-0 flex-none px-1.5 sm:px-2.5">
+                    <div class="promo-slide w-full md:w-1/2 shrink-0 flex-none px-1.5 sm:px-2.5">
+                      <a href="{% url 'cars' %}?category=Electric"
+                        class="block w-full h-full relative rounded-2xl sm:rounded-3xl overflow-hidden border border-outline-variant/30 shadow-sm hover:shadow-lg transition-all duration-300 bg-surface-container-low group/banner focus:outline-none"
+                        aria-label="Drive Green Across Odisha">
+                        <picture>
+                          <source srcset="{% static 'images/banners/banner_ev_cars.webp' %}?v={% now 'U' %}"
+                            type="image/webp">
+                          <img src="{% static 'images/banners/banner_ev_cars.jpg' %}?v={% now 'U' %}"
+                            alt="Drive Green Across Odisha: Save 75% on Fuel - 100% Electric Self-Drive"
+                            class="w-full h-auto aspect-[16/9] object-cover object-center group-hover/banner:scale-[1.02] transition-transform duration-500 ease-out select-none"
+                            loading="lazy" />
+                          <source srcset="{% static 'images/banners/banner_ev_cars.webp' %}?v=5.1" type="image/webp">
+                          <img src="{% static 'images/banners/banner_ev_cars.jpg' %}?v=5.1"
+                            alt="Drive Green Across Odisha: Save 75% on Fuel - 100% Electric Self-Drive"
+                            class="w-full h-auto aspect-[16/9] object-cover object-center group-hover/banner:scale-[1.02] transition-transform duration-500 ease-out select-none"
+                            loading="eager" decoding="async" />
+                        </picture>
+                      </a>
+                    </div>
+
+                    <!-- Slide 5 (Clone of Slide 0 for Infinite Forward Loop) -->
+                    <div class="carousel-slide w-full md:w-1/2 shrink-0 flex-none px-1.5 sm:px-2.5">
+                      <a href="{% url 'subscription' %}"
+                        class="block w-full h-full relative rounded-2xl sm:rounded-3xl overflow-hidden border border-outline-variant/30 shadow-sm hover:shadow-lg transition-all duration-300 bg-surface-container-low group/banner focus:outline-none"
+                        aria-label="All-Inclusive Monthly Car Subscriptions">
+                        <!-- Slide 5 (Clone of Slide 0 for Continuous Forward Loop) -->
+                        <div class="promo-slide w-full md:w-1/2 shrink-0 flex-none px-1.5 sm:px-2.5" aria-hidden="true">
+                          <a href="{% url 'subscription' %}" tabindex="-1"
+                            class="block w-full h-full relative rounded-2xl sm:rounded-3xl overflow-hidden border border-outline-variant/30 shadow-sm hover:shadow-lg transition-all duration-300 bg-surface-container-low group/banner focus:outline-none">
+                            <picture>
+                              <source
+                                srcset="{% static 'images/banners/banner_monthly_subscription.webp' %}?v={% now 'U' %}"
+                                type="image/webp">
+                              <img src="{% static 'images/banners/banner_monthly_subscription.jpg' %}?v={% now 'U' %}"
+                                alt="All-Inclusive Monthly Car Subscriptions - 30 Days Pass Rentora"
+                                class="w-full h-auto aspect-[16/9] object-cover object-center group-hover/banner:scale-[1.02] transition-transform duration-500 ease-out select-none"
+                                loading="lazy" />
+                              <source srcset="{% static 'images/banners/banner_monthly_subscription.webp' %}?v=5.1"
+                                type="image/webp">
+                              <img src="{% static 'images/banners/banner_monthly_subscription.jpg' %}?v=5.1" alt=""
+                                class="w-full h-auto aspect-[16/9] object-cover object-center select-none"
+                                loading="eager" decoding="async" />
+                            </picture>
+                          </a>
+                        </div>
+
+                        <!-- Slide 6 (Clone of Slide 1 for Infinite Forward Loop) -->
+                        <div class="carousel-slide w-full md:w-1/2 shrink-0 flex-none px-1.5 sm:px-2.5">
+                          <a href="{% url 'cars' %}?hub=Bhubaneswar"
+                            class="block w-full h-full relative rounded-2xl sm:rounded-3xl overflow-hidden border border-outline-variant/30 shadow-sm hover:shadow-lg transition-all duration-300 bg-surface-container-low group/banner focus:outline-none"
+                            aria-label="Bhubaneswar Airport Curb Delivery">
+                            <!-- Slide 6 (Clone of Slide 1 for Continuous 2-Up Desktop Frame) -->
+                            <div class="promo-slide w-full md:w-1/2 shrink-0 flex-none px-1.5 sm:px-2.5"
+                              aria-hidden="true">
+                              <a href="{% url 'cars' %}?hub=Bhubaneswar" tabindex="-1"
+                                class="block w-full h-full relative rounded-2xl sm:rounded-3xl overflow-hidden border border-outline-variant/30 shadow-sm hover:shadow-lg transition-all duration-300 bg-surface-container-low group/banner focus:outline-none">
+                                <picture>
+                                  <source
+                                    srcset="{% static 'images/banners/banner_airport_curb.webp' %}?v={% now 'U' %}"
+                                    type="image/webp">
+                                  <img src="{% static 'images/banners/banner_airport_curb.jpg' %}?v={% now 'U' %}"
+                                    alt="Bhubaneswar Airport Curb Delivery - Self Drive Rentals"
+                                    class="w-full h-auto aspect-[16/9] object-cover object-center group-hover/banner:scale-[1.02] transition-transform duration-500 ease-out select-none"
+                                    loading="lazy" />
+                                  <source srcset="{% static 'images/banners/banner_airport_curb.webp' %}?v=5.1"
+                                    type="image/webp">
+                                  <img src="{% static 'images/banners/banner_airport_curb.jpg' %}?v=5.1" alt=""
+                                    class="w-full h-auto aspect-[16/9] object-cover object-center select-none"
+                                    loading="eager" decoding="async" />
+                                </picture>
+                              </a>
+                            </div>
+
+                            <!-- Slide 7 (Clone of Slide 2 for Continuous 2-Up Seamless Frame) -->
+                            <div class="carousel-slide w-full md:w-1/2 shrink-0 flex-none px-1.5 sm:px-2.5">
+                              <a href="{% url 'cars' %}?category=SUV"
+                                class="block w-full h-full relative rounded-2xl sm:rounded-3xl overflow-hidden border border-outline-variant/30 shadow-sm hover:shadow-lg transition-all duration-300 bg-surface-container-low group/banner focus:outline-none"
+                                aria-label="Puri Marine Drive Unlimited KM">
+                                <picture>
+                                  <source
+                                    srcset="{% static 'images/banners/banner_unlimited_km.webp' %}?v={% now 'U' %}"
+                                    type="image/webp">
+                                  <img src="{% static 'images/banners/banner_unlimited_km.jpg' %}?v={% now 'U' %}"
+                                    alt="Puri Marine Drive & Konark: Unlimited KM - Self Drive Thar 4x4"
+                                    class="w-full h-auto aspect-[16/9] object-cover object-center group-hover/banner:scale-[1.02] transition-transform duration-500 ease-out select-none"
+                                    loading="lazy" />
+                                </picture>
+                              </a>
+                            </div>
+
+                        </div>
+
+                        <!-- Navigation Chevrons (Desktop hover only) -->
+                        <button type="button"
+                          onclick="carouselPrev('{{ carousel_id|default:'rentora-banner-carousel' }}')"
+                          aria-label="Previous Banner"
+                          class="hidden sm:flex absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-surface-container-lowest/90 hover:bg-surface-container-lowest border border-outline-variant/40 text-primary items-center justify-center transition-all opacity-0 group-hover/carousel:opacity-100 shadow-lg cursor-pointer">
+                          <button type="button"
+                            onclick="promoBannerPrev('{{ carousel_id|default:'rentora-promo-showcase' }}')"
+                            aria-label="Previous Banner"
+                            class="hidden sm:flex absolute left-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-surface-container-lowest/90 hover:bg-surface-container-lowest border border-outline-variant/40 text-primary items-center justify-center transition-all opacity-0 group-hover/showcase:opacity-100 shadow-lg cursor-pointer">
+                            <span class="material-symbols-outlined text-lg">chevron_left</span>
+                          </button>
+                          <button type="button"
+                            onclick="carouselNext('{{ carousel_id|default:'rentora-banner-carousel' }}')"
+                            aria-label="Next Banner"
+                            class="hidden sm:flex absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-surface-container-lowest/90 hover:bg-surface-container-lowest border border-outline-variant/40 text-primary items-center justify-center transition-all opacity-0 group-hover/carousel:opacity-100 shadow-lg cursor-pointer">
+                            <button type="button"
+                              onclick="promoBannerNext('{{ carousel_id|default:'rentora-promo-showcase' }}')"
+                              aria-label="Next Banner"
+                              class="hidden sm:flex absolute right-3 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-surface-container-lowest/90 hover:bg-surface-container-lowest border border-outline-variant/40 text-primary items-center justify-center transition-all opacity-0 group-hover/showcase:opacity-100 shadow-lg cursor-pointer">
+                              <span class="material-symbols-outlined text-lg">chevron_right</span>
+                            </button>
+
+                    </div>
+
+                    <!-- Pagination Dot Indicators -->
+                    <!-- Pagination Dot Indicators (Strictly 5 dots corresponding to 5 unique banners) -->
+                    <div class="flex items-center justify-center gap-1.5 mt-3">
+                      {% for i in "01234" %}
+                      <button type="button"
+                        onclick="carouselGoTo('{{ carousel_id|default:'rentora-banner-carousel' }}', {{ forloop.counter0 }})"
+                        aria-label="Go to banner {{ forloop.counter }}"
+                        class="carousel-dot transition-all duration-300 rounded-full {% if forloop.first %}w-6 h-2 bg-primary{% else %}w-2 h-2 bg-outline-variant/60 hover:bg-primary/50{% endif %}">
+                        <button type="button"
+                          onclick="promoBannerGoTo('{{ carousel_id|default:'rentora-promo-showcase' }}', {{ forloop.counter0 }})"
+                          aria-label="Go to banner {{ forloop.counter }}"
+                          class="promo-dot transition-all duration-300 rounded-full {% if forloop.first %}w-6 h-2 bg-primary cursor-pointer{% else %}w-2 h-2 bg-outline-variant/60 hover:bg-primary/50 cursor-pointer{% endif %}">
+                        </button>
+                        {% endfor %}
+                    </div>
+
+                    <script>
+                      (function () {
+                        const carouselId = "{{ carousel_id|default:'rentora-banner-carousel' }}";
+                        function setupCarousel() {
+                          const container = document.getElementById(carouselId);
+                          if (!container || container.getAttribute('data-carousel-ready') === 'true') return;
+                          container.setAttribute('data-carousel-ready', 'true');
+                          (function () {
+                            const rootId = "{{ carousel_id|default:'rentora-promo-showcase' }}";
+                            function initShowcase() {
+                              const root = document.getElementById(rootId);
+                              if (!root) return;
+                              if (root.getAttribute('data-promo-showcase-ready') === 'true') return;
+                              root.setAttribute('data-promo-showcase-ready', 'true');
+
+                              const track = container.querySelector('.carousel-track');
+                              const dots = container.querySelectorAll('.carousel-dot');
+                              const slides = container.querySelectorAll('.carousel-slide');
+                              const realSlideCount = 5; // 5 unique banners
+                              let currentIndex = 0;
+                              let timer = null;
+                              let isHovered = false;
+                              let isTransitioning = false;
+                              let transitionSafetyTimer = null;
+                              const track = root.querySelector('.promo-track');
+                              const dots = root.querySelectorAll('.promo-dot');
+                              const totalOriginal = 5;
+                              let currentIndex = 0;
+                              let autoplayTimer = null;
+                              let isHovered = false;
+
+                              function updateDots(activeIdx) {
+                                const dotIdx = ((activeIdx % realSlideCount) + realSlideCount) % realSlideCount;
+                                dots.forEach((dot, idx) => {
+                                  if (idx === dotIdx) {
+                                    dot.className = 'carousel-dot transition-all duration-300 rounded-full w-6 h-2 bg-primary';
+                                  } else {
+                                    dot.className = 'carousel-dot transition-all duration-300 rounded-full w-2 h-2 bg-outline-variant/60 hover:bg-primary/50';
+                                  }
+                                });
+                              }
+                              function getStepPercent() {
+                                return window.innerWidth >= 768 ? 50 : 100;
+                              }
+
+                              function slideTo(index, animate = true) {
+                                if (!track || !slides.length) return;
+                                currentIndex = index;
+                                if (transitionSafetyTimer) {
+                                  clearTimeout(transitionSafetyTimer);
+                                  transitionSafetyTimer = null;
+                                }
+                                const slideWidth = slides[0].getBoundingClientRect().width;
+                                if (animate) {
+                                  isTransitioning = true;
+                                  track.style.transition = 'transform 700ms cubic-bezier(0.16, 1, 0.3, 1)';
+                                  transitionSafetyTimer = setTimeout(() => {
+                                    isTransitioning = false;
+                                    if (currentIndex >= realSlideCount) {
+                                      slideTo(0, false);
+                                    }
+                                  }, 800);
+                                  function updateDots(activeIdx) {
+                                    const dotIdx = ((activeIdx % totalOriginal) + totalOriginal) % totalOriginal;
+                                    dots.forEach((dot, idx) => {
+                                      if (idx === dotIdx) {
+                                        dot.className = 'promo-dot transition-all duration-300 rounded-full w-6 h-2 bg-primary cursor-pointer';
+                                      } else {
+                                        track.style.transition = 'none';
+                                        dot.className = 'promo-dot transition-all duration-300 rounded-full w-2 h-2 bg-outline-variant/60 hover:bg-primary/50 cursor-pointer';
+                                      }
+                                      track.style.transform = 'translateX(-' + (currentIndex * slideWidth) + 'px)';
+                                      updateDots(currentIndex);
+                                    }
+
+        // Loop handling: when transition ends at index >= realSlideCount (5), snap back to index 0 instantly
+        if (track) {
+                                      track.addEventListener('transitionend', function (e) {
+                                        if (e.target !== track) return;
+                                        isTransitioning = false;
+                                        if (transitionSafetyTimer) {
+                                          clearTimeout(transitionSafetyTimer);
+                                          transitionSafetyTimer = null;
+                                        }
+                                        if (currentIndex >= realSlideCount) {
+                                          slideTo(0, false);
+                                        }
+                                      });
+                                      function slideTo(index, animate = true) {
+                                        if (!track) return;
+                                        currentIndex = index;
+                                        const step = getStepPercent();
+
+                                        if (animate) {
+                                          track.style.transition = 'transform 600ms cubic-bezier(0.16, 1, 0.3, 1)';
+                                        } else {
+                                          track.style.transition = 'none';
+                                        }
+
+                                        function next() {
+                                          if (isTransitioning) return;
+                                          if (currentIndex >= realSlideCount) {
+                                            track.style.transform = 'translateX(-' + (currentIndex * step) + '%)';
+                                            updateDots(currentIndex);
+                                          }
+
+                                          if (track) {
+                                            track.addEventListener('transitionend', function (e) {
+                                              if (e.target !== track) return;
+                                              if (currentIndex >= totalOriginal) {
+                                                // Reached clone: silently snap back to 0 without animation
+                                                slideTo(0, false);
+                                                void track.offsetWidth;
+                                              }
+                                              slideTo(currentIndex + 1, true);
+                                            }
+
+        function prev() {
+                                                if (isTransitioning) return;
+                                                if (currentIndex <= 0) {
+                                                  slideTo(realSlideCount, false);
+                                                  void track.offsetWidth;
+                                                  setTimeout(() => slideTo(realSlideCount - 1, true), 20);
+                                                } else {
+                                                  slideTo(currentIndex - 1, true);
+                                                }
+                                                function next() {
+                                                  if (currentIndex >= totalOriginal) {
+                                                    slideTo(0, false);
+                                                    void track.offsetWidth;
+                                                  }
+
+                                                  function startAutoplay() {
+                                                    stopAutoplay();
+                                                    timer = setInterval(next, 3000);
+                                                    function prev() {
+                                                      if (currentIndex <= 0) {
+                                                        slideTo(totalOriginal, false);
+                                                        void track.offsetWidth;
+                                                        setTimeout(() => slideTo(totalOriginal - 1, true), 20);
+                                                      } else {
+                                                        slideTo(currentIndex - 1, true);
+                                                      }
+
+                                                      function stopAutoplay() {
+                                                        if (timer) {
+                                                          clearInterval(timer);
+                                                          timer = null;
+                                                        }
+                                                        function startAutoplay() {
+                                                          stopAutoplay();
+                                                          autoplayTimer = setInterval(next, 3000);
+                                                        }
+
+                                                        function stopAutoplay() {
+                                                          if (autoplayTimer) {
+                                                            clearInterval(autoplayTimer);
+                                                            autoplayTimer = null;
+                                                          }
+
+                                                          container.addEventListener('mouseenter', function () {
+                                                            isHovered = true;
+                                                            stopAutoplay();
+                                                          });
+                                                          root.addEventListener('mouseenter', () => {
+                                                            isHovered = true;
+                                                            stopAutoplay();
+                                                          });
+
+                                                          container.addEventListener('mouseleave', function () {
+                                                            isHovered = false;
+                                                            startAutoplay();
+                                                          });
+                                                          root.addEventListener('mouseleave', () => {
+                                                            isHovered = false;
+                                                            startAutoplay();
+                                                          });
+
+                                                          // Page visibility listener: pause on background tabs so animations do not get desynced
+                                                          document.addEventListener('visibilitychange', function () {
+                                                            if (document.hidden) {
+                                                              stopAutoplay();
+                                                            } else {
+                                                              if (currentIndex >= realSlideCount) {
+                                                                slideTo(0, false);
+                                                              }
+                                                              if (!isHovered) startAutoplay();
+                                                              document.addEventListener('visibilitychange', () => {
+                                                                if (document.hidden) {
+                                                                  stopAutoplay();
+                                                                } else {
+                                                                  if (currentIndex >= totalOriginal) {
+                                                                    slideTo(0, false);
+                                                                  }
+                                                                });
+
+                                                              // Responsive resize adjustment
+                                                              window.addEventListener('resize', function () {
+                                                                slideTo(currentIndex, false);
+                                                              }, { passive: true });
+                                                              window.addEventListener('resize', () => {
+                                                                slideTo(currentIndex, false);
+                                                              }, { passive: true });
+
+                                                              // Touch / swipe support
+                                                              let startX = 0, diffX = 0;
+                                                              container.addEventListener('touchstart', function (e) {
+                                                                startX = e.touches[0].clientX;
+                                                                stopAutoplay();
+                                                              }, { passive: true });
+                                                              // Touch / swipe gestures
+                                                              let touchStartX = 0, touchDiffX = 0;
+                                                              root.addEventListener('touchstart', (e) => {
+                                                                touchStartX = e.touches[0].clientX;
+                                                                stopAutoplay();
+                                                              }, { passive: true });
+
+                                                              container.addEventListener('touchmove', function (e) {
+                                                                diffX = e.touches[0].clientX - startX;
+                                                              }, { passive: true });
+                                                              root.addEventListener('touchmove', (e) => {
+                                                                touchDiffX = e.touches[0].clientX - touchStartX;
+                                                              }, { passive: true });
+
+                                                              container.addEventListener('touchend', function () {
+                                                                if (Math.abs(diffX) > 40) {
+                                                                  if (diffX < 0) next();
+                                                                  else prev();
+                                                                }
+                                                                diffX = 0;
+                                                                if (!isHovered) startAutoplay();
+                                                              });
+                                                              root.addEventListener('touchend', () => {
+                                                                if (Math.abs(touchDiffX) > 40) {
+                                                                  if (touchDiffX < 0) next();
+                                                                  else prev();
+                                                                }
+                                                                touchDiffX = 0;
+                                                                if (!isHovered) startAutoplay();
+                                                              });
+
+                                                              // Global window hooks for chevron buttons
+                                                              window['carousel_' + carouselId] = { next, prev, goTo: (idx) => slideTo(idx, true), startAutoplay, stopAutoplay };
+                                                              window.carouselNext = function (id) {
+                                                                if (window['carousel_' + id]) {
+                                                                  window['carousel_' + id].next();
+                                                                  window['carousel_' + id].startAutoplay();
+                                                                }
+                                                              };
+                                                              window.carouselPrev = function (id) {
+                                                                if (window['carousel_' + id]) {
+                                                                  window['carousel_' + id].prev();
+                                                                  window['carousel_' + id].startAutoplay();
+                                                                }
+                                                              };
+                                                              window.carouselGoTo = function (id, index) {
+                                                                if (window['carousel_' + id]) {
+                                                                  window['carousel_' + id].goTo(index);
+                                                                  window['carousel_' + id].startAutoplay();
+                                                                }
+                                                              };
+                                                              // Global navigation hooks
+                                                              window['promoShowcase_' + rootId] = { next, prev, goTo: (idx) => slideTo(idx, true), startAutoplay, stopAutoplay };
+                                                              window.promoBannerNext = function (id) {
+                                                                const instance = window['promoShowcase_' + (id || rootId)];
+                                                                if (instance) {
+                                                                  instance.next();
+                                                                  instance.startAutoplay();
+                                                                }
+                                                              };
+                                                              window.promoBannerPrev = function (id) {
+                                                                const instance = window['promoShowcase_' + (id || rootId)];
+                                                                if (instance) {
+                                                                  instance.prev();
+                                                                  instance.startAutoplay();
+                                                                }
+                                                              };
+                                                              window.promoBannerGoTo = function (id, index) {
+                                                                const instance = window['promoShowcase_' + (id || rootId)];
+                                                                if (instance) {
+                                                                  instance.goTo(index);
+                                                                  instance.startAutoplay();
+                                                                }
+                                                              };
+
+                                                              // Initial render & autoplay
+                                                              slideTo(0, false);
+                                                              startAutoplay();
+                                                            }
+
+                                                            if (document.readyState === 'loading') {
+                                                              document.addEventListener('DOMContentLoaded', setupCarousel);
+                                                            } else {
+                                                              setupCarousel();
+                                                            }
+                                                          })();
+                                                          if (document.readyState === 'loading') {
+                                                            document.addEventListener('DOMContentLoaded', initShowcase);
+                                                          } else {
+                                                            initShowcase();
+                                                          }
+                                                        })();
+                    </script>
+
+  </section>

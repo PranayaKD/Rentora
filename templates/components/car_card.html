@@ -1,75 +1,106 @@
 {% load static %}
-<div class="car-card group flex flex-col h-full bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[2.5rem] p-6 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-500">
-    
-    <!-- Header: Badge & Wishlist -->
-    <div class="flex items-center justify-between mb-4 z-20">
-        <span class="px-3 py-1 bg-slate-100 dark:bg-slate-800/50 rounded-full text-[9px] font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">
-            {{ car.category }}
-        </span>
-        <button onclick="toggleWishlist('{{ car.id }}', this)" class="size-8 rounded-full flex items-center justify-center text-slate-300 hover:text-red-500 transition-colors">
-            <span class="material-symbols-outlined text-[1.2rem] {% if car.id in wishlisted_car_ids %}filled-heart text-red-500{% endif %}">favorite</span>
+<!-- Reusable Stitch Car Card with Dynamic Pricing & Transparent Fare Breakup (Compact & Razor-Sharp) -->
+<article class="rentora-car-card bg-surface-container-lowest rounded-2xl border border-outline-variant/50 hover:border-primary/50 p-3 sm:p-3.5 shadow-2xs hover:shadow-md transition-all duration-300 flex flex-col justify-between group relative overflow-hidden"
+     data-car-id="{{ car.id }}"
+     data-hourly="{{ car.hourly_rate }}"
+     data-unlimited-hourly="{{ car.hourly_rate_unlimited }}"
+     data-daily="{{ car.price_per_day|floatformat:0 }}"
+     data-unlimited-daily="{{ car.price_per_day_unlimited|floatformat:0 }}"
+     data-category="{{ car.category }}"
+     data-transmission="{{ car.transmission }}"
+     data-fuel="{{ car.fuel_type }}"
+     data-seats="{{ car.seats }}"
+     data-rating="{{ car.rating|floatformat:1 }}"
+     data-deposit="{{ car.security_deposit|floatformat:0 }}"
+     data-free-km="{{ car.free_km|default:300 }}"
+     data-extra-km="{{ car.features.extra_km_rate|default:7 }}">
+
+    <div>
+        <!-- Badges & Wishlist Header -->
+        <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider bg-primary text-secondary-container">
+                    {{ car.category }}
+                </span>
+                <span class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-secondary-container/20 text-on-secondary-fixed border border-secondary-container/30">
+                    FASTAG READY
+                </span>
+            </div>
+
+            <!-- Wishlist Button -->
+            <button type="button" onclick="toggleWishlist('{{ car.id }}', this)" class="w-7 h-7 rounded-full bg-surface-container-low hover:bg-surface-container flex items-center justify-center text-on-surface shadow-xs active:scale-90 transition-transform" aria-label="Save to wishlist">
+                <span class="material-symbols-outlined text-[15px] {% if car.id in wishlisted_car_ids %}text-red-500 fill{% endif %}" style="{% if car.id in wishlisted_car_ids %}font-variation-settings: 'FILL' 1;{% endif %}">favorite</span>
+            </button>
+        </div>
+
+        <!-- Vehicle Image Showcase: Clean Studio Frame & Razor-Sharp Object Contain -->
+        <a href="{% url 'car_detail' car.id %}" class="block w-full h-36 sm:h-38 rounded-xl overflow-hidden bg-gradient-to-b from-surface-container-low/40 to-surface-container-low/70 relative group border border-outline-variant/20 p-2 flex items-center justify-center">
+            {% if car.image %}
+            <img src="{{ car.image.url }}" alt="{{ car.brand }} {{ car.name }}" class="car-main-img max-w-full max-h-full object-contain object-center group-hover:scale-105 transition-transform duration-500 [image-rendering:-webkit-optimize-contrast] drop-shadow-xs" onerror="this.src='{% static 'images/ui/car-placeholder.jpg' %}'"/>
+            {% else %}
+            <img src="{% static 'images/ui/car-placeholder.jpg' %}" alt="{{ car.name }}" class="car-main-img max-w-full max-h-full object-contain object-center"/>
+            {% endif %}
+
+            <!-- Rating Overlay Badge -->
+            <div class="absolute bottom-2 left-2 bg-surface-container-lowest/95 backdrop-blur-md px-1.5 py-0.5 rounded text-[9px] font-bold text-primary flex items-center gap-0.5 shadow-2xs border border-outline-variant/40">
+                <span class="material-symbols-outlined text-secondary-container text-[11px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                <span>{{ car.rating|floatformat:1 }}</span>
+                <span class="text-outline-variant font-normal">({{ car.rating_count|default:190 }}+)</span>
+            </div>
+
+            <!-- Hub Overlay Badge -->
+            <div class="absolute top-2 right-2 bg-surface-container-lowest/90 backdrop-blur-sm px-1.5 py-0.5 rounded text-[9px] font-bold text-on-surface">
+                {{ current_city|default:"Bhubaneswar Hub" }}
+            </div>
+        </a>
+
+        <!-- Title & Subtitle -->
+        <div class="mt-3">
+            <div class="text-[9px] uppercase font-bold tracking-wider text-on-surface-variant">{{ car.brand }} Fleet</div>
+            <a href="{% url 'car_detail' car.id %}" class="block group-hover:text-secondary transition-colors">
+                <h3 class="text-sm sm:text-[15px] font-bold text-primary truncate leading-tight mt-0.5">{{ car.brand }} {{ car.name }}</h3>
+            </a>
+            <div class="text-[11px] text-on-surface-variant mt-0.5 flex items-center gap-1">
+                <span class="material-symbols-outlined text-[12px] text-outline">pin_drop</span>
+                <span>{{ current_city|default:"Bhubaneswar" }}</span>
+            </div>
+        </div>
+
+        <!-- 3-Column Spec Badges -->
+        <div class="mt-2.5 py-1 px-2 bg-surface-container-low/70 rounded-lg flex items-center justify-between text-[10px] font-semibold text-on-surface-variant border border-outline-variant/30 text-center">
+            <span>{{ car.transmission|slice:":4" }}</span>
+            <span class="text-outline-variant">•</span>
+            <span>{{ car.fuel_type }}</span>
+            <span class="text-outline-variant">•</span>
+            <span>{{ car.seats }} Seats</span>
+        </div>
+    </div>
+
+    <!-- Price Footer & Action CTA with Dynamic Hourly / Daily & Fare Breakup -->
+    <div class="mt-3.5 pt-2.5 border-t border-outline-variant/30 flex items-center justify-between">
+        <div>
+            <!-- Dynamic Hourly Rate -->
+            <div class="flex items-baseline gap-1">
+                <span class="car-hourly-display text-base sm:text-lg font-black text-primary">₹{{ car.hourly_rate }}</span>
+                <span class="text-[11px] text-on-surface-variant font-medium">/hr</span>
+            </div>
+
+            <!-- Clickable Total with info icon -> triggers Fare Breakup Modal -->
+            <button type="button" 
+                    onclick="triggerFareBreakupForCard(this)" 
+                    class="car-total-display flex items-center gap-0.5 text-[10px] text-slate-800 hover:text-primary font-bold transition-colors cursor-pointer"
+                    title="Click to view full fare breakup & taxes">
+                <span>₹{{ car.price_per_day|floatformat:0 }} excl. fees</span>
+                <span class="material-symbols-outlined text-[11px] text-primary">info</span>
+            </button>
+        </div>
+
+        <!-- Book Now CTA Button -->
+        <button type="button" 
+                onclick="handleCarBookClick('{{ car.id }}')" 
+                class="inline-flex items-center gap-1 bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-fixed font-bold text-xs px-3.5 py-1.5 rounded-full shadow-2xs hover:shadow active:scale-95 transition-all cursor-pointer">
+            <span>Book Now</span>
+            <span class="material-symbols-outlined text-[14px] group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
         </button>
     </div>
-
-    <!-- Image Showcase (No background) -->
-    <div class="relative h-48 sm:h-56 flex items-center justify-center mb-6 overflow-hidden">
-        {% if car.image %}
-        <img src="{{ car.image.url }}" 
-             alt="{{ car.brand }} {{ car.name }}"
-             loading="lazy"
-             class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700 ease-out">
-        {% else %}
-        <div class="w-full h-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center rounded-2xl">
-            <span class="material-symbols-outlined text-4xl text-slate-300">image</span>
-        </div>
-        {% endif %}
-    </div>
-
-    <!-- Content -->
-    <div class="pt-8 pb-4 flex flex-col flex-1">
-        <div class="flex justify-between items-start mb-6">
-            <div>
-                <p class="text-[10px] font-black text-slate-400 mb-1 uppercase tracking-[0.3em]">{{ car.brand }}</p>
-                <h3 class="text-2xl font-bold text-slate-900 dark:text-white group-hover:text-accent transition-colors leading-tight">{{ car.name }}</h3>
-            </div>
-            <div class="flex items-center gap-1.5 bg-slate-50 dark:bg-slate-800/50 px-3 py-1.5 rounded-xl border border-slate-100 dark:border-slate-700 flex-shrink-0">
-                <span class="material-symbols-outlined text-sm text-yellow-500" style="font-variation-settings: 'FILL' 1;">star</span>
-                <span class="text-sm font-black">{{ car.rating|floatformat:1 }}</span>
-                <span class="text-[10px] text-slate-400 font-bold ml-0.5">({{ car.rating_count }})</span>
-            </div>
-        </div>
-
-        <!-- Features Grid -->
-        <div class="grid grid-cols-2 gap-y-5 gap-x-4 mb-8">
-            <div class="flex items-center gap-3 text-slate-600 dark:text-slate-300">
-                <span class="material-symbols-outlined text-lg text-accent">airline_seat_recline_extra</span>
-                <span class="text-xs font-bold">{{ car.seats }} Seats</span>
-            </div>
-            <div class="flex items-center gap-3 text-slate-600 dark:text-slate-300">
-                <span class="material-symbols-outlined text-lg text-accent">local_gas_station</span>
-                <span class="text-xs font-bold">{{ car.fuel_type }}</span>
-            </div>
-            <div class="flex items-center gap-3 text-slate-600 dark:text-slate-300">
-                <span class="material-symbols-outlined text-lg text-accent">settings</span>
-                <span class="text-xs font-bold truncate">{{ car.transmission }}</span>
-            </div>
-            <div class="flex items-center gap-3 text-slate-600 dark:text-slate-300">
-                <span class="material-symbols-outlined text-lg text-accent">speed</span>
-                <span class="text-xs font-bold">{{ car.mileage }}</span>
-            </div>
-        </div>
-
-        <!-- Price & Action (Seamless) -->
-        <div class="mt-auto flex items-center justify-between pt-6 border-t border-slate-100 dark:border-slate-800 gap-3">
-            <div class="flex-shrink-0">
-                <span class="block text-xl sm:text-2xl font-black text-slate-900 dark:text-white leading-tight">₹{{ car.price_per_day|floatformat:0 }}</span>
-                <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mt-0.5">/day</span>
-            </div>
-            
-            <a href="{% url 'car_detail' car.id %}" class="h-12 px-5 sm:px-6 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl flex items-center justify-center gap-2 hover:bg-accent hover:text-white dark:hover:bg-accent dark:hover:text-white transition-all duration-300 shadow-xl shadow-slate-900/10 group/btn whitespace-nowrap">
-                <span class="text-[10px] sm:text-xs font-black uppercase tracking-widest">Rent Now</span>
-                <span class="material-symbols-outlined text-sm font-black group-hover/btn:translate-x-0.5 transition-transform">east</span>
-            </a>
-        </div>
-    </div>
-</div>
+</article>
