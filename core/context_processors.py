@@ -12,7 +12,8 @@ def shared_layout_context(request):
     - hide_bottom_nav: boolean, True on funnel, auth, checkout, and kyc
     - vapid_public_key: VAPID public key for push notifications
     """
-    current_city = request.session.get('current_city', 'Bengaluru')
+    current_city = request.session.get('current_city', 'Bhubaneswar')
+    pickup_location = request.session.get('pickup_location', '')
     
     # Active tab and funnel detection based on resolver match
     active_tab = None
@@ -72,6 +73,7 @@ def shared_layout_context(request):
 
     return {
         'current_city': current_city,
+        'pickup_location': pickup_location,
         'is_authenticated': is_auth,
         'display_name': display_name,
         'wishlist_count': wishlist_count,

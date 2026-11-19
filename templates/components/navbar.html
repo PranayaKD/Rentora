@@ -17,24 +17,31 @@
 
       <div class="h-6 w-[1px] bg-surface-container-highest hidden sm:block"></div>
 
-      <!-- Odisha City Selector Pill -->
+      <!-- Quick-Commerce Style Hub & Location Selector (Blinkit/Zepto inspired) -->
       <button onclick="openCityModal()"
-        class="flex items-center gap-1.5 lg:gap-2 px-3 lg:px-3.5 py-1.5 rounded-full bg-surface-container-low hover:bg-surface-container transition-colors text-left border border-outline-variant/30 group"
-        type="button" title="Switch Odisha City/Hub">
-        <span
-          class="material-symbols-outlined text-primary text-[16px] lg:text-[18px] group-hover:text-secondary-container transition-colors">location_on</span>
-        <div class="flex flex-col leading-tight">
-          <span class="text-[9px] lg:text-[10px] uppercase font-bold text-primary tracking-wider flex items-center gap-1">
-            <span class="relative flex h-1.5 w-1.5">
+        class="flex items-center gap-2 px-2.5 sm:px-3 py-1 rounded-2xl hover:bg-surface-container-low dark:hover:bg-zinc-800 transition-colors text-left group max-w-[190px] sm:max-w-[260px] md:max-w-[300px] cursor-pointer"
+        type="button" title="Select Delivery or Pickup Location in Odisha">
+        <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-secondary-container/20 text-secondary flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+          <span class="material-symbols-outlined text-[18px] sm:text-[20px] text-primary dark:text-secondary-container">location_on</span>
+        </div>
+        <div class="flex flex-col min-w-0 leading-tight">
+          <!-- Top Line: Hub name in bold with active indicator -->
+          <div class="flex items-center gap-1.5">
+            <span class="text-xs sm:text-[13px] font-black text-primary dark:text-white font-headline truncate current-hub-title">
+              {{ current_city|default:"Bhubaneswar" }} Hub
+            </span>
+            <span class="relative flex h-1.5 w-1.5 shrink-0">
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
             </span>
-            <span>Hub</span>
-          </span>
-          <span class="text-xs text-primary font-extrabold flex items-center gap-0.5">
-            <span class="current-city-label">{{ current_city|default:"Bhubaneswar" }}</span>
-            <span class="material-symbols-outlined text-[14px] text-primary">keyboard_arrow_down</span>
-          </span>
+          </div>
+          <!-- Bottom Line: Specific Location / Street with Down Arrow -->
+          <div class="flex items-center gap-0.5 text-on-surface-variant dark:text-zinc-400">
+            <span class="text-[10px] sm:text-[11px] font-semibold truncate max-w-[125px] sm:max-w-[190px] current-location-subtitle">
+              {{ pickup_location|default:"Patia, Bhubaneswar, Odisha" }}
+            </span>
+            <span class="material-symbols-outlined text-[13px] sm:text-[14px] text-primary dark:text-white shrink-0 group-hover:translate-y-0.5 transition-transform">keyboard_arrow_down</span>
+          </div>
         </div>
       </button>
     </div>

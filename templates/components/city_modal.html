@@ -443,15 +443,22 @@ function detectUserLocationModal() {
 }
 
 function selectCity(city, fullAddress) {
+    const hubTitle = `${city} Hub`;
+    const locAddress = fullAddress || `${city}, Odisha`;
+
     // 1. Update UI labels across page
     document.querySelectorAll('.current-city-label').forEach(el => el.textContent = city);
+    document.querySelectorAll('.current-hub-title').forEach(el => el.textContent = hubTitle);
+    document.querySelectorAll('.current-location-subtitle').forEach(el => el.textContent = locAddress);
+
     const locInput = document.getElementById('location-input') || 
                      document.getElementById('pickup-location-input') || 
                      document.getElementById('id_pickup_location');
-    if (locInput) locInput.value = fullAddress || city;
+    if (locInput) locInput.value = locAddress;
 
     // Mark in localStorage
     localStorage.setItem('rentora_odisha_city_selected', city);
+    localStorage.setItem('rentora_odisha_location', locAddress);
 
     closeCityModal();
 
@@ -602,6 +609,17 @@ document.addEventListener('DOMContentLoaded', function() {
             dropdown.classList.add('hidden');
         }
     });
+
+    // Restore saved location & hub across the page
+    const savedLoc = localStorage.getItem('rentora_odisha_location');
+    const savedCity = localStorage.getItem('rentora_odisha_city_selected');
+    if (savedLoc) {
+        document.querySelectorAll('.current-location-subtitle').forEach(el => el.textContent = savedLoc);
+    }
+    if (savedCity) {
+        document.querySelectorAll('.current-hub-title').forEach(el => el.textContent = `${savedCity} Hub`);
+        document.querySelectorAll('.current-city-label').forEach(el => el.textContent = savedCity);
+    }
 
     // Auto-prompt on first visit
     const cityChosen = localStorage.getItem('rentora_odisha_city_selected');

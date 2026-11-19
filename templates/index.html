@@ -89,14 +89,15 @@ Rentora. Doorstep delivery, verified fleet, zero paperwork.{% endblock %}
 
           <!-- Location Picker -->
           <div onclick="openCityModal()"
-            class="px-3 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container border border-outline-variant/30 cursor-pointer transition-colors flex items-center gap-2.5 h-12">
+            class="px-3 py-2 rounded-xl bg-surface-container-low hover:bg-surface-container border border-outline-variant/30 cursor-pointer transition-colors flex items-center gap-2.5 h-12"
+            title="Click to select pickup hub or doorstep delivery">
             <div
               class="w-7 h-7 rounded-lg bg-surface-container-lowest flex items-center justify-center text-primary shadow-2xs shrink-0">
               <span class="material-symbols-outlined text-[18px]">location_on</span>
             </div>
-            <div class="flex flex-col min-w-0">
-              <span class="text-[9px] uppercase font-bold text-on-surface-variant tracking-wider leading-none">City / Hub</span>
-              <span class="text-xs font-bold text-primary truncate current-city-label leading-tight mt-0.5">{{ current_city|default:"Bhubaneswar Hub (BBI)" }}</span>
+            <div class="flex flex-col min-w-0 leading-tight">
+              <span class="text-[9px] uppercase font-bold text-on-surface-variant tracking-wider leading-none current-hub-title">{{ current_city|default:"Bhubaneswar" }} Hub</span>
+              <span class="text-xs font-bold text-primary truncate current-location-subtitle leading-tight mt-0.5">{{ pickup_location|default:"Patia, Bhubaneswar, Odisha" }}</span>
             </div>
           </div>
 
