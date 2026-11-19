@@ -12,7 +12,7 @@
   <!-- Sub-Navigation Bar / Checkout Flow Status (Stitch Desktop & Mobile) -->
   <section class="bg-surface-container-lowest border-b border-outline-variant/30 py-3.5 shadow-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-      <a href="{% url 'booking_dates' %}"
+      <a href="{% url 'booking_location' %}"
         class="w-9 h-9 rounded-full bg-surface-container-low hover:bg-surface-container border border-outline-variant/40 flex items-center justify-center text-primary shadow-xs active:scale-95 transition-transform"
         aria-label="Go back">
         <span class="material-symbols-outlined text-[18px]">arrow_back</span>
@@ -20,8 +20,7 @@
 
       <div class="text-center">
         <h1 class="text-sm sm:text-base font-extrabold text-primary tracking-tight">Booking Checkout</h1>
-        <p class="text-[11px] text-on-surface-variant font-medium">{{ pickup_location|default:"Bhubaneswar Hub" }} •
-          Step 3 of 3</p>
+        <p class="text-[11px] text-on-surface-variant font-medium">{{ pickup_location|default:"Bhubaneswar Hub" }} • Step 2 of 2</p>
       </div>
 
       <!-- 256-Bit SSL Security Tag -->
@@ -419,4 +418,75 @@
     document.getElementById('selected-payment-method').value = method;
   }
 </script>
+
+{% if trigger_razorpay %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const options = {
+      "key": "{{ razorpay_key_id }}",
+      "amount": "{{ razorpay_amount_paise }}",
+      "currency": "INR",
+      "name": "Rentora Mobility",
+      "description": "Self-Drive Rental: {{ car.brand }} {{ car.name }}",
+      "image": "https://res.cloudinary.com/e5m0ot7d/image/upload/v1773729906/rentora/site/hero_desktop.webp",
+      "order_id": "{{ razorpay_order_id }}",
+      "handler": function (response){
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = "{% url 'razorpay_callback' %}";
+        
+        const csrf = document.createElement('input');
+        csrf.type = 'hidden';
+        csrf.name = 'csrfmiddlewaretoken';
+        csrf.value = '{{ csrf_token }}';
+        form.appendChild(csrf);
+
+        const pid = document.createElement('input');
+        pid.type = 'hidden';
+        pid.name = 'razorpay_payment_id';
+        pid.value = response.razorpay_payment_id;
+        form.appendChild(pid);
+
+        const oid = document.createElement('input');
+        oid.type = 'hidden';
+        oid.name = 'razorpay_order_id';
+        oid.value = response.razorpay_order_id;
+        form.appendChild(oid);
+
+        const sig = document.createElement('input');
+        sig.type = 'hidden';
+        sig.name = 'razorpay_signature';
+        sig.value = response.razorpay_signature;
+        form.appendChild(sig);
+
+        document.body.appendChild(form);
+        form.submit();
+      },
+      "prefill": {
+        "name": "{{ request.user.get_full_name|default:request.user.username }}",
+        "email": "{{ request.user.email }}",
+        "contact": "{{ request.user.profile.phone|default:'' }}"
+      },
+      "theme": {
+        "color": "#FF5F00"
+      },
+      "modal": {
+        "ondismiss": function() {
+          console.log('Razorpay modal closed by user');
+        }
+      }
+    };
+    try {
+      const rzp = new Razorpay(options);
+      rzp.on('payment.failed', function (response){
+        alert("Payment Failed: " + response.error.description);
+      });
+      rzp.open();
+    } catch (e) {
+      console.error("Razorpay open error:", e);
+    }
+  });
+</script>
+{% endif %}
 {% endblock %}

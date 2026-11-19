@@ -1,28 +1,86 @@
 {% extends 'base.html' %}
 {% load form_tags %}
 
+{% block title %}
+{% if step == 1 %}Plan Your Trip - Location & Dates | Rentora Mobility
+{% elif step == 2 %}Select Vehicle | Rentora Mobility
+{% else %}Book Your Ride | Rentora Mobility{% endif %}
+{% endblock %}
+
 {% block extra_head %}
 <!-- Leaflet Map CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<!-- Flatpickr CSS fallback -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <style>
     #map-container {
-        height: 300px;
-        border-radius: 1.5rem;
+        height: 280px;
+        border-radius: 1.25rem;
         z-index: 10;
-        margin-top: 1.5rem;
-        border: 2px solid rgba(0,0,0,0.05);
+        margin-top: 1rem;
+        border: 1px solid rgba(0,0,0,0.08);
+        overflow: hidden;
+        position: relative;
     }
     .leaflet-container {
         font-family: inherit;
     }
-    /* Fix icon overlap */
     .location-input-wrapper input {
-        padding-left: 3.5rem !important;
+        padding-left: 3rem !important;
+        padding-right: 2.5rem !important;
     }
-    /* Premium Flatpickr scale */
+    /* Pulse pin effect on map */
+    .rentora-pin {
+        background-color: #FF5F00;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 3px solid #ffffff;
+        box-shadow: 0 0 12px rgba(255, 95, 0, 0.6);
+        cursor: grab;
+    }
+    /* Suggestions dropdown */
+    .suggestions-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        margin-top: 0.35rem;
+        background: #ffffff;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        border-radius: 1rem;
+        max-height: 240px;
+        overflow-y: auto;
+        z-index: 50;
+        box-shadow: 0 14px 28px rgba(0,0,0,0.12);
+    }
+    .dark .suggestions-dropdown {
+        background: #18181b;
+        border-color: #27272a;
+        box-shadow: 0 14px 28px rgba(0,0,0,0.4);
+    }
+    .suggestion-item {
+        padding: 0.7rem 1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        transition: background-color 0.15s ease;
+        border-bottom: 1px solid rgba(0,0,0,0.04);
+    }
+    .suggestion-item:last-child {
+        border-bottom: none;
+    }
+    .suggestion-item:hover, .suggestion-item.active {
+        background-color: #FFF2EA;
+    }
+    .dark .suggestion-item:hover, .dark .suggestion-item.active {
+        background-color: #27272a;
+    }
     .flatpickr-calendar {
-        transform: scale(0.9) !important;
-        transform-origin: top center !important;
+        border-radius: 1rem !important;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.12) !important;
+        border: 1px solid rgba(0,0,0,0.06) !important;
     }
 </style>
 {% endblock %}
@@ -33,6 +91,7 @@
     <div class="max-w-3xl mx-auto px-6 flex items-center justify-between">
         <a href="javascript:history.back()" class="flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-accent font-bold transition-colors">
             <span class="material-symbols-outlined text-xl">arrow_back</span>
+            <span class="text-xs font-bold hidden sm:inline">Back</span>
         </a>
         <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Step {{ step }} of {{ total_steps }}</span>
         <div class="text-[10px] font-black text-accent uppercase tracking-widest">{% widthratio step total_steps 100 %}% Done</div>
@@ -43,67 +102,232 @@
     </div>
 </div>
 
-<div class="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-12">
-    <!-- Step 1: Location -->
+<div class="max-w-3xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
+
+    <!-- Pre-Selected Car Banner (If car already chosen) -->
+    {% if selected_car %}
+    <div class="mb-6 p-4 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3.5 min-w-0">
+            <div class="w-16 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center p-1 overflow-hidden shrink-0">
+                {% if selected_car.image %}
+                <img src="{{ selected_car.image.url }}" alt="{{ selected_car.name }}" class="max-w-full max-h-full object-contain">
+                {% else %}
+                <span class="material-symbols-outlined text-slate-400">directions_car</span>
+                {% endif %}
+            </div>
+            <div class="min-w-0">
+                <div class="flex items-center gap-2">
+                    <span class="text-[9px] font-black uppercase tracking-widest text-[#FF5F00] bg-[#FF5F00]/10 px-2 py-0.5 rounded-full">Selected Ride</span>
+                    <span class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Available
+                    </span>
+                </div>
+                <h2 class="text-sm sm:text-base font-extrabold text-slate-900 dark:text-white truncate mt-0.5">{{ selected_car.brand }} {{ selected_car.name }}</h2>
+                <p class="text-xs text-slate-500 dark:text-zinc-400 font-medium truncate">₹{{ selected_car.price_per_day|floatformat:0 }}/day • {{ selected_car.transmission }} • {{ selected_car.fuel_type }} • {{ selected_car.seats }} Seats</p>
+            </div>
+        </div>
+        <a href="{% url 'cars' %}" class="text-xs font-bold text-[#FF5F00] hover:underline shrink-0 px-3 py-1.5 rounded-full bg-[#FF5F00]/5 border border-[#FF5F00]/20">Change Car</a>
+    </div>
+    {% endif %}
+
+    <!-- ========================================== -->
+    <!-- Step 1: Combined Location + Dates & Times -->
+    <!-- ========================================== -->
     {% if step == 1 %}
-    <div class="mb-8 sm:mb-12" id="step1-header">
-        <h1 class="text-2xl sm:text-3xl font-black mb-2 text-slate-900 dark:text-white" id="step1-title">Where should we pick you up?</h1>
-        <p class="text-slate-500 text-sm sm:text-base" id="step1-subtitle">Search or pin your pickup location on the map.</p>
+    <div class="mb-6" id="step1-header">
+        <h1 class="text-2xl sm:text-3xl font-black mb-1.5 text-slate-900 dark:text-white">Plan Your Journey</h1>
+        <p class="text-slate-500 text-xs sm:text-sm">Set your pickup hub and trip dates across Odisha.</p>
     </div>
 
-    <form method="post" id="location-form" class="space-y-6">
+    <form method="post" id="step1-form" class="space-y-6">
         {% csrf_token %}
-        <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-100 dark:border-slate-800 shadow-sm relative">
-            <div class="space-y-6 relative z-10">
-                <!-- Pickup (always visible) -->
-                <div class="relative" id="pickup-section">
-                    <label class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2 block">Pickup Location</label>
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-accent border-[6px] border-white dark:border-slate-900 shrink-0 z-10 shadow-sm"></div>
-                        <div class="relative flex-1 location-input-wrapper">
-                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">my_location</span>
-                            {{ form.pickup_location|add_class:"w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-accent outline-none font-bold text-sm" }}
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Dropoff (shown only if different location checked) -->
-                <div class="relative hidden" id="dropoff-section">
-                    <div class="w-0.5 h-4 border-l-2 border-dashed border-slate-300 dark:border-slate-600 ml-4 mb-2"></div>
-                    <label class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2 block">Drop-off Location</label>
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full border-[6px] border-slate-300 dark:border-slate-700 shrink-0 z-10 bg-white dark:bg-slate-900"></div>
-                        <div class="relative flex-1 location-input-wrapper">
-                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">location_on</span>
-                            {{ form.dropoff_location|add_class:"w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-accent outline-none font-bold text-sm" }}
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Return to different location toggle -->
-            <div class="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800">
-                <label for="diff-dropoff-toggle" class="inline-flex items-center gap-2.5 cursor-pointer select-none text-slate-700 dark:text-slate-300 hover:text-accent transition-colors">
-                    <input type="checkbox" id="diff-dropoff-toggle" onchange="toggleDifferentDropoff(this.checked)" class="w-4 h-4 text-accent rounded border-slate-300 dark:border-slate-600 focus:ring-accent cursor-pointer">
-                    <span class="text-xs font-bold">Drop-off at a different location</span>
-                </label>
-            </div>
-
-            <!-- Map Integration -->
-            <div id="map-container">
-                <div id="map" class="w-full h-full rounded-[1.4rem]"></div>
-            </div>
-            <p class="text-[10px] text-slate-400 mt-3 text-center font-bold tracking-wider uppercase">Drag marker or tap map to set your location</p>
+        {% if form.non_field_errors %}
+        <div class="p-3.5 rounded-2xl bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-300 text-xs font-bold">
+            {{ form.non_field_errors.0 }}
         </div>
-        
-        <!-- Streamlined 1-Tap CTA -->
-        <button type="submit" id="btn-submit-location" class="w-full bg-[#FF5F00] hover:bg-[#E05300] active:scale-[0.98] text-white py-4 rounded-2xl font-black text-base transition-all mt-8 flex justify-center items-center gap-2 shadow-xl shadow-[#FF5F00]/25">
-            <span>Continue to Dates</span>
+        {% endif %}
+
+        <!-- Section 1: Pickup & Drop-off Location -->
+        <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm relative">
+            <h2 class="text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-accent text-sm">location_on</span>
+                <span>Pickup & Drop-off Location</span>
+            </h2>
+
+            <div class="space-y-4">
+                <!-- Pickup Input -->
+                <div class="relative" id="pickup-section">
+                    <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">Pickup Hub / Address</label>
+                    <div class="relative location-input-wrapper">
+                        <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-accent text-lg">my_location</span>
+                        <input type="text" name="pickup_location" id="id_pickup_location" value="{{ form.pickup_location.value|default:'' }}"
+                               placeholder="Type city, airport, railway station or landmark"
+                               autocomplete="off"
+                               class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl px-4 py-3 text-slate-900 dark:text-white font-bold text-sm focus:ring-2 focus:ring-accent outline-none">
+                        <button type="button" id="btn-gps-locate" title="Use current GPS location" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-accent transition-colors p-1">
+                            <span class="material-symbols-outlined text-lg">near_me</span>
+                        </button>
+                    </div>
+                    <!-- Pickup Suggestions Dropdown -->
+                    <div id="pickup-suggestions" class="suggestions-dropdown hidden"></div>
+                </div>
+
+                <!-- Drop-off Input (Revealed if different toggle active) -->
+                <div class="relative hidden" id="dropoff-section">
+                    <div class="w-0.5 h-3 border-l-2 border-dashed border-slate-300 dark:border-slate-600 ml-4 mb-1"></div>
+                    <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">Drop-off Hub / Address</label>
+                    <div class="relative location-input-wrapper">
+                        <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-lg">flag</span>
+                        <input type="text" name="dropoff_location" id="id_dropoff_location" value="{{ form.dropoff_location.value|default:'' }}"
+                               placeholder="Type return hub or address"
+                               autocomplete="off"
+                               class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl px-4 py-3 text-slate-900 dark:text-white font-bold text-sm focus:ring-2 focus:ring-accent outline-none">
+                    </div>
+                    <!-- Dropoff Suggestions Dropdown -->
+                    <div id="dropoff-suggestions" class="suggestions-dropdown hidden"></div>
+                </div>
+
+                <!-- Different Dropoff Toggle -->
+                <div class="pt-2 flex items-center justify-between">
+                    <label for="diff-dropoff-toggle" class="inline-flex items-center gap-2 cursor-pointer select-none text-slate-700 dark:text-slate-300 hover:text-accent transition-colors">
+                        <input type="checkbox" id="diff-dropoff-toggle" onchange="toggleDifferentDropoff(this.checked)" class="w-4 h-4 text-accent rounded border-slate-300 dark:border-slate-600 focus:ring-accent cursor-pointer">
+                        <span class="text-xs font-bold">Return to a different hub</span>
+                    </label>
+                    <span class="text-[10px] text-slate-400 font-semibold">Free Doorstep Delivery Included</span>
+                </div>
+
+                <!-- Interactive Map Container -->
+                <div id="map-container">
+                    <div id="map" class="w-full h-full"></div>
+                </div>
+                <div class="flex items-center justify-between text-[10px] text-slate-400 font-bold px-1">
+                    <span>📍 Drag pin to update location</span>
+                    <span>🗺️ 40+ Odisha Hubs Available</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Trip Dates & Times -->
+        <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm">
+            <h2 class="text-xs font-extrabold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-accent text-sm">calendar_month</span>
+                <span>Trip Schedule & Timings</span>
+            </h2>
+
+            <div class="grid sm:grid-cols-2 gap-4">
+                <!-- Pickup Date & Time -->
+                <div class="relative group">
+                    <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">Pickup Date & Time</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-accent text-lg">flight_land</span>
+                        <input type="text" name="pickup_date" id="pickup_picker" value="{{ form.pickup_date.value|default:'' }}"
+                               placeholder="Select pickup time" readonly
+                               class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl pl-11 pr-4 py-3 text-slate-900 dark:text-white font-bold text-sm focus:ring-2 focus:ring-accent outline-none cursor-pointer">
+                    </div>
+                    {% if form.pickup_date.errors %}
+                    <p class="text-[10px] text-red-500 font-bold mt-1">{{ form.pickup_date.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Dropoff Date & Time -->
+                <div class="relative group">
+                    <label class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">Return Date & Time</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-accent text-lg">flight_takeoff</span>
+                        <input type="text" name="dropoff_date" id="dropoff_picker" value="{{ form.dropoff_date.value|default:'' }}"
+                               placeholder="Select return time" readonly
+                               class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl pl-11 pr-4 py-3 text-slate-900 dark:text-white font-bold text-sm focus:ring-2 focus:ring-accent outline-none cursor-pointer">
+                    </div>
+                    {% if form.dropoff_date.errors %}
+                    <p class="text-[10px] text-red-500 font-bold mt-1">{{ form.dropoff_date.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Dynamic Trip Duration Pill -->
+            <div id="booking-duration-badge" class="mt-4 p-3 rounded-2xl bg-[#FFF2EA] dark:bg-zinc-800 border border-[#FF5F00]/20 dark:border-zinc-700 text-[#FF5F00] dark:text-[#FF7A29] font-black text-xs flex items-center justify-center gap-2 shadow-xs">
+                <span class="material-symbols-outlined text-base">schedule</span>
+                <span id="booking-duration-text">Calculating duration...</span>
+            </div>
+
+            <!-- Outstation Travel Checkbox -->
+            <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <div>
+                    <label for="id_is_outstation" class="text-xs font-bold text-slate-800 dark:text-slate-200 cursor-pointer block">Outstation Travel</label>
+                    <p class="text-[10px] text-slate-400">Heading outside Odisha state boundaries (includes FASTag support)</p>
+                </div>
+                <input type="checkbox" name="is_outstation" id="id_is_outstation" {% if form.is_outstation.value %}checked{% endif %} class="w-4 h-4 text-accent rounded border-slate-300 dark:border-slate-600 focus:ring-accent cursor-pointer">
+            </div>
+        </div>
+
+        <!-- 1-Click Action CTA -->
+        <button type="submit" id="btn-submit-step1" class="w-full bg-[#FF5F00] hover:bg-[#E05300] active:scale-[0.98] text-white py-4 rounded-2xl font-black text-base transition-all flex justify-center items-center gap-2 shadow-xl shadow-[#FF5F00]/25 cursor-pointer">
+            {% if has_car %}
+            <span>Proceed to Checkout</span>
             <span class="material-symbols-outlined text-lg">arrow_forward</span>
+            {% else %}
+            <span>Select Available Fleet</span>
+            <span class="material-symbols-outlined text-lg">directions_car</span>
+            {% endif %}
         </button>
     </form>
 
+    <!-- Leaflet & Autocomplete Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
     <script>
+    // Curated High-Precision Odisha Hubs
+    const ODISHA_HUBS = [
+        { name: "Biju Patnaik International Airport (BBI), Terminal 1", hub: "Airport Hub", city: "Bhubaneswar", lat: 20.2526, lng: 85.8178 },
+        { name: "Biju Patnaik International Airport (BBI), Terminal 2", hub: "Airport Hub", city: "Bhubaneswar", lat: 20.2535, lng: 85.8190 },
+        { name: "Bhubaneswar Railway Station (Master Canteen)", hub: "Railway Station", city: "Bhubaneswar", lat: 20.2667, lng: 85.8436 },
+        { name: "Bhubaneswar Railway Station (Platform 6 / Old Station)", hub: "Railway Station", city: "Bhubaneswar", lat: 20.2655, lng: 85.8465 },
+        { name: "New Bhubaneswar Railway Station, Patia", hub: "Railway Station", city: "Bhubaneswar", lat: 20.3705, lng: 85.8152 },
+        { name: "Baramunda ISBT Bus Terminal", hub: "Bus Terminal", city: "Bhubaneswar", lat: 20.2816, lng: 85.7891 },
+        { name: "KIIT University & Campus, Patia", hub: "Tech & Campus", city: "Bhubaneswar", lat: 20.3541, lng: 85.8174 },
+        { name: "Infocity & DLF Cybercity, Chandrasekharpur", hub: "IT Hub", city: "Bhubaneswar", lat: 20.3588, lng: 85.8080 },
+        { name: "Patia Square, Bhubaneswar", hub: "City Hub", city: "Bhubaneswar", lat: 20.3520, lng: 85.8210 },
+        { name: "Jayadev Vihar & Mayfair Lagoon", hub: "City Center", city: "Bhubaneswar", lat: 20.3015, lng: 85.8225 },
+        { name: "Nayapalli & IRC Village", hub: "Residential Hub", city: "Bhubaneswar", lat: 20.2980, lng: 85.8150 },
+        { name: "Saheed Nagar, Bhubaneswar", hub: "Commercial Hub", city: "Bhubaneswar", lat: 20.2885, lng: 85.8420 },
+        { name: "Rasulgarh Square & Esplanade Mall", hub: "Shopping & Transit", city: "Bhubaneswar", lat: 20.2942, lng: 85.8672 },
+        { name: "Khandagiri & Udayagiri Caves", hub: "Historic Hub", city: "Bhubaneswar", lat: 20.2600, lng: 85.7850 },
+        { name: "AIIMS Bhubaneswar, Sijua, Patrapada", hub: "Healthcare Hub", city: "Bhubaneswar", lat: 20.2312, lng: 85.7766 },
+        { name: "Apollo Hospital, Gajapati Nagar", hub: "Healthcare Hub", city: "Bhubaneswar", lat: 20.3075, lng: 85.8290 },
+        { name: "SUM Hospital, Ghatikia", hub: "Healthcare Hub", city: "Bhubaneswar", lat: 20.2830, lng: 85.7650 },
+        { name: "Kalinga Stadium, Nayapalli", hub: "Sports Complex", city: "Bhubaneswar", lat: 20.2975, lng: 85.8270 },
+        { name: "DN Regalia Mall, Patrapada", hub: "Shopping Mall", city: "Bhubaneswar", lat: 20.2340, lng: 85.7620 },
+        { name: "Lingaraj Temple, Old Town", hub: "Heritage Site", city: "Bhubaneswar", lat: 20.2382, lng: 85.8335 },
+        { name: "Utkal Kanika Galleria Mall, Kalpana Square", hub: "Shopping Mall", city: "Bhubaneswar", lat: 20.2580, lng: 85.8430 },
+        { name: "Cuttack Railway Station (CRK), Station Road", hub: "Railway Station", city: "Cuttack", lat: 20.4633, lng: 85.8942 },
+        { name: "Badambadi Bus Terminal, Cuttack", hub: "Bus Stand", city: "Cuttack", lat: 20.4502, lng: 85.8767 },
+        { name: "Link Road & OMP Square, Cuttack", hub: "City Transit", city: "Cuttack", lat: 20.4420, lng: 85.8930 },
+        { name: "SCB Medical College & Hospital, Cuttack", hub: "Healthcare Hub", city: "Cuttack", lat: 20.4720, lng: 85.8850 },
+        { name: "Barabati Stadium & Fort, Cuttack", hub: "Sports & Landmark", city: "Cuttack", lat: 20.4815, lng: 85.8690 },
+        { name: "CDA Sector 6 / 9 / 11, Cuttack", hub: "Residential Hub", city: "Cuttack", lat: 20.4850, lng: 85.8350 },
+        { name: "Puri Railway Station (PURI)", hub: "Railway Station", city: "Puri", lat: 19.8135, lng: 85.8315 },
+        { name: "Golden Beach & Marine Drive Road, Puri", hub: "Beach Resort", city: "Puri", lat: 19.7983, lng: 85.8249 },
+        { name: "Swargadwar Beach Market, Puri", hub: "Sea Beach", city: "Puri", lat: 19.7940, lng: 85.8190 },
+        { name: "Shree Jagannath Temple Grand Road, Puri", hub: "Temple Heritage", city: "Puri", lat: 19.8048, lng: 85.8180 },
+        { name: "Blue Flag Beach, Puri", hub: "Certified Beach", city: "Puri", lat: 19.7995, lng: 85.8370 },
+        { name: "Konark Sun Temple & Marine Drive", hub: "UNESCO Heritage", city: "Konark", lat: 19.8876, lng: 86.0945 },
+        { name: "Chandrabhaga Beach, Konark", hub: "Coastal Hub", city: "Konark", lat: 19.8660, lng: 86.1130 },
+        { name: "Dhauli Shanti Stupa, Puri Highway", hub: "Peace Pagoda", city: "Bhubaneswar", lat: 20.1925, lng: 85.8394 },
+        { name: "Berhampur Railway Station / New Bus Stand", hub: "Transit Hub", city: "Berhampur", lat: 19.3150, lng: 84.7941 },
+        { name: "Gopalpur-on-Sea Beach, Ganjam", hub: "Coastal Resort", city: "Gopalpur", lat: 19.2610, lng: 84.9080 },
+        { name: "Sambalpur Junction Railway Station (SBP)", hub: "Railway Station", city: "Sambalpur", lat: 21.4670, lng: 83.9810 },
+        { name: "Rourkela Railway Station & Sector 5 Hub", hub: "Industrial Transit", city: "Rourkela", lat: 22.2280, lng: 84.8670 },
+        { name: "Veer Surendra Sai Airport, Jharsuguda (JRG)", hub: "Airport Hub", city: "Jharsuguda", lat: 21.9125, lng: 84.0505 }
+    ];
+
+    let rentoraMap = null;
+    let pickupMarker = null;
+    let dropoffMarker = null;
+    let pickupPicker = null;
+    let dropoffPicker = null;
+
     function toggleDifferentDropoff(checked) {
         const dropoffSection = document.getElementById('dropoff-section');
         const dropoffInput = document.getElementById('id_dropoff_location');
@@ -111,12 +335,11 @@
         
         if (checked) {
             dropoffSection.classList.remove('hidden');
-            dropoffSection.classList.add('animate-[fadeIn_0.3s_ease-out]');
             if (!dropoffInput.value.trim() && pickupInput.value.trim()) {
                 dropoffInput.value = pickupInput.value.trim();
             }
-            if (window.rentoraMap && window.dropoffMarker && !window.rentoraMap.hasLayer(window.dropoffMarker)) {
-                window.dropoffMarker.addTo(window.rentoraMap);
+            if (rentoraMap && dropoffMarker && !rentoraMap.hasLayer(dropoffMarker)) {
+                dropoffMarker.addTo(rentoraMap);
             }
             dropoffInput.focus();
         } else {
@@ -124,417 +347,344 @@
             if (pickupInput.value.trim()) {
                 dropoffInput.value = pickupInput.value.trim();
             }
-            if (window.rentoraMap && window.dropoffMarker && window.rentoraMap.hasLayer(window.dropoffMarker)) {
-                window.rentoraMap.removeLayer(window.dropoffMarker);
+            if (rentoraMap && dropoffMarker && rentoraMap.hasLayer(dropoffMarker)) {
+                rentoraMap.removeLayer(dropoffMarker);
             }
         }
     }
 
+    // Setup Autocomplete on any input field
+    function setupLocationAutocomplete(inputId, dropdownId, onSelectCoord) {
+        const input = document.getElementById(inputId);
+        const dropdown = document.getElementById(dropdownId);
+        if (!input || !dropdown) return;
+
+        let debounceTimer = null;
+
+        function renderResults(results) {
+            dropdown.innerHTML = '';
+            if (!results || results.length === 0) {
+                dropdown.classList.add('hidden');
+                return;
+            }
+
+            results.slice(0, 8).forEach(item => {
+                const el = document.createElement('div');
+                el.className = 'suggestion-item';
+                el.innerHTML = `
+                    <span class="material-symbols-outlined text-[#FF5F00] text-base shrink-0">location_on</span>
+                    <div class="min-w-0 flex-1">
+                        <p class="text-xs font-bold text-slate-800 dark:text-zinc-100 truncate">${item.name}</p>
+                        <p class="text-[10px] text-slate-400 truncate">${item.hub ? item.hub + ' • ' : ''}${item.city || 'Odisha'}</p>
+                    </div>
+                `;
+                el.addEventListener('mousedown', function(e) {
+                    e.preventDefault();
+                    input.value = item.name;
+                    dropdown.classList.add('hidden');
+                    if (onSelectCoord && item.lat && item.lng) {
+                        onSelectCoord(item.lat, item.lng, item.name);
+                    }
+                    // Auto sync dropoff if same
+                    const diffChecked = document.getElementById('diff-dropoff-toggle')?.checked;
+                    if (inputId === 'id_pickup_location' && !diffChecked) {
+                        const dropInput = document.getElementById('id_dropoff_location');
+                        if (dropInput) dropInput.value = item.name;
+                    }
+                });
+                dropdown.appendChild(el);
+            });
+            dropdown.classList.remove('hidden');
+        }
+
+        function filterLocations(query) {
+            const q = query.trim().toLowerCase();
+            if (!q) {
+                renderResults(ODISHA_HUBS.slice(0, 6));
+                return;
+            }
+
+            const matches = ODISHA_HUBS.filter(h => 
+                h.name.toLowerCase().includes(q) || 
+                h.city.toLowerCase().includes(q) ||
+                (h.hub && h.hub.toLowerCase().includes(q))
+            );
+
+            renderResults(matches);
+
+            // If query is 3+ chars, query OpenStreetMap Nominatim for specific local roads/places
+            if (q.length >= 3) {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => {
+                    fetch(`https://nominatim.openstreetmap.org/search?format=json&countrycodes=in&viewbox=83.5,22.8,87.5,19.0&bounded=0&q=${encodeURIComponent(query + ' Odisha')}`)
+                        .then(r => r.json())
+                        .then(data => {
+                            if (data && data.length > 0) {
+                                const osmResults = data.map(d => ({
+                                    name: d.display_name.split(',')[0] + ', ' + (d.address?.suburb || d.address?.city || 'Odisha'),
+                                    hub: "Landmark",
+                                    city: d.address?.city || d.address?.state_district || "Odisha",
+                                    lat: parseFloat(d.lat),
+                                    lng: parseFloat(d.lon)
+                                }));
+                                const combined = [...matches, ...osmResults];
+                                renderResults(combined);
+                            }
+                        })
+                        .catch(() => {});
+                }, 280);
+            }
+        }
+
+        input.addEventListener('input', () => filterLocations(input.value));
+        input.addEventListener('focus', () => {
+            if (!input.value.trim()) {
+                renderResults(ODISHA_HUBS.slice(0, 6));
+            } else {
+                filterLocations(input.value);
+            }
+        });
+        input.addEventListener('blur', () => {
+            setTimeout(() => dropdown.classList.add('hidden'), 200);
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('location-form');
         const pickupInput = document.getElementById('id_pickup_location');
         const dropoffInput = document.getElementById('id_dropoff_location');
         const diffToggle = document.getElementById('diff-dropoff-toggle');
-        
-        // Auto sync if user types in pickup
-        pickupInput.addEventListener('input', function() {
-            if (!diffToggle.checked) {
-                dropoffInput.value = pickupInput.value;
+        const form = document.getElementById('step1-form');
+
+        // Initialize Leaflet Map
+        const bbsrLat = 20.2961;
+        const bbsrLng = 85.8245;
+
+        rentoraMap = L.map('map', {
+            scrollWheelZoom: false,
+            zoomControl: true,
+            tap: true
+        }).setView([bbsrLat, bbsrLng], 13);
+
+        // High resolution clean CartoDB Voyager tiles (100% free, reliable, no billing popups)
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            attribution: '© OpenStreetMap © CARTO',
+            maxZoom: 19,
+            subdomains: 'abcd'
+        }).addTo(rentoraMap);
+
+        const customPinIcon = L.divIcon({
+            className: 'custom-rentora-marker',
+            html: '<div class="rentora-pin"></div>',
+            iconSize: [18, 18],
+            iconAnchor: [9, 9]
+        });
+
+        pickupMarker = L.marker([bbsrLat, bbsrLng], {
+            draggable: true,
+            icon: customPinIcon
+        }).addTo(rentoraMap);
+
+        dropoffMarker = L.marker([20.3541, 85.8174], {
+            draggable: true,
+            icon: customPinIcon
+        });
+
+        pickupMarker.bindPopup("<b>Pickup Location</b><br>Drag to refine").openPopup();
+        dropoffMarker.bindPopup("<b>Drop-off Location</b>");
+
+        // Reverse Geocoding helper on marker drag
+        function reverseGeocode(lat, lng, targetInputId) {
+            // Check closest hub first for immediate name
+            let closest = null;
+            let minDist = Infinity;
+            ODISHA_HUBS.forEach(h => {
+                const dist = Math.hypot(h.lat - lat, h.lng - lng);
+                if (dist < minDist) {
+                    minDist = dist;
+                    closest = h;
+                }
+            });
+
+            if (closest && minDist < 0.008) {
+                document.getElementById(targetInputId).value = closest.name;
+                if (!diffToggle.checked && targetInputId === 'id_pickup_location') {
+                    dropoffInput.value = closest.name;
+                }
+                return;
+            }
+
+            // Fallback to OSM reverse geocoding
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+                .then(r => r.json())
+                .then(data => {
+                    if (data && data.display_name) {
+                        const simpleName = data.address?.suburb || data.address?.neighbourhood || data.display_name.split(',')[0];
+                        const city = data.address?.city || data.address?.town || "Bhubaneswar";
+                        const finalName = `${simpleName}, ${city}`;
+                        document.getElementById(targetInputId).value = finalName;
+                        if (!diffToggle.checked && targetInputId === 'id_pickup_location') {
+                            dropoffInput.value = finalName;
+                        }
+                    }
+                })
+                .catch(() => {});
+        }
+
+        pickupMarker.on('dragend', function() {
+            const pos = pickupMarker.getLatLng();
+            reverseGeocode(pos.lat, pos.lng, 'id_pickup_location');
+        });
+
+        dropoffMarker.on('dragend', function() {
+            const pos = dropoffMarker.getLatLng();
+            reverseGeocode(pos.lat, pos.lng, 'id_dropoff_location');
+        });
+
+        rentoraMap.on('click', function(e) {
+            pickupMarker.setLatLng(e.latlng);
+            reverseGeocode(e.latlng.lat, e.latlng.lng, 'id_pickup_location');
+        });
+
+        // Autocomplete integrations
+        setupLocationAutocomplete('id_pickup_location', 'pickup-suggestions', function(lat, lng, name) {
+            rentoraMap.setView([lat, lng], 14, { animate: true });
+            pickupMarker.setLatLng([lat, lng]);
+            pickupMarker.bindPopup(`<b>Pickup:</b> ${name}`).openPopup();
+        });
+
+        setupLocationAutocomplete('id_dropoff_location', 'dropoff-suggestions', function(lat, lng, name) {
+            if (rentoraMap && dropoffMarker) {
+                dropoffMarker.setLatLng([lat, lng]);
+                dropoffMarker.bindPopup(`<b>Drop-off:</b> ${name}`).openPopup();
             }
         });
 
+        // GPS locate button
+        const gpsBtn = document.getElementById('btn-gps-locate');
+        if (gpsBtn && navigator.geolocation) {
+            gpsBtn.addEventListener('click', function() {
+                gpsBtn.classList.add('animate-spin');
+                navigator.geolocation.getCurrentPosition(function(pos) {
+                    gpsBtn.classList.remove('animate-spin');
+                    const lat = pos.coords.latitude;
+                    const lng = pos.coords.longitude;
+                    rentoraMap.setView([lat, lng], 15);
+                    pickupMarker.setLatLng([lat, lng]);
+                    reverseGeocode(lat, lng, 'id_pickup_location');
+                }, function(err) {
+                    gpsBtn.classList.remove('animate-spin');
+                    alert("Could not detect location. Please type your pickup hub.");
+                });
+            });
+        }
+
+        // Setup Flatpickr for Date & Time Pickers
+        function updateDuration() {
+            const pVal = pickupPicker ? pickupPicker.selectedDates[0] : null;
+            const dVal = dropoffPicker ? dropoffPicker.selectedDates[0] : null;
+            const textEl = document.getElementById('booking-duration-text');
+            if (!textEl) return;
+
+            if (!pVal || !dVal) {
+                textEl.textContent = "Select pickup and return date & time";
+                return;
+            }
+
+            const diffMs = dVal - pVal;
+            if (diffMs <= 0) {
+                textEl.textContent = "⚠️ Return time must be after pickup time";
+                return;
+            }
+
+            const totalHours = Math.round(diffMs / (1000 * 60 * 60));
+            const days = Math.floor(totalHours / 24);
+            const remHours = totalHours % 24;
+
+            let durStr = "";
+            if (days > 0) {
+                durStr = `${days} Day${days > 1 ? 's' : ''}${remHours > 0 ? ` ${remHours} Hr${remHours > 1 ? 's' : ''}` : ''}`;
+            } else {
+                durStr = `${totalHours} Hour${totalHours > 1 ? 's' : ''}`;
+            }
+            textEl.innerHTML = `⏱️ <strong>${durStr}</strong> (${totalHours} hrs total)`;
+        }
+
+        if (typeof flatpickr !== 'undefined') {
+            const fpConfig = {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+                minDate: "today",
+                time_24hr: true,
+                minuteIncrement: 30,
+                defaultHour: 10,
+                defaultMinute: 0,
+                disableMobile: true,
+            };
+
+            pickupPicker = flatpickr("#pickup_picker", {
+                ...fpConfig,
+                onChange: function(selectedDates) {
+                    if (selectedDates[0]) {
+                        dropoffPicker.set('minDate', selectedDates[0]);
+                        // If return date is before new pickup, auto-advance return by 2 days
+                        if (!dropoffPicker.selectedDates[0] || dropoffPicker.selectedDates[0] <= selectedDates[0]) {
+                            const newDrop = new Date(selectedDates[0].getTime() + 48 * 3600 * 1000);
+                            dropoffPicker.setDate(newDrop, true);
+                        }
+                    }
+                    updateDuration();
+                }
+            });
+
+            dropoffPicker = flatpickr("#dropoff_picker", {
+                ...fpConfig,
+                onChange: function() {
+                    updateDuration();
+                }
+            });
+
+            // Set sensible defaults if empty
+            if (!pickupPicker.selectedDates.length) {
+                const now = new Date();
+                now.setHours(now.getHours() + 2, 0, 0, 0);
+                pickupPicker.setDate(now, true);
+                const returnDate = new Date(now.getTime() + 48 * 3600 * 1000);
+                dropoffPicker.setDate(returnDate, true);
+            }
+            updateDuration();
+        }
+
+        // Form Validation on Submit
         form.addEventListener('submit', function(e) {
             if (!pickupInput.value.trim()) {
                 e.preventDefault();
                 pickupInput.focus();
                 pickupInput.classList.add('ring-2', 'ring-red-400');
-                setTimeout(() => pickupInput.classList.remove('ring-2', 'ring-red-400'), 2000);
+                setTimeout(() => pickupInput.classList.remove('ring-2', 'ring-red-400'), 2500);
                 return;
             }
-            // If dropoff is not different or empty, sync to pickup
             if (!diffToggle.checked || !dropoffInput.value.trim()) {
                 dropoffInput.value = pickupInput.value.trim();
             }
         });
     });
     </script>
-
-    <!-- Map Scripts: Google Maps Platform with Instant Leaflet Fallback -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const googleKey = "{{ google_maps_api_key|default:'' }}";
-            let googleMapLoaded = false;
-
-            function initLeafletMap() {
-                if (googleMapLoaded) return;
-                var map = L.map('map', {
-                    scrollWheelZoom: false,
-                    tap: true
-                }).setView([20.2961, 85.8245], 13);
-                window.rentoraMap = map;
-
-                L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-                    attribution: '© Esri',
-                    maxZoom: 19
-                }).addTo(map);
-
-                var pickupMarker = L.marker([20.2961, 85.8245], {draggable: true}).addTo(map);
-                var dropoffMarker = L.marker([20.3061, 85.8345], {draggable: true});
-                window.dropoffMarker = dropoffMarker;
-                
-                pickupMarker.bindPopup("Pickup Location").openPopup();
-                dropoffMarker.bindPopup("Drop-off Location");
-
-                function updateInputs() {
-                    var p = pickupMarker.getLatLng();
-                    var d = dropoffMarker.getLatLng();
-                    
-                    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${p.lat}&lon=${p.lng}`)
-                        .then(r => r.json())
-                        .then(data => {
-                            if (data && data.display_name) {
-                                const name = data.address?.suburb || data.address?.neighbourhood || data.display_name.split(',')[0];
-                                document.getElementById('id_pickup_location').value = name;
-                                if (!document.getElementById('diff-dropoff-toggle').checked) {
-                                    document.getElementById('id_dropoff_location').value = name;
-                                }
-                            }
-                        }).catch(() => {});
-                    
-                    if (document.getElementById('diff-dropoff-toggle').checked) {
-                        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${d.lat}&lon=${d.lng}`)
-                            .then(r => r.json())
-                            .then(data => {
-                                if (data && data.display_name) {
-                                    const name = data.address?.suburb || data.address?.neighbourhood || data.display_name.split(',')[0];
-                                    document.getElementById('id_dropoff_location').value = name;
-                                }
-                            }).catch(() => {});
-                    }
-                }
-
-                pickupMarker.on('dragend', updateInputs);
-                dropoffMarker.on('dragend', updateInputs);
-                
-                map.on('click', function(e) {
-                    const diffChecked = document.getElementById('diff-dropoff-toggle').checked;
-                    if (!diffChecked || !window.settingDropoff) {
-                        pickupMarker.setLatLng(e.latlng);
-                        if (diffChecked) window.settingDropoff = true;
-                    } else {
-                        dropoffMarker.setLatLng(e.latlng);
-                        window.settingDropoff = false;
-                    }
-                    updateInputs();
-                });
-
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function(position) {
-                        var lat = position.coords.latitude;
-                        var lng = position.coords.longitude;
-                        map.setView([lat, lng], 14);
-                        pickupMarker.setLatLng([lat, lng]);
-                        updateInputs();
-                    }, function() {});
-                }
-            }
-
-            // Attempt Google Maps Platform integration if key is provided
-            if (googleKey && googleKey !== 'YOUR_KEY_HERE') {
-                window.gm_authFailure = function() {
-                    console.warn("Google Maps authentication notice — activating fallback map layer.");
-                    initLeafletMap();
-                };
-
-                const gScript = document.createElement('script');
-                gScript.src = `https://maps.googleapis.com/maps/api/js?key=${googleKey}&libraries=places,geocoding&callback=initGoogleMap`;
-                gScript.async = true;
-                gScript.defer = true;
-                gScript.onerror = function() {
-                    initLeafletMap();
-                };
-
-                window.initGoogleMap = function() {
-                    try {
-                        const bbsr = { lat: 20.2961, lng: 85.8245 };
-                        const gMap = new google.maps.Map(document.getElementById('map'), {
-                            center: bbsr,
-                            zoom: 13,
-                            mapTypeControl: false,
-                            streetViewControl: false,
-                            fullscreenControl: false,
-                        });
-                        googleMapLoaded = true;
-
-                        const geocoder = new google.maps.Geocoder();
-                        const pMarker = new google.maps.Marker({
-                            position: bbsr,
-                            map: gMap,
-                            draggable: true,
-                            title: "Pickup Hub"
-                        });
-                        const dMarker = new google.maps.Marker({
-                            position: { lat: 20.3061, lng: 85.8345 },
-                            map: null,
-                            draggable: true,
-                            title: "Drop-off Location"
-                        });
-
-                        function reverseGeocode(pos, inputId) {
-                            geocoder.geocode({ location: pos }, (results, status) => {
-                                if (status === "OK" && results[0]) {
-                                    document.getElementById(inputId).value = results[0].formatted_address.split(',')[0];
-                                }
-                            });
-                        }
-
-                        pMarker.addListener('dragend', () => {
-                            const pos = pMarker.getPosition();
-                            reverseGeocode(pos, 'id_pickup_location');
-                        });
-                        dMarker.addListener('dragend', () => {
-                            const pos = dMarker.getPosition();
-                            reverseGeocode(pos, 'id_dropoff_location');
-                        });
-
-                        // Hook diff dropoff toggle
-                        const diffToggle = document.getElementById('diff-dropoff-toggle');
-                        if (diffToggle) {
-                            diffToggle.addEventListener('change', function() {
-                                if (this.checked) {
-                                    dMarker.setMap(gMap);
-                                } else {
-                                    dMarker.setMap(null);
-                                }
-                            });
-                        }
-
-                        // Map click
-                        gMap.addListener('click', (e) => {
-                            const diffChecked = diffToggle && diffToggle.checked;
-                            if (!diffChecked || !window.settingDropoff) {
-                                pMarker.setPosition(e.latLng);
-                                reverseGeocode(e.latLng, 'id_pickup_location');
-                                if (diffChecked) window.settingDropoff = true;
-                            } else {
-                                dMarker.setPosition(e.latLng);
-                                reverseGeocode(e.latLng, 'id_dropoff_location');
-                                window.settingDropoff = false;
-                            }
-                        });
-
-                        // Autocomplete on location inputs
-                        if (google.maps.places) {
-                            const pInput = document.getElementById('id_pickup_location');
-                            if (pInput) {
-                                const pAuto = new google.maps.places.Autocomplete(pInput, { componentRestrictions: { country: 'in' } });
-                                pAuto.addListener('place_changed', () => {
-                                    const place = pAuto.getPlace();
-                                    if (place.geometry && place.geometry.location) {
-                                        gMap.setCenter(place.geometry.location);
-                                        pMarker.setPosition(place.geometry.location);
-                                    }
-                                });
-                            }
-                        }
-
-                    } catch (err) {
-                        console.error("Google Maps init exception:", err);
-                        initLeafletMap();
-                    }
-                };
-
-                document.head.appendChild(gScript);
-            } else {
-                initLeafletMap();
-            }
-        });
-    </script>
     {% endif %}
 
 
-    <!-- Step 2: Dates -->
+    <!-- ========================================== -->
+    <!-- Step 2: Select Car (If No Car Was Chosen)  -->
+    <!-- ========================================== -->
     {% if step == 2 %}
-    <div class="mb-8 sm:mb-12">
-        <h1 class="text-2xl sm:text-3xl font-black mb-2 text-slate-900 dark:text-white">Select Date & Time</h1>
-        <p class="text-slate-500 text-sm sm:text-base">Choose your pickup and drop-off dates and times.</p>
-    </div>
-
-    <form method="post" class="space-y-6">
-        {% csrf_token %}
-        {% if form.non_field_errors %}
-        <div class="bg-red-50 text-red-600 p-4 rounded-xl text-sm font-bold">
-            {{ form.non_field_errors.0 }}
-        </div>
-        {% endif %}
-
-        <div class="grid md:grid-cols-2 gap-6">
-            <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-100 dark:border-slate-800 shadow-sm transition-all hover:border-accent/30 group">
-                <label class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
-                    <span class="material-symbols-outlined text-accent">flight_land</span> Pickup Date & Time
-                </label>
-                <div class="relative">
-                    <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 group-hover:text-accent transition-colors">calendar_month</span>
-                    {{ form.pickup_date|add_class:"w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 pr-12 font-bold text-lg focus:ring-2 focus:ring-accent outline-none cursor-pointer" }}
-                </div>
-            </div>
-            
-            <div class="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-100 dark:border-slate-800 shadow-sm transition-all hover:border-accent/30 group">
-                <label class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
-                    <span class="material-symbols-outlined text-accent">flight_takeoff</span> Drop-off Date & Time
-                </label>
-                <div class="relative">
-                    <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 group-hover:text-accent transition-colors">calendar_month</span>
-                    {{ form.dropoff_date|add_class:"w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 pr-12 font-bold text-lg focus:ring-2 focus:ring-accent outline-none cursor-pointer" }}
-                </div>
-            </div>
-        </div>
-
-        <!-- Rentora Trip Duration Counter Pill -->
-        <div id="booking-duration-badge" class="p-3.5 rounded-2xl bg-[#FFF2EA] dark:bg-zinc-800 border border-[#FF5F00]/20 dark:border-zinc-700 text-[#FF5F00] dark:text-[#FF7A29] font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm">
-            <span class="material-symbols-outlined text-base">schedule</span>
-            <span id="booking-duration-text">Select pickup and drop-off to view trip duration</span>
-        </div>
-        
-        <button type="submit" class="w-full bg-[#FF5F00] hover:bg-[#E05300] active:scale-[0.98] text-white py-4 rounded-2xl font-black text-base transition-all mt-6 flex justify-center items-center gap-2 shadow-xl shadow-[#FF5F00]/25">
-            <span>Continue to Payment</span>
-            <span class="material-symbols-outlined text-lg">arrow_forward</span>
-        </button>
-    </form>
-
-    <style>
-        /* Inline calendar wrapper */
-        #pickup-calendar-inline .flatpickr-calendar,
-        #dropoff-calendar-inline .flatpickr-calendar {
-            box-shadow: none !important;
-            border: 1px solid rgba(0,0,0,0.05) !important;
-            border-radius: 1rem !important;
-            background: transparent !important;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fadeIn {
-            animation: fadeIn 0.5s ease-out forwards;
-        }
-    </style>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Force readonly to prevent mobile keyboard
-            const pInput = document.getElementById('pickup_picker');
-            const dInput = document.getElementById('dropoff_picker');
-            if (pInput) pInput.setAttribute('readonly', 'readonly');
-            if (dInput) dInput.setAttribute('readonly', 'readonly');
-
-            let disabledDates = [];
-            const carId = "{{ car_id }}";
-
-            function updateBookingDuration() {
-                const pDate = pickupPicker ? pickupPicker.selectedDates[0] : null;
-                const dDate = dropoffPicker ? dropoffPicker.selectedDates[0] : null;
-                const badgeText = document.getElementById('booking-duration-text');
-                if (!badgeText) return;
-
-                if (!pDate || !dDate) {
-                    badgeText.textContent = "Select both pickup and drop-off to view trip duration";
-                    return;
-                }
-                const diffMs = dDate - pDate;
-                if (diffMs <= 0) {
-                    badgeText.textContent = "⚠️ Drop-off time must be after pickup time";
-                    return;
-                }
-                const totalHours = Math.round(diffMs / (1000 * 60 * 60));
-                const days = Math.floor(totalHours / 24);
-                const remHours = totalHours % 24;
-
-                let durStr = "";
-                if (days > 0) {
-                    durStr = `${days} Day${days > 1 ? 's' : ''}${remHours > 0 ? ` ${remHours} Hr${remHours > 1 ? 's' : ''}` : ''}`;
-                } else {
-                    durStr = `${totalHours} Hour${totalHours > 1 ? 's' : ''}`;
-                }
-                badgeText.innerHTML = `⏱️ <strong>${durStr}</strong> (${totalHours} hrs total)`;
-            }
-
-            let pickupPicker = null;
-            let dropoffPicker = null;
-
-            const initPickers = () => {
-                const config = {
-                    enableTime: true,
-                    dateFormat: "Y-m-d H:i",
-                    minDate: "today",
-                    time_24hr: true,
-                    animate: true,
-                    inline: false,
-                    disableMobile: true,
-                    disable: disabledDates,
-                };
-
-                pickupPicker = flatpickr("#pickup_picker", {
-                    ...config,
-                    onChange: function(selectedDates) {
-                        if (selectedDates[0]) {
-                            dropoffPicker.set('minDate', selectedDates[0]);
-                        }
-                        updateBookingDuration();
-                    }
-                });
-
-                dropoffPicker = flatpickr("#dropoff_picker", {
-                    ...config,
-                    onChange: function() {
-                        updateBookingDuration();
-                    }
-                });
-
-                // Initial calculation
-                setTimeout(updateBookingDuration, 200);
-            };
-
-            if (carId && carId !== "None" && carId !== "") {
-                fetch(`/api/cars/${carId}/booked-dates/`)
-                    .then(response => response.json())
-                    .then(data => {
-                        disabledDates = data.booked_dates;
-                        initPickers();
-                    })
-                    .catch(err => {
-                        console.error("Error fetching booked dates:", err);
-                        initPickers();
-                    });
-            } else {
-                initPickers();
-            }
-        });
-    </script>
-    {% endif %}
-
-
-    <!-- Step 3: Select Car -->
-    {% if step == 3 %}
     <div class="mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-            <h1 class="text-2xl sm:text-3xl font-black mb-2 text-slate-900 dark:text-white">Select a Car</h1>
-            <p class="text-slate-500 text-sm sm:text-base">{{ cars.count }} cars available for your dates.</p>
+            <h1 class="text-2xl sm:text-3xl font-black mb-1.5 text-slate-900 dark:text-white">Choose Your Car</h1>
+            <p class="text-slate-500 text-xs sm:text-sm">{{ cars.count }} vehicles available for your selected dates.</p>
         </div>
-        <div class="flex items-center gap-4">
-            <!-- Outstation Toggle -->
-            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-4 py-2 rounded-2xl flex items-center gap-3">
-                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Outstation</span>
-                <label class="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" name="is_outstation" form="select-car-form" class="sr-only peer" {% if is_outstation %}checked{% endif %}>
-                    <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-accent"></div>
-                </label>
-            </div>
-            
-            <div class="text-right text-xs font-bold text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1 pb-2 rounded-lg">
-                <div class="mb-1 uppercase tracking-wider">Duration</div>
-                <div class="text-primary dark:text-white text-base">{{ days }} Day{{ days|pluralize }}</div>
+        <div class="flex items-center gap-3">
+            <div class="text-right text-xs font-bold text-slate-500 bg-slate-100 dark:bg-slate-800 px-3.5 py-1.5 rounded-xl">
+                <span class="uppercase tracking-wider text-[10px] text-slate-400 block">Duration</span>
+                <span class="text-primary dark:text-white text-sm font-extrabold">{{ days }} Day{{ days|pluralize }}</span>
             </div>
         </div>
     </div>
@@ -545,11 +695,11 @@
         
         {% for car in cars %}
         <label class="block cursor-pointer group">
-            <div class="bg-white dark:bg-slate-900 rounded-3xl p-4 border-2 transition-all car-card flex flex-col sm:flex-row gap-6 {% if selected_car_id == car.id %}border-accent bg-accent/5 dark:bg-accent/5 shadow-md{% else %}border-transparent border-slate-100 dark:border-slate-800 hover:border-accent/30{% endif %}" onclick="selectCar({{ car.id }})">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl p-4 border-2 transition-all car-card flex flex-col sm:flex-row gap-5 {% if selected_car_id == car.id %}border-accent bg-accent/5 dark:bg-accent/5 shadow-md{% else %}border-transparent border-slate-100 dark:border-slate-800 hover:border-accent/30{% endif %}" onclick="selectCar({{ car.id }})">
                 
-                <div class="w-full sm:w-48 h-32 bg-slate-50 dark:bg-slate-800 rounded-2xl p-2 flex items-center justify-center relative overflow-hidden shrink-0">
+                <div class="w-full sm:w-44 h-28 bg-slate-50 dark:bg-slate-800 rounded-2xl p-2 flex items-center justify-center relative overflow-hidden shrink-0">
                     {% if car.image %}
-                    <img src="{{ car.image.url }}" class="w-full h-full object-contain">
+                    <img src="{{ car.image.url }}" class="w-full h-full object-contain" alt="{{ car.name }}">
                     {% else %}
                     <span class="material-symbols-outlined text-4xl text-slate-300">directions_car</span>
                     {% endif %}
@@ -559,39 +709,39 @@
                     </div>
                 </div>
 
-                <div class="flex-1 flex flex-col py-1">
-                    <div class="flex justify-between items-start mb-2">
+                <div class="flex-1 flex flex-col justify-center py-1">
+                    <div class="flex justify-between items-start mb-1.5">
                         <div>
-                            <p class="text-xs font-bold text-slate-400 mb-1 uppercase tracking-wider">{{ car.brand }}</p>
-                            <h3 class="text-xl font-black">{{ car.name }}</h3>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">{{ car.brand }}</p>
+                            <h3 class="text-base sm:text-lg font-black text-slate-900 dark:text-white">{{ car.name }}</h3>
                         </div>
                         <div class="text-right">
-                            <p class="text-xl font-black">₹{{ car.price_per_day }}<span class="text-sm font-medium text-slate-500">/d</span></p>
+                            <p class="text-lg font-black text-slate-900 dark:text-white">₹{{ car.price_per_day|floatformat:0 }}<span class="text-xs font-medium text-slate-500">/day</span></p>
                         </div>
                     </div>
                     
-                    <div class="grid grid-cols-2 lg:flex lg:items-center gap-x-4 gap-y-2 text-slate-500 text-sm mt-auto">
-                        <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[1rem]">group</span> {{ car.seats }} Seats</div>
-                        <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[1rem]">local_gas_station</span> {{ car.fuel_type }}</div>
-                        <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[1rem]">settings</span> {{ car.transmission }}</div>
+                    <div class="flex items-center gap-3 text-slate-500 text-xs mt-2">
+                        <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">group</span> {{ car.seats }} Seats</span>
+                        <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">local_gas_station</span> {{ car.fuel_type }}</span>
+                        <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">settings</span> {{ car.transmission }}</span>
                     </div>
                 </div>
             </div>
         </label>
         {% empty %}
-        <div class="text-center py-20 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800">
-            <span class="material-symbols-outlined text-6xl text-slate-300 mb-4">search_off</span>
-            <h3 class="text-xl font-bold mb-2">No cars available</h3>
-            <p class="text-slate-500 mb-6">There are no cars available for your selected dates.</p>
-            <a href="{% url 'booking_dates' %}" class="bg-primary text-white px-6 py-3 rounded-full font-bold">Change Dates</a>
+        <div class="text-center py-16 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800">
+            <span class="material-symbols-outlined text-5xl text-slate-300 mb-3">search_off</span>
+            <h3 class="text-lg font-bold mb-1">No cars available</h3>
+            <p class="text-slate-500 text-xs mb-5">There are no vehicles free for your exact dates.</p>
+            <a href="{% url 'booking_location' %}" class="bg-primary text-white px-5 py-2.5 rounded-full font-bold text-xs">Adjust Dates</a>
         </div>
         {% endfor %}
 
         {% if cars %}
-        <div class="fixed bottom-0 inset-x-0 p-4 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 z-40 safe-area-bottom shadow-2xl sm:static sm:bg-transparent sm:p-0 sm:border-0 sm:shadow-none sm:mt-8">
-            <button type="submit" id="submit-btn" class="w-full bg-[#FF5F00] hover:bg-[#E05300] active:scale-[0.98] text-white py-4 rounded-xl font-bold text-lg transition-all shadow-2xl flex justify-center items-center gap-2 {% if not selected_car_id %}opacity-50 cursor-not-allowed{% endif %}" {% if not selected_car_id %}disabled{% endif %}>
-                <span>Proceed to Payment</span>
-                <span class="material-symbols-outlined text-lg">payments</span>
+        <div class="fixed bottom-0 inset-x-0 p-4 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 z-40 safe-area-bottom shadow-2xl sm:static sm:bg-transparent sm:p-0 sm:border-0 sm:shadow-none sm:mt-6">
+            <button type="submit" id="submit-btn" class="w-full bg-[#FF5F00] hover:bg-[#E05300] active:scale-[0.98] text-white py-4 rounded-2xl font-black text-base transition-all shadow-xl shadow-[#FF5F00]/25 flex justify-center items-center gap-2 {% if not selected_car_id %}opacity-50 cursor-not-allowed{% endif %}" {% if not selected_car_id %}disabled{% endif %}>
+                <span>Proceed to Checkout</span>
+                <span class="material-symbols-outlined text-lg">arrow_forward</span>
             </button>
         </div>
         {% endif %}
@@ -600,32 +750,39 @@
     <script>
         function selectCar(id) {
             document.getElementById('selected-car-id').value = id;
-            document.getElementById('submit-btn').disabled = false;
-            document.getElementById('submit-btn').classList.remove('opacity-50', 'cursor-not-allowed');
+            const submitBtn = document.getElementById('submit-btn');
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
 
-            // Visual update
             document.querySelectorAll('.car-card').forEach(card => {
                 card.classList.remove('border-accent', 'bg-accent/5', 'dark:bg-accent/5', 'shadow-md');
                 card.classList.add('border-transparent', 'border-slate-100', 'dark:border-slate-800');
                 
                 const radio = card.querySelector('.radio-indicator');
-                radio.classList.remove('border-accent', 'bg-accent');
-                radio.classList.add('border-slate-300', 'dark:border-slate-600', 'bg-white', 'dark:bg-slate-800');
-                radio.querySelector('span').classList.replace('opacity-100', 'opacity-0');
+                if (radio) {
+                    radio.classList.remove('border-accent', 'bg-accent');
+                    radio.classList.add('border-slate-300', 'dark:border-slate-600', 'bg-white', 'dark:bg-slate-800');
+                    const checkIcon = radio.querySelector('span');
+                    if (checkIcon) checkIcon.classList.replace('opacity-100', 'opacity-0');
+                }
             });
 
-            // Target nearest label parent of clicked to style
-            event.currentTarget.classList.remove('border-transparent');
-            event.currentTarget.classList.add('border-accent', 'bg-accent/5', 'dark:bg-accent/5', 'shadow-md');
+            const current = event.currentTarget;
+            current.classList.remove('border-transparent');
+            current.classList.add('border-accent', 'bg-accent/5', 'dark:bg-accent/5', 'shadow-md');
             
-            const selectedRadio = event.currentTarget.querySelector('.radio-indicator');
-            selectedRadio.classList.remove('border-slate-300', 'dark:border-slate-600', 'bg-white', 'dark:bg-slate-800');
-            selectedRadio.classList.add('border-accent', 'bg-accent');
-            selectedRadio.querySelector('span').classList.replace('opacity-0', 'opacity-100');
+            const selectedRadio = current.querySelector('.radio-indicator');
+            if (selectedRadio) {
+                selectedRadio.classList.remove('border-slate-300', 'dark:border-slate-600', 'bg-white', 'dark:bg-slate-800');
+                selectedRadio.classList.add('border-accent', 'bg-accent');
+                const checkIcon = selectedRadio.querySelector('span');
+                if (checkIcon) checkIcon.classList.replace('opacity-0', 'opacity-100');
+            }
         }
-        
     </script>
     {% endif %}
+
 </div>
 {% endblock %}
-

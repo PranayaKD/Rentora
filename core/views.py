@@ -1,6 +1,6 @@
 import logging
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
@@ -27,7 +27,7 @@ from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 from core.models import Car, Booking, Review, Wishlist, PromoCode, Profile, Notification
 from accounts.models import UserProfile
-from .forms import BookingLocationForm, BookingDatesForm, ReviewForm, ContactForm
+from .forms import BookingLocationForm, BookingDatesForm, BookingStepOneForm, ReviewForm, ContactForm
 from core.services import (
     BookingService, RefundService, TripExtensionService, 
     LateReturnService, TollReconcilerService, EmergencySOSService, 
@@ -548,87 +548,92 @@ def booking_location_direct(request, car_id):
 
 @login_required
 def booking_location_view(request):
-    """Booking Step 1: Location selection."""
-    # Pre-select car if provided from GET/POST parameter (legacy support)
+    """Booking Step 1: Unified Location and Date/Time selection."""
     preselect_car = request.GET.get('preselect_car') or request.POST.get('preselect_car')
     if preselect_car:
         request.session['booking_car_id'] = preselect_car
 
+    car_id = request.session.get('booking_car_id')
+    selected_car = None
+    if car_id:
+        try:
+            selected_car = Car.objects.filter(id=car_id, is_available=True).first()
+        except Exception:
+            selected_car = None
+
     if request.method == 'POST':
-        form = BookingLocationForm(request.POST)
+        form = BookingStepOneForm(request.POST)
         if form.is_valid():
             request.session['pickup_location'] = form.cleaned_data['pickup_location']
-            request.session['dropoff_location'] = form.cleaned_data['dropoff_location']
-            return redirect('booking_dates')
+            request.session['dropoff_location'] = form.cleaned_data['dropoff_location'] or form.cleaned_data['pickup_location']
+            request.session['pickup_date'] = form.cleaned_data['pickup_date'].isoformat()
+            request.session['dropoff_date'] = form.cleaned_data['dropoff_date'].isoformat()
+            request.session['is_outstation'] = form.cleaned_data.get('is_outstation', False)
+
+            # If user already selected a car (from homepage, fleet, or car-detail), go directly to checkout
+            if request.session.get('booking_car_id'):
+                return redirect('payment')
+            return redirect('booking_select')
     else:
-        form = BookingLocationForm(initial={
-            'pickup_location': request.session.get('pickup_location', ''),
+        # Default dates: today + 2 hours for pickup, pickup + 2 days for dropoff
+        default_pickup = timezone.now() + timedelta(hours=2)
+        default_pickup = default_pickup.replace(minute=0, second=0, microsecond=0)
+        default_dropoff = default_pickup + timedelta(days=2)
+
+        session_pickup = request.session.get('pickup_date')
+        session_dropoff = request.session.get('dropoff_date')
+        
+        pickup_val = parse_session_date(session_pickup) if session_pickup else default_pickup
+        dropoff_val = parse_session_date(session_dropoff) if session_dropoff else default_dropoff
+
+        form = BookingStepOneForm(initial={
+            'pickup_location': request.session.get('pickup_location') or request.session.get('current_city', 'Bhubaneswar'),
             'dropoff_location': request.session.get('dropoff_location', ''),
+            'pickup_date': pickup_val.strftime('%Y-%m-%d %H:%M') if pickup_val else '',
+            'dropoff_date': dropoff_val.strftime('%Y-%m-%d %H:%M') if dropoff_val else '',
+            'is_outstation': request.session.get('is_outstation', False),
         })
 
-    has_car = bool(request.session.get('booking_car_id'))
+    has_car = bool(selected_car)
     context = {
         'form': form,
         'step': 1,
-        'total_steps': 3 if has_car else 4,
+        'total_steps': 2 if has_car else 3,
+        'selected_car': selected_car,
+        'has_car': has_car,
+        'car_id': selected_car.id if selected_car else None,
+        'car': selected_car,
     }
     return render(request, 'booking-flow.html', context)
 
 
 @login_required
 def booking_dates_view(request):
-    """Booking Step 2: Date selection."""
+    """Booking dates route: forwards to combined booking step 1."""
     if not request.session.get('pickup_location'):
-        messages.warning(request, "Please select a location first.")
         return redirect('booking_location')
-
-    if request.method == 'POST':
-        form = BookingDatesForm(request.POST)
-        if form.is_valid():
-            request.session['pickup_date'] = form.cleaned_data['pickup_date'].isoformat()
-            request.session['dropoff_date'] = form.cleaned_data['dropoff_date'].isoformat()
-            # Skip car selection if car is already pre-selected
-            if request.session.get('booking_car_id'):
-                return redirect('payment')
-            return redirect('booking_select')
-    else:
-        form = BookingDatesForm()
-
-    has_car = bool(request.session.get('booking_car_id'))
-    context = {
-        'form': form,
-        'step': 2,
-        'total_steps': 3 if has_car else 4,
-    }
-    return render(request, 'booking-flow.html', context)
+    return booking_location_view(request)
 
 
 @login_required
 def booking_select_view(request):
-    """Booking Step 2: Select a Car (if not already selected)."""
-    # SKIP if car is already selected in session (from car-detail "Start Booking")
+    """Booking Step 2 (if car not chosen upfront): Select a Car."""
     if request.session.get('booking_car_id'):
         return redirect('payment')
 
-    if not request.session.get('pickup_date'):
-        messages.warning(request, "Please select dates first.")
-        return redirect('booking_dates')
+    if not request.session.get('pickup_date') or not request.session.get('pickup_location'):
+        messages.warning(request, "Please set your trip location and dates first.")
+        return redirect('booking_location')
 
-    # Handle full datetime 'Y-m-d H:i' or date-only 'Y-m-d'
     pickup_date_str = request.session['pickup_date']
     dropoff_date_str = request.session['dropoff_date']
     
     pickup_dt = parse_session_date(pickup_date_str)
     dropoff_dt = parse_session_date(dropoff_date_str)
     if not pickup_dt or not dropoff_dt:
-        try:
-            pickup_dt = datetime.combine(datetime.strptime(pickup_date_str, '%Y-%m-%d').date(), datetime.min.time())
-            dropoff_dt = datetime.combine(datetime.strptime(dropoff_date_str, '%Y-%m-%d').date(), datetime.max.time())
-        except Exception:
-            pickup_dt = timezone.now().replace(tzinfo=None)
-            dropoff_dt = pickup_dt + timedelta(days=2)
+        pickup_dt = timezone.now() + timedelta(hours=2)
+        dropoff_dt = pickup_dt + timedelta(days=2)
 
-    # Get available cars (excluding already booked ones for selected dates)
     booked_car_ids = Booking.objects.filter(
         status__in=[Booking.Status.PENDING, Booking.Status.CONFIRMED, 'Pending', 'Active', 'Confirmed'],
         pickup_date__lt=dropoff_dt,
@@ -642,18 +647,16 @@ def booking_select_view(request):
         is_outstation = request.POST.get('is_outstation') == 'on'
         if car_id:
             car = get_object_or_404(Car, id=car_id)
-            # Save car selection and outstation flag in session
             request.session['booking_car_id'] = car_id
             request.session['is_outstation'] = is_outstation
             return redirect('payment')
 
-    days = (dropoff_dt - pickup_dt).days
-    if days == 0: days = 1 # Minimum 1 day charge
+    days = max(1, (dropoff_dt - pickup_dt).days)
 
     context = {
         'cars': available_cars,
-        'step': 3,
-        'total_steps': 4,
+        'step': 2,
+        'total_steps': 3,
         'pickup_date': pickup_dt,
         'dropoff_date': dropoff_dt,
         'days': days,
@@ -663,41 +666,41 @@ def booking_select_view(request):
     return render(request, 'booking-flow.html', context)
 
 
-
 @login_required
 def payment_view(request):
-    """Booking Step 4: Payment checkout page."""
+    """Booking Step 2: Checkout & Payment review page."""
     car_id = request.session.get('booking_car_id')
     pickup_date_str = request.session.get('pickup_date')
     dropoff_date_str = request.session.get('dropoff_date')
     pickup_location = request.session.get('pickup_location')
-    dropoff_location = request.session.get('dropoff_location')
+    dropoff_location = request.session.get('dropoff_location') or pickup_location
     is_outstation = request.session.get('is_outstation', False)
 
-    if not all([car_id, pickup_date_str, dropoff_date_str, pickup_location, dropoff_location]):
-        messages.warning(request, "Your booking session has expired or is invalid.")
-        return redirect('booking_select')
+    if not car_id:
+        messages.info(request, "Please choose a vehicle for your reservation.")
+        return redirect('cars')
 
-    # KYC verification is handled after booking confirmation
-    
+    if not all([pickup_date_str, dropoff_date_str, pickup_location]):
+        messages.warning(request, "Please select your trip location and schedule.")
+        return redirect('booking_location')
+
     car = get_object_or_404(Car, id=car_id)
     
     pickup_dt = parse_session_date(pickup_date_str)
     dropoff_dt = parse_session_date(dropoff_date_str)
     
     if not pickup_dt or not dropoff_dt:
-        messages.warning(request, "Invalid date format. Please select dates again.")
-        return redirect('booking_dates')
+        messages.warning(request, "Invalid date format. Please verify your itinerary dates.")
+        return redirect('booking_location')
     
     days = (dropoff_dt - pickup_dt).days
-    if days <= 0: days = 1 # Minimum 1 day charge
+    if days <= 0:
+        days = 1
     
-    # Calculate rental subtotal with weekend pricing
     subtotal = car.calculate_rental_price(pickup_dt, dropoff_dt)
     tax = (subtotal * Decimal('0.18')).quantize(Decimal('0.01'))
     total = subtotal + tax
     
-    # Check for active promo code in session
     promo_id = request.session.get('applied_promo_id')
     discount_amount = Decimal('0')
     promo_code_str = ""
@@ -712,7 +715,6 @@ def payment_view(request):
                 else:
                     discount_amount = Decimal(str(promo.discount_value))
             else:
-                # Promo expired since it was applied
                 del request.session['applied_promo_id']
         except PromoCode.DoesNotExist:
             del request.session['applied_promo_id']
@@ -732,22 +734,21 @@ def payment_view(request):
         'discount_amount': discount_amount,
         'final_total': final_total,
         'is_outstation': is_outstation,
+        'step': 2,
+        'total_steps': 2,
+        'razorpay_key_id': settings.RAZORPAY_KEY_ID,
     }
 
     if request.method == 'POST':
         try:
             with transaction.atomic():
-                # Lock the car row to prevent race conditions (double-booking)
                 locked_car = Car.objects.select_for_update().get(id=car.id)
                 
-                # Check availability one final time
                 is_available = Car.is_available_for_dates(locked_car.id, pickup_dt, dropoff_dt)
-
                 if not is_available:
-                    messages.error(request, "Sorry, this car is no longer available for the selected dates.")
-                    return redirect('booking_select')
+                    messages.error(request, "Sorry, this vehicle is no longer available for the selected dates.")
+                    return redirect('booking_location')
 
-                # Create real booking atomically under row lock
                 booking = Booking.objects.create(
                     user=request.user,
                     car=locked_car,
@@ -763,60 +764,47 @@ def payment_view(request):
                     is_paid=False
                 )
                 
-                # Clear pending booking logic from session
-                request.session.pop('booking_car_id', None)
-                
                 if promo_id:
                     PromoCode.objects.filter(id=promo_id, used_count__lt=F('usage_limit')).update(used_count=F('used_count') + 1)
 
-            payment_method = request.POST.get('payment_method_choice', 'stripe')
+            payment_method = request.POST.get('payment_method_choice', 'razorpay')
             
             if payment_method == 'razorpay':
-                # Create Razorpay Order
                 razorpay_order = BookingService.create_razorpay_order(booking, final_total)
                 booking.razorpay_order_id = razorpay_order['id']
+                booking.payment_intent_id = razorpay_order['id']
                 booking.save()
                 
-                # Re-render payment page with Razorpay config to pop open the modal
                 context['trigger_razorpay'] = True
                 context['razorpay_order_id'] = razorpay_order['id']
-                context['razorpay_amount'] = final_total # passed for reference
+                context['razorpay_amount'] = final_total
+                context['razorpay_amount_paise'] = int(round(final_total * 100))
                 context['razorpay_key_id'] = settings.RAZORPAY_KEY_ID
                 context['booking'] = booking
                 return render(request, 'payment.html', context)
             else:
-                # Default to Stripe
-                checkout_session = BookingService.create_stripe_session(
-                    booking, car, days, pickup_dt, dropoff_dt, final_total
-                )
-                booking.stripe_session_id = checkout_session.id
-                booking.save()
-                return redirect(checkout_session.url, code=303)
+                try:
+                    checkout_session = BookingService.create_stripe_session(
+                        booking, car, days, pickup_dt, dropoff_dt, final_total
+                    )
+                    booking.stripe_session_id = checkout_session.id
+                    booking.save()
+                    return redirect(checkout_session.url, code=303)
+                except Exception as stripe_err:
+                    logger.error(f"Stripe Session Error: {stripe_err}")
+                    messages.error(request, f"Card gateway unavailable: {str(stripe_err)}. You can also pay via UPI / Netbanking.")
+                    context['booking'] = booking
+                    return render(request, 'payment.html', context)
 
         except Exception as e:
             if 'booking' in locals():
                 booking.status = 'Cancelled'
                 booking.save()
-            # Return descriptive error message in debug mode
-            error_msg = f"Payment Gateway Error: {str(e)}" if settings.DEBUG else "We encountered an issue processing your payment. Please try again."
+            error_msg = f"Payment Gateway Error: {str(e)}" if settings.DEBUG else "We encountered an issue preparing checkout. Please try again."
+            logger.error(f"Payment Checkout Error: {e}")
             messages.error(request, error_msg)
-            return redirect('payment')
+            return render(request, 'payment.html', context)
 
-    context = {
-        'car': car,
-        'pickup_date': pickup_dt,
-        'dropoff_date': dropoff_dt,
-        'days': days,
-        'subtotal': subtotal,
-        'tax': tax,
-        'total': total,
-        'discount_amount': discount_amount,
-        'final_total': final_total,
-        'step': 3,
-        'total_steps': 3,
-        'pickup_location': request.session.get('pickup_location', ''),
-        'dropoff_location': request.session.get('dropoff_location', ''),
-    }
     return render(request, 'payment.html', context)
 
 
