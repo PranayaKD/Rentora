@@ -186,6 +186,7 @@ def index_view(request):
         'wishlisted_car_ids': wishlisted_car_ids,
         'contact_form': ContactForm(),
         'current_city': request.session.get('current_city', 'Bhubaneswar'),
+        'active_tab': 'home',
     }
     return render(request, 'index.html', context)
 
