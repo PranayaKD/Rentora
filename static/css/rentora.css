@@ -8,7 +8,7 @@
   --on-primary: #ffffff;
   --surface: #FDFBD6;
   --background: #FDFBD6;
-  --surface-container-lowest: #ffffff;
+  --surface-container-lowest: #FDFBD6;
   --surface-container-low: #FAF7CE;
   --surface-container: #F7F3C6;
   --on-surface: #111111;
@@ -99,8 +99,47 @@ h3,
 h4,
 h5,
 h6,
-.font-headline {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+.font-headline,
+.font-display {
+  font-family: 'Epilogue', sans-serif !important;
+}
+
+/* Liquid Cool Glassmorphism Navigation */
+.liquid-nav-glass {
+  background: rgba(253, 251, 214, 0.78) !important;
+  backdrop-filter: blur(28px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.75) !important;
+  box-shadow: 
+    inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 1px 0 rgba(17, 17, 17, 0.04),
+    0 16px 40px -6px rgba(17, 17, 17, 0.08),
+    0 4px 12px -2px rgba(17, 17, 17, 0.04) !important;
+}
+
+.liquid-hub-pill {
+  background: rgba(250, 247, 206, 0.85) !important;
+  border: 1px solid rgba(217, 84, 30, 0.2) !important;
+  box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Enforce All-Cream Surfaces - Eliminate Stark White Cards & Containers */
+.bg-surface-container-lowest {
+  background-color: #FDFBD6 !important;
+}
+
+.card,
+.car-card,
+.fleet-card {
+  background-color: #FDFBD6 !important;
+}
+
+/* Ensure white backgrounds across pages adapt to the warm cream palette */
+div.bg-white,
+section.bg-white,
+main.bg-white,
+article.bg-white {
+  background-color: #FDFBD6 !important;
 }
 
 /* Material Symbols configuration */
