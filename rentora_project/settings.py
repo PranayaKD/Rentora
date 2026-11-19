@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fallback-key-change-me')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = [h.strip() for h in os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,testserver,.onrender.com').split(',') if h.strip()]
+ALLOWED_HOSTS = [h.strip() for h in os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,testserver,.onrender.com,.is-a.dev,rentora.is-a.dev').split(',') if h.strip()]
 if 'testserver' not in ALLOWED_HOSTS:
     ALLOWED_HOSTS.append('testserver')
 if DEBUG:
@@ -50,7 +50,7 @@ if not DEBUG:
 CSRF_TRUSTED_ORIGINS = [
     f"https://{h.strip()}" for h in ALLOWED_HOSTS if h.strip() and not h.startswith('.') and h not in ('localhost', '127.0.0.1', 'testserver')
 ]
-CSRF_TRUSTED_ORIGINS.extend(['https://*.onrender.com', 'https://*.supabase.co'])
+CSRF_TRUSTED_ORIGINS.extend(['https://*.onrender.com', 'https://*.supabase.co', 'https://*.is-a.dev', 'https://rentora.is-a.dev'])
 if os.getenv('CSRF_TRUSTED_ORIGINS'):
     CSRF_TRUSTED_ORIGINS.extend([o.strip() for o in os.getenv('CSRF_TRUSTED_ORIGINS').split(',') if o.strip()])
 CSRF_TRUSTED_ORIGINS = list(dict.fromkeys(CSRF_TRUSTED_ORIGINS))  # Remove duplicates
