@@ -43,16 +43,16 @@
         position: absolute;
         inset: -6px;
         border-radius: 50%;
-        background: rgba(253, 191, 19, 0.45);
+        background: rgba(217, 84, 30, 0.45);
         animation: rentora-flow-pulse 2s infinite ease-out;
     }
     .rentora-maplibre-pin .pin-core {
         width: 18px;
         height: 18px;
-        background: #fdbf13;
-        border: 3px solid #111827;
+        background: #D9541E;
+        border: 3px solid #111111;
         border-radius: 50%;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+        box-shadow: 0 4px 12px rgba(217, 84, 30, 0.4);
         position: relative;
         z-index: 2;
     }
@@ -366,7 +366,7 @@
         <!-- Below Two Cards: Single Prominent CTA     -->
         <!-- ========================================== -->
         <div class="pt-2">
-            <button type="submit" id="btn-submit-step1" class="w-full py-4 sm:py-5 bg-secondary-container hover:bg-[#eab00f] active:scale-[0.99] text-[#261a00] font-black text-base sm:text-lg rounded-2xl shadow-lg shadow-[#fdbf13]/25 flex items-center justify-center gap-3 transition-all cursor-pointer">
+            <button type="submit" id="btn-submit-step1" class="w-full py-4 sm:py-5 bg-secondary-container hover:bg-[#c44714] active:scale-[0.99] text-white font-black text-base sm:text-lg rounded-2xl shadow-lg shadow-[#D9541E]/25 flex items-center justify-center gap-3 transition-all cursor-pointer">
                 {% if has_car %}
                 <span>Proceed to Checkout</span>
                 <span class="material-symbols-outlined text-xl">arrow_forward</span>
@@ -902,7 +902,7 @@
 
         {% if cars %}
         <div class="fixed bottom-0 inset-x-0 p-4 bg-surface-container-lowest/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-outline-variant/30 z-40 safe-area-bottom shadow-2xl sm:static sm:bg-transparent sm:p-0 sm:border-0 sm:shadow-none sm:mt-6">
-            <button type="submit" id="submit-btn" class="w-full bg-secondary-container hover:bg-[#eab00f] active:scale-[0.98] text-[#261a00] py-4 rounded-2xl font-black text-base transition-all shadow-lg shadow-[#fdbf13]/25 flex justify-center items-center gap-2 {% if not selected_car_id %}opacity-50 cursor-not-allowed{% endif %}" {% if not selected_car_id %}disabled{% endif %}>
+            <button type="submit" id="submit-btn" class="w-full bg-secondary-container hover:bg-[#c44714] active:scale-[0.98] text-white py-4 rounded-2xl font-black text-base transition-all shadow-lg shadow-[#D9541E]/25 flex justify-center items-center gap-2 {% if not selected_car_id %}opacity-50 cursor-not-allowed{% endif %}" {% if not selected_car_id %}disabled{% endif %}>
                 <span>Proceed to Checkout</span>
                 <span class="material-symbols-outlined text-lg">arrow_forward</span>
             </button>

@@ -1,22 +1,24 @@
-/* Rentora Core Styles - Based on DESIGN.md Tokens */
+/* Rentora Core Styles - Cream, Ink Black & Burnt Orange Palette */
 
 :root {
-  --primary: #121316;
+  --primary: #111111;
   --primary-dark: #000000;
-  --primary-light: #26272b;
-  --primary-container: #1b1b1f;
+  --primary-light: #222222;
+  --primary-container: #111111;
   --on-primary: #ffffff;
-  --surface: #f9f9f9;
+  --surface: #F3EEE3;
+  --background: #F3EEE3;
   --surface-container-lowest: #ffffff;
-  --surface-container-low: #f3f3f3;
-  --surface-container: #eeeeee;
-  --on-surface: #0a0a0b;
-  --on-surface-variant: #1a1c1e;
-  --secondary: #f0b106;
-  --secondary-container: #fdbf13;
-  --accent: #fdbf13;
+  --surface-container-low: #EFE9DC;
+  --surface-container: #EAE3D4;
+  --on-surface: #111111;
+  --on-surface-variant: #222222;
+  --secondary: #D9541E;
+  --secondary-container: #D9541E;
+  --on-secondary-container: #ffffff;
+  --accent: #D9541E;
   --go-green: #10b981;
-  --charcoal: #121316;
+  --charcoal: #111111;
 }
 
 /* Eradicate default browser blue focus rings and outlines globally on all elements */
@@ -56,20 +58,36 @@ button:focus-visible {
   -webkit-box-shadow: none !important;
 }
 
-/* High-contrast crisp typography - eradicate washed-out greyish text */
+/* Crisp Ink Black Typography (#111111) */
 .text-on-surface-variant {
-  color: #1a1c1e !important;
+  color: #222222 !important;
 }
 p.text-on-surface-variant,
 span.text-on-surface-variant,
 div.text-on-surface-variant {
-  color: #1a1c1e !important;
+  color: #222222 !important;
+}
+
+/* Universal Burnt Orange Buttons (#D9541E) with White Text */
+.bg-secondary-container,
+button.bg-secondary-container,
+a.bg-secondary-container {
+  background-color: #D9541E !important;
+  color: #ffffff !important;
+}
+.bg-secondary-container:hover,
+button.bg-secondary-container:hover,
+a.bg-secondary-container:hover {
+  background-color: #C44714 !important;
+}
+.bg-secondary-container * {
+  color: #ffffff !important;
 }
 
 body {
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background-color: var(--surface);
-  color: var(--on-surface);
+  background-color: #F3EEE3;
+  color: #111111;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;

@@ -13,7 +13,7 @@
 
     <!-- Modal Content -->
     <div class="flex flex-col items-center text-center gap-2 mb-6 pt-1">
-        <div class="w-14 h-14 rounded-2xl bg-red-500/10 dark:bg-red-500/20 border border-red-500/20 text-red-600 dark:text-red-400 flex items-center justify-center mb-1 shadow-xs">
+        <div class="w-14 h-14 rounded-2xl bg-[#D9541E]/10 dark:bg-[#D9541E]/20 border border-[#D9541E]/20 text-[#D9541E] flex items-center justify-center mb-1 shadow-xs">
             <span class="material-symbols-outlined text-2xl font-bold">logout</span>
         </div>
         <h3 class="font-headline text-xl font-black text-primary dark:text-white tracking-tight">Log Out of Rentora?</h3>
@@ -25,7 +25,7 @@
     <!-- Action Buttons -->
     <form action="{% url 'logout' %}" method="post" class="w-full flex flex-col gap-2.5">
         {% csrf_token %}
-        <button type="submit" class="w-full py-3.5 rounded-2xl bg-primary hover:bg-neutral-800 text-white dark:bg-white dark:hover:bg-zinc-200 dark:text-primary font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] transition-all cursor-pointer">
+        <button type="submit" class="w-full py-3.5 rounded-2xl bg-secondary-container hover:bg-[#c44714] text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] transition-all cursor-pointer">
             <span class="material-symbols-outlined text-base">logout</span>
             <span>Log Out</span>
         </button>
