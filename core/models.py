@@ -181,15 +181,41 @@ class Car(models.Model):
         return ['/static/images/ui/car-placeholder.jpg']
 
     @classmethod
-    def is_available_for_dates(cls, car_id, pickup_date, dropoff_date):
+    def is_available_for_dates(cls, car_id, pickup_date, dropoff_date, exclude_booking_id=None, exclude_user_id=None):
         from django.apps import apps
+        from django.utils import timezone
+        from datetime import timedelta
         Booking = apps.get_model('core', 'Booking')
-        return not Booking.objects.filter(
+
+        qs = Booking.objects.filter(
             car_id=car_id,
-            status__in=[Booking.Status.PENDING, Booking.Status.CONFIRMED, 'Pending', 'Active', 'Confirmed'],
             pickup_date__lt=dropoff_date,
             dropoff_date__gt=pickup_date
-        ).exists()
+        )
+
+        if exclude_booking_id:
+            qs = qs.exclude(id=exclude_booking_id)
+
+        # Confirmed or paid bookings strictly block the vehicle
+        confirmed_block = qs.filter(
+            models.Q(status__in=[Booking.Status.CONFIRMED, 'Confirmed', 'Active']) |
+            models.Q(is_paid=True)
+        )
+        if confirmed_block.exists():
+            return False
+
+        # Unpaid pending bookings older than 15 minutes expire automatically.
+        # If exclude_user_id is provided, the current user is not blocked by their own previous attempt.
+        cutoff = timezone.now() - timedelta(minutes=15)
+        pending_qs = qs.filter(
+            status__in=[Booking.Status.PENDING, 'Pending'],
+            is_paid=False,
+            created_at__gte=cutoff
+        )
+        if exclude_user_id:
+            pending_qs = pending_qs.exclude(user_id=exclude_user_id)
+
+        return not pending_qs.exists()
 
     def calculate_rental_price(self, pickup_date, dropoff_date):
         """

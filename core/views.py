@@ -634,8 +634,10 @@ def booking_select_view(request):
         pickup_dt = timezone.now() + timedelta(hours=2)
         dropoff_dt = pickup_dt + timedelta(days=2)
 
+    # Exclude cars with confirmed or paid bookings for the selected dates
     booked_car_ids = Booking.objects.filter(
-        status__in=[Booking.Status.PENDING, Booking.Status.CONFIRMED, 'Pending', 'Active', 'Confirmed'],
+        models.Q(status__in=[Booking.Status.CONFIRMED, 'Confirmed', 'Active']) |
+        models.Q(is_paid=True),
         pickup_date__lt=dropoff_dt,
         dropoff_date__gt=pickup_dt
     ).values_list('car_id', flat=True)
@@ -744,25 +746,47 @@ def payment_view(request):
             with transaction.atomic():
                 locked_car = Car.objects.select_for_update().get(id=car.id)
                 
-                is_available = Car.is_available_for_dates(locked_car.id, pickup_dt, dropoff_dt)
+                is_available = Car.is_available_for_dates(
+                    locked_car.id, pickup_dt, dropoff_dt, exclude_user_id=request.user.id
+                )
                 if not is_available:
                     messages.error(request, "Sorry, this vehicle is no longer available for the selected dates.")
                     return redirect('booking_location')
 
-                booking = Booking.objects.create(
+                # Reuse existing unpaid pending booking if present to avoid duplicate row creation
+                existing_pending = Booking.objects.filter(
                     user=request.user,
                     car=locked_car,
-                    pickup_location=pickup_location,
-                    dropoff_location=dropoff_location,
-                    pickup_date=pickup_dt,
-                    dropoff_date=dropoff_dt,
-                    total_price=final_total,
                     status=Booking.Status.PENDING,
-                    is_outstation=is_outstation,
-                    promo_code=promo_code_str,
-                    discount_amount=discount_amount,
                     is_paid=False
-                )
+                ).order_by('-id').first()
+
+                if existing_pending:
+                    booking = existing_pending
+                    booking.pickup_location = pickup_location
+                    booking.dropoff_location = dropoff_location
+                    booking.pickup_date = pickup_dt
+                    booking.dropoff_date = dropoff_dt
+                    booking.total_price = final_total
+                    booking.is_outstation = is_outstation
+                    booking.promo_code = promo_code_str
+                    booking.discount_amount = discount_amount
+                    booking.save()
+                else:
+                    booking = Booking.objects.create(
+                        user=request.user,
+                        car=locked_car,
+                        pickup_location=pickup_location,
+                        dropoff_location=dropoff_location,
+                        pickup_date=pickup_dt,
+                        dropoff_date=dropoff_dt,
+                        total_price=final_total,
+                        status=Booking.Status.PENDING,
+                        is_outstation=is_outstation,
+                        promo_code=promo_code_str,
+                        discount_amount=discount_amount,
+                        is_paid=False
+                    )
                 
                 if promo_id:
                     PromoCode.objects.filter(id=promo_id, used_count__lt=F('usage_limit')).update(used_count=F('used_count') + 1)

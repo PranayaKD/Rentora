@@ -243,6 +243,12 @@
             </div>
           </div>
 
+          <!-- Real-Time Gateway Notice Toast -->
+          <div id="payment-error-toast" class="hidden mb-3 p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/50 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200 text-xs font-medium flex items-start gap-2.5">
+            <span class="material-symbols-outlined text-base text-amber-600 shrink-0 mt-0.5">info</span>
+            <span id="payment-error-message"></span>
+          </div>
+
           <div class="grid grid-cols-2 gap-3 mb-3">
             <label class="cursor-pointer">
               <input type="radio" name="payment_method_choice" value="razorpay" class="peer sr-only" checked
@@ -251,7 +257,7 @@
                 class="border-2 border-outline-variant/40 peer-checked:border-primary peer-checked:bg-primary/5 rounded-2xl p-3 flex flex-col items-center gap-1.5 transition-all text-center">
                 <span class="material-symbols-outlined text-2xl text-primary">qr_code_scanner</span>
                 <span class="text-xs font-bold text-primary">UPI & Netbanking</span>
-                <span class="text-[10px] text-outline font-semibold">GPay, PhonePe, Paytm</span>
+                <span class="text-[10px] text-outline font-semibold">GPay, PhonePe, Paytm, QR</span>
               </div>
             </label>
 
@@ -261,8 +267,8 @@
               <div
                 class="border-2 border-outline-variant/40 peer-checked:border-primary peer-checked:bg-primary/5 rounded-2xl p-3 flex flex-col items-center gap-1.5 transition-all text-center">
                 <span class="material-symbols-outlined text-2xl text-primary">credit_card</span>
-                <span class="text-xs font-bold text-primary">Credit / Debit Card</span>
-                <span class="text-[10px] text-outline font-semibold">Visa, Mastercard, RuPay</span>
+                <span class="text-xs font-bold text-primary">Card Checkout</span>
+                <span class="text-[10px] text-outline font-semibold">Visa, MC, RuPay & International</span>
               </div>
             </label>
           </div>
@@ -480,7 +486,16 @@
     try {
       const rzp = new Razorpay(options);
       rzp.on('payment.failed', function (response){
-        alert("Payment Failed: " + response.error.description);
+        const errToast = document.getElementById('payment-error-toast');
+        const errMsg = document.getElementById('payment-error-message');
+        const desc = response.error ? response.error.description : 'Transaction cancelled or declined';
+        if (errToast && errMsg) {
+          errMsg.innerHTML = '<strong>Payment Notice:</strong> ' + desc + '. For international cards, switch to <strong>Card Checkout (Stripe)</strong> above, or use Indian UPI.';
+          errToast.classList.remove('hidden');
+          errToast.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          alert('Payment Notice: ' + desc + '. For international cards, please choose Card Checkout.');
+        }
       });
       rzp.open();
     } catch (e) {
