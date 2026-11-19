@@ -6,11 +6,11 @@
   --primary-light: #222222;
   --primary-container: #111111;
   --on-primary: #ffffff;
-  --surface: #F3EEE3;
-  --background: #F3EEE3;
+  --surface: #FDFBD6;
+  --background: #FDFBD6;
   --surface-container-lowest: #ffffff;
-  --surface-container-low: #EFE9DC;
-  --surface-container: #EAE3D4;
+  --surface-container-low: #FAF7CE;
+  --surface-container: #F7F3C6;
   --on-surface: #111111;
   --on-surface-variant: #222222;
   --secondary: #D9541E;
@@ -86,7 +86,7 @@ a.bg-secondary-container:hover {
 
 body {
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background-color: #F3EEE3;
+  background-color: #FDFBD6;
   color: #111111;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;

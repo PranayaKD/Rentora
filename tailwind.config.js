@@ -11,7 +11,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Rentora Theme: Cream (#F3EEE3), Ink Black (#111111) & Burnt Orange (#D9541E)
+        // Rentora Theme: Cream (#FDFBD6), Ink Black (#111111) & Burnt Orange (#D9541E)
         "primary": "#111111",
         "primary-dark": "#000000",
         "primary-light": "#222222",
@@ -51,33 +51,33 @@ module.exports = {
         "error-container": "#FFDAD6",
         "on-error-container": "#93000A",
 
-        // Surfaces: Cream (#F3EEE3) Background with Crisp White Cards
-        "surface": "#F3EEE3",
-        "surface-dim": "#EAE4D7",
-        "surface-bright": "#FAF7F2",
+        // Surfaces: Cream (#FDFBD6) Background with Crisp White Cards
+        "surface": "#FDFBD6",
+        "surface-dim": "#F5F1C4",
+        "surface-bright": "#FEFDE0",
         "surface-container-lowest": "#ffffff",
-        "surface-container-low": "#EFE9DC",
-        "surface-container": "#EAE3D4",
-        "surface-container-high": "#E4DCCC",
-        "surface-container-highest": "#DED4C3",
-        "surface-variant": "#EAE3D4",
+        "surface-container-low": "#FAF7CE",
+        "surface-container": "#F7F3C6",
+        "surface-container-high": "#F1EDBE",
+        "surface-container-highest": "#EBE6B6",
+        "surface-variant": "#F7F3C6",
         "surface-tint": "#D9541E",
 
         // Ink Black Typography (#111111)
         "on-surface": "#111111",
         "on-surface-variant": "#222222",
         "inverse-surface": "#111111",
-        "inverse-on-surface": "#F3EEE3",
+        "inverse-on-surface": "#FDFBD6",
         "outline": "#787268",
-        "outline-variant": "#DCD4C6",
+        "outline-variant": "#E5E0B0",
 
-        "background": "#F3EEE3",
+        "background": "#FDFBD6",
         "on-background": "#111111",
-        "cream": "#F3EEE3",
+        "cream": "#FDFBD6",
         "ink-black": "#111111",
 
         // Backward compatibility mappings
-        "background-light": "#F3EEE3",
+        "background-light": "#FDFBD6",
         "background-dark": "#111111",
       },
       fontFamily: {
