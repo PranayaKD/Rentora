@@ -10,8 +10,8 @@
       <div class="flex items-center gap-2.5 sm:gap-4 shrink-0">
         <a class="flex items-center gap-2.5 group" href="{% url 'index' %}" aria-label="Rentora Home">
           <div
-            class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl overflow-hidden shrink-0 flex items-center justify-center group-hover:scale-105 transition-transform shadow-xs bg-primary text-white">
-            <img src="{% static 'images/icon-512.png' %}" alt="Rentora" class="w-full h-full object-contain">
+            class="w-8 h-8 sm:w-9 sm:h-9 shrink-0 flex items-center justify-center group-hover:scale-105 transition-transform">
+            <img src="{% static 'images/icon-512-transparent.png' %}" alt="Rentora" class="w-full h-full object-contain">
           </div>
           <span class="text-lg sm:text-xl font-black tracking-tight text-primary font-headline">Rentora</span>
         </a>
@@ -20,7 +20,7 @@
 
         <!-- Quick-Commerce Style Hub & Location Selector (Liquid Pill) -->
         <button onclick="openCityModal()"
-          class="liquid-hub-pill flex items-center gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-xl sm:rounded-2xl hover:bg-white/90 transition-all text-left group max-w-[170px] sm:max-w-[260px] md:max-w-[300px] cursor-pointer"
+          class="liquid-hub-pill flex items-center gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-xl sm:rounded-2xl hover:bg-surface-container transition-all text-left group max-w-[170px] sm:max-w-[260px] md:max-w-[300px] cursor-pointer"
           type="button" title="Select Delivery or Pickup Location in Odisha">
           <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-burnt-orange/15 text-burnt-orange flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
             <span class="material-symbols-outlined text-[18px] sm:text-[20px] text-burnt-orange">location_on</span>
