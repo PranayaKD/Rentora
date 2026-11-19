@@ -1,25 +1,35 @@
-<!-- Logout Confirmation Sheet -->
-<div id="logout-overlay" class="fixed inset-0 z-[200] bg-black/80 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300" onclick="closeLogoutSheet()"></div>
+<!-- Rentora Logout Confirmation Sheet (Stitch Design System) -->
+<div id="logout-overlay" class="sheet-backdrop fixed inset-0 z-[200] bg-black/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300" onclick="closeLogoutSheet()"></div>
 
-<div id="logout-sheet" class="fixed bottom-0 md:bottom-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 inset-x-0 md:inset-x-auto w-full max-w-sm mx-auto z-[210] hidden bg-white dark:bg-zinc-900 rounded-t-3xl md:rounded-3xl p-6 border-t md:border border-slate-200 dark:border-zinc-800 shadow-2xl translate-y-full md:translate-y-[-40%] transition-transform duration-300 ease-out flex flex-col">
-    <!-- Drag Handle -->
-    <div class="md:hidden w-12 h-1.5 bg-slate-300 dark:bg-zinc-700 rounded-full mx-auto mb-4 shrink-0 cursor-pointer" onclick="closeLogoutSheet()"></div>
+<div id="logout-sheet" class="sheet-panel fixed bottom-0 md:bottom-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 inset-x-0 md:inset-x-auto w-full max-w-sm mx-auto z-[210] hidden bg-surface-container-lowest dark:bg-zinc-900 rounded-t-[2rem] md:rounded-[2rem] p-6 sm:p-7 border border-outline-variant/30 dark:border-zinc-800 shadow-2xl translate-y-full md:translate-y-[-40%] transition-all duration-300 ease-out flex flex-col relative">
+    
+    <!-- Top Close Button (Desktop & Mobile) -->
+    <button type="button" onclick="closeLogoutSheet()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-surface-container-low dark:bg-zinc-800 flex items-center justify-center text-on-surface-variant dark:text-zinc-400 hover:text-primary dark:hover:text-white transition-colors" aria-label="Close">
+        <span class="material-symbols-outlined text-base">close</span>
+    </button>
 
-    <div class="flex flex-col items-center text-center gap-2 mb-6">
-        <div class="w-14 h-14 rounded-full bg-red-100 text-red-600 dark:bg-red-950/60 dark:text-red-400 flex items-center justify-center mb-1">
+    <!-- Mobile Drag Handle -->
+    <div class="md:hidden w-12 h-1.5 bg-outline-variant/40 dark:bg-zinc-700 rounded-full mx-auto mb-3 shrink-0 cursor-pointer" onclick="closeLogoutSheet()"></div>
+
+    <!-- Modal Content -->
+    <div class="flex flex-col items-center text-center gap-2 mb-6 pt-1">
+        <div class="w-14 h-14 rounded-2xl bg-red-500/10 dark:bg-red-500/20 border border-red-500/20 text-red-600 dark:text-red-400 flex items-center justify-center mb-1 shadow-xs">
             <span class="material-symbols-outlined text-2xl font-bold">logout</span>
         </div>
-        <h3 class="font-headline text-lg font-black text-slate-900 dark:text-white">Log Out of Rentora?</h3>
-        <p class="text-xs text-slate-500 dark:text-zinc-400 max-w-xs font-medium">You can log back in anytime with your phone number and instant OTP.</p>
+        <h3 class="font-headline text-xl font-black text-primary dark:text-white tracking-tight">Log Out of Rentora?</h3>
+        <p class="text-xs text-on-surface-variant dark:text-zinc-400 max-w-xs font-medium leading-relaxed">
+            You can log back in anytime with your phone number and instant OTP.
+        </p>
     </div>
 
-    <!-- Actions -->
-    <form action="{% url 'logout' %}" method="post" class="w-full flex flex-col gap-3">
+    <!-- Action Buttons -->
+    <form action="{% url 'logout' %}" method="post" class="w-full flex flex-col gap-2.5">
         {% csrf_token %}
-        <button type="submit" class="w-full min-h-[44px] rounded-2xl bg-red-600 hover:bg-red-700 text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md shadow-red-600/20 transition-all">
+        <button type="submit" class="w-full py-3.5 rounded-2xl bg-primary hover:bg-neutral-800 text-white dark:bg-white dark:hover:bg-zinc-200 dark:text-primary font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-base">logout</span>
             <span>Log Out</span>
         </button>
-        <button type="button" onclick="closeLogoutSheet()" class="w-full min-h-[44px] rounded-2xl bg-slate-100 dark:bg-zinc-800 text-slate-800 dark:text-zinc-200 hover:bg-slate-200 dark:hover:bg-zinc-700 font-bold text-xs uppercase tracking-wider flex items-center justify-center transition-all">
+        <button type="button" onclick="closeLogoutSheet()" class="w-full py-3.5 rounded-2xl bg-surface-container-low hover:bg-surface-container dark:bg-zinc-800 dark:hover:bg-zinc-700 text-primary dark:text-zinc-200 font-bold text-xs uppercase tracking-wider flex items-center justify-center transition-all cursor-pointer border border-outline-variant/30">
             <span>Cancel</span>
         </button>
     </form>
@@ -32,21 +42,22 @@ function openLogoutSheet() {
     if (!overlay || !sheet) return;
     overlay.classList.remove('hidden');
     sheet.classList.remove('hidden');
-    setTimeout(() => {
+    requestAnimationFrame(() => {
         overlay.classList.remove('opacity-0');
-        sheet.classList.remove('translate-y-full');
-    }, 10);
+        sheet.classList.remove('translate-y-full', 'md:translate-y-[-40%]');
+        sheet.classList.add('translate-y-0', 'md:translate-y-[-50%]');
+    });
 }
 function closeLogoutSheet() {
     const overlay = document.getElementById('logout-overlay');
     const sheet = document.getElementById('logout-sheet');
     if (!overlay || !sheet) return;
     overlay.classList.add('opacity-0');
-    sheet.classList.add('translate-y-full');
+    sheet.classList.remove('translate-y-0', 'md:translate-y-[-50%]');
+    sheet.classList.add('translate-y-full', 'md:translate-y-[-40%]');
     setTimeout(() => {
         overlay.classList.add('hidden');
         sheet.classList.add('hidden');
     }, 300);
 }
 </script>
-
