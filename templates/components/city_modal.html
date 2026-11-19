@@ -1,133 +1,254 @@
 {% load static %}
-<!-- Rentora Odisha City & Hub Switcher Modal / Bottom Sheet -->
+<!-- Rentora Quick-Commerce Style Odisha City & Location Picker Modal -->
 <div id="city-modal-overlay" class="sheet-backdrop fixed inset-0 z-[110] bg-black/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300" onclick="closeCityModal()"></div>
 
-<div id="city-modal-sheet" class="sheet-panel fixed bottom-0 inset-x-0 max-w-2xl mx-auto z-[120] hidden bg-white dark:bg-zinc-900 rounded-t-[2rem] sm:rounded-[2rem] sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 p-6 sm:p-8 shadow-2xl border border-slate-200/80 dark:border-zinc-800 translate-y-full sm:translate-y-[-40%] transition-all duration-300 ease-out max-h-[90vh] flex flex-col">
+<div id="city-modal-sheet" class="sheet-panel fixed bottom-0 inset-x-0 max-w-2xl mx-auto z-[120] hidden bg-surface-container-lowest dark:bg-zinc-900 rounded-t-[2rem] sm:rounded-[2rem] sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 p-5 sm:p-7 shadow-2xl border border-outline-variant/30 dark:border-zinc-800 translate-y-full sm:translate-y-[-40%] transition-all duration-300 ease-out max-h-[92vh] flex flex-col">
     <!-- Mobile Drag Handle -->
-    <div class="sm:hidden w-12 h-1.5 bg-slate-300 dark:bg-zinc-700 rounded-full mx-auto mb-4 shrink-0 cursor-pointer" onclick="closeCityModal()"></div>
+    <div class="sm:hidden w-12 h-1.5 bg-outline-variant/40 dark:bg-zinc-700 rounded-full mx-auto mb-3 shrink-0 cursor-pointer" onclick="closeCityModal()"></div>
 
     <!-- Header -->
-    <div class="flex items-center justify-between mb-4">
+    <div class="flex items-center justify-between pb-3 border-b border-surface-container-high dark:border-zinc-800">
         <div>
             <div class="flex items-center gap-1.5 mb-1">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-[#FF5F00]">Odisha Mobility Network</span>
+                <span class="text-[10px] font-black uppercase tracking-[0.2em] text-[#6c5000] dark:text-secondary-fixed-dim">Odisha Mobility Network</span>
             </div>
-            <h3 class="text-xl sm:text-2xl font-black font-headline text-slate-900 dark:text-white">Choose Your City in Odisha</h3>
-            <p class="text-xs text-slate-500 dark:text-zinc-400 mt-0.5">Self-drive delivery to your doorstep, airport terminal, or local hub</p>
+            <h3 class="text-xl sm:text-2xl font-black font-headline text-primary dark:text-white">Choose Your Location</h3>
+            <p class="text-xs text-on-surface-variant dark:text-zinc-400 mt-0.5">Doorstep delivery or express hub handover across Odisha</p>
         </div>
-        <button onclick="closeCityModal()" class="w-9 h-9 rounded-full bg-slate-100 dark:bg-zinc-800 flex items-center justify-center text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white transition-colors" aria-label="Close modal">
+        <button type="button" onclick="closeCityModal()" class="w-9 h-9 rounded-full bg-surface-container-low dark:bg-zinc-800 flex items-center justify-center text-on-surface-variant dark:text-zinc-400 hover:text-primary dark:hover:text-white transition-colors" aria-label="Close modal">
             <span class="material-symbols-outlined text-lg">close</span>
         </button>
     </div>
 
-    <!-- Quick Airport & Express Hub Badges -->
-    <div class="mb-4 p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200/60 dark:border-amber-900/40 flex items-center justify-between gap-3">
-        <div class="flex items-center gap-2.5">
-            <div class="w-9 h-9 rounded-xl bg-[#FF5F00] text-white flex items-center justify-center shrink-0 shadow-sm">
-                <span class="material-symbols-outlined text-lg">flight_takeoff</span>
-            </div>
-            <div>
-                <p class="text-xs font-black text-slate-900 dark:text-amber-100">Biju Patnaik Int'l Airport (BBI)</p>
-                <p class="text-[10px] text-slate-600 dark:text-amber-300/80 font-medium">Terminal 1 & 2 curbside handover • Zero wait</p>
-            </div>
-        </div>
-        <button type="button" onclick="selectCity('Bhubaneswar', 'BBI Airport, Bhubaneswar')" class="px-3 py-1.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-bold hover:bg-[#FF5F00] transition-colors shrink-0">
-            Select BBI
+    <!-- Quick Mode Switcher Tabs (Quick Cities vs Pin on Map) -->
+    <div class="grid grid-cols-2 gap-2 p-1 bg-surface-container-low dark:bg-zinc-800/80 rounded-2xl my-3">
+        <button type="button" id="tab-btn-cities" onclick="switchLocationModalTab('cities')" class="py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 bg-surface-container-lowest dark:bg-zinc-900 text-primary dark:text-white shadow-xs">
+            <span class="material-symbols-outlined text-base text-secondary-container">apartment</span>
+            <span>Popular Hubs</span>
+        </button>
+        <button type="button" id="tab-btn-map" onclick="switchLocationModalTab('map')" class="py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 text-on-surface-variant dark:text-zinc-400 hover:text-primary">
+            <span class="material-symbols-outlined text-base">map</span>
+            <span>Pin on Map (OpenFreeMap)</span>
         </button>
     </div>
 
-    <!-- Search Input -->
-    <div class="relative mb-4">
-        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
-        <input type="text" id="city-search-box" placeholder="Search city (Bhubaneswar, Cuttack, Puri, Rourkela...)" oninput="filterCityList(this.value)" class="w-full bg-slate-50 dark:bg-zinc-800/80 border border-slate-200 dark:border-zinc-700 rounded-2xl py-3 pl-11 pr-4 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#FF5F00] transition-all" />
+    <!-- Quick Commerce Search Bar with Instant Autocomplete & Clear Button -->
+    <div class="relative mb-3">
+        <div class="relative flex items-center">
+            <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
+            <input type="text" id="city-search-box" placeholder="Search area, landmark, airport, station..." autocomplete="off"
+                   class="w-full bg-surface-container-low dark:bg-zinc-800/80 border border-outline-variant/40 dark:border-zinc-700 rounded-2xl py-3 pl-11 pr-10 text-xs font-bold text-primary dark:text-white placeholder:text-outline-variant focus:outline-none focus:ring-2 focus:ring-secondary-container transition-all" />
+            <button type="button" id="city-search-clear" onclick="clearCitySearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:text-primary text-xs">
+                <span class="material-symbols-outlined text-[14px]">close</span>
+            </button>
+        </div>
+        <!-- Live Autocomplete Suggestions Dropdown -->
+        <div id="city-modal-suggestions" class="hidden absolute left-0 right-0 top-full mt-1.5 bg-surface-container-lowest dark:bg-zinc-900 border border-outline-variant/40 dark:border-zinc-700 rounded-2xl shadow-xl z-50 max-h-56 overflow-y-auto divide-y divide-outline-variant/10"></div>
     </div>
 
-    <!-- Cities Grid -->
-    <div class="overflow-y-auto flex-1 custom-scrollbar pr-1 -mr-1">
-        <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-400 dark:text-zinc-500 mb-2.5">Primary Operational Cities</p>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="city-items-grid">
+    <!-- GPS Quick-Locate Action Pill -->
+    <button type="button" onclick="detectUserLocationModal()" id="btn-modal-gps" class="w-full mb-3 p-2.5 rounded-2xl bg-secondary-container/15 hover:bg-secondary-container/25 border border-secondary-container/30 flex items-center justify-between text-left transition-all group cursor-pointer">
+        <div class="flex items-center gap-2.5">
+            <div class="w-7 h-7 rounded-xl bg-secondary-container text-on-secondary-fixed flex items-center justify-center shrink-0 shadow-xs">
+                <span class="material-symbols-outlined text-base" id="icon-modal-gps">my_location</span>
+            </div>
+            <div>
+                <p class="text-xs font-black text-primary dark:text-white">Use Current GPS Location</p>
+                <p class="text-[10px] text-on-surface-variant dark:text-zinc-400 font-medium">Detect exact doorstep address via satellite</p>
+            </div>
+        </div>
+        <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-surface-container-lowest dark:bg-zinc-800 text-on-secondary-fixed border border-secondary-container/30">Auto Detect</span>
+    </button>
+
+    <!-- TAB 1: Cities & Hubs List Container -->
+    <div id="panel-cities-view" class="overflow-y-auto flex-1 custom-scrollbar pr-1 -mr-1">
+        <!-- Quick Airport Banner -->
+        <div class="mb-3 p-3 rounded-2xl bg-secondary-container/10 border border-secondary-container/30 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-secondary-container text-on-secondary-fixed flex items-center justify-center shrink-0 shadow-xs">
+                    <span class="material-symbols-outlined text-lg">flight_takeoff</span>
+                </div>
+                <div>
+                    <p class="text-xs font-black text-primary dark:text-white">Biju Patnaik Int'l Airport (BBI)</p>
+                    <p class="text-[10px] text-on-surface-variant dark:text-zinc-400 font-medium">Terminal 1 & 2 curbside handover • Zero wait</p>
+                </div>
+            </div>
+            <button type="button" onclick="selectCity('Bhubaneswar', 'BBI Airport Terminal 1, Bhubaneswar')" class="px-3 py-1.5 rounded-xl bg-primary dark:bg-white text-on-primary dark:text-slate-900 text-xs font-bold hover:bg-secondary-container hover:text-on-secondary-fixed transition-colors shrink-0">
+                Select BBI
+            </button>
+        </div>
+
+        <p class="text-[10px] font-black uppercase tracking-[0.18em] text-on-surface-variant dark:text-zinc-500 mb-2">Primary Operational Cities</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="city-items-grid">
             
-            <!-- Bhubaneswar (Default & Capital Hub) -->
-            <button type="button" onclick="selectCity('Bhubaneswar', 'Patia, Bhubaneswar')" class="city-item flex items-center gap-3.5 p-3.5 rounded-2xl border-2 border-[#FF5F00]/30 bg-amber-500/5 hover:border-[#FF5F00] transition-all text-left group relative overflow-hidden">
-                <div class="w-11 h-11 rounded-2xl bg-[#FF5F00]/10 text-[#FF5F00] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                    <span class="material-symbols-outlined text-2xl font-bold">location_city</span>
+            <!-- Bhubaneswar (Capital Hub) -->
+            <button type="button" onclick="selectCity('Bhubaneswar', 'Patia, Bhubaneswar')" class="city-item flex items-center gap-3 p-3 rounded-2xl border-2 border-secondary-container/40 bg-secondary-container/5 hover:border-secondary-container transition-all text-left group">
+                <div class="w-10 h-10 rounded-xl bg-secondary-container/20 text-secondary flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                    <span class="material-symbols-outlined text-xl font-bold">location_city</span>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <div class="flex items-center gap-2">
-                        <h4 class="text-sm font-black text-slate-900 dark:text-white group-hover:text-[#FF5F00] transition-colors">Bhubaneswar (BBSR)</h4>
-                        <span class="px-1.5 py-0.5 rounded text-[9px] font-extrabold bg-[#FF5F00] text-white">Default Hub</span>
+                    <div class="flex items-center gap-1.5">
+                        <h4 class="text-xs font-black text-primary dark:text-white group-hover:text-secondary transition-colors">Bhubaneswar (BBSR)</h4>
+                        <span class="px-1.5 py-0.2 rounded text-[8px] font-extrabold bg-secondary-container text-on-secondary-fixed">Default</span>
                     </div>
-                    <p class="text-[11px] text-slate-500 dark:text-zinc-400 font-medium truncate">BBI Airport • Patia • Saheed Nagar • Khandagiri</p>
-                    <p class="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold mt-0.5">45+ Cars Available • Instant Handover</p>
+                    <p class="text-[10px] text-on-surface-variant dark:text-zinc-400 font-medium truncate">Airport • Patia • Saheed Nagar • Khandagiri</p>
+                    <p class="text-[9px] text-emerald-600 dark:text-emerald-400 font-bold mt-0.5">45+ Cars • Instant Handover</p>
                 </div>
             </button>
 
             <!-- Cuttack -->
-            <button type="button" onclick="selectCity('Cuttack', 'Badambadi, Cuttack')" class="city-item flex items-center gap-3.5 p-3.5 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50/50 dark:bg-zinc-800/40 hover:border-[#FF5F00] transition-all text-left group">
-                <div class="w-11 h-11 rounded-2xl bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                    <span class="material-symbols-outlined text-2xl">apartment</span>
+            <button type="button" onclick="selectCity('Cuttack', 'Badambadi, Cuttack')" class="city-item flex items-center gap-3 p-3 rounded-2xl border border-outline-variant/30 dark:border-zinc-800 bg-surface-container-low/50 dark:bg-zinc-800/40 hover:border-secondary-container transition-all text-left group">
+                <div class="w-10 h-10 rounded-xl bg-surface-container dark:bg-zinc-800 text-on-surface-variant dark:text-zinc-300 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                    <span class="material-symbols-outlined text-xl">apartment</span>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <h4 class="text-sm font-black text-slate-900 dark:text-white group-hover:text-[#FF5F00] transition-colors">Cuttack</h4>
-                    <p class="text-[11px] text-slate-500 dark:text-zinc-400 font-medium truncate">Badambadi • CDA Sec 9 • Link Road • OMP</p>
-                    <p class="text-[10px] text-slate-500 font-semibold mt-0.5">20+ Cars • Doorstep Delivery</p>
+                    <h4 class="text-xs font-black text-primary dark:text-white group-hover:text-secondary transition-colors">Cuttack</h4>
+                    <p class="text-[10px] text-on-surface-variant dark:text-zinc-400 font-medium truncate">Badambadi • CDA Sec 9 • Link Road • OMP</p>
+                    <p class="text-[9px] text-on-surface-variant font-semibold mt-0.5">20+ Cars • Doorstep Handover</p>
                 </div>
             </button>
 
             <!-- Puri -->
-            <button type="button" onclick="selectCity('Puri', 'Marine Drive, Puri')" class="city-item flex items-center gap-3.5 p-3.5 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50/50 dark:bg-zinc-800/40 hover:border-[#FF5F00] transition-all text-left group">
-                <div class="w-11 h-11 rounded-2xl bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                    <span class="material-symbols-outlined text-2xl">beach_access</span>
+            <button type="button" onclick="selectCity('Puri', 'Marine Drive, Puri')" class="city-item flex items-center gap-3 p-3 rounded-2xl border border-outline-variant/30 dark:border-zinc-800 bg-surface-container-low/50 dark:bg-zinc-800/40 hover:border-secondary-container transition-all text-left group">
+                <div class="w-10 h-10 rounded-xl bg-surface-container dark:bg-zinc-800 text-on-surface-variant dark:text-zinc-300 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                    <span class="material-symbols-outlined text-xl">beach_access</span>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <h4 class="text-sm font-black text-slate-900 dark:text-white group-hover:text-[#FF5F00] transition-colors">Puri</h4>
-                    <p class="text-[11px] text-slate-500 dark:text-zinc-400 font-medium truncate">Marine Drive • Grand Road • Puri Station</p>
-                    <p class="text-[10px] text-slate-500 font-semibold mt-0.5">15+ Cars • Coastal Pilgrimage Fleet</p>
+                    <h4 class="text-xs font-black text-primary dark:text-white group-hover:text-secondary transition-colors">Puri</h4>
+                    <p class="text-[10px] text-on-surface-variant dark:text-zinc-400 font-medium truncate">Marine Drive • Grand Road • Puri Station</p>
+                    <p class="text-[9px] text-on-surface-variant font-semibold mt-0.5">15+ Cars • Coastal Fleet</p>
                 </div>
             </button>
 
             <!-- Rourkela -->
-            <button type="button" onclick="selectCity('Rourkela', 'Panposh, Rourkela')" class="city-item flex items-center gap-3.5 p-3.5 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50/50 dark:bg-zinc-800/40 hover:border-[#FF5F00] transition-all text-left group">
-                <div class="w-11 h-11 rounded-2xl bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                    <span class="material-symbols-outlined text-2xl">factory</span>
+            <button type="button" onclick="selectCity('Rourkela', 'Panposh, Rourkela')" class="city-item flex items-center gap-3 p-3 rounded-2xl border border-outline-variant/30 dark:border-zinc-800 bg-surface-container-low/50 dark:bg-zinc-800/40 hover:border-secondary-container transition-all text-left group">
+                <div class="w-10 h-10 rounded-xl bg-surface-container dark:bg-zinc-800 text-on-surface-variant dark:text-zinc-300 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                    <span class="material-symbols-outlined text-xl">factory</span>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <h4 class="text-sm font-black text-slate-900 dark:text-white group-hover:text-[#FF5F00] transition-colors">Rourkela</h4>
-                    <p class="text-[11px] text-slate-500 dark:text-zinc-400 font-medium truncate">Panposh • Sector 5 • Rourkela Junction</p>
-                    <p class="text-[10px] text-slate-500 font-semibold mt-0.5">12+ Cars • Industrial Corridor</p>
+                    <h4 class="text-xs font-black text-primary dark:text-white group-hover:text-secondary transition-colors">Rourkela</h4>
+                    <p class="text-[10px] text-on-surface-variant dark:text-zinc-400 font-medium truncate">Panposh • Sector 5 • Rourkela Junction</p>
+                    <p class="text-[9px] text-on-surface-variant font-semibold mt-0.5">12+ Cars • Industrial Corridor</p>
                 </div>
             </button>
 
             <!-- Sambalpur -->
-            <button type="button" onclick="selectCity('Sambalpur', 'Ainthapali, Sambalpur')" class="city-item flex items-center gap-3.5 p-3.5 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50/50 dark:bg-zinc-800/40 hover:border-[#FF5F00] transition-all text-left group">
-                <div class="w-11 h-11 rounded-2xl bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                    <span class="material-symbols-outlined text-2xl">landscape</span>
+            <button type="button" onclick="selectCity('Sambalpur', 'Ainthapali, Sambalpur')" class="city-item flex items-center gap-3 p-3 rounded-2xl border border-outline-variant/30 dark:border-zinc-800 bg-surface-container-low/50 dark:bg-zinc-800/40 hover:border-secondary-container transition-all text-left group">
+                <div class="w-10 h-10 rounded-xl bg-surface-container dark:bg-zinc-800 text-on-surface-variant dark:text-zinc-300 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                    <span class="material-symbols-outlined text-xl">landscape</span>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <h4 class="text-sm font-black text-slate-900 dark:text-white group-hover:text-[#FF5F00] transition-colors">Sambalpur</h4>
-                    <p class="text-[11px] text-slate-500 dark:text-zinc-400 font-medium truncate">Ainthapali • Burla VSSUT • Sambalpur Jn</p>
-                    <p class="text-[10px] text-slate-500 font-semibold mt-0.5">10+ Cars • Western Odisha Hub</p>
+                    <h4 class="text-xs font-black text-primary dark:text-white group-hover:text-secondary transition-colors">Sambalpur</h4>
+                    <p class="text-[10px] text-on-surface-variant dark:text-zinc-400 font-medium truncate">Ainthapali • Burla VSSUT • Sambalpur Jn</p>
+                    <p class="text-[9px] text-on-surface-variant font-semibold mt-0.5">10+ Cars • Western Hub</p>
                 </div>
             </button>
 
             <!-- Berhampur -->
-            <button type="button" onclick="selectCity('Berhampur', 'Gopalpur Junction, Berhampur')" class="city-item flex items-center gap-3.5 p-3.5 rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50/50 dark:bg-zinc-800/40 hover:border-[#FF5F00] transition-all text-left group">
-                <div class="w-11 h-11 rounded-2xl bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                    <span class="material-symbols-outlined text-2xl">hub</span>
+            <button type="button" onclick="selectCity('Berhampur', 'Gopalpur Junction, Berhampur')" class="city-item flex items-center gap-3 p-3 rounded-2xl border border-outline-variant/30 dark:border-zinc-800 bg-surface-container-low/50 dark:bg-zinc-800/40 hover:border-secondary-container transition-all text-left group">
+                <div class="w-10 h-10 rounded-xl bg-surface-container dark:bg-zinc-800 text-on-surface-variant dark:text-zinc-300 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                    <span class="material-symbols-outlined text-xl">hub</span>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <h4 class="text-sm font-black text-slate-900 dark:text-white group-hover:text-[#FF5F00] transition-colors">Berhampur</h4>
-                    <p class="text-[11px] text-slate-500 dark:text-zinc-400 font-medium truncate">Gopalpur Junction • Old Bus Stand • Berhampur Stn</p>
-                    <p class="text-[10px] text-slate-500 font-semibold mt-0.5">8+ Cars • South Odisha Hub</p>
+                    <h4 class="text-xs font-black text-primary dark:text-white group-hover:text-secondary transition-colors">Berhampur</h4>
+                    <p class="text-[10px] text-on-surface-variant dark:text-zinc-400 font-medium truncate">Gopalpur • Old Bus Stand • Berhampur Stn</p>
+                    <p class="text-[9px] text-on-surface-variant font-semibold mt-0.5">8+ Cars • South Odisha Hub</p>
                 </div>
             </button>
 
         </div>
     </div>
+
+    <!-- TAB 2: Pin on Map View (OpenFreeMap Vector Map) -->
+    <div id="panel-map-view" class="hidden flex-1 flex flex-col min-h-0">
+        <div class="relative w-full h-56 sm:h-64 rounded-2xl overflow-hidden border border-outline-variant/30 shadow-inner">
+            <div id="modal-openfreemap" class="w-full h-full"></div>
+            <!-- Map Guidance Overlay Badge -->
+            <div class="absolute top-2.5 left-2.5 bg-surface-container-lowest/90 dark:bg-zinc-900/90 backdrop-blur-md px-2.5 py-1 rounded-xl text-[10px] font-bold text-primary dark:text-white border border-outline-variant/30 flex items-center gap-1 shadow-sm">
+                <span class="w-2 h-2 rounded-full bg-secondary-container animate-ping"></span>
+                <span>Tap or drag marker to set pickup point</span>
+            </div>
+        </div>
+
+        <!-- Selected Location Confirmation Bar -->
+        <div class="mt-3 p-3 rounded-2xl bg-surface-container-low dark:bg-zinc-800 border border-outline-variant/30 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2 min-w-0">
+                <span class="material-symbols-outlined text-secondary-container text-xl shrink-0">location_on</span>
+                <div class="min-w-0">
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant dark:text-zinc-400">Selected Pin Location</p>
+                    <p id="modal-map-selected-label" class="text-xs font-black text-primary dark:text-white truncate">Bhubaneswar Hub, Odisha</p>
+                </div>
+            </div>
+            <button type="button" id="btn-confirm-map-location" onclick="confirmMapPinLocation()" class="px-4 py-2 rounded-xl bg-secondary-container hover:bg-[#eab00f] text-on-secondary-fixed font-black text-xs shrink-0 shadow-sm transition-all cursor-pointer">
+                Confirm Location
+            </button>
+        </div>
+    </div>
 </div>
 
+<!-- Custom MapLibre Marker Styling -->
+<style>
+.rentora-maplibre-pin {
+    width: 26px;
+    height: 26px;
+    position: relative;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.rentora-maplibre-pin:active {
+    cursor: grabbing;
+}
+.rentora-maplibre-pin .pin-pulse {
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    background: rgba(253, 191, 19, 0.45);
+    animation: rentora-modal-pulse 2s infinite ease-out;
+}
+.rentora-maplibre-pin .pin-core {
+    width: 18px;
+    height: 18px;
+    background: #fdbf13;
+    border: 3px solid #111827;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+    position: relative;
+    z-index: 2;
+}
+@keyframes rentora-modal-pulse {
+    0% { transform: scale(0.8); opacity: 1; }
+    100% { transform: scale(2.2); opacity: 0; }
+}
+</style>
+
 <script>
+const ODISHA_MODAL_HUBS = [
+    { name: "Biju Patnaik International Airport (BBI), Terminal 1", city: "Bhubaneswar", lat: 20.2526, lng: 85.8178, hub: "Airport Hub" },
+    { name: "Bhubaneswar Railway Station (Master Canteen)", city: "Bhubaneswar", lat: 20.2667, lng: 85.8436, hub: "Railway Hub" },
+    { name: "KIIT University & Campus, Patia", city: "Bhubaneswar", lat: 20.3541, lng: 85.8174, hub: "Campus & Tech" },
+    { name: "Infocity & DLF Cybercity, Chandrasekharpur", city: "Bhubaneswar", lat: 20.3588, lng: 85.8080, hub: "IT Hub" },
+    { name: "Jayadev Vihar & Mayfair Lagoon", city: "Bhubaneswar", lat: 20.3015, lng: 85.8225, hub: "City Center" },
+    { name: "Saheed Nagar, Bhubaneswar", city: "Bhubaneswar", lat: 20.2885, lng: 85.8420, hub: "Commercial Hub" },
+    { name: "Rasulgarh Square & Esplanade Mall", city: "Bhubaneswar", lat: 20.2942, lng: 85.8672, hub: "Transit & Mall" },
+    { name: "Khandagiri & Udayagiri Caves", city: "Bhubaneswar", lat: 20.2600, lng: 85.7850, hub: "Historic Hub" },
+    { name: "Cuttack Railway Station (CRK), Station Road", city: "Cuttack", lat: 20.4633, lng: 85.8942, hub: "Railway Hub" },
+    { name: "Badambadi Bus Terminal, Cuttack", city: "Cuttack", lat: 20.4502, lng: 85.8767, hub: "Bus Stand" },
+    { name: "CDA Sector 9, Cuttack", city: "Cuttack", lat: 20.4850, lng: 85.8350, hub: "Residential" },
+    { name: "Golden Beach & Marine Drive, Puri", city: "Puri", lat: 19.7983, lng: 85.8249, hub: "Beach Resort" },
+    { name: "Puri Railway Station (PURI)", city: "Puri", lat: 19.8135, lng: 85.8315, hub: "Railway Hub" },
+    { name: "Shree Jagannath Temple Grand Road, Puri", city: "Puri", lat: 19.8048, lng: 85.8180, hub: "Heritage Site" },
+    { name: "Rourkela Railway Station & Sector 5", city: "Rourkela", lat: 22.2280, lng: 84.8670, hub: "Industrial Hub" },
+    { name: "Sambalpur Junction Railway Station (SBP)", city: "Sambalpur", lat: 21.4670, lng: 83.9810, hub: "Western Hub" },
+    { name: "Berhampur Railway Station / Old Bus Stand", city: "Berhampur", lat: 19.3150, lng: 84.7941, hub: "South Hub" }
+];
+
+let modalMapInstance = null;
+let modalMapMarker = null;
+let currentModalSelectedLocation = { city: "Bhubaneswar", fullAddress: "Bhubaneswar Hub, Odisha", lat: 20.2961, lng: 85.8245 };
+
 function openCityModal() {
     const overlay = document.getElementById('city-modal-overlay');
     const sheet = document.getElementById('city-modal-sheet');
@@ -154,18 +275,187 @@ function closeCityModal() {
     }, 300);
 }
 
+function switchLocationModalTab(tab) {
+    const btnCities = document.getElementById('tab-btn-cities');
+    const btnMap = document.getElementById('tab-btn-map');
+    const panelCities = document.getElementById('panel-cities-view');
+    const panelMap = document.getElementById('panel-map-view');
+
+    if (tab === 'cities') {
+        btnCities.className = "py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 bg-surface-container-lowest dark:bg-zinc-900 text-primary dark:text-white shadow-xs";
+        btnMap.className = "py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 text-on-surface-variant dark:text-zinc-400 hover:text-primary";
+        panelCities.classList.remove('hidden');
+        panelMap.classList.add('hidden');
+    } else {
+        btnMap.className = "py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 bg-surface-container-lowest dark:bg-zinc-900 text-primary dark:text-white shadow-xs";
+        btnCities.className = "py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 text-on-surface-variant dark:text-zinc-400 hover:text-primary";
+        panelCities.classList.add('hidden');
+        panelMap.classList.remove('hidden');
+        initModalOpenFreeMap();
+    }
+}
+
+function initModalOpenFreeMap() {
+    if (modalMapInstance) {
+        modalMapInstance.resize();
+        return;
+    }
+    const mapContainer = document.getElementById('modal-openfreemap');
+    if (!mapContainer || typeof maplibregl === 'undefined') return;
+
+    modalMapInstance = new maplibregl.Map({
+        container: 'modal-openfreemap',
+        style: 'https://tiles.openfreemap.org/styles/positron',
+        center: [currentModalSelectedLocation.lng, currentModalSelectedLocation.lat],
+        zoom: 13,
+        attributionControl: false
+    });
+
+    modalMapInstance.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+
+    const pinEl = document.createElement('div');
+    pinEl.className = 'rentora-maplibre-pin';
+    pinEl.innerHTML = '<div class="pin-pulse"></div><div class="pin-core"></div>';
+
+    modalMapMarker = new maplibregl.Marker({
+        element: pinEl,
+        draggable: true
+    })
+    .setLngLat([currentModalSelectedLocation.lng, currentModalSelectedLocation.lat])
+    .addTo(modalMapInstance);
+
+    modalMapMarker.on('dragend', function() {
+        const lngLat = modalMapMarker.getLngLat();
+        reverseGeocodeModal(lngLat.lat, lngLat.lng);
+    });
+
+    modalMapInstance.on('click', function(e) {
+        modalMapMarker.setLngLat(e.lngLat);
+        reverseGeocodeModal(e.lngLat.lat, e.lngLat.lng);
+    });
+
+    setTimeout(() => {
+        modalMapInstance.resize();
+    }, 150);
+}
+
+function reverseGeocodeModal(lat, lng) {
+    const label = document.getElementById('modal-map-selected-label');
+    if (label) label.textContent = "Locating pin...";
+
+    // 1. Check closest curated hub
+    let closest = null;
+    let minDist = Infinity;
+    ODISHA_MODAL_HUBS.forEach(h => {
+        const dist = Math.hypot(h.lat - lat, h.lng - lng);
+        if (dist < minDist) {
+            minDist = dist;
+            closest = h;
+        }
+    });
+
+    if (closest && minDist < 0.008) {
+        currentModalSelectedLocation = {
+            city: closest.city,
+            fullAddress: closest.name,
+            lat: lat,
+            lng: lng
+        };
+        if (label) label.textContent = closest.name;
+        return;
+    }
+
+    // 2. Query Photon for precise address
+    fetch(`https://photon.komoot.io/reverse?lat=${lat}&lon=${lng}`)
+        .then(r => r.json())
+        .then(data => {
+            if (data && data.features && data.features.length > 0) {
+                const p = data.features[0].properties;
+                const place = p.name || p.street || "Selected Landmark";
+                const city = p.city || p.county || "Bhubaneswar";
+                const full = `${place}, ${city}`;
+                currentModalSelectedLocation = {
+                    city: city.replace(/Municipal Corporation/i, '').trim(),
+                    fullAddress: full,
+                    lat: lat,
+                    lng: lng
+                };
+                if (label) label.textContent = full;
+            } else {
+                currentModalSelectedLocation = {
+                    city: "Bhubaneswar",
+                    fullAddress: `Pinned Spot (${lat.toFixed(4)}, ${lng.toFixed(4)})`,
+                    lat: lat,
+                    lng: lng
+                };
+                if (label) label.textContent = currentModalSelectedLocation.fullAddress;
+            }
+        })
+        .catch(() => {
+            currentModalSelectedLocation = {
+                city: "Bhubaneswar",
+                fullAddress: `Pinned Spot (${lat.toFixed(4)}, ${lng.toFixed(4)})`,
+                lat: lat,
+                lng: lng
+            };
+            if (label) label.textContent = currentModalSelectedLocation.fullAddress;
+        });
+}
+
+function confirmMapPinLocation() {
+    selectCity(currentModalSelectedLocation.city, currentModalSelectedLocation.fullAddress);
+}
+
+function detectUserLocationModal() {
+    const btn = document.getElementById('btn-modal-gps');
+    const icon = document.getElementById('icon-modal-gps');
+    if (!navigator.geolocation) {
+        alert("GPS location is not supported by your browser.");
+        return;
+    }
+
+    if (icon) icon.classList.add('animate-spin');
+
+    navigator.geolocation.getCurrentPosition(function(pos) {
+        if (icon) icon.classList.remove('animate-spin');
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+
+        fetch(`https://photon.komoot.io/reverse?lat=${lat}&lon=${lng}`)
+            .then(r => r.json())
+            .then(data => {
+                let cityName = "Bhubaneswar";
+                let fullAddr = "Your Current Location";
+                if (data && data.features && data.features.length > 0) {
+                    const p = data.features[0].properties;
+                    cityName = (p.city || p.county || "Bhubaneswar").replace(/Municipal Corporation/i, '').trim();
+                    fullAddr = `${p.name || p.street || 'Current Location'}, ${cityName}`;
+                }
+                selectCity(cityName, fullAddr);
+            })
+            .catch(() => {
+                selectCity("Bhubaneswar", "Current GPS Location, Bhubaneswar");
+            });
+    }, function() {
+        if (icon) icon.classList.remove('animate-spin');
+        alert("Could not retrieve GPS coordinates. Please select your city or hub manually.");
+    });
+}
+
 function selectCity(city, fullAddress) {
     // 1. Update UI labels across page
     document.querySelectorAll('.current-city-label').forEach(el => el.textContent = city);
-    const locInput = document.getElementById('location-input') || document.getElementById('pickup-location-input');
+    const locInput = document.getElementById('location-input') || 
+                     document.getElementById('pickup-location-input') || 
+                     document.getElementById('id_pickup_location');
     if (locInput) locInput.value = fullAddress || city;
 
-    // Mark in localStorage that user has made/seen city selection
+    // Mark in localStorage
     localStorage.setItem('rentora_odisha_city_selected', city);
 
     closeCityModal();
 
-    // 2. Persist to Django session
+    // 2. Persist to Django session via /api/city/set/
     function getCsrfToken() {
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {
@@ -187,9 +477,8 @@ function selectCity(city, fullAddress) {
             'Content-Type': 'application/json',
             'X-CSRFToken': getCsrfToken(),
         },
-        body: JSON.stringify({ city: city })
+        body: JSON.stringify({ city: city, pickup_location: fullAddress || city })
     }).then(res => res.json()).then(data => {
-        // If user is currently filtering cars, reload with selected city query
         if (window.location.pathname.includes('/cars')) {
             const url = new URL(window.location);
             url.searchParams.set('location', city);
@@ -200,11 +489,24 @@ function selectCity(city, fullAddress) {
     });
 }
 
-function filterCityList(query) {
-    const q = query.toLowerCase().trim();
+function clearCitySearch() {
+    const box = document.getElementById('city-search-box');
+    const clearBtn = document.getElementById('city-search-clear');
+    const dropdown = document.getElementById('city-modal-suggestions');
+    if (box) {
+        box.value = '';
+        box.focus();
+    }
+    if (clearBtn) clearBtn.classList.add('hidden');
+    if (dropdown) dropdown.classList.add('hidden');
+    filterCityCards('');
+}
+
+function filterCityCards(q) {
+    const query = q.toLowerCase().trim();
     document.querySelectorAll('.city-item').forEach(item => {
         const text = item.textContent.toLowerCase();
-        if (text.includes(q)) {
+        if (!query || text.includes(query)) {
             item.classList.remove('hidden');
         } else {
             item.classList.add('hidden');
@@ -212,15 +514,102 @@ function filterCityList(query) {
     });
 }
 
-// Auto-prompt on first visit (like Zoomcar / Revv)
+// Autocomplete logic for city modal
 document.addEventListener('DOMContentLoaded', function() {
+    const searchBox = document.getElementById('city-search-box');
+    const clearBtn = document.getElementById('city-search-clear');
+    const dropdown = document.getElementById('city-modal-suggestions');
+    if (!searchBox || !dropdown) return;
+
+    let searchDebounce = null;
+
+    function renderModalSuggestions(items) {
+        dropdown.innerHTML = '';
+        if (!items || items.length === 0) {
+            dropdown.classList.add('hidden');
+            return;
+        }
+
+        items.slice(0, 6).forEach(item => {
+            const row = document.createElement('div');
+            row.className = 'p-3 hover:bg-secondary-container/15 cursor-pointer flex items-center gap-2.5 transition-colors';
+            row.innerHTML = `
+                <span class="material-symbols-outlined text-secondary text-base shrink-0">location_on</span>
+                <div class="min-w-0 flex-1">
+                    <p class="text-xs font-black text-primary dark:text-white truncate">${item.name}</p>
+                    <p class="text-[10px] text-on-surface-variant dark:text-zinc-400 truncate">${item.hub ? item.hub + ' • ' : ''}${item.city}</p>
+                </div>
+            `;
+            row.addEventListener('click', function() {
+                dropdown.classList.add('hidden');
+                selectCity(item.city, item.name);
+            });
+            dropdown.appendChild(row);
+        });
+        dropdown.classList.remove('hidden');
+    }
+
+    searchBox.addEventListener('input', function() {
+        const val = searchBox.value.trim();
+        if (clearBtn) {
+            if (val.length > 0) clearBtn.classList.remove('hidden');
+            else clearBtn.classList.add('hidden');
+        }
+
+        filterCityCards(val);
+
+        if (!val) {
+            dropdown.classList.add('hidden');
+            return;
+        }
+
+        const matches = ODISHA_MODAL_HUBS.filter(h => 
+            h.name.toLowerCase().includes(val.toLowerCase()) || 
+            h.city.toLowerCase().includes(val.toLowerCase())
+        );
+
+        renderModalSuggestions(matches);
+
+        if (val.length >= 2) {
+            clearTimeout(searchDebounce);
+            searchDebounce = setTimeout(() => {
+                fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(val)}&lat=20.2961&lon=85.8245&limit=6`)
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data && data.features && data.features.length > 0) {
+                            const osmItems = data.features.map(f => {
+                                const p = f.properties;
+                                const c = (p.city || p.county || 'Bhubaneswar').replace(/Municipal Corporation/i, '').trim();
+                                return {
+                                    name: `${p.name || p.street || 'Odisha Landmark'}, ${c}`,
+                                    city: c,
+                                    hub: p.osm_value || 'Hub',
+                                    lat: f.geometry.coordinates[1],
+                                    lng: f.geometry.coordinates[0]
+                                };
+                            });
+                            renderModalSuggestions([...matches, ...osmItems]);
+                        }
+                    })
+                    .catch(() => {});
+            }, 250);
+        }
+    });
+
+    // Close suggestions on outside click
+    document.addEventListener('click', function(e) {
+        if (!searchBox.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.classList.add('hidden');
+        }
+    });
+
+    // Auto-prompt on first visit
     const cityChosen = localStorage.getItem('rentora_odisha_city_selected');
     const isHomePage = window.location.pathname === '/' || window.location.pathname === '';
     if (!cityChosen && isHomePage) {
-        // Subtle auto-open after page finishes entrance animation
         setTimeout(() => {
             openCityModal();
-        }, 800);
+        }, 900);
     }
 });
 </script>

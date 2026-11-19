@@ -557,7 +557,7 @@ def booking_location_view(request):
     selected_car = None
     if car_id:
         try:
-            selected_car = Car.objects.filter(id=car_id, is_available=True).first()
+            selected_car = Car.objects.filter(id=car_id).first()
         except Exception:
             selected_car = None
 
@@ -1409,17 +1409,20 @@ def get_booked_dates(request, car_id):
 @require_POST
 def set_city_view(request):
     """
-    Saves selected Odisha city/hub to session and returns JSON response.
+    Saves selected Odisha city/hub and optional pickup address to session and returns JSON response.
     Defaults to Bhubaneswar (BBSR).
     """
     city = 'Bhubaneswar'
+    pickup_location = ''
     valid_cities = ['Bhubaneswar', 'Cuttack', 'Puri', 'Rourkela', 'Sambalpur', 'Berhampur']
     try:
         if request.content_type == 'application/json':
             data = json.loads(request.body.decode('utf-8'))
             candidate = data.get('city', 'Bhubaneswar').strip()
+            pickup_location = data.get('pickup_location', data.get('address', '')).strip()
         else:
             candidate = request.POST.get('city', 'Bhubaneswar').strip()
+            pickup_location = request.POST.get('pickup_location', request.POST.get('address', '')).strip()
         
         # Match case-insensitively or BBSR alias
         if candidate.lower() in ['bbsr', 'bhubaneshwar']:
@@ -1431,9 +1434,11 @@ def set_city_view(request):
         pass
         
     request.session['current_city'] = city
+    if pickup_location:
+        request.session['pickup_location'] = pickup_location
     if hasattr(request.session, 'modified'):
         request.session.modified = True
-    return JsonResponse({'status': 'success', 'city': city})
+    return JsonResponse({'status': 'success', 'city': city, 'pickup_location': pickup_location})
 
 def terms_view(request):
     """Terms of Service static view."""
