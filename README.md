@@ -4,6 +4,7 @@
 <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=1,11,20&height=220&section=header&text=Rentora&fontSize=68&fontColor=FDFBD6&animation=fadeIn&desc=Production%20Self-Drive%20Car%20Rental%20Engine%20%7C%20Odisha%20Fleet%20Operations&descSize=18&descAlignY=72&descAlign=50" width="100%" alt="Rentora Banner"/>
 
 [![Live Demo](https://img.shields.io/badge/Live_App-rentora--6d1s.onrender.com-D9541E?style=for-the-badge&logo=render&logoColor=white)](https://rentora-6d1s.onrender.com/)
+[![Developer Portfolio](https://img.shields.io/badge/Developed%20by-PranayaKD-111111?style=for-the-badge&logo=googlechrome&logoColor=white)](https://pranayakd.in/)
 [![GitHub Repo](https://img.shields.io/badge/Source_Code-PranayaKD%2FRentora-111111?style=for-the-badge&logo=github&logoColor=white)](https://github.com/PranayaKD/Rentora)
 [![Django](https://img.shields.io/badge/Django-5.2+-092e20?style=for-the-badge&logo=django&logoColor=white)](https://www.djangoproject.com/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16+-336791?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
@@ -171,7 +172,8 @@ Open `http://localhost:8000` to access the application.
 
 ## 📄 License & Author
 
-Built with pride by **[Pranaya Kumar Dash](https://github.com/PranayaKD)**.  
+Developed by **[PranayaKD](https://pranayakd.in/)** ([Pranaya Kumar Dash](https://github.com/PranayaKD)).  
+Portfolio: **[https://pranayakd.in/](https://pranayakd.in/)**  
 Licensed under the [MIT License](LICENSE).
 
 <div align="center">
