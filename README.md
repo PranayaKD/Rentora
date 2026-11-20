@@ -170,11 +170,13 @@ Open `http://localhost:8000` to access the application.
 
 ---
 
-## 📄 License & Author
+## 📄 Copyright & Author
 
 Developed by **[PranayaKD](https://pranayakd.in/)** ([Pranaya Kumar Dash](https://github.com/PranayaKD)).  
 Portfolio: **[https://pranayakd.in/](https://pranayakd.in/)**  
-Licensed under the [MIT License](LICENSE).
+
+© 2026 Pranaya Kumar Dash. All rights reserved.  
+This software and its source code are proprietary. Unauthorized copying, modification, distribution, or commercial use is strictly prohibited.
 
 <div align="center">
   <sub>⭐ If you find Rentora inspiring or useful for your own Django projects, please star the repository!</sub>
