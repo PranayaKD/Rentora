@@ -6,6 +6,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from datetime import timedelta, date
 from decimal import Decimal
 import json
+from unittest.mock import patch, MagicMock
 from core.models import Car, Booking, PromoCode, Wishlist, Notification
 
 class CoreMobilityAPITests(TestCase):
@@ -170,7 +171,12 @@ class CoreMobilityAPITests(TestCase):
         response = self.client.post(reverse('api_toll_dispute', kwargs={'booking_id': self.booking.id}))
         self.assertIn(response.status_code, [302, 401, 403])
 
-    def test_api_toll_dispute_authenticated(self):
+    @patch('core.services.TollReconcilerService.submit_cash_toll_dispute')
+    def test_api_toll_dispute_authenticated(self, mock_dispute):
+        mock_obj = MagicMock()
+        mock_obj.id = 101
+        mock_obj.status = "SUBMITTED"
+        mock_dispute.return_value = (mock_obj, "Toll dispute submitted successfully")
         self.client.login(username='apiuser', password='apipassword123')
         dummy_receipt = SimpleUploadedFile("toll_receipt.jpg", b"fake receipt image content", content_type="image/jpeg")
         response = self.client.post(reverse('api_toll_dispute', kwargs={'booking_id': self.booking.id}), {
