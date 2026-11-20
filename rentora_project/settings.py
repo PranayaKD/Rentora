@@ -53,8 +53,7 @@ CSRF_TRUSTED_ORIGINS = [
 CSRF_TRUSTED_ORIGINS.extend(['https://*.onrender.com', 'https://*.supabase.co', 'https://*.is-a.dev', 'https://rentora.is-a.dev'])
 if os.getenv('CSRF_TRUSTED_ORIGINS'):
     CSRF_TRUSTED_ORIGINS.extend([o.strip() for o in os.getenv('CSRF_TRUSTED_ORIGINS').split(',') if o.strip()])
-CSRF_TRUSTED_ORIGINS = list(dict.fromkeys(CSRF_TRUSTED_ORIGINS))  # Remove duplicates
-
+CSRF_TRUSTED_ORIGINS = list(dict.fromkeys(CSRF_TRUSTED_ORIGINS)) 
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

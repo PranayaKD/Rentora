@@ -99,8 +99,9 @@ class RentoraMasterQAAuditTest(TestCase):
         response = self.client.get('/')
         html = response.content.decode('utf-8')
         
-        self.assertIn('Born in Bhubaneswar for Odisha', html)
-        self.assertIn('Why Rentora? Because Renting a Car in Odisha Needed to Change.', html)
+        self.assertIn('Built in Bhubaneswar', html)
+        self.assertIn('Redefining Self-Drive Mobility', html)
+        self.assertNotIn('BuiltinBhubaneswar', html)
 
     def test_coming_soon_modal_and_app_store_buttons(self):
         """Verify Footer contains interactive Coming Soon buttons and modal structure."""
