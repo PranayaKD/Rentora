@@ -1119,6 +1119,45 @@ details.faq-accordion .faq-answer {
   to { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 
+/* Maskrise Text Reveal Animation (Editorial / Apple-style masked overflow) */
+@keyframes maskRiseUp {
+  0% {
+    transform: translate3d(0, 115%, 0);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(0, 0%, 0);
+    opacity: 1;
+  }
+}
+
+.maskrise-wrapper {
+  display: block;
+  overflow: hidden;
+  line-height: 1.14;
+  padding-bottom: 0.06em;
+}
+
+.maskrise-item {
+  display: inline-block;
+  transform: translate3d(0, 115%, 0);
+  opacity: 0;
+  animation: maskRiseUp 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.maskrise-item-delay-1 {
+  animation-delay: 0.15s;
+}
+
+.maskrise-item-delay-2 {
+  animation-delay: 0.35s;
+}
+
+.maskrise-item-delay-3 {
+  animation-delay: 0.55s;
+}
+
 .hero-enter-bg {
   animation: heroFadeIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   will-change: transform, opacity;
@@ -1170,7 +1209,8 @@ details.faq-accordion .faq-answer {
   .hero-enter-title,
   .hero-enter-desc,
   .hero-enter-pills,
-  .hero-enter-console {
+  .hero-enter-console,
+  .maskrise-item {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
