@@ -4,6 +4,9 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+    // --- Mobile Auto-Prompt for Odisha Location ---
+    initMobileLocationAutoPrompt();
+
     // --- Toast Notification System ---
     const toasts = document.querySelectorAll('[data-toast]');
     toasts.forEach((toast, index) => {
@@ -452,4 +455,22 @@ function initStackingCards() {
             ticking = true;
         }
     }, { passive: true });
+}
+
+/**
+ * Mobile Auto-Prompt for Odisha Location
+ * Automatically prompts the user for their location / hub on first mobile visit
+ */
+function initMobileLocationAutoPrompt() {
+    if (window.innerWidth < 768) {
+        const prompted = sessionStorage.getItem('rentora_mobile_location_prompted');
+        if (!prompted) {
+            sessionStorage.setItem('rentora_mobile_location_prompted', 'true');
+            setTimeout(() => {
+                if (typeof openCityModal === 'function') {
+                    openCityModal();
+                }
+            }, 800);
+        }
+    }
 }

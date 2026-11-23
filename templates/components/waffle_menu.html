@@ -1,0 +1,179 @@
+{% load static %}
+<!-- Rentora Waffle Menu (Quick Services & App Grid Drawer) -->
+<div id="waffle-menu-overlay"
+     class="fixed inset-0 z-[110] bg-black/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300"
+     onclick="closeWaffleMenu()"></div>
+
+<div id="waffle-menu-sheet"
+     class="fixed bottom-0 inset-x-0 max-w-lg mx-auto z-[120] hidden bg-surface-container-lowest rounded-t-[2rem] p-5 sm:p-6 shadow-2xl border border-outline-variant/30 translate-y-full transition-all duration-300 ease-out max-h-[90vh] overflow-y-auto">
+    
+    <!-- Mobile Drag Handle -->
+    <div class="w-12 h-1.5 bg-outline-variant/40 rounded-full mx-auto mb-3 cursor-pointer" onclick="closeWaffleMenu()"></div>
+
+    <!-- Header -->
+    <div class="flex items-center justify-between pb-3 border-b border-outline-variant/20">
+        <div class="flex items-center gap-2">
+            <div class="w-7 h-7 rounded-lg bg-[#D9541E] text-white flex items-center justify-center shadow-2xs">
+                <span class="material-symbols-outlined text-[18px]">apps</span>
+            </div>
+            <div>
+                <h3 class="text-base font-extrabold text-primary font-headline">Rentora Services</h3>
+                <p class="text-[10px] text-on-surface-variant font-medium">Quick Navigation & Odisha Mobility</p>
+            </div>
+        </div>
+        <button type="button" onclick="closeWaffleMenu()" 
+                class="w-8 h-8 rounded-full bg-surface-container-low hover:bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors cursor-pointer" 
+                aria-label="Close menu">
+            <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+    </div>
+
+    <!-- Active Odisha Hub & GPS Card -->
+    <div class="my-3.5 p-3 rounded-2xl bg-surface-container-low border border-outline-variant/30 flex items-center justify-between gap-3">
+        <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-8 h-8 rounded-xl bg-[#D9541E] text-white flex items-center justify-center shrink-0 shadow-2xs">
+                <span class="material-symbols-outlined text-[18px]">location_on</span>
+            </div>
+            <div class="flex flex-col min-w-0">
+                <div class="flex items-center gap-1.5">
+                    <span class="text-xs font-black text-primary font-headline truncate current-hub-title">{{ current_city|default:"Bhubaneswar" }} Hub</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                </div>
+                <span class="text-[10px] text-on-surface-variant font-medium truncate current-location-subtitle">{{ pickup_location|default:"Patia, Bhubaneswar, Odisha" }}</span>
+            </div>
+        </div>
+        <button type="button" onclick="closeWaffleMenu(); openCityModal();" 
+                class="px-2.5 py-1 rounded-full bg-[#D9541E] hover:bg-[#C44714] text-white text-[10px] font-extrabold shadow-2xs shrink-0 transition-all border border-[#C44714] cursor-pointer">
+            Change
+        </button>
+    </div>
+
+    <!-- 6-Tile Waffle App Grid -->
+    <div class="grid grid-cols-3 gap-2.5 my-2">
+        <!-- Tile 1: Fleet Catalog -->
+        <a href="{% url 'cars' %}" onclick="closeWaffleMenu()"
+           class="p-3 rounded-2xl bg-surface-container-low/70 hover:bg-surface-container border border-outline-variant/20 flex flex-col items-center justify-center text-center gap-1.5 group transition-all active:scale-95">
+            <div class="w-10 h-10 rounded-xl bg-surface-container-lowest text-primary group-hover:bg-[#D9541E] group-hover:text-white transition-colors flex items-center justify-center shadow-2xs">
+                <span class="material-symbols-outlined text-[22px]">directions_car</span>
+            </div>
+            <span class="text-[11px] font-extrabold text-primary leading-tight">Fleet Catalog</span>
+            <span class="text-[9px] text-on-surface-variant font-medium">All Cars</span>
+        </a>
+
+        <!-- Tile 2: Subscriptions -->
+        <a href="{% url 'subscription' %}" onclick="closeWaffleMenu()"
+           class="p-3 rounded-2xl bg-surface-container-low/70 hover:bg-surface-container border border-outline-variant/20 flex flex-col items-center justify-center text-center gap-1.5 group transition-all active:scale-95">
+            <div class="w-10 h-10 rounded-xl bg-surface-container-lowest text-primary group-hover:bg-[#D9541E] group-hover:text-white transition-colors flex items-center justify-center shadow-2xs">
+                <span class="material-symbols-outlined text-[22px]">autorenew</span>
+            </div>
+            <span class="text-[11px] font-extrabold text-primary leading-tight">Subscriptions</span>
+            <span class="text-[9px] text-on-surface-variant font-medium">Monthly Pass</span>
+        </a>
+
+        <!-- Tile 3: How It Works -->
+        <a href="{% url 'how_it_works' %}" onclick="closeWaffleMenu()"
+           class="p-3 rounded-2xl bg-surface-container-low/70 hover:bg-surface-container border border-outline-variant/20 flex flex-col items-center justify-center text-center gap-1.5 group transition-all active:scale-95">
+            <div class="w-10 h-10 rounded-xl bg-surface-container-lowest text-primary group-hover:bg-[#D9541E] group-hover:text-white transition-colors flex items-center justify-center shadow-2xs">
+                <span class="material-symbols-outlined text-[22px]">bolt</span>
+            </div>
+            <span class="text-[11px] font-extrabold text-primary leading-tight">How It Works</span>
+            <span class="text-[9px] text-on-surface-variant font-medium">60s KYC</span>
+        </a>
+
+        <!-- Tile 4: Why Rentora -->
+        <a href="{% url 'why_rentora' %}" onclick="closeWaffleMenu()"
+           class="p-3 rounded-2xl bg-surface-container-low/70 hover:bg-surface-container border border-outline-variant/20 flex flex-col items-center justify-center text-center gap-1.5 group transition-all active:scale-95">
+            <div class="w-10 h-10 rounded-xl bg-surface-container-lowest text-primary group-hover:bg-[#D9541E] group-hover:text-white transition-colors flex items-center justify-center shadow-2xs">
+                <span class="material-symbols-outlined text-[22px]">verified_user</span>
+            </div>
+            <span class="text-[11px] font-extrabold text-primary leading-tight">Why Rentora</span>
+            <span class="text-[9px] text-on-surface-variant font-medium">₹0 Deposit</span>
+        </a>
+
+        <!-- Tile 5: My Bookings -->
+        <a href="{% if is_authenticated %}{% url 'dashboard_bookings' %}{% else %}{% url 'login' %}?next={% url 'dashboard_bookings' %}{% endif %}" 
+           onclick="{% if not is_authenticated %}closeWaffleMenu(); openMobileAuthModal('login'); return false;{% else %}closeWaffleMenu();{% endif %}"
+           class="p-3 rounded-2xl bg-surface-container-low/70 hover:bg-surface-container border border-outline-variant/20 flex flex-col items-center justify-center text-center gap-1.5 group transition-all active:scale-95">
+            <div class="w-10 h-10 rounded-xl bg-surface-container-lowest text-primary group-hover:bg-[#D9541E] group-hover:text-white transition-colors flex items-center justify-center shadow-2xs">
+                <span class="material-symbols-outlined text-[22px]">calendar_month</span>
+            </div>
+            <span class="text-[11px] font-extrabold text-primary leading-tight">My Bookings</span>
+            <span class="text-[9px] text-on-surface-variant font-medium">Trips & FASTag</span>
+        </a>
+
+        <!-- Tile 6: Switch Hub -->
+        <button type="button" onclick="closeWaffleMenu(); openCityModal();"
+           class="p-3 rounded-2xl bg-surface-container-low/70 hover:bg-surface-container border border-outline-variant/20 flex flex-col items-center justify-center text-center gap-1.5 group transition-all active:scale-95 cursor-pointer">
+            <div class="w-10 h-10 rounded-xl bg-surface-container-lowest text-primary group-hover:bg-[#D9541E] group-hover:text-white transition-colors flex items-center justify-center shadow-2xs">
+                <span class="material-symbols-outlined text-[22px]">near_me</span>
+            </div>
+            <span class="text-[11px] font-extrabold text-primary leading-tight">Odisha Hubs</span>
+            <span class="text-[9px] text-on-surface-variant font-medium">Airport & Cities</span>
+        </button>
+    </div>
+
+    <!-- Account / Login Strip -->
+    <div class="mt-3.5 pt-3 border-t border-outline-variant/20">
+        {% if is_authenticated %}
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold">
+                    {{ display_name|default:"U"|slice:":1"|upper }}
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xs font-extrabold text-primary">{{ display_name|default:"Account" }}</span>
+                    <a href="{% url 'dashboard' %}" class="text-[10px] text-secondary hover:underline font-bold">Manage Account</a>
+                </div>
+            </div>
+            <button type="button" onclick="closeWaffleMenu(); openLogoutSheet();" 
+                    class="px-3 py-1 rounded-full text-xs font-bold text-red-600 hover:bg-red-50 transition-colors">
+                Sign Out
+            </button>
+        </div>
+        {% else %}
+        <button type="button" onclick="closeWaffleMenu(); openMobileAuthModal('login');"
+                class="w-full py-2.5 rounded-xl bg-[#D9541E] hover:bg-[#C44714] text-white font-black text-xs shadow-xs flex items-center justify-center gap-2 cursor-pointer transition-all active:scale-95 border border-[#C44714]">
+            <span class="material-symbols-outlined text-[16px]">account_circle</span>
+            <span>Sign In / Create Account with Mobile OTP</span>
+        </button>
+        {% endif %}
+    </div>
+
+</div>
+
+<script>
+function openWaffleMenu() {
+    const overlay = document.getElementById('waffle-menu-overlay');
+    const sheet = document.getElementById('waffle-menu-sheet');
+    if (!overlay || !sheet) return;
+    overlay.classList.remove('hidden');
+    sheet.classList.remove('hidden');
+    requestAnimationFrame(() => {
+        overlay.classList.remove('opacity-0');
+        sheet.classList.remove('translate-y-full');
+        sheet.classList.add('translate-y-0');
+    });
+}
+
+function closeWaffleMenu() {
+    const overlay = document.getElementById('waffle-menu-overlay');
+    const sheet = document.getElementById('waffle-menu-sheet');
+    if (!overlay || !sheet) return;
+    overlay.classList.add('opacity-0');
+    sheet.classList.remove('translate-y-0');
+    sheet.classList.add('translate-y-full');
+    setTimeout(() => {
+        overlay.classList.add('hidden');
+        sheet.classList.add('hidden');
+    }, 300);
+}
+
+function toggleWaffleMenu() {
+    const sheet = document.getElementById('waffle-menu-sheet');
+    if (sheet && !sheet.classList.contains('hidden') && sheet.classList.contains('translate-y-0')) {
+        closeWaffleMenu();
+    } else {
+        openWaffleMenu();
+    }
+}
+</script>
