@@ -55,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initHeaderMorph();
     initScrollScrubText();
     initStackingCards();
+    initToastNotifications();
     // initCarousels handled by dedicated banner carousel component
 
 });
@@ -499,3 +500,156 @@ function initMobileLocationAutoPrompt() {
         }
     }
 }
+
+/**
+ * Toast Notification System
+ * Auto-dismisses after 2.0s with interactive progress indicator & manual close
+ */
+function initToastNotifications() {
+    const toasts = document.querySelectorAll('[data-toast]');
+    toasts.forEach(toast => setupToastElement(toast));
+}
+
+function setupToastElement(toast) {
+    if (!toast || toast.dataset.initialized === 'true') return;
+    toast.dataset.initialized = 'true';
+
+    const duration = parseInt(toast.dataset.duration || '2000', 10);
+    const progressBar = toast.querySelector('.toast-progress-bar');
+
+    // Entry animation
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(-10px) scale(0.96)';
+    requestAnimationFrame(() => {
+        toast.style.transition = 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateY(0) scale(1)';
+        if (progressBar) {
+            progressBar.style.transition = `width ${duration}ms linear`;
+            progressBar.style.width = '0%';
+        }
+    });
+
+    let dismissTimer = null;
+    let startTime = Date.now();
+    let remaining = duration;
+
+    const startTimer = () => {
+        startTime = Date.now();
+        dismissTimer = setTimeout(() => {
+            dismissToast(toast);
+        }, remaining);
+    };
+
+    const pauseTimer = () => {
+        if (dismissTimer) {
+            clearTimeout(dismissTimer);
+            dismissTimer = null;
+            remaining -= (Date.now() - startTime);
+            if (progressBar) {
+                const currentWidth = (remaining / duration) * 100;
+                progressBar.style.transition = 'none';
+                progressBar.style.width = `${Math.max(0, currentWidth)}%`;
+            }
+        }
+    };
+
+    // Pause on hover so user can read if needed
+    toast.addEventListener('mouseenter', pauseTimer);
+    toast.addEventListener('mouseleave', () => {
+        if (remaining > 0) {
+            if (progressBar) {
+                progressBar.style.transition = `width ${remaining}ms linear`;
+                progressBar.style.width = '0%';
+            }
+            startTimer();
+        } else {
+            dismissToast(toast);
+        }
+    });
+
+    startTimer();
+}
+
+function dismissToast(toast) {
+    if (!toast || toast.dataset.dismissing === 'true') return;
+    toast.dataset.dismissing = 'true';
+    toast.style.transition = 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(-8px) scale(0.94)';
+    setTimeout(() => {
+        if (toast.parentNode) {
+            toast.remove();
+        }
+    }, 260);
+}
+window.dismissToast = dismissToast;
+
+/**
+ * Programmatic showToast API for client-side actions
+ */
+window.showToast = function(message, type = 'info', duration = 2000) {
+    let container = document.getElementById('toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        container.className = 'fixed top-22 sm:top-24 right-3 sm:right-6 left-3 sm:left-auto z-[100] flex flex-col gap-2.5 w-auto sm:w-[380px] pointer-events-none';
+        container.setAttribute('aria-live', 'polite');
+        document.body.appendChild(container);
+    }
+
+    const typeConfig = {
+        success: {
+            border: 'border-emerald-500/40',
+            iconBg: 'bg-emerald-500/15 text-emerald-600',
+            icon: 'check_circle',
+            progressBg: 'bg-emerald-500'
+        },
+        error: {
+            border: 'border-red-500/40',
+            iconBg: 'bg-red-500/15 text-red-600',
+            icon: 'error',
+            progressBg: 'bg-red-500'
+        },
+        warning: {
+            border: 'border-[#D9541E]/40',
+            iconBg: 'bg-[#D9541E]/15 text-[#D9541E]',
+            icon: 'warning',
+            progressBg: 'bg-[#D9541E]'
+        },
+        info: {
+            border: 'border-[#D9541E]/40',
+            iconBg: 'bg-[#D9541E]/15 text-[#D9541E]',
+            icon: 'info',
+            progressBg: 'bg-[#D9541E]'
+        }
+    };
+    const cfg = typeConfig[type] || typeConfig.info;
+
+    const toast = document.createElement('div');
+    toast.className = `toast-card pointer-events-auto relative overflow-hidden rounded-2xl bg-surface-container-lowest/95 backdrop-blur-xl border p-3.5 sm:p-4 shadow-xl shadow-black/10 transition-all duration-300 ease-out flex items-start gap-3 ${cfg.border}`;
+    toast.setAttribute('data-toast', '');
+    toast.setAttribute('data-duration', duration.toString());
+    toast.setAttribute('role', 'alert');
+
+    toast.innerHTML = `
+        <div class="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${cfg.iconBg}">
+            <span class="material-symbols-outlined text-[20px]">${cfg.icon}</span>
+        </div>
+        <div class="flex-1 pt-0.5 min-w-0">
+            <p class="text-xs sm:text-[13px] font-bold text-[#111111] leading-snug break-words">
+                ${message}
+            </p>
+        </div>
+        <button type="button" 
+                onclick="event.preventDefault(); event.stopPropagation(); dismissToast(this.closest('[data-toast]'))" 
+                class="w-7 h-7 -mr-1 -mt-0.5 rounded-full flex items-center justify-center text-slate-500 hover:text-black hover:bg-black/5 active:scale-90 transition-all shrink-0 cursor-pointer"
+                aria-label="Dismiss notification">
+            <span class="material-symbols-outlined text-[17px]">close</span>
+        </button>
+        <div class="toast-progress-bar absolute bottom-0 left-0 h-1 ${cfg.progressBg}" style="width: 100%;"></div>
+    `;
+
+    container.appendChild(toast);
+    setupToastElement(toast);
+};

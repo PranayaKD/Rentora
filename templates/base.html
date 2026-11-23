@@ -149,27 +149,57 @@
 <body class="bg-surface font-body text-on-surface antialiased flex flex-col min-h-screen">
     <div class="w-full mx-auto min-h-screen flex flex-col relative bg-surface">
         
-        <!-- Toast Notifications (Rendered ONCE here) -->
-        {% if messages %}
-        <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-[100] flex flex-col gap-2 w-[90%] max-w-sm pointer-events-none">
+        <!-- Toast Notifications Container (Positioned Safely Below Floating Navbar with 2s Auto-Dismiss & Manual Delete) -->
+        <div id="toast-container" class="fixed top-22 sm:top-24 right-3 sm:right-6 left-3 sm:left-auto z-[100] flex flex-col gap-2.5 w-auto sm:w-[380px] pointer-events-none" aria-live="polite">
+            {% if messages %}
             {% for message in messages %}
-            <div class="toast border shadow-lg backdrop-blur-md flex items-center gap-3 px-4 py-3 rounded-2xl pointer-events-auto transform translate-y-0 opacity-100 transition-all duration-300
-                {% if message.tags == 'success' %}bg-surface-container-low border-primary/30 text-on-surface
-                {% elif message.tags == 'error' %}bg-error-container border-error/30 text-on-error-container
-                {% else %}bg-secondary-container border-secondary/30 text-on-secondary-container{% endif %}" data-toast>
-                <span class="material-symbols-outlined text-lg {% if message.tags == 'success' %}text-primary{% elif message.tags == 'error' %}text-error{% endif %}">
-                    {% if message.tags == 'success' %}check_circle
-                    {% elif message.tags == 'error' %}error
-                    {% else %}info{% endif %}
-                </span>
-                <p class="text-xs font-semibold flex-1">{{ message }}</p>
-                <button onclick="this.parentElement.remove()" class="text-current opacity-60 hover:opacity-100">
-                    <span class="material-symbols-outlined text-sm">close</span>
+            <div class="toast-card pointer-events-auto relative overflow-hidden rounded-2xl bg-surface-container-lowest/95 backdrop-blur-xl border p-3.5 sm:p-4 shadow-xl shadow-black/10 transition-all duration-300 ease-out flex items-start gap-3
+                {% if message.tags == 'success' %}border-emerald-500/40
+                {% elif message.tags == 'error' %}border-red-500/40
+                {% else %}border-[#D9541E]/40{% endif %}"
+                data-toast
+                data-duration="2000"
+                role="alert">
+                
+                <!-- Status Icon -->
+                <div class="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 
+                    {% if message.tags == 'success' %}bg-emerald-500/15 text-emerald-600
+                    {% elif message.tags == 'error' %}bg-red-500/15 text-red-600
+                    {% else %}bg-[#D9541E]/15 text-[#D9541E]{% endif %}">
+                    <span class="material-symbols-outlined text-[20px]">
+                        {% if message.tags == 'success' %}check_circle
+                        {% elif message.tags == 'error' %}error
+                        {% elif message.tags == 'warning' %}warning
+                        {% else %}info{% endif %}
+                    </span>
+                </div>
+
+                <!-- Message Content -->
+                <div class="flex-1 pt-0.5 min-w-0">
+                    <p class="text-xs sm:text-[13px] font-bold text-[#111111] leading-snug break-words">
+                        {{ message }}
+                    </p>
+                </div>
+
+                <!-- Manual Close Button (Delete Option) -->
+                <button type="button" 
+                        onclick="event.preventDefault(); event.stopPropagation(); dismissToast(this.closest('[data-toast]'))" 
+                        class="w-7 h-7 -mr-1 -mt-0.5 rounded-full flex items-center justify-center text-slate-500 hover:text-black hover:bg-black/5 active:scale-90 transition-all shrink-0 cursor-pointer"
+                        aria-label="Dismiss notification">
+                    <span class="material-symbols-outlined text-[17px]">close</span>
                 </button>
+
+                <!-- 2-Second Visual Progress Indicator -->
+                <div class="toast-progress-bar absolute bottom-0 left-0 h-1 
+                    {% if message.tags == 'success' %}bg-emerald-500
+                    {% elif message.tags == 'error' %}bg-red-500
+                    {% else %}bg-[#D9541E]{% endif %}" 
+                    style="width: 100%;">
+                </div>
             </div>
             {% endfor %}
+            {% endif %}
         </div>
-        {% endif %}
 
         <!-- Top Navigation (Single Source) -->
         {% include 'components/navbar.html' %}

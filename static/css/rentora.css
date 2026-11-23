@@ -1159,3 +1159,25 @@ details.faq-accordion .faq-answer {
     transform: none !important;
   }
 }
+
+/* ==========================================================================
+   Toast Notification Snackbars (Positioned Safely Below Floating Navbar)
+   ========================================================================== */
+#toast-container {
+  max-width: 100vw;
+  box-sizing: border-box;
+}
+
+.toast-card {
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.16), 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+  will-change: transform, opacity;
+}
+
+.toast-card p {
+  color: #111111 !important;
+}
+
+.toast-progress-bar {
+  transform-origin: left;
+  will-change: width;
+}
