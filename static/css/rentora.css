@@ -1019,7 +1019,7 @@ details.faq-accordion .faq-answer {
   }
 }
 
-/* 3. Stacking Cards Engine */
+/* 3. Stacking Cards Engine (Clean Normalized Layout - Zero Sticky Pinning Conflict) */
 .stacking-cards-container {
   display: flex;
   flex-direction: column;
@@ -1028,41 +1028,18 @@ details.faq-accordion .faq-answer {
 }
 
 .stacking-card {
-  position: -webkit-sticky;
-  position: sticky;
+  position: relative;
   border-radius: 1.25rem;
-  background: var(--color-surface-container-lowest, #ffffff);
+  background: var(--surface-container-lowest, #FDFBD6);
   border: 1px solid rgba(17, 17, 17, 0.08);
   box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.03);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.4s ease,
-              opacity 0.4s ease;
-  will-change: transform, box-shadow;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s ease;
 }
 
-.stacking-card:nth-child(1) {
-  top: 90px;
-  z-index: 10;
-}
-
-.stacking-card:nth-child(2) {
-  top: 110px;
-  z-index: 20;
-}
-
-.stacking-card:nth-child(3) {
-  top: 130px;
-  z-index: 30;
-}
-
-/* Mobile responsive sticky stacking offsets */
-@media (max-width: 640px) {
-  .stacking-cards-container {
-    gap: 1rem;
-  }
-  .stacking-card:nth-child(1) { top: 76px; }
-  .stacking-card:nth-child(2) { top: 92px; }
-  .stacking-card:nth-child(3) { top: 108px; }
+.stacking-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px -6px rgba(0, 0, 0, 0.09), 0 3px 10px rgba(0, 0, 0, 0.04);
 }
 
 /* Reduced Motion Accessibility */
