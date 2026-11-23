@@ -854,190 +854,218 @@ Rentora. Doorstep delivery, verified fleet, zero paperwork.{% endblock %}
       </div>
     </section>
 
-    <!-- 2. Explore by Journey / Category Grid (Stitch 6-Category Showcase) -->
+    <!-- 2. Explore by Journey / Category Grid (Photographic Automotive Cards) -->
     <section class="space-y-4 reveal-on-scroll">
       <div class="flex items-center justify-between">
-        <div>
-          <h2 class="text-lg sm:text-xl font-extrabold text-primary">Explore by Journey</h2>
-          <p class="text-xs text-on-surface-variant font-medium">Find the right vehicle matched to your specific road
-            trip or city commute</p>
+        <div class="flex items-start gap-3">
+          <div class="w-1.5 h-10 bg-amber-500 rounded-full mt-0.5"></div>
+          <div>
+            <h2 class="text-xl sm:text-2xl font-black text-primary tracking-tight">Explore by Journey</h2>
+            <p class="text-xs text-on-surface-variant font-medium">Find the right vehicle for your specific road trip or city commute</p>
+          </div>
         </div>
-        <a class="text-xs font-bold text-primary hover:text-secondary flex items-center gap-0.5 transition-colors"
+        <a class="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-surface-container-low hover:bg-surface-container border border-outline-variant/40 text-xs font-bold text-primary transition-colors shadow-2xs group"
           href="{% url 'cars' %}">
           <span>All Categories</span>
-          <span class="material-symbols-outlined text-sm">chevron_right</span>
+          <span class="material-symbols-outlined text-sm group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
         </a>
       </div>
 
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 reveal-stagger">
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4.5">
         <!-- Cat 1: City Commute -->
         <a href="{% url 'cars' %}?category=Hatchback"
-          class="p-4 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 hover:border-primary shadow-xs hover:shadow-md transition-all group flex flex-col justify-between">
-          <div>
-            <div
-              class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors mb-3">
-              <span class="material-symbols-outlined text-xl">directions_car</span>
-            </div>
-            <h3 class="text-xs sm:text-sm font-extrabold text-primary">City Commute</h3>
-            <p class="text-[11px] text-on-surface-variant mt-0.5">Swift, Baleno, i20</p>
+          class="relative h-64 sm:h-72 rounded-2xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between p-4 border border-outline-variant/30 select-none">
+          <!-- Background Photo (Car on city road / Bhubaneswar temple skyline) -->
+          <img src="https://images.unsplash.com/photo-1596178065887-1198b6148b2b?auto=format&fit=crop&w=600&q=80"
+               alt="City Commute - Bhubaneswar Heritage" 
+               class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 pointer-events-none" />
+          <!-- Dark scrim gradient -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20 pointer-events-none"></div>
+
+          <!-- Top: Glassmorphism Floating Icon -->
+          <div class="relative z-10 w-9 h-9 rounded-xl bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shadow-xs">
+            <span class="material-symbols-outlined text-[19px]">directions_car</span>
           </div>
-          <div class="mt-4 pt-3 border-t border-outline-variant/30 flex items-center justify-between">
-            <div class="flex items-baseline gap-1">
-              <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">From</span>
-              <span class="text-base sm:text-lg font-black text-primary">₹59</span>
-              <span class="text-[10px] font-semibold text-slate-500">/hr</span>
+
+          <!-- Bottom: Title, Fleet Subtext, Price & Circular Arrow -->
+          <div class="relative z-10 flex flex-col gap-2">
+            <div>
+              <h3 class="text-sm sm:text-[15px] font-black text-white leading-tight">City Commute</h3>
+              <p class="text-[11px] text-slate-300 font-medium">Swift, Baleno, i20</p>
             </div>
-            <span
-              class="w-6 h-6 rounded-full bg-surface-container-low group-hover:bg-primary group-hover:text-white flex items-center justify-center text-primary transition-all">
-              <span
-                class="material-symbols-outlined text-sm group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
-            </span>
+            <div class="pt-2 border-t border-white/15 flex items-center justify-between">
+              <div class="text-xs font-extrabold text-amber-400">
+                <span class="text-[10px] font-medium text-slate-300">From </span>₹59 <span class="text-[10px] text-slate-300 font-normal">/hr</span>
+              </div>
+              <span class="w-6 h-6 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center shadow-xs group-hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined text-sm font-bold">arrow_forward</span>
+              </span>
+            </div>
           </div>
         </a>
 
         <!-- Cat 2: Coastal & Weekend SUVs -->
         <a href="{% url 'cars' %}?category=SUV"
-          class="p-4 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 hover:border-primary shadow-xs hover:shadow-md transition-all group flex flex-col justify-between">
-          <div>
-            <div
-              class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors mb-3">
-              <span class="material-symbols-outlined text-xl">landscape</span>
-            </div>
-            <h3 class="text-xs sm:text-sm font-extrabold text-primary">Weekend SUVs</h3>
-            <p class="text-[11px] text-on-surface-variant mt-0.5">Creta, Grand Vitara</p>
+          class="relative h-64 sm:h-72 rounded-2xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between p-4 border border-outline-variant/30 select-none">
+          <!-- Background Photo (SUV beside coastal sunset beach) -->
+          <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80"
+               alt="Weekend SUVs - Coastal Marine Drive" 
+               class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 pointer-events-none" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20 pointer-events-none"></div>
+
+          <div class="relative z-10 w-9 h-9 rounded-xl bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shadow-xs">
+            <span class="material-symbols-outlined text-[19px]">landscape</span>
           </div>
-          <div class="mt-4 pt-3 border-t border-outline-variant/30 flex items-center justify-between">
-            <div class="flex items-baseline gap-1">
-              <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">From</span>
-              <span class="text-base sm:text-lg font-black text-primary">₹99</span>
-              <span class="text-[10px] font-semibold text-slate-500">/hr</span>
+
+          <div class="relative z-10 flex flex-col gap-2">
+            <div>
+              <h3 class="text-sm sm:text-[15px] font-black text-white leading-tight">Weekend SUVs</h3>
+              <p class="text-[11px] text-slate-300 font-medium">Creta, Grand Vitara</p>
             </div>
-            <span
-              class="w-6 h-6 rounded-full bg-surface-container-low group-hover:bg-primary group-hover:text-white flex items-center justify-center text-primary transition-all">
-              <span
-                class="material-symbols-outlined text-sm group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
-            </span>
+            <div class="pt-2 border-t border-white/15 flex items-center justify-between">
+              <div class="text-xs font-extrabold text-amber-400">
+                <span class="text-[10px] font-medium text-slate-300">From </span>₹99 <span class="text-[10px] text-slate-300 font-normal">/hr</span>
+              </div>
+              <span class="w-6 h-6 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center shadow-xs group-hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined text-sm font-bold">arrow_forward</span>
+              </span>
+            </div>
           </div>
         </a>
 
-        <!-- Cat 3: Off-Road 4x4 -->
+        <!-- Cat 3: 4x4 Off-Road -->
         <a href="{% url 'cars' %}?category=SUV"
-          class="p-4 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 hover:border-primary shadow-xs hover:shadow-md transition-all group flex flex-col justify-between">
-          <div>
-            <div
-              class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors mb-3">
-              <span class="material-symbols-outlined text-xl">terrain</span>
-            </div>
-            <h3 class="text-xs sm:text-sm font-extrabold text-primary">4x4 Off-Road</h3>
-            <p class="text-[11px] text-on-surface-variant mt-0.5">Thar, Scorpio-N</p>
+          class="relative h-64 sm:h-72 rounded-2xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between p-4 border border-outline-variant/30 select-none">
+          <!-- Background Photo (Thar on rocky rugged coast) -->
+          <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80"
+               alt="4x4 Off-Road - Rocky Terrain" 
+               class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 pointer-events-none" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20 pointer-events-none"></div>
+
+          <div class="relative z-10 w-9 h-9 rounded-xl bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shadow-xs">
+            <span class="material-symbols-outlined text-[19px]">terrain</span>
           </div>
-          <div class="mt-4 pt-3 border-t border-outline-variant/30 flex items-center justify-between">
-            <div class="flex items-baseline gap-1">
-              <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">From</span>
-              <span class="text-base sm:text-lg font-black text-primary">₹139</span>
-              <span class="text-[10px] font-semibold text-slate-500">/hr</span>
+
+          <div class="relative z-10 flex flex-col gap-2">
+            <div>
+              <h3 class="text-sm sm:text-[15px] font-black text-white leading-tight">4x4 Off-Road</h3>
+              <p class="text-[11px] text-slate-300 font-medium">Thar, Scorpio-N</p>
             </div>
-            <span
-              class="w-6 h-6 rounded-full bg-surface-container-low group-hover:bg-primary group-hover:text-white flex items-center justify-center text-primary transition-all">
-              <span
-                class="material-symbols-outlined text-sm group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
-            </span>
+            <div class="pt-2 border-t border-white/15 flex items-center justify-between">
+              <div class="text-xs font-extrabold text-amber-400">
+                <span class="text-[10px] font-medium text-slate-300">From </span>₹139 <span class="text-[10px] text-slate-300 font-normal">/hr</span>
+              </div>
+              <span class="w-6 h-6 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center shadow-xs group-hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined text-sm font-bold">arrow_forward</span>
+              </span>
+            </div>
           </div>
         </a>
 
-        <!-- Cat 4: Eco Electric EV -->
+        <!-- Cat 4: Electric EV -->
         <a href="{% url 'cars' %}?category=Electric"
-          class="p-4 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 hover:border-primary shadow-xs hover:shadow-md transition-all group flex flex-col justify-between">
-          <div>
-            <div
-              class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors mb-3">
-              <span class="material-symbols-outlined text-xl">electric_bolt</span>
-            </div>
-            <h3 class="text-xs sm:text-sm font-extrabold text-primary">Electric EV</h3>
-            <p class="text-[11px] text-on-surface-variant mt-0.5">Nexon EV, Punch EV</p>
+          class="relative h-64 sm:h-72 rounded-2xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between p-4 border border-outline-variant/30 select-none">
+          <!-- Background Photo (EV on curved scenic highway) -->
+          <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=600&q=80"
+               alt="Electric EV - Mountain Scenic Road" 
+               class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 pointer-events-none" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20 pointer-events-none"></div>
+
+          <div class="relative z-10 w-9 h-9 rounded-xl bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shadow-xs">
+            <span class="material-symbols-outlined text-[19px]">electric_bolt</span>
           </div>
-          <div class="mt-4 pt-3 border-t border-outline-variant/30 flex items-center justify-between">
-            <div class="flex items-baseline gap-1">
-              <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">From</span>
-              <span class="text-base sm:text-lg font-black text-primary">₹79</span>
-              <span class="text-[10px] font-semibold text-slate-500">/hr</span>
+
+          <div class="relative z-10 flex flex-col gap-2">
+            <div>
+              <h3 class="text-sm sm:text-[15px] font-black text-white leading-tight">Electric EV</h3>
+              <p class="text-[11px] text-slate-300 font-medium">Nexon EV, Punch EV</p>
             </div>
-            <span
-              class="w-6 h-6 rounded-full bg-surface-container-low group-hover:bg-primary group-hover:text-white flex items-center justify-center text-primary transition-all">
-              <span
-                class="material-symbols-outlined text-sm group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
-            </span>
+            <div class="pt-2 border-t border-white/15 flex items-center justify-between">
+              <div class="text-xs font-extrabold text-amber-400">
+                <span class="text-[10px] font-medium text-slate-300">From </span>₹79 <span class="text-[10px] text-slate-300 font-normal">/hr</span>
+              </div>
+              <span class="w-6 h-6 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center shadow-xs group-hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined text-sm font-bold">arrow_forward</span>
+              </span>
+            </div>
           </div>
         </a>
 
         <!-- Cat 5: 7-Seater Family MPV -->
         <a href="{% url 'cars' %}?category=MPV"
-          class="p-4 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 hover:border-primary shadow-xs hover:shadow-md transition-all group flex flex-col justify-between">
-          <div>
-            <div
-              class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors mb-3">
-              <span class="material-symbols-outlined text-xl">groups</span>
-            </div>
-            <h3 class="text-xs sm:text-sm font-extrabold text-primary">7-Seater MPV</h3>
-            <p class="text-[11px] text-on-surface-variant mt-0.5">Innova Crysta, Ertiga</p>
+          class="relative h-64 sm:h-72 rounded-2xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between p-4 border border-outline-variant/30 select-none">
+          <!-- Background Photo (Family MPV on winding lush green mountain corridor) -->
+          <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=600&q=80"
+               alt="7-Seater MPV - Lush Mountain Road" 
+               class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 pointer-events-none" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20 pointer-events-none"></div>
+
+          <div class="relative z-10 w-9 h-9 rounded-xl bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shadow-xs">
+            <span class="material-symbols-outlined text-[19px]">groups</span>
           </div>
-          <div class="mt-4 pt-3 border-t border-outline-variant/30 flex items-center justify-between">
-            <div class="flex items-baseline gap-1">
-              <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">From</span>
-              <span class="text-base sm:text-lg font-black text-primary">₹129</span>
-              <span class="text-[10px] font-semibold text-slate-500">/hr</span>
+
+          <div class="relative z-10 flex flex-col gap-2">
+            <div>
+              <h3 class="text-sm sm:text-[15px] font-black text-white leading-tight">7-Seater MPV</h3>
+              <p class="text-[11px] text-slate-300 font-medium">Innova Crysta, Ertiga</p>
             </div>
-            <span
-              class="w-6 h-6 rounded-full bg-surface-container-low group-hover:bg-primary group-hover:text-white flex items-center justify-center text-primary transition-all">
-              <span
-                class="material-symbols-outlined text-sm group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
-            </span>
+            <div class="pt-2 border-t border-white/15 flex items-center justify-between">
+              <div class="text-xs font-extrabold text-amber-400">
+                <span class="text-[10px] font-medium text-slate-300">From </span>₹129 <span class="text-[10px] text-slate-300 font-normal">/hr</span>
+              </div>
+              <span class="w-6 h-6 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center shadow-xs group-hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined text-sm font-bold">arrow_forward</span>
+              </span>
+            </div>
           </div>
         </a>
 
         <!-- Cat 6: Executive Luxury -->
         <a href="{% url 'cars' %}?category=Luxury+Sedan"
-          class="p-4 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 hover:border-primary shadow-xs hover:shadow-md transition-all group flex flex-col justify-between">
-          <div>
-            <div
-              class="w-10 h-10 rounded-xl bg-surface-container-low flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors mb-3">
-              <span class="material-symbols-outlined text-xl">star</span>
-            </div>
-            <h3 class="text-xs sm:text-sm font-extrabold text-primary">Executive</h3>
-            <p class="text-[11px] text-on-surface-variant mt-0.5">BMW, Mercedes, Audi</p>
+          class="relative h-64 sm:h-72 rounded-2xl overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between p-4 border border-outline-variant/30 select-none">
+          <!-- Background Photo (Close-up front grille and headlights of premium German car) -->
+          <img src="https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=600&q=80"
+               alt="Executive Luxury - BMW / Mercedes / Audi" 
+               class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 pointer-events-none" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20 pointer-events-none"></div>
+
+          <div class="relative z-10 w-9 h-9 rounded-xl bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white shadow-xs">
+            <span class="material-symbols-outlined text-[19px]">star</span>
           </div>
-          <div class="mt-4 pt-3 border-t border-outline-variant/30 flex items-center justify-between">
-            <div class="flex items-baseline gap-1">
-              <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">From</span>
-              <span class="text-base sm:text-lg font-black text-primary">₹249</span>
-              <span class="text-[10px] font-semibold text-slate-500">/hr</span>
+
+          <div class="relative z-10 flex flex-col gap-2">
+            <div>
+              <h3 class="text-sm sm:text-[15px] font-black text-white leading-tight">Executive</h3>
+              <p class="text-[11px] text-slate-300 font-medium">BMW, Mercedes, Audi</p>
             </div>
-            <span
-              class="w-6 h-6 rounded-full bg-surface-container-low group-hover:bg-primary group-hover:text-white flex items-center justify-center text-primary transition-all">
-              <span
-                class="material-symbols-outlined text-sm group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
-            </span>
+            <div class="pt-2 border-t border-white/15 flex items-center justify-between">
+              <div class="text-xs font-extrabold text-amber-400">
+                <span class="text-[10px] font-medium text-slate-300">From </span>₹249 <span class="text-[10px] text-slate-300 font-normal">/hr</span>
+              </div>
+              <span class="w-6 h-6 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center shadow-xs group-hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined text-sm font-bold">arrow_forward</span>
+              </span>
+            </div>
           </div>
         </a>
       </div>
     </section>
 
-    <!-- 3. Featured Vehicles in Odisha (Stitch Exact Responsive 4-Column Grid) -->
+    <!-- 3. Featured Vehicles in Odisha (Original 4-Column Layout) -->
     <section class="space-y-4 reveal-on-scroll">
       <div class="flex items-center justify-between">
         <div>
-          <h2 class="text-lg sm:text-xl font-extrabold text-primary">Featured Fleet in <span
-              class="current-city-label">{{ current_city|default:"Bhubaneswar" }}</span></h2>
-          <p class="text-xs text-on-surface-variant font-medium">Instant booking with doorstep handover across Odisha
-          </p>
+          <h2 class="text-xl sm:text-2xl font-black text-primary tracking-tight">Featured Vehicles in Odisha</h2>
+          <p class="text-xs text-on-surface-variant font-medium">Spotless, GPS-enabled self-drive cars available for instant handover in {{ current_city|default:"Bhubaneswar" }}</p>
         </div>
-        <a href="{% url 'cars' %}"
-          class="px-4 py-1.5 rounded-full bg-surface-container-low hover:bg-surface-container border border-outline-variant/40 text-xs font-bold text-primary transition-colors">
-          View All Fleet →
+        <a class="inline-flex items-center gap-1 px-4 py-2 rounded-full bg-surface-container-low hover:bg-surface-container border border-outline-variant/40 text-xs font-bold text-primary transition-colors shadow-2xs group"
+          href="{% url 'cars' %}">
+          <span>View All Fleet</span>
+          <span class="material-symbols-outlined text-sm group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
         </a>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 reveal-card-stagger">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5" id="home-cars-grid">
         {% for car in all_available|slice:":8" %}
         {% include 'components/car_card.html' with car=car %}
         {% endfor %}
@@ -1244,41 +1272,45 @@ Rentora. Doorstep delivery, verified fleet, zero paperwork.{% endblock %}
         </a>
       </div>
 
-      <!-- Sixt-Style Bento Grid -->
+      <!-- Bento Grid with Real Destination Photography -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <!-- Column 1: Dark Card (Global / Regional Reach) -->
-        <div class="rounded-3xl bg-[#121212] p-7 text-white flex flex-col justify-between shadow-lg relative overflow-hidden group min-h-[340px] border border-white/10">
-          <!-- Ambient glowing orb -->
-          <div class="absolute -top-12 -left-12 w-48 h-48 bg-[#D9541E]/25 rounded-full blur-3xl pointer-events-none group-hover:bg-[#D9541E]/40 transition-all duration-500"></div>
+        <!-- Column 1: Puri Marine Drive (Real Beach & Coastal Highway Photography) -->
+        <div class="rounded-3xl bg-[#121212] text-white flex flex-col justify-between shadow-lg relative overflow-hidden group min-h-[360px] border border-white/10 select-none">
+          <!-- Background Photo -->
+          <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" 
+               alt="Puri Marine Drive Beach" 
+               class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 pointer-events-none opacity-50" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/30 pointer-events-none"></div>
 
-          <div>
-            <!-- Glowing circular badge with icon -->
-            <div class="relative w-14 h-14 rounded-full bg-[#1e1e1e] border border-white/15 flex items-center justify-center mb-8 shadow-[0_0_25px_rgba(217,84,30,0.45)] group-hover:scale-105 transition-transform">
-              <span class="material-symbols-outlined text-2xl text-white">explore</span>
+          <div class="relative z-10 p-7">
+            <!-- Glass Floating Icon Badge -->
+            <div class="w-12 h-12 rounded-2xl bg-black/50 backdrop-blur-md border border-white/20 flex items-center justify-center mb-6 shadow-md text-amber-400">
+              <span class="material-symbols-outlined text-2xl">explore</span>
             </div>
 
+            <div class="inline-block px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 text-[10px] font-black uppercase tracking-wider mb-2 border border-amber-400/30">Coastal Corridor</div>
             <h3 class="text-xl font-black tracking-tight text-white mb-2">Puri Marine Drive</h3>
-            <p class="text-xs text-slate-300 leading-relaxed font-normal">
+            <p class="text-xs text-slate-200 leading-relaxed font-normal">
               NH-316 • 65 km • 1 hr 20 min. Palm-fringed coastal highway connecting Dhauli Shanti Stupa, Golden Beach, and Jagannath Temple.
             </p>
           </div>
 
-          <div class="pt-6 border-t border-white/10 flex items-center justify-between">
+          <div class="relative z-10 p-7 pt-0 flex items-center justify-between border-t border-white/15 mt-auto">
             <span class="text-[11px] font-bold text-amber-400">Thar 4x4 • Creta</span>
-            <a href="{% url 'cars' %}?category=SUV" class="inline-flex items-center gap-1 text-xs font-bold text-white hover:text-[#D9541E] transition-colors">
+            <a href="{% url 'cars' %}?category=SUV" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/15 hover:bg-[#D9541E] text-white text-xs font-bold transition-all backdrop-blur-md">
               <span>Reserve</span>
               <span class="material-symbols-outlined text-sm">arrow_forward</span>
             </a>
           </div>
         </div>
 
-        <!-- Column 2: Stack of 2 (Top: Featured Burnt Orange Card, Bottom: Dark Card) -->
+        <!-- Column 2: Stack of 2 (Top: Featured Burnt Orange Card, Bottom: Chilika Lagoon Photo Card) -->
         <div class="flex flex-col gap-5">
           <!-- Featured Vivid Burnt Orange Card -->
-          <div class="rounded-3xl bg-[#D9541E] p-7 text-white flex flex-col justify-between shadow-lg relative overflow-hidden group min-h-[200px]">
+          <div class="rounded-3xl bg-[#D9541E] p-7 text-white flex flex-col justify-between shadow-lg relative overflow-hidden group min-h-[175px]">
             <div class="relative z-10">
               <span class="text-[10px] uppercase font-black tracking-widest bg-black/20 px-2.5 py-1 rounded-full text-white inline-block mb-3">Odisha Self-Drive Pass</span>
-              <h3 class="text-2xl sm:text-3xl font-black tracking-tight leading-snug">
+              <h3 class="text-xl sm:text-2xl font-black tracking-tight leading-snug">
                 Spotless roadtrip cars at honest rates. Zero deposit.
               </h3>
             </div>
@@ -1290,23 +1322,31 @@ Rentora. Doorstep delivery, verified fleet, zero paperwork.{% endblock %}
             </div>
           </div>
 
-          <!-- Bottom: Dark Card (Distinctive Fleet / Chilika) -->
-          <div class="rounded-3xl bg-[#121212] p-7 text-white flex flex-col justify-between shadow-lg relative overflow-hidden group min-h-[200px] border border-white/10">
-            <div class="absolute -top-10 -right-10 w-44 h-44 bg-[#D9541E]/20 rounded-full blur-3xl pointer-events-none group-hover:bg-[#D9541E]/35 transition-all duration-500"></div>
+          <!-- Bottom: Chilika Lagoon Photo Card -->
+          <div class="rounded-3xl bg-[#121212] text-white flex flex-col justify-between shadow-lg relative overflow-hidden group min-h-[175px] border border-white/10 select-none">
+            <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80" 
+                 alt="Chilika Lake Lagoon" 
+                 class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 pointer-events-none opacity-45" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/30 pointer-events-none"></div>
 
-            <div>
-              <div class="relative w-12 h-12 rounded-full bg-[#1e1e1e] border border-white/15 flex items-center justify-center mb-5 shadow-[0_0_20px_rgba(217,84,30,0.45)] group-hover:scale-105 transition-transform">
-                <span class="material-symbols-outlined text-xl text-white">directions_car</span>
+            <div class="relative z-10 p-6">
+              <div class="flex items-center gap-3 mb-2">
+                <div class="w-9 h-9 rounded-xl bg-black/50 backdrop-blur-md border border-white/20 flex items-center justify-center text-amber-400">
+                  <span class="material-symbols-outlined text-lg">water</span>
+                </div>
+                <div>
+                  <h3 class="text-base font-black tracking-tight text-white leading-tight">Chilika Lagoon & Kalijai</h3>
+                  <span class="text-[10px] font-bold text-amber-400">NH-16 South • 85 km</span>
+                </div>
               </div>
-              <h3 class="text-lg font-black tracking-tight text-white mb-1.5">Chilika Lagoon & Kalijai</h3>
-              <p class="text-xs text-slate-300 leading-relaxed font-normal">
-                NH-16 South • 85 km. Asia's largest brackish lagoon with migratory bird sanctuaries, Kalijai island boat jetty, and fresh lake prawns.
+              <p class="text-xs text-slate-200 leading-relaxed font-normal mt-1">
+                Asia's largest brackish lagoon with migratory bird sanctuaries and fresh lake seafood.
               </p>
             </div>
 
-            <div class="pt-5 border-t border-white/10 flex items-center justify-between">
+            <div class="relative z-10 px-6 pb-5 pt-0 flex items-center justify-between border-t border-white/15">
               <span class="text-[11px] font-bold text-amber-400">Innova Crysta • Scorpio</span>
-              <a href="{% url 'cars' %}?category=MPV" class="inline-flex items-center gap-1 text-xs font-bold text-white hover:text-[#D9541E] transition-colors">
+              <a href="{% url 'cars' %}?category=MPV" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 hover:bg-[#D9541E] text-white text-xs font-bold transition-all backdrop-blur-md">
                 <span>Reserve</span>
                 <span class="material-symbols-outlined text-sm">arrow_forward</span>
               </a>
@@ -1314,34 +1354,31 @@ Rentora. Doorstep delivery, verified fleet, zero paperwork.{% endblock %}
           </div>
         </div>
 
-        <!-- Column 3: Dark Card (Exceptional Service / Konark & Gopalpur) -->
-        <div class="rounded-3xl bg-[#121212] p-7 text-white flex flex-col justify-between shadow-lg relative overflow-hidden group min-h-[340px] border border-white/10">
-          <div class="absolute -top-12 -right-12 w-48 h-48 bg-[#D9541E]/25 rounded-full blur-3xl pointer-events-none group-hover:bg-[#D9541E]/40 transition-all duration-500"></div>
+        <!-- Column 3: Konark & Chandrabhaga Beach (Real Heritage Temple & Beach Photo) -->
+        <div class="rounded-3xl bg-[#121212] text-white flex flex-col justify-between shadow-lg relative overflow-hidden group min-h-[360px] border border-white/10 select-none">
+          <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80" 
+               alt="Konark Sun Temple & Chandrabhaga Beach" 
+               class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 pointer-events-none opacity-50" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/30 pointer-events-none"></div>
 
-          <div>
-            <div class="relative w-14 h-14 rounded-full bg-[#1e1e1e] border border-white/15 flex items-center justify-center mb-8 shadow-[0_0_25px_rgba(217,84,30,0.45)] group-hover:scale-105 transition-transform">
-              <span class="material-symbols-outlined text-2xl text-white">volunteer_activism</span>
+          <div class="relative z-10 p-7">
+            <div class="w-12 h-12 rounded-2xl bg-black/50 backdrop-blur-md border border-white/20 flex items-center justify-center mb-6 shadow-md text-amber-400">
+              <span class="material-symbols-outlined text-2xl">wb_sunny</span>
             </div>
 
-            <h3 class="text-xl font-black tracking-tight text-white mb-2">Konark & Chandrabhaga Beach</h3>
-            <p class="text-xs text-slate-300 leading-relaxed font-normal">
+            <div class="inline-block px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 text-[10px] font-black uppercase tracking-wider mb-2 border border-amber-400/30">Heritage Circuit</div>
+            <h3 class="text-xl font-black tracking-tight text-white mb-2">Konark & Chandrabhaga</h3>
+            <p class="text-xs text-slate-200 leading-relaxed font-normal">
               Marine Drive Loop • 72 km • 1 hr 35 min. 13th-century UNESCO World Heritage Sun Temple, Pipili craft bazaar, and sunset ocean breeze.
             </p>
           </div>
 
-          <div class="pt-6 border-t border-white/10 flex items-center justify-between">
+          <div class="relative z-10 p-7 pt-0 flex items-center justify-between border-t border-white/15 mt-auto">
             <span class="text-[11px] font-bold text-amber-400">Nexon EV • Virtus Sedan</span>
-            <a href="{% url 'cars' %}?category=Electric" class="inline-flex items-center gap-1 text-xs font-bold text-white hover:text-[#D9541E] transition-colors">
+            <a href="{% url 'cars' %}?category=Electric" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/15 hover:bg-[#D9541E] text-white text-xs font-bold transition-all backdrop-blur-md">
               <span>Reserve</span>
               <span class="material-symbols-outlined text-sm">arrow_forward</span>
             </a>
-          </div>
-        </div>
-      </div>
-    </section>
-                <span class="material-symbols-outlined text-xs">chevron_right</span>
-              </a>
-            </div>
           </div>
         </div>
       </div>
@@ -1783,6 +1820,23 @@ Rentora. Doorstep delivery, verified fleet, zero paperwork.{% endblock %}
     } else {
       openMobileAuthModal('login', carId);
     }
+  }
+
+  function filterHomeCollection(category, btn) {
+    document.querySelectorAll('.home-cat-pill').forEach(b => {
+      b.className = "home-cat-pill px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-surface-container-lowest border border-outline-variant/50 text-on-surface hover:border-primary";
+    });
+    btn.className = "home-cat-pill px-4 py-1.5 rounded-full text-xs font-bold transition-all bg-emerald-600 text-white shadow-2xs";
+
+    const cards = document.querySelectorAll('#home-cars-grid .collection-card');
+    cards.forEach(card => {
+      const cardCat = card.getAttribute('data-category') || '';
+      if (category === 'all' || cardCat.toLowerCase().includes(category.toLowerCase())) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
   }
 </script>
 {% endblock %}

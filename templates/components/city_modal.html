@@ -36,29 +36,29 @@
     <!-- Quick Commerce Search Bar with Instant Autocomplete & Clear Button -->
     <div class="relative mb-3">
         <div class="relative flex items-center">
-            <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
+            <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-primary text-lg">search</span>
             <input type="text" id="city-search-box" placeholder="Search area, landmark, airport, station..." autocomplete="off"
-                   class="w-full bg-surface-container-low dark:bg-zinc-800/80 border border-outline-variant/40 dark:border-zinc-700 rounded-2xl py-3 pl-11 pr-10 text-xs font-bold text-primary dark:text-white placeholder:text-outline-variant focus:outline-none focus:ring-2 focus:ring-secondary-container transition-all" />
-            <button type="button" id="city-search-clear" onclick="clearCitySearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:text-primary text-xs">
+                   class="w-full bg-surface-container-low border border-outline-variant/60 rounded-2xl py-3 pl-11 pr-10 text-xs font-bold text-primary placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-[#D9541E] transition-all" />
+            <button type="button" id="city-search-clear" onclick="clearCitySearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-outline-variant/30 flex items-center justify-center text-primary hover:text-black text-xs">
                 <span class="material-symbols-outlined text-[14px]">close</span>
             </button>
         </div>
         <!-- Live Autocomplete Suggestions Dropdown -->
-        <div id="city-modal-suggestions" class="hidden absolute left-0 right-0 top-full mt-1.5 bg-surface-container-lowest dark:bg-zinc-900 border border-outline-variant/40 dark:border-zinc-700 rounded-2xl shadow-xl z-50 max-h-56 overflow-y-auto divide-y divide-outline-variant/10"></div>
+        <div id="city-modal-suggestions" class="hidden absolute left-0 right-0 top-full mt-1.5 bg-surface-container-lowest border border-outline-variant/40 rounded-2xl shadow-xl z-50 max-h-56 overflow-y-auto divide-y divide-outline-variant/10"></div>
     </div>
 
     <!-- GPS Quick-Locate Action Pill -->
-    <button type="button" onclick="detectUserLocationModal()" id="btn-modal-gps" class="w-full mb-3 p-2.5 rounded-2xl bg-secondary-container/15 hover:bg-secondary-container/25 border border-secondary-container/30 flex items-center justify-between text-left transition-all group cursor-pointer">
+    <button type="button" onclick="detectUserLocationModal()" id="btn-modal-gps" class="w-full mb-3 p-2.5 rounded-2xl bg-amber-50 hover:bg-amber-100/80 border border-amber-200/80 flex items-center justify-between text-left transition-all group cursor-pointer shadow-2xs">
         <div class="flex items-center gap-2.5">
-            <div class="w-7 h-7 rounded-xl bg-secondary-container text-on-secondary-fixed flex items-center justify-center shrink-0 shadow-xs">
-                <span class="material-symbols-outlined text-base" id="icon-modal-gps">my_location</span>
+            <div class="w-8 h-8 rounded-xl bg-[#D9541E] text-white flex items-center justify-center shrink-0 shadow-xs">
+                <span class="material-symbols-outlined text-base text-white" id="icon-modal-gps">my_location</span>
             </div>
             <div>
-                <p class="text-xs font-black text-primary dark:text-white">Use Current GPS Location</p>
-                <p class="text-[10px] text-on-surface-variant dark:text-zinc-400 font-medium">Detect exact doorstep address via satellite</p>
+                <p class="text-xs font-black text-black">Use Current GPS Location</p>
+                <p class="text-[10px] text-slate-700 font-semibold">Detect exact doorstep address via satellite</p>
             </div>
         </div>
-        <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-surface-container-lowest dark:bg-zinc-800 text-on-secondary-fixed border border-secondary-container/30">Auto Detect</span>
+        <span class="text-[10px] font-black uppercase px-2.5 py-1 rounded-full bg-white text-[#D9541E] border border-amber-300 shadow-2xs">Auto Detect</span>
     </button>
 
     <!-- TAB 1: Cities & Hubs List Container -->
