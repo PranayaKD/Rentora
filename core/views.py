@@ -1059,10 +1059,19 @@ def stripe_webhook(request):
 
 
 def contact_view(request):
-    """Handle contact form submission with email delivery."""
+    """Handle contact form submission with email delivery and rate limiting."""
     if request.method == 'POST':
+        from django.core.cache import cache
+        ip = request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR', '')).split(',')[0].strip()
+        contact_cache_key = f"contact_limit_{ip}"
+        submissions = cache.get(contact_cache_key, 0)
+        if submissions >= 3:
+            messages.error(request, "Too many messages sent. Please wait 15 minutes before reaching out again.")
+            return render(request, 'contact.html', {'form': ContactForm()})
+
         form = ContactForm(request.POST)
         if form.is_valid():
+            cache.set(contact_cache_key, submissions + 1, timeout=900)
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
             email = form.cleaned_data['email']

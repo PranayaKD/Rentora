@@ -107,3 +107,11 @@ class ContactForm(forms.Form):
     last_name = forms.CharField(max_length=50)
     email = forms.EmailField()
     message = forms.CharField(widget=forms.Textarea(attrs={'rows': 4}))
+    # Anti-bot honeypot field (hidden from legitimate users, filled by bots)
+    company_site = forms.CharField(required=False, widget=forms.HiddenInput())
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get('company_site'):
+            raise forms.ValidationError("Spam submission detected.")
+        return cleaned_data

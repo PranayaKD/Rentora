@@ -192,6 +192,20 @@ class ProfileForm(forms.Form):
         })
     )
 
+    def clean_profile_photo(self):
+        photo = self.cleaned_data.get('profile_photo')
+        if photo and hasattr(photo, 'size'):
+            if photo.size > 5 * 1024 * 1024:  # 5MB limit
+                raise forms.ValidationError("Profile photo cannot exceed 5 MB.")
+        return photo
+
+    def clean_license_image(self):
+        img = self.cleaned_data.get('license_image')
+        if img and hasattr(img, 'size'):
+            if img.size > 10 * 1024 * 1024:  # 10MB limit
+                raise forms.ValidationError("Driving license document cannot exceed 10 MB.")
+        return img
+
     def clean_phone(self):
         phone = self.cleaned_data.get('phone')
         if phone and not phone.startswith('+91'):

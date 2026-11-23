@@ -208,8 +208,21 @@ def wishlist_view(request):
 @require_POST
 def otp_login_request(request):
     """View to send OTP via Twilio. Supports both JSON AJAX and standard Form POST."""
-    # Session-based rate limiting (max 5 requests per 60 seconds)
+    from django.core.cache import cache
     import time
+
+    ip = request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR', '')).split(',')[0].strip()
+    
+    # 1. IP-level rate limiting (max 10 requests per 10 minutes across any number of sessions)
+    ip_cache_key = f"otp_ratelimit_ip_{ip}"
+    ip_attempts = cache.get(ip_cache_key, 0)
+    if ip_attempts >= 10:
+        err_msg = 'Too many requests from this network. Please wait a few minutes.'
+        if request.content_type == 'application/json' or request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            return JsonResponse({'success': False, 'message': err_msg}, status=429)
+        return render(request, 'auth.html', {'otp_error': err_msg, 'next': request.POST.get('next', ''), 'active_tab': 'login'})
+
+    # 2. Session-based rate limiting (max 5 requests per 60 seconds)
     now = time.time()
     otp_history = request.session.get('otp_request_timestamps', [])
     otp_history = [t for t in otp_history if now - t < 60]
@@ -251,6 +264,18 @@ def otp_login_request(request):
         phone = f"+91{clean_phone[1:]}"
     else:
         phone = clean_phone
+
+    # 3. Phone-specific rate limiting (max 3 SMS dispatches per phone per 10 minutes)
+    phone_cache_key = f"otp_ratelimit_phone_{phone}"
+    phone_attempts = cache.get(phone_cache_key, 0)
+    if phone_attempts >= 3:
+        err_msg = 'Too many OTPs sent to this number. Please wait 10 minutes before requesting again.'
+        if is_ajax:
+            return JsonResponse({'success': False, 'message': err_msg}, status=429)
+        return render(request, 'auth.html', {'otp_error': err_msg, 'next': next_url, 'active_tab': 'login'})
+
+    cache.set(ip_cache_key, ip_attempts + 1, timeout=600)
+    cache.set(phone_cache_key, phone_attempts + 1, timeout=600)
 
     if not phone.startswith('+91') or len(phone) < 13:
         err_msg = 'Invalid Indian phone number. Please enter a valid 10-digit number.'
