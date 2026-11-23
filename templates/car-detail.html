@@ -397,29 +397,10 @@
   }
 
   function toggleWishlist(carId, btn) {
-    if (!window.rentoraIsAuthenticated) {
-      openMobileAuthModal('login', carId);
+    if (window.toggleWishlist) {
+      window.toggleWishlist(carId, btn);
       return;
     }
-    fetch(`/api/wishlist/toggle/${carId}/`, {
-      method: 'POST',
-      headers: {
-        'X-CSRFToken': getCookie('csrftoken') || '',
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(r => r.json())
-    .then(data => {
-      const icon = btn.querySelector('.material-symbols-outlined');
-      if (data.status === 'added') {
-        icon.classList.add('text-red-500', 'fill');
-        icon.style.fontVariationSettings = "'FILL' 1";
-      } else {
-        icon.classList.remove('text-red-500', 'fill');
-        icon.style.fontVariationSettings = "'FILL' 0";
-      }
-    })
-    .catch(err => console.error("Wishlist toggle error:", err));
   }
 
   function getCookie(name) {

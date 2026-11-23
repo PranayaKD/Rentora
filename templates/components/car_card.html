@@ -22,14 +22,21 @@
                 <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider bg-primary text-white">
                     {{ car.category }}
                 </span>
-                <span class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-[#D9541E] text-white border border-[#C44714] shadow-2xs font-extrabold">
+                <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider bg-[#D9541E] text-white border border-[#C44714] shadow-2xs">
                     FASTAG READY
+                </span>
+                <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider bg-emerald-700 text-white shadow-2xs">
+                    ₹0 DEPOSIT
                 </span>
             </div>
 
             <!-- Wishlist Button -->
-            <button type="button" onclick="toggleWishlist('{{ car.id }}', this)" class="w-7 h-7 rounded-full bg-surface-container-low hover:bg-surface-container flex items-center justify-center text-on-surface shadow-xs active:scale-90 transition-transform" aria-label="Save to wishlist">
-                <span class="material-symbols-outlined text-[15px] {% if car.id in wishlisted_car_ids %}text-red-500 fill{% endif %}" style="{% if car.id in wishlisted_car_ids %}font-variation-settings: 'FILL' 1;{% endif %}">favorite</span>
+            <button type="button" 
+                    onclick="event.preventDefault(); event.stopPropagation(); toggleWishlist('{{ car.id }}', this);" 
+                    class="w-7 h-7 rounded-full bg-surface-container-low hover:bg-surface-container flex items-center justify-center text-on-surface shadow-xs active:scale-90 transition-transform cursor-pointer" 
+                    aria-label="Save to wishlist">
+                <span class="material-symbols-outlined text-[15px] {% if car.id in wishlisted_car_ids %}text-red-500 fill{% else %}text-slate-700 hover:text-red-500{% endif %}" 
+                      style="{% if car.id in wishlisted_car_ids %}font-variation-settings: 'FILL' 1;{% else %}font-variation-settings: 'FILL' 0;{% endif %}">favorite</span>
             </button>
         </div>
 
@@ -48,10 +55,13 @@
                 <span class="text-outline-variant font-normal">({{ car.rating_count|default:190 }}+)</span>
             </div>
 
-            <!-- Hub Overlay Badge -->
-            <div class="absolute top-2 right-2 bg-surface-container-lowest/90 backdrop-blur-sm px-1.5 py-0.5 rounded text-[9px] font-bold text-on-surface">
-                {{ current_city|default:"Bhubaneswar Hub" }}
-            </div>
+            <!-- Fare Info Button (Moved to top-right of image frame, replacing duplicate city text) -->
+            <button type="button" 
+                    onclick="event.preventDefault(); event.stopPropagation(); triggerFareBreakupForCard(this);" 
+                    class="absolute top-2 right-2 z-10 w-7 h-7 rounded-full bg-surface-container-lowest/95 hover:bg-[#D9541E] text-primary hover:text-white backdrop-blur-md flex items-center justify-center shadow-xs border border-outline-variant/40 transition-all cursor-pointer group/info"
+                    title="Click to view full fare breakup, taxes & free KM policy">
+                <span class="material-symbols-outlined text-[15px] group-hover/info:text-white">info</span>
+            </button>
         </a>
 
         <!-- Title & Subtitle -->
@@ -76,31 +86,26 @@
         </div>
     </div>
 
-    <!-- Price Footer & Action CTA with Dynamic Hourly / Daily & Fare Breakup -->
-    <div class="mt-3.5 pt-2.5 border-t border-outline-variant/30 flex items-center justify-between">
-        <div>
+    <!-- Price Footer & Action CTA (Spacious & Balanced) -->
+    <div class="mt-3 pt-2.5 border-t border-outline-variant/30 flex items-center justify-between gap-3">
+        <div class="min-w-0">
             <!-- Dynamic Hourly Rate -->
             <div class="flex items-baseline gap-1">
                 <span class="car-hourly-display text-base sm:text-lg font-black text-primary">₹{{ car.hourly_rate }}</span>
-                <span class="text-[11px] text-on-surface-variant font-medium">/hr</span>
+                <span class="text-[11px] text-primary font-bold">/hr</span>
             </div>
-
-            <!-- Clickable Total with info icon -> triggers Fare Breakup Modal -->
-            <button type="button" 
-                    onclick="triggerFareBreakupForCard(this)" 
-                    class="car-total-display flex items-center gap-0.5 text-[10px] text-slate-800 hover:text-primary font-bold transition-colors cursor-pointer"
-                    title="Click to view full fare breakup & taxes">
-                <span>₹{{ car.price_per_day|floatformat:0 }} excl. fees</span>
-                <span class="material-symbols-outlined text-[11px] text-primary">info</span>
-            </button>
+            <!-- Daily Rate Subtitle -->
+            <span class="text-[10px] text-primary font-semibold block leading-tight">
+                ₹{{ car.price_per_day|floatformat:0 }}/day
+            </span>
         </div>
 
         <!-- Reserve CTA Button -->
         <button type="button" 
                 onclick="handleCarBookClick('{{ car.id }}')" 
-                class="inline-flex items-center gap-1.5 bg-[#D9541E] hover:bg-[#C44714] text-white font-extrabold text-xs px-3.5 py-1.5 rounded-full shadow-xs hover:shadow active:scale-95 transition-all cursor-pointer border border-[#C44714]">
-            <span>Reserve (₹0 Deposit)</span>
-            <span class="material-symbols-outlined text-[14px] group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+                class="inline-flex items-center gap-1.5 bg-[#D9541E] hover:bg-[#C44714] text-white font-extrabold text-xs px-4 py-2 rounded-full shadow-xs hover:shadow active:scale-95 transition-all cursor-pointer border border-[#C44714] shrink-0">
+            <span>Reserve</span>
+            <span class="material-symbols-outlined text-[15px] group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
         </button>
     </div>
 </article>

@@ -289,9 +289,24 @@ function dismissToast(element) {
 
 // Global utility for AJAX Wishlist toggle
 window.toggleWishlist = function(carId, btnElement) {
-    // Requires a globally defined CSRF token or fetched from cookie
-    const csrftoken = getCookie('csrftoken');
+    if (window.event) {
+        window.event.preventDefault();
+        window.event.stopPropagation();
+    }
     
+    // If not authenticated, immediately prompt login via Mobile Auth Modal
+    if (!window.rentoraIsAuthenticated) {
+        if (typeof openMobileAuthModal === 'function') {
+            openMobileAuthModal('login', carId);
+        } else {
+            window.location.href = `/accounts/login/?next=${encodeURIComponent(window.location.pathname)}`;
+        }
+        return;
+    }
+
+    const csrftoken = getCookie('csrftoken') || '';
+    const icon = btnElement ? btnElement.querySelector('.material-symbols-outlined') : null;
+
     fetch(`/api/wishlist/toggle/${carId}/`, {
         method: 'POST',
         headers: {
@@ -299,20 +314,30 @@ window.toggleWishlist = function(carId, btnElement) {
             'Content-Type': 'application/json'
         }
     })
-    .then(res => res.json())
+    .then(res => {
+        if (res.status === 401 || res.status === 403 || res.redirected) {
+            if (typeof openMobileAuthModal === 'function') {
+                openMobileAuthModal('login', carId);
+            }
+            return null;
+        }
+        return res.json();
+    })
     .then(data => {
-        const icon = btnElement.querySelector('.material-symbols-outlined');
-        if (data.wishlisted) {
+        if (!data || !icon) return;
+        if (data.wishlisted || data.status === 'added') {
             icon.style.fontVariationSettings = "'FILL' 1";
-            icon.classList.add('text-red-500');
-            icon.classList.remove('text-slate-300', 'hover:text-red-500');
+            icon.classList.add('text-red-500', 'fill');
+            icon.classList.remove('text-slate-700');
         } else {
             icon.style.fontVariationSettings = "'FILL' 0";
-            icon.classList.remove('text-red-500');
-            icon.classList.add('text-slate-300', 'hover:text-red-500');
+            icon.classList.remove('text-red-500', 'fill');
+            icon.classList.add('text-slate-700');
         }
     })
-    .catch(err => console.error("Wishlist error:", err));
+    .catch(err => {
+        console.error("Wishlist error:", err);
+    });
 };
 
 function getCookie(name) {

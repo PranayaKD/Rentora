@@ -64,27 +64,35 @@ button:focus-visible {
 
 /* Crisp Ink Black Typography (#111111) */
 .text-on-surface-variant {
-  color: #222222 !important;
+  color: #111111 !important;
 }
 p.text-on-surface-variant,
 span.text-on-surface-variant,
 div.text-on-surface-variant {
-  color: #222222 !important;
+  color: #111111 !important;
 }
 
-/* Universal Burnt Orange Buttons (#D9541E) with White Text */
+/* Universal Burnt Orange Buttons (#D9541E) with Guaranteed White Text */
 .bg-secondary-container,
 button.bg-secondary-container,
-a.bg-secondary-container {
+a.bg-secondary-container,
+.bg-burnt-orange,
+.bg-\[\#D9541E\] {
   background-color: #D9541E !important;
   color: #ffffff !important;
 }
 .bg-secondary-container:hover,
 button.bg-secondary-container:hover,
-a.bg-secondary-container:hover {
+a.bg-secondary-container:hover,
+.bg-burnt-orange:hover,
+.bg-\[\#D9541E\]:hover {
   background-color: #C44714 !important;
 }
-.bg-secondary-container * {
+.bg-secondary-container *,
+button.bg-secondary-container *,
+a.bg-secondary-container *,
+.bg-burnt-orange *,
+.bg-\[\#D9541E\] * {
   color: #ffffff !important;
 }
 
