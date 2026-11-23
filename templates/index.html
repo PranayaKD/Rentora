@@ -1229,165 +1229,116 @@ Rentora. Doorstep delivery, verified fleet, zero paperwork.{% endblock %}
       </div>
     </section>
 
-    <!-- 6. Popular Scenic Roadtrips from Odisha -->
+    <!-- 6. Popular Scenic Roadtrips from Odisha (Bento Cards Style) -->
     <section class="space-y-6 pt-4 reveal-on-scroll">
       <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
         <div>
-          <h2 class="text-lg sm:text-2xl font-black text-primary">Popular Roadtrips from Odisha</h2>
-          <p class="text-xs text-on-surface-variant font-medium">Recommended self-drive routes starting from Bhubaneswar
-            Hub</p>
+          <span class="inline-block text-xs font-bold text-white bg-[#D9541E] px-3 py-1 rounded-full shadow-2xs mb-2">Curated Escapes</span>
+          <h2 class="text-xl sm:text-3xl font-black text-primary">Popular Roadtrips from Odisha</h2>
+          <p class="text-xs text-black font-semibold">Scenic coastal corridors, heritage loops, and lake circuits starting from Bhubaneswar Hub</p>
         </div>
         <a href="{% url 'cars' %}"
-          class="text-xs font-bold text-primary hover:text-secondary flex items-center gap-1 transition-colors self-start sm:self-auto">
+          class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface-container-low hover:bg-[#D9541E] text-primary hover:text-white border border-outline-variant/40 hover:border-[#C44714] text-xs font-bold transition-all self-start sm:self-auto shadow-2xs group">
           <span>Find Roadtrip Cars</span>
-          <span class="material-symbols-outlined text-sm">arrow_forward</span>
+          <span class="material-symbols-outlined text-sm group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
         </a>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 reveal-stagger">
-        <!-- Trip 1: Puri Marine Drive -->
-        <div
-          class="rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs overflow-hidden flex flex-col justify-between group hover:border-primary/50 transition-all">
-          <div class="relative h-40 w-full bg-surface-container-low overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=700&q=80"
-              alt="Puri Marine Drive beach road"
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-            <div
-              class="absolute top-2.5 left-2.5 bg-primary text-secondary-container text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full shadow-xs">
-              Coastal Highway
+      <!-- Sixt-Style Bento Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <!-- Column 1: Dark Card (Global / Regional Reach) -->
+        <div class="rounded-3xl bg-[#121212] p-7 text-white flex flex-col justify-between shadow-lg relative overflow-hidden group min-h-[340px] border border-white/10">
+          <!-- Ambient glowing orb -->
+          <div class="absolute -top-12 -left-12 w-48 h-48 bg-[#D9541E]/25 rounded-full blur-3xl pointer-events-none group-hover:bg-[#D9541E]/40 transition-all duration-500"></div>
+
+          <div>
+            <!-- Glowing circular badge with icon -->
+            <div class="relative w-14 h-14 rounded-full bg-[#1e1e1e] border border-white/15 flex items-center justify-center mb-8 shadow-[0_0_25px_rgba(217,84,30,0.45)] group-hover:scale-105 transition-transform">
+              <span class="material-symbols-outlined text-2xl text-white">explore</span>
             </div>
-            <div
-              class="absolute bottom-2.5 left-2.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-[11px] font-bold text-white flex items-center gap-1">
-              <span class="material-symbols-outlined text-xs text-secondary-container">timer</span>
-              <span>1 hr 20 min</span>
+
+            <h3 class="text-xl font-black tracking-tight text-white mb-2">Puri Marine Drive</h3>
+            <p class="text-xs text-slate-300 leading-relaxed font-normal">
+              NH-316 • 65 km • 1 hr 20 min. Palm-fringed coastal highway connecting Dhauli Shanti Stupa, Golden Beach, and Jagannath Temple.
+            </p>
+          </div>
+
+          <div class="pt-6 border-t border-white/10 flex items-center justify-between">
+            <span class="text-[11px] font-bold text-amber-400">Thar 4x4 • Creta</span>
+            <a href="{% url 'cars' %}?category=SUV" class="inline-flex items-center gap-1 text-xs font-bold text-white hover:text-[#D9541E] transition-colors">
+              <span>Reserve</span>
+              <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Column 2: Stack of 2 (Top: Featured Burnt Orange Card, Bottom: Dark Card) -->
+        <div class="flex flex-col gap-5">
+          <!-- Featured Vivid Burnt Orange Card -->
+          <div class="rounded-3xl bg-[#D9541E] p-7 text-white flex flex-col justify-between shadow-lg relative overflow-hidden group min-h-[200px]">
+            <div class="relative z-10">
+              <span class="text-[10px] uppercase font-black tracking-widest bg-black/20 px-2.5 py-1 rounded-full text-white inline-block mb-3">Odisha Self-Drive Pass</span>
+              <h3 class="text-2xl sm:text-3xl font-black tracking-tight leading-snug">
+                Spotless roadtrip cars at honest rates. Zero deposit.
+              </h3>
+            </div>
+            <div class="relative z-10 pt-4 flex items-center justify-between">
+              <span class="text-xs font-semibold text-white/90">Unlimited KM on select SUVs</span>
+              <a href="{% url 'cars' %}" class="w-9 h-9 rounded-full bg-white text-primary flex items-center justify-center font-bold shadow-md group-hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined text-lg text-primary">arrow_forward</span>
+              </a>
             </div>
           </div>
-          <div class="p-4 space-y-2 flex-1 flex flex-col justify-between">
+
+          <!-- Bottom: Dark Card (Distinctive Fleet / Chilika) -->
+          <div class="rounded-3xl bg-[#121212] p-7 text-white flex flex-col justify-between shadow-lg relative overflow-hidden group min-h-[200px] border border-white/10">
+            <div class="absolute -top-10 -right-10 w-44 h-44 bg-[#D9541E]/20 rounded-full blur-3xl pointer-events-none group-hover:bg-[#D9541E]/35 transition-all duration-500"></div>
+
             <div>
-              <div class="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider">NH-316 • 65 km</div>
-              <h3 class="text-sm font-extrabold text-primary mt-0.5">Bhubaneswar to Puri Marine Drive</h3>
-              <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">
-                Cruise along the palm-fringed coast from Dhauli Shanti Stupa to Golden Beach and Jagannath Temple.
+              <div class="relative w-12 h-12 rounded-full bg-[#1e1e1e] border border-white/15 flex items-center justify-center mb-5 shadow-[0_0_20px_rgba(217,84,30,0.45)] group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-xl text-white">directions_car</span>
+              </div>
+              <h3 class="text-lg font-black tracking-tight text-white mb-1.5">Chilika Lagoon & Kalijai</h3>
+              <p class="text-xs text-slate-300 leading-relaxed font-normal">
+                NH-16 South • 85 km. Asia's largest brackish lagoon with migratory bird sanctuaries, Kalijai island boat jetty, and fresh lake prawns.
               </p>
             </div>
-            <div class="pt-3 border-t border-outline-variant/30 flex items-center justify-between">
-              <span class="text-[11px] font-bold text-primary">Recommended: Creta / Thar</span>
-              <a href="{% url 'cars' %}?category=SUV"
-                class="text-xs font-bold text-primary hover:text-secondary flex items-center gap-0.5">
-                <span>Book</span>
-                <span class="material-symbols-outlined text-xs">chevron_right</span>
+
+            <div class="pt-5 border-t border-white/10 flex items-center justify-between">
+              <span class="text-[11px] font-bold text-amber-400">Innova Crysta • Scorpio</span>
+              <a href="{% url 'cars' %}?category=MPV" class="inline-flex items-center gap-1 text-xs font-bold text-white hover:text-[#D9541E] transition-colors">
+                <span>Reserve</span>
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
               </a>
             </div>
           </div>
         </div>
 
-        <!-- Trip 2: Konark Sun Temple Loop -->
-        <div
-          class="rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs overflow-hidden flex flex-col justify-between group hover:border-primary/50 transition-all">
-          <div class="relative h-40 w-full bg-surface-container-low overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=700&q=80"
-              alt="Konark scenic road"
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-            <div
-              class="absolute top-2.5 left-2.5 bg-primary text-secondary-container text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full shadow-xs">
-              Heritage Circuit
+        <!-- Column 3: Dark Card (Exceptional Service / Konark & Gopalpur) -->
+        <div class="rounded-3xl bg-[#121212] p-7 text-white flex flex-col justify-between shadow-lg relative overflow-hidden group min-h-[340px] border border-white/10">
+          <div class="absolute -top-12 -right-12 w-48 h-48 bg-[#D9541E]/25 rounded-full blur-3xl pointer-events-none group-hover:bg-[#D9541E]/40 transition-all duration-500"></div>
+
+          <div>
+            <div class="relative w-14 h-14 rounded-full bg-[#1e1e1e] border border-white/15 flex items-center justify-center mb-8 shadow-[0_0_25px_rgba(217,84,30,0.45)] group-hover:scale-105 transition-transform">
+              <span class="material-symbols-outlined text-2xl text-white">volunteer_activism</span>
             </div>
-            <div
-              class="absolute bottom-2.5 left-2.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-[11px] font-bold text-white flex items-center gap-1">
-              <span class="material-symbols-outlined text-xs text-secondary-container">timer</span>
-              <span>1 hr 35 min</span>
-            </div>
+
+            <h3 class="text-xl font-black tracking-tight text-white mb-2">Konark & Chandrabhaga Beach</h3>
+            <p class="text-xs text-slate-300 leading-relaxed font-normal">
+              Marine Drive Loop • 72 km • 1 hr 35 min. 13th-century UNESCO World Heritage Sun Temple, Pipili craft bazaar, and sunset ocean breeze.
+            </p>
           </div>
-          <div class="p-4 space-y-2 flex-1 flex flex-col justify-between">
-            <div>
-              <div class="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider">Pipili Route • 72 km
-              </div>
-              <h3 class="text-sm font-extrabold text-primary mt-0.5">Konark & Chandrabhaga Beach</h3>
-              <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">
-                Stop at Pipili applique craft village, visit the 13th-century Sun Temple, and catch ocean breeze at
-                Chandrabhaga.
-              </p>
-            </div>
-            <div class="pt-3 border-t border-outline-variant/30 flex items-center justify-between">
-              <span class="text-[11px] font-bold text-primary">Recommended: Nexon EV / Sedan</span>
-              <a href="{% url 'cars' %}?category=Electric"
-                class="text-xs font-bold text-primary hover:text-secondary flex items-center gap-0.5">
-                <span>Book</span>
-                <span class="material-symbols-outlined text-xs">chevron_right</span>
-              </a>
-            </div>
+
+          <div class="pt-6 border-t border-white/10 flex items-center justify-between">
+            <span class="text-[11px] font-bold text-amber-400">Nexon EV • Virtus Sedan</span>
+            <a href="{% url 'cars' %}?category=Electric" class="inline-flex items-center gap-1 text-xs font-bold text-white hover:text-[#D9541E] transition-colors">
+              <span>Reserve</span>
+              <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </a>
           </div>
         </div>
-
-        <!-- Trip 3: Chilika Lake & Mangalajodi -->
-        <div
-          class="rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs overflow-hidden flex flex-col justify-between group hover:border-primary/50 transition-all">
-          <div class="relative h-40 w-full bg-surface-container-low overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=700&q=80"
-              alt="Chilika Lake wetlands"
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-            <div
-              class="absolute top-2.5 left-2.5 bg-primary text-secondary-container text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full shadow-xs">
-              Eco Wetland
-            </div>
-            <div
-              class="absolute bottom-2.5 left-2.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-[11px] font-bold text-white flex items-center gap-1">
-              <span class="material-symbols-outlined text-xs text-secondary-container">timer</span>
-              <span>1 hr 45 min</span>
-            </div>
-          </div>
-          <div class="p-4 space-y-2 flex-1 flex flex-col justify-between">
-            <div>
-              <div class="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider">NH-16 South • 85 km
-              </div>
-              <h3 class="text-sm font-extrabold text-primary mt-0.5">Chilika Lake & Mangalajodi</h3>
-              <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">
-                Asia's largest brackish lagoon. Perfect for birdwatching, Kalijai Temple island boat rides, and fresh
-                seafood.
-              </p>
-            </div>
-            <div class="pt-3 border-t border-outline-variant/30 flex items-center justify-between">
-              <span class="text-[11px] font-bold text-primary">Recommended: Innova / Scorpio</span>
-              <a href="{% url 'cars' %}?category=MPV"
-                class="text-xs font-bold text-primary hover:text-secondary flex items-center gap-0.5">
-                <span>Book</span>
-                <span class="material-symbols-outlined text-xs">chevron_right</span>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Trip 4: Gopalpur on Sea -->
-        <div
-          class="rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs overflow-hidden flex flex-col justify-between group hover:border-primary/50 transition-all">
-          <div class="relative h-40 w-full bg-surface-container-low overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=700&q=80"
-              alt="Gopalpur coastal highway"
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-            <div
-              class="absolute top-2.5 left-2.5 bg-primary text-secondary-container text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full shadow-xs">
-              Weekend Beach
-            </div>
-            <div
-              class="absolute bottom-2.5 left-2.5 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded text-[11px] font-bold text-white flex items-center gap-1">
-              <span class="material-symbols-outlined text-xs text-secondary-container">timer</span>
-              <span>3 hrs 10 min</span>
-            </div>
-          </div>
-          <div class="p-4 space-y-2 flex-1 flex flex-col justify-between">
-            <div>
-              <div class="text-[10px] uppercase font-bold text-on-surface-variant tracking-wider">NH-16 Ganjam • 165 km
-              </div>
-              <h3 class="text-sm font-extrabold text-primary mt-0.5">Gopalpur-on-Sea & Tampara Lake</h3>
-              <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">
-                Quiet colonial lighthouse, pristine sandy shores, and water sports at Tampara Lake near Berhampur.
-              </p>
-            </div>
-            <div class="pt-3 border-t border-outline-variant/30 flex items-center justify-between">
-              <span class="text-[11px] font-bold text-primary">Recommended: Grand Vitara</span>
-              <a href="{% url 'cars' %}?category=SUV"
-                class="text-xs font-bold text-primary hover:text-secondary flex items-center gap-0.5">
-                <span>Book</span>
+      </div>
+    </section>
                 <span class="material-symbols-outlined text-xs">chevron_right</span>
               </a>
             </div>

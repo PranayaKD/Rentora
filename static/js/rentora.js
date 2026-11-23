@@ -295,7 +295,7 @@ window.toggleWishlist = function(carId, btnElement) {
         window.event.stopPropagation();
     }
     
-    // If not authenticated, immediately prompt login via Mobile Auth Modal
+    // If not authenticated, prompt login via Mobile Auth Modal
     if (!window.rentoraIsAuthenticated) {
         if (typeof openMobileAuthModal === 'function') {
             openMobileAuthModal('login', carId);
@@ -327,11 +327,11 @@ window.toggleWishlist = function(carId, btnElement) {
     .then(data => {
         if (!data || !icon) return;
         if (data.wishlisted || data.status === 'added') {
-            icon.style.fontVariationSettings = "'FILL' 1";
+            icon.style.setProperty('font-variation-settings', "'FILL' 1", 'important');
             icon.classList.add('text-red-500', 'fill');
             icon.classList.remove('text-slate-700');
         } else {
-            icon.style.fontVariationSettings = "'FILL' 0";
+            icon.style.setProperty('font-variation-settings', "'FILL' 0", 'important');
             icon.classList.remove('text-red-500', 'fill');
             icon.classList.add('text-slate-700');
         }

@@ -125,20 +125,37 @@ h6,
 }
 
 .liquid-hub-pill {
-  background: #D9541E !important;
-  background-color: #D9541E !important;
-  border: 1px solid #C44714 !important;
-  box-shadow: 0 4px 14px rgba(217, 84, 30, 0.25) !important;
-  color: #ffffff !important;
+  background: #FDFBD6 !important;
+  background-color: #FDFBD6 !important;
+  border: 1px solid rgba(17, 17, 17, 0.15) !important;
+  box-shadow: 0 2px 6px rgba(17, 17, 17, 0.05) !important;
+  color: #111111 !important;
 }
 
 .liquid-hub-pill:hover {
-  background: #C44714 !important;
-  background-color: #C44714 !important;
+  background: #FAF7CE !important;
+  background-color: #FAF7CE !important;
+  border-color: #D9541E !important;
 }
 
-.liquid-hub-pill * {
-  color: #ffffff !important;
+.liquid-hub-pill .hub-icon-box {
+  background: rgba(217, 84, 30, 0.12) !important;
+}
+
+.liquid-hub-pill .hub-icon-box .material-symbols-outlined {
+  color: #D9541E !important;
+}
+
+.liquid-hub-pill .current-hub-title {
+  color: #111111 !important;
+}
+
+.liquid-hub-pill .current-location-subtitle {
+  color: #555555 !important;
+}
+
+.liquid-hub-pill .hub-arrow-icon {
+  color: #111111 !important;
 }
 
 /* Enforce All-Cream Surfaces (#FDFBD6) - Eliminates Stark White & #FDFBD6 */

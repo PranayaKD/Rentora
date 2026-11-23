@@ -18,17 +18,17 @@
 
         <div class="h-6 w-[1px] bg-black/10 hidden sm:block"></div>
 
-        <!-- Quick-Commerce Style Hub & Location Selector (Liquid Pill - Hidden on mobile to prevent navbar overflow) -->
+        <!-- Quick-Commerce Style Hub & Location Selector (Liquid Pill - Warm Cream Style) -->
         <button onclick="openCityModal()"
-          class="liquid-hub-pill hidden sm:flex items-center gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-xl sm:rounded-2xl hover:bg-surface-container transition-all text-left group max-w-[170px] sm:max-w-[260px] md:max-w-[300px] cursor-pointer"
+          class="liquid-hub-pill hidden sm:flex items-center gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-xl sm:rounded-2xl transition-all text-left group max-w-[170px] sm:max-w-[260px] md:max-w-[300px] cursor-pointer"
           type="button" title="Select Delivery or Pickup Location in Odisha">
-          <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white/20 text-white flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-            <span class="material-symbols-outlined text-[18px] sm:text-[20px] text-white">location_on</span>
+          <div class="hub-icon-box w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+            <span class="material-symbols-outlined text-[18px] sm:text-[20px]">location_on</span>
           </div>
           <div class="flex flex-col min-w-0 leading-tight">
             <!-- Top Line: Hub name in bold with active indicator -->
             <div class="flex items-center gap-1.5">
-              <span class="text-xs sm:text-[13px] font-black text-white font-headline truncate current-hub-title">
+              <span class="text-xs sm:text-[13px] font-black font-headline truncate current-hub-title">
                 {{ current_city|default:"Bhubaneswar" }} Hub
               </span>
               <span class="relative flex h-1.5 w-1.5 shrink-0">
@@ -37,11 +37,11 @@
               </span>
             </div>
             <!-- Bottom Line: Specific Location / Street with Down Arrow -->
-            <div class="flex items-center gap-0.5 text-white/90">
-              <span class="text-[10px] sm:text-[11px] font-semibold truncate max-w-[110px] sm:max-w-[190px] current-location-subtitle font-body text-white/90">
+            <div class="flex items-center gap-0.5">
+              <span class="text-[10px] sm:text-[11px] font-semibold truncate max-w-[110px] sm:max-w-[190px] current-location-subtitle font-body">
                 {{ pickup_location|default:"Patia, Bhubaneswar, Odisha" }}
               </span>
-              <span class="material-symbols-outlined text-[13px] sm:text-[14px] text-white shrink-0 group-hover:translate-y-0.5 transition-transform">keyboard_arrow_down</span>
+              <span class="material-symbols-outlined text-[13px] sm:text-[14px] hub-arrow-icon shrink-0 group-hover:translate-y-0.5 transition-transform">keyboard_arrow_down</span>
             </div>
           </div>
         </button>

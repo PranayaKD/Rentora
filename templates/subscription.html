@@ -178,98 +178,129 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Tier 1: Daily Urban Hatchback -->
-                <div class="fleet-card p-6 rounded-3xl bg-surface-container-lowest border border-outline-variant/50 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between group" data-category="hatchback">
+                <div class="fleet-card p-5 rounded-3xl bg-surface-container-lowest border border-outline-variant/50 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between group" data-category="hatchback">
                     <div>
-                        <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center justify-between mb-3">
                             <span class="px-2.5 py-0.5 rounded-full bg-surface-container-low text-primary text-[10px] font-extrabold uppercase tracking-wider border border-outline-variant/30">City Commuter</span>
-                            <span class="text-xs font-bold text-on-surface-variant">1,500 km/mo incl.</span>
+                            <span class="text-xs font-bold text-on-surface-variant">1,500 km/mo</span>
                         </div>
-                        <div class="h-44 rounded-2xl overflow-hidden bg-surface-container-low p-3 mb-5 flex items-center justify-center border border-outline-variant/20">
+                        <div class="h-40 rounded-2xl overflow-hidden bg-surface-container-low p-2 mb-4 flex items-center justify-center border border-outline-variant/20">
                             <img src="/media/cars/marutiswift.webp" alt="Maruti Swift" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" onerror="this.src='{% static 'images/ui/car-placeholder.jpg' %}'">
                         </div>
-                        <h3 class="text-lg font-black text-primary mb-1">Maruti Suzuki Swift / Baleno</h3>
-                        <p class="text-xs text-on-surface-variant font-medium mb-4">Petrol • Manual/AMT • 22.5 km/l • 5 Seater</p>
+                        <h3 class="text-base font-black text-primary mb-1">Maruti Suzuki Swift / Baleno</h3>
+                        <p class="text-xs text-on-surface-variant font-medium mb-3">Petrol • Manual/AMT • 22.5 km/l • 5 Seater</p>
                         
-                        <div class="space-y-2 py-3.5 border-t border-b border-outline-variant/30 text-xs text-on-surface">
-                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Zero Security Deposit</div>
-                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Zero-Dep Comprehensive Cover</div>
-                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Free Doorstep Pickup & Delivery</div>
+                        <div class="space-y-1.5 py-3 border-t border-b border-outline-variant/30 text-[11px] text-on-surface">
+                            <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Zero Security Deposit</div>
+                            <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Zero-Dep Insurance Included</div>
+                            <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Free Doorstep Delivery</div>
                         </div>
                     </div>
 
-                    <div class="mt-6 pt-2 flex items-center justify-between">
+                    <div class="mt-4 pt-2 flex items-center justify-between">
                         <div>
                             <span class="text-[10px] uppercase font-bold text-on-surface-variant block">Starting at</span>
-                            <div class="text-xl sm:text-2xl font-black text-primary">₹16,999<span class="text-xs text-on-surface-variant font-normal">/mo</span></div>
+                            <div class="text-lg font-black text-primary">₹16,999<span class="text-xs text-on-surface-variant font-normal">/mo</span></div>
                         </div>
-                        <button type="button" onclick="openSubscriptionInquiry('Maruti Swift / Baleno', '16,999')" class="px-5 py-2.5 rounded-full bg-primary hover:bg-primary-container text-on-primary font-bold text-xs uppercase tracking-wider transition-all shadow-xs active:scale-95 cursor-pointer">
+                        <button type="button" onclick="openSubscriptionInquiry('Maruti Swift / Baleno', '16,999')" class="px-4 py-2 rounded-full bg-primary hover:bg-primary-container text-on-primary font-bold text-xs uppercase tracking-wider transition-all shadow-xs active:scale-95 cursor-pointer">
                             Subscribe
                         </button>
                     </div>
                 </div>
 
-                <!-- Tier 2: Compact & Lifestyle SUV -->
-                <div class="fleet-card p-6 rounded-3xl bg-surface-container-lowest border-2 border-secondary shadow-md hover:shadow-lg transition-all duration-300 flex flex-col justify-between group relative" data-category="suv">
-                    <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-secondary text-on-secondary-fixed text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-full shadow-xs">
+                <!-- Tier 2: Lifestyle SUV -->
+                <div class="fleet-card p-5 rounded-3xl bg-surface-container-lowest border-2 border-[#D9541E] shadow-md hover:shadow-lg transition-all duration-300 flex flex-col justify-between group relative" data-category="suv">
+                    <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#D9541E] text-white text-[9px] font-black uppercase tracking-widest px-3 py-0.5 rounded-full shadow-xs">
                         Most Popular Choice
                     </span>
                     <div>
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="px-2.5 py-0.5 rounded-full bg-[#D9541E] text-white border border-[#C44714] shadow-2xs font-extrabold text-[10px] font-extrabold uppercase tracking-wider">Lifestyle SUV</span>
-                            <span class="text-xs font-bold text-on-surface-variant">2,000 km/mo incl.</span>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2.5 py-0.5 rounded-full bg-[#D9541E] text-white text-[10px] font-extrabold uppercase tracking-wider">Lifestyle 4x4</span>
+                            <span class="text-xs font-bold text-on-surface-variant">2,000 km/mo</span>
                         </div>
-                        <div class="h-44 rounded-2xl overflow-hidden bg-surface-container-low p-3 mb-5 flex items-center justify-center border border-outline-variant/20">
+                        <div class="h-40 rounded-2xl overflow-hidden bg-surface-container-low p-2 mb-4 flex items-center justify-center border border-outline-variant/20">
                             <img src="/media/cars/thar.webp" alt="Mahindra Thar 4x4" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" onerror="this.src='{% static 'images/ui/car-placeholder.jpg' %}'">
                         </div>
-                        <h3 class="text-lg font-black text-primary mb-1">Mahindra Thar 4x4 / Creta</h3>
-                        <p class="text-xs text-on-surface-variant font-medium mb-4">Diesel / Petrol • Automatic • 4WD • Sunroof</p>
+                        <h3 class="text-base font-black text-primary mb-1">Mahindra Thar 4x4 / Creta</h3>
+                        <p class="text-xs text-on-surface-variant font-medium mb-3">Diesel / Petrol • Automatic • 4WD • Sunroof</p>
                         
-                        <div class="space-y-2 py-3.5 border-t border-b border-outline-variant/30 text-xs text-on-surface">
-                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Zero Down Payment & Zero EMI</div>
-                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Unlimited Highway Breakdown Towing</div>
-                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Free Weekend Swap for Roadtrips</div>
+                        <div class="space-y-1.5 py-3 border-t border-b border-outline-variant/30 text-[11px] text-on-surface">
+                            <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Zero Down Payment & Zero EMI</div>
+                            <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Unlimited Highway Breakdown Towing</div>
+                            <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Free Weekend Swap for Roadtrips</div>
                         </div>
                     </div>
 
-                    <div class="mt-6 pt-2 flex items-center justify-between">
+                    <div class="mt-4 pt-2 flex items-center justify-between">
                         <div>
                             <span class="text-[10px] uppercase font-bold text-on-surface-variant block">Starting at</span>
-                            <div class="text-xl sm:text-2xl font-black text-primary">₹28,499<span class="text-xs text-on-surface-variant font-normal">/mo</span></div>
+                            <div class="text-lg font-black text-primary">₹28,499<span class="text-xs text-on-surface-variant font-normal">/mo</span></div>
                         </div>
-                        <button type="button" onclick="openSubscriptionInquiry('Mahindra Thar / Creta', '28,499')" class="px-5 py-2.5 rounded-full bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-fixed font-black text-xs uppercase tracking-wider transition-all shadow-xs active:scale-95 cursor-pointer">
+                        <button type="button" onclick="openSubscriptionInquiry('Mahindra Thar / Creta', '28,499')" class="px-4 py-2 rounded-full bg-[#D9541E] hover:bg-[#c44714] text-white font-black text-xs uppercase tracking-wider transition-all shadow-xs active:scale-95 cursor-pointer">
                             Subscribe
                         </button>
                     </div>
                 </div>
 
-                <!-- Tier 3: Electric EV Green Pass -->
-                <div class="fleet-card p-6 rounded-3xl bg-surface-container-lowest border border-outline-variant/50 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between group" data-category="ev">
+                <!-- Tier 3: Premium MPV & Family (Innova Crysta) -->
+                <div class="fleet-card p-5 rounded-3xl bg-surface-container-lowest border border-outline-variant/50 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between group" data-category="suv">
                     <div>
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-extrabold uppercase tracking-wider border border-emerald-200">Zero Emissions</span>
-                            <span class="text-xs font-bold text-on-surface-variant">2,500 km/mo incl.</span>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2.5 py-0.5 rounded-full bg-surface-container-low text-primary text-[10px] font-extrabold uppercase tracking-wider border border-outline-variant/30">Executive MPV</span>
+                            <span class="text-xs font-bold text-on-surface-variant">2,500 km/mo</span>
                         </div>
-                        <div class="h-44 rounded-2xl overflow-hidden bg-surface-container-low p-3 mb-5 flex items-center justify-center border border-outline-variant/20">
-                            <img src="/media/cars/tatanexonev.webp" alt="Tata Nexon EV" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" onerror="this.src='{% static 'images/ui/car-placeholder.jpg' %}'">
+                        <div class="h-40 rounded-2xl overflow-hidden bg-surface-container-low p-2 mb-4 flex items-center justify-center border border-outline-variant/20">
+                            <img src="/media/cars/innovacrysta.webp" alt="Toyota Innova Crysta" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" onerror="this.src='{% static 'images/ui/car-placeholder.jpg' %}'">
                         </div>
-                        <h3 class="text-lg font-black text-primary mb-1">Tata Nexon EV / MG ZS EV</h3>
-                        <p class="text-xs text-on-surface-variant font-medium mb-4">100% Electric • 450 km Range • Fast DC Charge</p>
+                        <h3 class="text-base font-black text-primary mb-1">Toyota Innova Crysta 2.4 ZX</h3>
+                        <p class="text-xs text-on-surface-variant font-medium mb-3">Diesel • Automatic • Captain Seats • 7 Seater</p>
                         
-                        <div class="space-y-2 py-3.5 border-t border-b border-outline-variant/30 text-xs text-on-surface">
-                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Home Fast-Charger Box Installed</div>
-                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> ₹1.10 / km running cost (90% fuel savings)</div>
-                            <div class="flex items-center gap-2"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Battery Degradation Warranty Covered</div>
+                        <div class="space-y-1.5 py-3 border-t border-b border-outline-variant/30 text-[11px] text-on-surface">
+                            <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Odisha Road Tax Included</div>
+                            <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Zero-Dep Insurance Included</div>
+                            <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Free Scheduled Service at Doorstep</div>
                         </div>
                     </div>
 
-                    <div class="mt-6 pt-2 flex items-center justify-between">
+                    <div class="mt-4 pt-2 flex items-center justify-between">
                         <div>
                             <span class="text-[10px] uppercase font-bold text-on-surface-variant block">Starting at</span>
-                            <div class="text-xl sm:text-2xl font-black text-primary">₹24,999<span class="text-xs text-on-surface-variant font-normal">/mo</span></div>
+                            <div class="text-lg font-black text-primary">₹36,999<span class="text-xs text-on-surface-variant font-normal">/mo</span></div>
                         </div>
-                        <button type="button" onclick="openSubscriptionInquiry('Tata Nexon EV', '24,999')" class="px-5 py-2.5 rounded-full bg-primary hover:bg-primary-container text-on-primary font-bold text-xs uppercase tracking-wider transition-all shadow-xs active:scale-95 cursor-pointer">
+                        <button type="button" onclick="openSubscriptionInquiry('Toyota Innova Crysta 2.4 ZX', '36,999')" class="px-4 py-2 rounded-full bg-primary hover:bg-primary-container text-on-primary font-bold text-xs uppercase tracking-wider transition-all shadow-xs active:scale-95 cursor-pointer">
+                            Subscribe
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tier 4: Electric EV Green Pass (Nexon EV) -->
+                <div class="fleet-card p-5 rounded-3xl bg-surface-container-lowest border border-outline-variant/50 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between group" data-category="ev">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-extrabold uppercase tracking-wider border border-emerald-200">Zero Emissions</span>
+                            <span class="text-xs font-bold text-on-surface-variant">2,500 km/mo</span>
+                        </div>
+                        <div class="h-40 rounded-2xl overflow-hidden bg-surface-container-low p-2 mb-4 flex items-center justify-center border border-outline-variant/20">
+                            <img src="/media/cars/tatanexonev.webp" alt="Tata Nexon EV" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" onerror="this.src='{% static 'images/ui/car-placeholder.jpg' %}'">
+                        </div>
+                        <h3 class="text-base font-black text-primary mb-1">Tata Nexon EV / MG ZS EV</h3>
+                        <p class="text-xs text-on-surface-variant font-medium mb-3">100% Electric • 450 km Range • Fast DC Charge</p>
+                        
+                        <div class="space-y-1.5 py-3 border-t border-b border-outline-variant/30 text-[11px] text-on-surface">
+                            <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Home Fast-Charger Box Installed</div>
+                            <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> ₹1.10 / km running cost (90% fuel savings)</div>
+                            <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span> Battery Degradation Warranty Covered</div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-2 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] uppercase font-bold text-on-surface-variant block">Starting at</span>
+                            <div class="text-lg font-black text-primary">₹24,999<span class="text-xs text-on-surface-variant font-normal">/mo</span></div>
+                        </div>
+                        <button type="button" onclick="openSubscriptionInquiry('Tata Nexon EV', '24,999')" class="px-4 py-2 rounded-full bg-primary hover:bg-primary-container text-on-primary font-bold text-xs uppercase tracking-wider transition-all shadow-xs active:scale-95 cursor-pointer">
                             Subscribe
                         </button>
                     </div>
@@ -318,18 +349,24 @@
             <h2 class="text-2xl sm:text-4xl font-extrabold text-primary tracking-tight mb-2">Claim Your Monthly Car Pass</h2>
             <p class="text-on-surface-variant text-xs sm:text-sm max-w-xl mx-auto mb-8 font-medium">Join drivers across Odisha enjoying the freedom of month-to-month car subscriptions.</p>
             
-            <form action="{% url 'contact' %}" method="post" class="bg-surface-container-lowest p-6 sm:p-8 rounded-3xl border border-outline-variant/50 max-w-xl mx-auto text-left shadow-lg space-y-4">
+            <form action="{% url 'subscription' %}" method="post" class="bg-surface-container-lowest p-6 sm:p-8 rounded-3xl border border-outline-variant/50 max-w-xl mx-auto text-left shadow-lg space-y-4">
                 {% csrf_token %}
+                <!-- Anti-bot Honeypot field (hidden) -->
+                <input type="text" name="company_site" style="display:none !important;" tabindex="-1" autocomplete="off">
                 <input type="hidden" name="subject" value="Car Subscription Inquiry">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-bold text-primary mb-1.5">Your Name</label>
+                        <label class="block text-xs font-bold text-primary mb-1.5">Your Name <span class="text-red-500">*</span></label>
                         <input type="text" name="name" required placeholder="Subhashree Das" style="outline: none !important; box-shadow: none !important;" class="w-full h-11 bg-surface-container-low border border-outline-variant/60 rounded-xl px-3.5 text-primary text-xs font-bold focus:border-primary outline-none">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-primary mb-1.5">Mobile Number</label>
+                        <label class="block text-xs font-bold text-primary mb-1.5">Mobile Number <span class="text-red-500">*</span></label>
                         <input type="tel" name="phone" required placeholder="+91 98765 43210" style="outline: none !important; box-shadow: none !important;" class="w-full h-11 bg-surface-container-low border border-outline-variant/60 rounded-xl px-3.5 text-primary text-xs font-bold focus:border-primary outline-none">
                     </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-primary mb-1.5">Email Address <span class="text-[10px] text-on-surface-variant font-medium">(to receive instant confirmation)</span></label>
+                    <input type="email" name="email" placeholder="name@example.com" style="outline: none !important; box-shadow: none !important;" class="w-full h-11 bg-surface-container-low border border-outline-variant/60 rounded-xl px-3.5 text-primary text-xs font-bold focus:border-primary outline-none">
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
@@ -357,10 +394,10 @@
                     <label class="block text-xs font-bold text-primary mb-1.5">Car Model / Category</label>
                     <input type="text" name="car_preference" id="inquiry-car-input" placeholder="e.g. Mahindra Thar, Nexon EV, Creta" style="outline: none !important; box-shadow: none !important;" class="w-full h-11 bg-surface-container-low border border-outline-variant/60 rounded-xl px-3.5 text-primary text-xs font-bold focus:border-primary outline-none">
                 </div>
-                <button type="submit" class="w-full h-12 rounded-xl bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-fixed font-black text-xs sm:text-sm uppercase tracking-wider transition-all shadow-md active:scale-95 cursor-pointer">
+                <button type="submit" class="w-full h-12 rounded-xl bg-[#D9541E] hover:bg-[#c44714] text-white font-black text-xs sm:text-sm uppercase tracking-wider transition-all shadow-md active:scale-95 cursor-pointer">
                     Submit Subscription Request
                 </button>
-                <p class="text-[11px] text-center text-on-surface-variant font-medium">Our subscription manager calls within 30 minutes with available car chassis numbers and pricing.</p>
+                <p class="text-[11px] text-center text-on-surface-variant font-medium">You will receive an email confirmation and our subscription manager calls within 30 minutes with available car chassis numbers.</p>
             </form>
         </div>
     </section>

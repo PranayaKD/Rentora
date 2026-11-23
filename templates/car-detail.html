@@ -49,7 +49,7 @@
         </header>
 
         <!-- Hero Media Gallery (Studio Showroom Presentation) -->
-        <section class="relative w-full h-64 sm:h-72 lg:h-80 overflow-hidden bg-gradient-to-b from-slate-100 via-slate-50 to-slate-200/90 dark:from-slate-800 dark:via-slate-850 dark:to-slate-900 border border-outline-variant/30 sm:rounded-3xl shadow-sm p-4 sm:p-6 lg:p-8 flex items-center justify-center">
+        <section class="relative w-full h-64 sm:h-72 lg:h-80 overflow-hidden bg-surface-container-low border border-outline-variant/30 sm:rounded-3xl shadow-sm p-4 sm:p-6 lg:p-8 flex items-center justify-center">
           {% if car.image %}
           <img id="detail-main-img" alt="{{ car.brand }} {{ car.name }}" class="max-h-full max-w-full object-contain object-center drop-shadow-md select-none [image-rendering:-webkit-optimize-contrast]" src="{{ car.image.url }}" onerror="this.src='{% static 'images/ui/car-placeholder.jpg' %}'"/>
           {% else %}

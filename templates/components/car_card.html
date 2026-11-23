@@ -41,7 +41,7 @@
         </div>
 
         <!-- Vehicle Image Showcase: Clean Studio Frame & Razor-Sharp Object Contain -->
-        <a href="{% url 'car_detail' car.id %}" class="block w-full h-36 sm:h-38 rounded-xl overflow-hidden bg-gradient-to-b from-surface-container-low/40 to-surface-container-low/70 relative group border border-outline-variant/20 p-2 flex items-center justify-center">
+        <a href="{% url 'car_detail' car.id %}" class="block w-full h-36 sm:h-38 rounded-xl overflow-hidden bg-surface-container-low relative group border border-outline-variant/20 p-2 flex items-center justify-center">
             {% if car.image %}
             <img src="{{ car.image.url }}" alt="{{ car.brand }} {{ car.name }}" class="car-main-img max-w-full max-h-full object-contain object-center group-hover:scale-105 transition-transform duration-500 [image-rendering:-webkit-optimize-contrast] drop-shadow-xs" onerror="this.src='{% static 'images/ui/car-placeholder.jpg' %}'"/>
             {% else %}

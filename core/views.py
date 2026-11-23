@@ -197,7 +197,95 @@ def how_it_works_view(request):
 
 
 def subscription_view(request):
-    """Dedicated Car Subscription (Long-Term Monthly Mobility) page."""
+    """Dedicated Car Subscription (Long-Term Monthly Mobility) page with inquiry submission."""
+    if request.method == 'POST':
+        from django.core.cache import cache
+        ip = request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR', '')).split(',')[0].strip()
+        sub_cache_key = f"sub_limit_{ip}"
+        submissions = cache.get(sub_cache_key, 0)
+        if submissions >= 5:
+            messages.error(request, "Too many requests. Please wait a few minutes before submitting another inquiry.")
+            return redirect('subscription')
+
+        name = request.POST.get('name', '').strip()
+        email = request.POST.get('email', '').strip()
+        phone = request.POST.get('phone', '').strip()
+        city = request.POST.get('city', 'Bhubaneswar').strip()
+        tenure = request.POST.get('tenure', '6 Months').strip()
+        car_preference = request.POST.get('car_preference', 'Any Available Vehicle').strip()
+
+        # Spam honeypot check
+        if request.POST.get('company_site'):
+            messages.error(request, "Spam submission detected.")
+            return redirect('subscription')
+
+        if not name or not phone:
+            messages.error(request, "Please enter your name and contact phone number.")
+            return redirect('subscription')
+
+        cache.set(sub_cache_key, submissions + 1, timeout=600)
+
+        # 1. Send confirmation email to user (if email provided)
+        if email:
+            user_subject = f"Your Rentora Subscription Inquiry — {car_preference}"
+            user_body = f"""Dear {name},
+
+Thank you for choosing Rentora Car Subscriptions!
+
+We have received your monthly pass inquiry:
+• Preferred Vehicle: {car_preference}
+• Tenure: {tenure}
+• Odisha Hub: {city}
+• Contact Phone: {phone}
+
+Our Odisha fleet manager will contact you within 30 minutes with available chassis numbers, doorstep handover scheduling, and paperless DigiLocker KYC verification.
+
+Warm regards,
+Rentora Fleet Operations
+Bhubaneswar, Odisha
+support@rentora.in | +91 98765 43210
+"""
+            try:
+                send_mail(
+                    user_subject,
+                    user_body,
+                    settings.DEFAULT_FROM_EMAIL,
+                    [email],
+                    fail_silently=True,
+                )
+            except Exception as e:
+                logger.error(f"Subscription confirmation user email failed: {e}")
+
+        # 2. Send notification email to admin/team
+        admin_subject = f"New Subscription Lead: {name} ({car_preference} - {tenure})"
+        admin_body = f"""New Rentora Car Subscription Inquiry:
+
+Customer Name: {name}
+Phone: {phone}
+Email: {email or 'Not provided'}
+Hub: {city}
+Tenure: {tenure}
+Car Preference: {car_preference}
+Submitted At: {timezone.now().strftime('%Y-%m-%d %H:%M:%S')}
+
+--
+Rentora Operations CRM
+"""
+        try:
+            admin_email = getattr(settings, 'ADMIN_EMAIL', settings.DEFAULT_FROM_EMAIL)
+            send_mail(
+                admin_subject,
+                admin_body,
+                settings.DEFAULT_FROM_EMAIL,
+                [admin_email],
+                fail_silently=False,
+            )
+        except Exception as e:
+            logger.error(f"Subscription admin notification email failed: {e}")
+
+        messages.success(request, f"Thank you, {name}! Your subscription inquiry for {car_preference} has been received. Our team will call you within 30 minutes.")
+        return redirect('subscription')
+
     featured_cars = Car.objects.filter(is_available=True).order_by('-price_per_day')[:8]
     context = {
         'active_tab': 'subscription',
