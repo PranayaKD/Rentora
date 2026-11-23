@@ -770,8 +770,34 @@ html {
 
 .hero-kenburns {
   animation: heroDepthZoom 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  will-change: transform;
+  will-change: transform, filter;
   transform-origin: center center;
+}
+
+/* ==========================================================================
+   Cinematic Hero Color Grading & Stylish Coastal Visuals
+   ========================================================================== */
+.hero-scenic-viewport {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-scenic-viewport img.hero-kenburns {
+  filter: contrast(1.10) saturate(1.22) brightness(0.96);
+  transition: filter 0.5s ease;
+}
+
+.hero-scenic-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: 
+    /* Warm golden sunbeam reflection from top right */
+    radial-gradient(circle at 80% 25%, rgba(255, 179, 71, 0.22) 0%, rgba(217, 84, 30, 0.08) 40%, transparent 70%),
+    /* Ocean turquoise coastal glow in surf */
+    radial-gradient(circle at 12% 75%, rgba(16, 185, 129, 0.12) 0%, transparent 45%),
+    /* Editorial cinematic film bottom gradient for pristine card & text legibility */
+    linear-gradient(to bottom, rgba(17, 17, 17, 0.06) 0%, transparent 35%, rgba(17, 17, 17, 0.22) 80%, rgba(17, 17, 17, 0.40) 100%);
 }
 
 /* 2. Header Morph on Scroll (Floating Liquid Dock) */
