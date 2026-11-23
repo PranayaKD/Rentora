@@ -13,7 +13,7 @@ Rentora. Doorstep delivery, verified fleet, zero paperwork.{% endblock %}
     class="relative w-full min-h-screen flex flex-col justify-between pt-24 sm:pt-28 lg:pt-32 pb-6 lg:pb-8 border-b border-outline-variant/30 overflow-hidden reveal-on-scroll bg-surface">
 
     <!-- Hero Scenic Background: Tropical Coastal Shoreline (Pure Unblurred Image, No White Gradient) -->
-    <div class="absolute inset-0 z-0">
+    <div class="absolute inset-0 z-0 hero-enter-bg">
       <picture class="block w-full h-full overflow-hidden">
         <source srcset="https://res.cloudinary.com/e5m0ot7d/image/upload/v1795015206/rentora/site/hero_odisha_coastal.webp" type="image/webp">
         <img src="https://res.cloudinary.com/e5m0ot7d/image/upload/v1795015206/rentora/site/hero_odisha_coastal.webp"
@@ -30,17 +30,22 @@ Rentora. Doorstep delivery, verified fleet, zero paperwork.{% endblock %}
       <!-- Top/Middle Headline Container (Clean, Open Beach View, No Obstructing Cards) -->
       <div class="max-w-2xl space-y-4 my-auto py-4">
 
-        <!-- Main Headline Block -->
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black text-black tracking-tight leading-[1.12]">
+        <!-- Eyebrow Pill -->
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-sm border border-outline-variant/40 text-[11px] font-bold uppercase tracking-widest text-slate-700 shadow-2xs hero-enter-badge">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>Verified Fleet • Self-Drive Odisha</span>
+        </div>
+
+        <!-- Main Headline Block (Editorial Luxury Typography with Staggered Entrance) -->
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.14] font-headline hero-enter-title">
           Premium Self-Drive Freedom Across Odisha.
         </h1>
-        <p class="text-sm sm:text-base text-black max-w-xl leading-relaxed font-semibold">
-          Explore Bhubaneswar, Puri Marine Drive, Chilika, and beyond with spotless SUVs, executive sedans, and smart
-          EVs. Transparent pricing with ₹0 security deposit.
+        <p class="text-sm sm:text-base text-slate-700 max-w-xl leading-relaxed font-normal hero-enter-desc">
+          Explore Bhubaneswar, Puri Marine Drive, Chilika, and beyond with spotless SUVs, executive sedans, and smart EVs. Transparent pricing with ₹0 security deposit.
         </p>
 
-        <!-- Verified Trust Badges -->
-        <div class="flex items-center gap-2.5 pt-1 flex-wrap text-xs text-on-surface-variant">
+        <!-- Verified Trust Badges with Staggered Entrance -->
+        <div class="flex items-center gap-2.5 pt-1 flex-wrap text-xs text-on-surface-variant hero-enter-pills">
           <span
             class="inline-flex items-center gap-1.5 font-bold text-emerald-800 bg-emerald-50/95 backdrop-blur-sm px-3 py-1.5 rounded-full border border-emerald-200 shadow-2xs">
             <span class="material-symbols-outlined text-[16px] text-emerald-600">verified</span>
@@ -61,7 +66,7 @@ Rentora. Doorstep delivery, verified fleet, zero paperwork.{% endblock %}
 
       <!-- Bottom Reservation Console: Slim, Compact, Glass-Accented Bar -->
       <div
-        class="bg-surface-container-lowest/95 backdrop-blur-md rounded-2xl border border-outline-variant/50 shadow-md p-3 sm:p-3.5 mt-1 max-w-5xl mx-auto w-full">
+        class="bg-surface-container-lowest/95 backdrop-blur-md rounded-2xl border border-outline-variant/50 shadow-md p-3 sm:p-3.5 mt-1 max-w-5xl mx-auto w-full hero-enter-console">
 
         <!-- Top Compact Controls: Delivery Mode Pill Only -->
         <div class="flex items-center justify-between gap-2 pb-2 mb-2 border-b border-outline-variant/20">
@@ -155,21 +160,21 @@ Rentora. Doorstep delivery, verified fleet, zero paperwork.{% endblock %}
         <!-- Left Column: Story, Founder Mission & Core Guarantees -->
         <div class="lg:col-span-7 space-y-5 reveal-slide-left">
           <div
-            class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-secondary-container/20 border border-secondary-container/30 text-primary text-[11px] font-extrabold uppercase tracking-wider">
+            class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#D9541E] border border-[#C44714] text-white text-[11px] font-extrabold uppercase tracking-wider shadow-2xs">
             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
             <span>Our Story • Born in Bhubaneswar for Odisha</span>
           </div>
 
           <h2
-            class="text-2xl sm:text-3xl lg:text-4xl font-black text-primary tracking-tight leading-tight reveal-word-float font-headline">
+            class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight font-headline">
             Why Rentora? Because Renting a Car in Odisha Needed to Change.
           </h2>
 
-          <p class="scroll-scrub-text text-sm sm:text-base font-semibold leading-relaxed">
+          <p class="scroll-scrub-text text-sm sm:text-base text-slate-600 font-normal leading-relaxed">
             We started Rentora out of personal frustration with the car rental scene in Odisha. Traditional rental apps locked up ₹10,000 security deposits for a month, delivered high-mileage cars with worn tyres, and hit customers with surprise cleaning charges. Meanwhile, airport taxi counters demanded endless haggling with zero cabin privacy.
           </p>
 
-          <p class="scroll-scrub-text text-xs sm:text-sm font-medium leading-relaxed">
+          <p class="scroll-scrub-text text-sm sm:text-base text-slate-600 font-normal leading-relaxed">
             We built Rentora to give drivers a dependable, honest alternative. When you reserve a car with us, that exact model pulls up to your doorstep or BBI Airport terminal curbside—clean, fueled, 25-point inspected, and ready to drive. With 60-second DigiLocker verification, ₹0 security deposit, and preloaded FASTags, you get total highway freedom across all 30 districts of Odisha.
           </p>
 
@@ -261,7 +266,7 @@ Rentora. Doorstep delivery, verified fleet, zero paperwork.{% endblock %}
     <!-- 1B. Direct Comparison: How Rentora Beats Other Rental Apps & Offline Cabs -->
     <section class="py-6 sm:py-10 border-b border-outline-variant/30 reveal-on-scroll">
       <div class="text-center max-w-3xl mx-auto mb-8 sm:mb-12 space-y-2">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-container/20 border border-secondary-container/30 text-primary text-[11px] font-extrabold uppercase tracking-wider">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#D9541E] border border-[#C44714] text-white text-[11px] font-extrabold uppercase tracking-wider shadow-2xs">
           <span class="material-symbols-outlined text-secondary text-sm">compare_arrows</span>
           <span>Side-By-Side Comparison</span>
         </div>
@@ -1022,7 +1027,7 @@ Rentora. Doorstep delivery, verified fleet, zero paperwork.{% endblock %}
         </a>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 reveal-stagger">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 reveal-card-stagger">
         {% for car in all_available|slice:":8" %}
         {% include 'components/car_card.html' with car=car %}
         {% endfor %}
@@ -1092,6 +1097,8 @@ Rentora. Doorstep delivery, verified fleet, zero paperwork.{% endblock %}
     <section class="space-y-6 pt-4">
       <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
         <div>
+          <span
+            class="inline-block text-[10px] font-extrabold uppercase tracking-wider text-white bg-[#D9541E] px-2.5 py-0.5 rounded-full shadow-2xs mb-2">SIMPLE 3-STEP FLOW</span>
           <h2 class="text-lg sm:text-2xl font-black text-primary">How Rentora Works</h2>
           <p class="text-xs text-black font-semibold">From choosing your car to phone unlock and ignition in minutes</p>
         </div>
@@ -1102,20 +1109,26 @@ Rentora. Doorstep delivery, verified fleet, zero paperwork.{% endblock %}
         </a>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 reveal-stagger">
+      <!-- Dynamic Stacking Cards Journey (Smooth Sticky Stacking on Mobile & Desktop) -->
+      <div class="stacking-cards-container">
         <!-- Step 1 -->
         <div
-          class="p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs relative overflow-hidden group">
-          <span class="absolute top-4 right-4 text-4xl font-black text-outline-variant/30 select-none">01</span>
-          <div
-            class="w-12 h-12 rounded-xl bg-surface-container-low flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors mb-4">
-            <span class="material-symbols-outlined text-2xl font-black">car_rental</span>
+          class="stacking-card p-6 sm:p-7 bg-surface-container-lowest border border-outline-variant/40 shadow-sm relative overflow-hidden group">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex items-center gap-3.5">
+              <div
+                class="w-12 h-12 rounded-xl bg-surface-container-low flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors shrink-0">
+                <span class="material-symbols-outlined text-2xl font-black">car_rental</span>
+              </div>
+              <div>
+                <span
+                  class="text-[10px] font-extrabold uppercase tracking-wider text-white bg-[#D9541E] px-2.5 py-0.5 rounded-full shadow-2xs font-extrabold">Step 01</span>
+                <h3 class="text-base sm:text-lg font-black text-primary mt-1">Select Car & Odisha Hub</h3>
+              </div>
+            </div>
+            <span class="text-3xl sm:text-4xl font-black text-outline-variant/30 select-none">01</span>
           </div>
-          <span
-            class="text-[10px] font-extrabold uppercase tracking-wider text-primary bg-secondary-container/20 px-2 py-0.5 rounded-full">Step
-            1</span>
-          <h3 class="text-sm sm:text-base font-extrabold text-primary mt-2.5 mb-1.5">Select Car & Odisha Hub</h3>
-          <p class="text-xs text-black font-medium leading-relaxed">
+          <p class="text-xs sm:text-sm text-black font-medium leading-relaxed mt-3 max-w-3xl">
             Choose from verified hatchbacks, SUVs, EVs, and sedans. Pick up at Bhubaneswar Airport, Janpath Hub, or
             request doorstep delivery to your address.
           </p>
@@ -1123,17 +1136,22 @@ Rentora. Doorstep delivery, verified fleet, zero paperwork.{% endblock %}
 
         <!-- Step 2 -->
         <div
-          class="p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs relative overflow-hidden group">
-          <span class="absolute top-4 right-4 text-4xl font-black text-outline-variant/30 select-none">02</span>
-          <div
-            class="w-12 h-12 rounded-xl bg-surface-container-low flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors mb-4">
-            <span class="material-symbols-outlined text-2xl font-black">badge</span>
+          class="stacking-card p-6 sm:p-7 bg-surface-container-lowest border border-outline-variant/40 shadow-sm relative overflow-hidden group">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex items-center gap-3.5">
+              <div
+                class="w-12 h-12 rounded-xl bg-surface-container-low flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors shrink-0">
+                <span class="material-symbols-outlined text-2xl font-black">badge</span>
+              </div>
+              <div>
+                <span
+                  class="text-[10px] font-extrabold uppercase tracking-wider text-white bg-[#D9541E] px-2.5 py-0.5 rounded-full shadow-2xs font-extrabold">Step 02</span>
+                <h3 class="text-base sm:text-lg font-black text-primary mt-1">60s DigiLocker KYC</h3>
+              </div>
+            </div>
+            <span class="text-3xl sm:text-4xl font-black text-outline-variant/30 select-none">02</span>
           </div>
-          <span
-            class="text-[10px] font-extrabold uppercase tracking-wider text-primary bg-secondary-container/20 px-2 py-0.5 rounded-full">Step
-            2</span>
-          <h3 class="text-sm sm:text-base font-extrabold text-primary mt-2.5 mb-1.5">60s DigiLocker KYC</h3>
-          <p class="text-xs text-black font-medium leading-relaxed">
+          <p class="text-xs sm:text-sm text-black font-medium leading-relaxed mt-3 max-w-3xl">
             Log in with mobile OTP and verify your Driving License digitally in under a minute. Zero physical paperwork
             and eligible for ₹0 security deposit.
           </p>
@@ -1141,17 +1159,22 @@ Rentora. Doorstep delivery, verified fleet, zero paperwork.{% endblock %}
 
         <!-- Step 3 -->
         <div
-          class="p-6 rounded-2xl bg-surface-container-lowest border border-outline-variant/40 shadow-xs relative overflow-hidden group">
-          <span class="absolute top-4 right-4 text-4xl font-black text-outline-variant/30 select-none">03</span>
-          <div
-            class="w-12 h-12 rounded-xl bg-surface-container-low flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors mb-4">
-            <span class="material-symbols-outlined text-2xl font-black">lock_open</span>
+          class="stacking-card p-6 sm:p-7 bg-surface-container-lowest border border-outline-variant/40 shadow-sm relative overflow-hidden group">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex items-center gap-3.5">
+              <div
+                class="w-12 h-12 rounded-xl bg-surface-container-low flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors shrink-0">
+                <span class="material-symbols-outlined text-2xl font-black">lock_open</span>
+              </div>
+              <div>
+                <span
+                  class="text-[10px] font-extrabold uppercase tracking-wider text-white bg-[#D9541E] px-2.5 py-0.5 rounded-full shadow-2xs font-extrabold">Step 03</span>
+                <h3 class="text-base sm:text-lg font-black text-primary mt-1">Keyless Phone Unlock & Drive</h3>
+              </div>
+            </div>
+            <span class="text-3xl sm:text-4xl font-black text-outline-variant/30 select-none">03</span>
           </div>
-          <span
-            class="text-[10px] font-extrabold uppercase tracking-wider text-primary bg-secondary-container/20 px-2 py-0.5 rounded-full">Step
-            3</span>
-          <h3 class="text-sm sm:text-base font-extrabold text-primary mt-2.5 mb-1.5">Keyless Phone Unlock & Drive</h3>
-          <p class="text-xs text-black font-medium leading-relaxed">
+          <p class="text-xs sm:text-sm text-black font-medium leading-relaxed mt-3 max-w-3xl">
             Inspect the vehicle on your smartphone, tap unlock via encrypted Bluetooth, and start driving. Highway tolls
             auto-clear through pre-loaded FASTag.
           </p>

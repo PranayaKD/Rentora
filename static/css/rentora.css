@@ -11,6 +11,10 @@
   --surface-container-lowest: #FDFBD6;
   --surface-container-low: #FAF7CE;
   --surface-container: #F7F3C6;
+  --surface-container-high: #F1EDBE;
+  --surface-container-highest: #EBE6B6;
+  --surface-bright: #FEFDE0;
+  --surface-dim: #F5F1C4;
   --on-surface: #111111;
   --on-surface-variant: #222222;
   --secondary: #D9541E;
@@ -86,8 +90,8 @@ a.bg-secondary-container:hover {
 
 body {
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background-color: #FDFBD6;
-  color: #111111;
+  background-color: #FDFBD6 !important;
+  color: #111111 !important;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
@@ -113,13 +117,23 @@ h6,
 }
 
 .liquid-hub-pill {
-  background: #FAF7CE !important;
-  background-color: #FAF7CE !important;
-  border: 1px solid rgba(217, 84, 30, 0.25) !important;
-  box-shadow: none !important;
+  background: #D9541E !important;
+  background-color: #D9541E !important;
+  border: 1px solid #C44714 !important;
+  box-shadow: 0 4px 14px rgba(217, 84, 30, 0.25) !important;
+  color: #ffffff !important;
 }
 
-/* Enforce All-Cream Surfaces - Eliminate Stark White Cards & Containers */
+.liquid-hub-pill:hover {
+  background: #C44714 !important;
+  background-color: #C44714 !important;
+}
+
+.liquid-hub-pill * {
+  color: #ffffff !important;
+}
+
+/* Enforce All-Cream Surfaces (#FDFBD6) - Eliminates Stark White & #FDFBD6 */
 .bg-surface-container-lowest {
   background-color: #FDFBD6 !important;
 }
@@ -130,7 +144,6 @@ h6,
   background-color: #FDFBD6 !important;
 }
 
-/* Ensure white backgrounds across pages adapt to the warm cream palette */
 div.bg-white,
 section.bg-white,
 main.bg-white,
@@ -313,7 +326,8 @@ article.bg-white {
    Smooth Scrolling & Modern Scroll Reveal Engine (Progressive Enhancement)
    ========================================================================== */
 html {
-  scroll-behavior: smooth;
+  background-color: #FDFBD6 !important;
+  color: #111111 !important;
 }
 
 /* Base transition properties */
@@ -372,19 +386,23 @@ html {
 
 /* Floating Island Pill (All-Cream Design) */
 .nav-island-pill {
-  background: #FDFBD6 !important;
-  background-color: #FDFBD6 !important;
-  border: 1px solid rgba(17, 17, 17, 0.12) !important;
-  box-shadow: 0 10px 30px -5px rgba(17, 17, 17, 0.08), 0 2px 8px rgba(17, 17, 17, 0.04) !important;
-  color: #111111 !important;
+  background: #D9541E !important;
+  background-color: #D9541E !important;
+  border: 1px solid #C44714 !important;
+  box-shadow: 0 10px 30px -5px rgba(217, 84, 30, 0.28), 0 2px 8px rgba(217, 84, 30, 0.15) !important;
+  color: #ffffff !important;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .nav-island-pill:hover {
-  background: #FAF7CE !important;
-  background-color: #FAF7CE !important;
-  box-shadow: 0 14px 38px -5px rgba(17, 17, 17, 0.12), 0 4px 12px rgba(17, 17, 17, 0.06) !important;
+  background: #C44714 !important;
+  background-color: #C44714 !important;
+  box-shadow: 0 14px 38px -5px rgba(217, 84, 30, 0.35), 0 4px 12px rgba(217, 84, 30, 0.2) !important;
   transform: translateY(-1px) !important;
+}
+
+.nav-island-pill * {
+  color: #ffffff !important;
 }
 
 /* Modern Shimmer Light Sweep on Primary CTAs */
@@ -926,5 +944,207 @@ details.faq-accordion .faq-answer {
 
   .\32xl\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+/* ==========================================================================
+   Modern Scroll Effects: Line-by-Line Reveal, Card Stagger & Stacking Cards
+   ========================================================================== */
+
+/* 1. Line-by-Line Text Reveal Engine */
+.reveal-lines {
+  display: block;
+}
+
+.reveal-line-mask {
+  display: block;
+  overflow: hidden;
+  line-height: 1.15;
+  padding-bottom: 0.08em;
+}
+
+.reveal-line-inner {
+  display: block;
+  transform: translate3d(0, 115%, 0);
+  opacity: 0;
+  filter: blur(4px);
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.75s ease,
+              filter 0.75s ease;
+  will-change: transform, opacity, filter;
+}
+
+.reveal-line-mask:nth-child(1) .reveal-line-inner { transition-delay: 0ms; }
+.reveal-line-mask:nth-child(2) .reveal-line-inner { transition-delay: 90ms; }
+.reveal-line-mask:nth-child(3) .reveal-line-inner { transition-delay: 180ms; }
+.reveal-line-mask:nth-child(4) .reveal-line-inner { transition-delay: 270ms; }
+
+.is-revealed .reveal-line-inner,
+.reveal-lines.is-revealed .reveal-line-inner {
+  transform: translate3d(0, 0, 0) !important;
+  opacity: 1 !important;
+  filter: blur(0) !important;
+}
+
+/* 2. Staggered 3D Card Entrance for Cars & Grids */
+.reveal-card-stagger > * {
+  opacity: 0;
+  transform: translate3d(0, 32px, 0) scale(0.97);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s ease;
+  will-change: opacity, transform;
+}
+
+.is-revealed .reveal-card-stagger > *,
+.reveal-card-stagger.is-revealed > * {
+  opacity: 1 !important;
+  transform: translate3d(0, 0, 0) scale(1) !important;
+}
+
+.reveal-card-stagger > *:nth-child(1) { transition-delay: 40ms; }
+.reveal-card-stagger > *:nth-child(2) { transition-delay: 100ms; }
+.reveal-card-stagger > *:nth-child(3) { transition-delay: 160ms; }
+.reveal-card-stagger > *:nth-child(4) { transition-delay: 220ms; }
+.reveal-card-stagger > *:nth-child(5) { transition-delay: 280ms; }
+.reveal-card-stagger > *:nth-child(6) { transition-delay: 340ms; }
+.reveal-card-stagger > *:nth-child(7) { transition-delay: 400ms; }
+.reveal-card-stagger > *:nth-child(8) { transition-delay: 460ms; }
+
+/* Micro-interaction Hover on Car Cards */
+@media (hover: hover) {
+  .reveal-card-stagger > *:hover {
+    transform: translate3d(0, -6px, 0) scale(1.015) !important;
+    box-shadow: 0 20px 40px -12px rgba(18, 19, 22, 0.12), 0 4px 12px rgba(18, 19, 22, 0.06) !important;
+  }
+}
+
+/* 3. Stacking Cards Engine */
+.stacking-cards-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  gap: 1.5rem;
+}
+
+.stacking-card {
+  position: -webkit-sticky;
+  position: sticky;
+  border-radius: 1.25rem;
+  background: var(--color-surface-container-lowest, #ffffff);
+  border: 1px solid rgba(17, 17, 17, 0.08);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.03);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s ease,
+              opacity 0.4s ease;
+  will-change: transform, box-shadow;
+}
+
+.stacking-card:nth-child(1) {
+  top: 90px;
+  z-index: 10;
+}
+
+.stacking-card:nth-child(2) {
+  top: 110px;
+  z-index: 20;
+}
+
+.stacking-card:nth-child(3) {
+  top: 130px;
+  z-index: 30;
+}
+
+/* Mobile responsive sticky stacking offsets */
+@media (max-width: 640px) {
+  .stacking-cards-container {
+    gap: 1rem;
+  }
+  .stacking-card:nth-child(1) { top: 76px; }
+  .stacking-card:nth-child(2) { top: 92px; }
+  .stacking-card:nth-child(3) { top: 108px; }
+}
+
+/* Reduced Motion Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-line-inner,
+  .reveal-card-stagger > *,
+  .stacking-card {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+}
+
+
+/* ==========================================================================
+   Hero Coordinated Entrance Sequence (On Load)
+   ========================================================================== */
+@keyframes heroFadeIn {
+  from { opacity: 0; transform: scale(1.04); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes heroSlideUp {
+  from { opacity: 0; transform: translate3d(0, 28px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+.hero-enter-bg {
+  animation: heroFadeIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.hero-enter-badge {
+  opacity: 0;
+  animation: heroSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+  will-change: transform, opacity;
+}
+
+.hero-enter-title {
+  opacity: 0;
+  animation: heroSlideUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.25s forwards;
+  will-change: transform, opacity;
+}
+
+.hero-enter-desc {
+  opacity: 0;
+  animation: heroSlideUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+  will-change: transform, opacity;
+}
+
+.hero-enter-pills {
+  opacity: 0;
+  animation: heroSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.55s forwards;
+  will-change: transform, opacity;
+}
+
+.hero-enter-console {
+  opacity: 0;
+  animation: heroSlideUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
+  will-change: transform, opacity;
+}
+
+/* One-Time Persistent Word Illumination */
+.scrub-word {
+  color: #94a3b8;
+  transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scrub-word.is-illuminated {
+  color: #0f172a !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-enter-bg,
+  .hero-enter-badge,
+  .hero-enter-title,
+  .hero-enter-desc,
+  .hero-enter-pills,
+  .hero-enter-console {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

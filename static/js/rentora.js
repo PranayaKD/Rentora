@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initStickyPin();
     initHeaderMorph();
     initScrollScrubText();
+    initStackingCards();
     // initCarousels handled by dedicated banner carousel component
 
 });
@@ -111,20 +112,19 @@ function initScrollScrubText() {
             const triggerStart = windowHeight * 0.85;
             const triggerEnd = windowHeight * 0.35;
             
-            if (rect.top > triggerStart) {
-                words.forEach(w => w.classList.remove('is-illuminated'));
-            } else if (rect.bottom < triggerEnd) {
-                words.forEach(w => w.classList.add('is-illuminated'));
-            } else {
-                const progress = Math.max(0, Math.min(1, (triggerStart - rect.top) / (triggerStart - triggerEnd)));
-                const activeCount = Math.floor(progress * words.length);
-                words.forEach((w, idx) => {
-                    if (idx <= activeCount) {
-                        w.classList.add('is-illuminated');
-                    } else {
-                        w.classList.remove('is-illuminated');
-                    }
-                });
+            // One-time progressive reveal: only illuminates forward, NEVER un-illuminates on scroll back up
+            if (rect.top <= triggerStart) {
+                if (rect.bottom < triggerEnd) {
+                    words.forEach(w => w.classList.add('is-illuminated'));
+                } else {
+                    const progress = Math.max(0, Math.min(1, (triggerStart - rect.top) / (triggerStart - triggerEnd)));
+                    const activeCount = Math.floor(progress * words.length);
+                    words.forEach((w, idx) => {
+                        if (idx <= activeCount) {
+                            w.classList.add('is-illuminated');
+                        }
+                    });
+                }
             }
         });
         ticking = false;
@@ -156,7 +156,7 @@ function initScrollReveal() {
     });
 
     const revealElements = document.querySelectorAll(
-        '.reveal-on-scroll, .reveal-fade-in, .reveal-scale-up, .reveal-slide-left, .reveal-slide-right, .reveal-mask-heading, .reveal-word-float, .marker-sweep, .reveal-blur-focus, .reveal-stagger'
+        '.reveal-on-scroll, .reveal-fade-in, .reveal-scale-up, .reveal-slide-left, .reveal-slide-right, .reveal-mask-heading, .reveal-word-float, .marker-sweep, .reveal-blur-focus, .reveal-stagger, .reveal-lines, .reveal-card-stagger, .stacking-card, .stacking-cards-container'
     );
 
     if (!revealElements.length || !('IntersectionObserver' in window)) return;
@@ -409,3 +409,47 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+
+
+/**
+ * Stacking Cards Dynamic Depth & Scale Engine
+ * Progressively scales and darkens underlying cards as subsequent cards slide over
+ */
+function initStackingCards() {
+    const containers = document.querySelectorAll('.stacking-cards-container');
+    if (!containers.length) return;
+
+    let ticking = false;
+    const updateStack = () => {
+        containers.forEach(container => {
+            const cards = container.querySelectorAll('.stacking-card');
+            cards.forEach((card, idx) => {
+                if (idx === cards.length - 1) return;
+                const nextCard = cards[idx + 1];
+                if (!nextCard) return;
+
+                const nextRect = nextCard.getBoundingClientRect();
+                const cardRect = card.getBoundingClientRect();
+
+                if (nextRect.top < cardRect.bottom) {
+                    const overlap = Math.max(0, Math.min(1, (cardRect.bottom - nextRect.top) / cardRect.height));
+                    const scale = (1 - (overlap * 0.05)).toFixed(3);
+                    const brightness = (1 - (overlap * 0.06)).toFixed(3);
+                    card.style.transform = `scale(${scale}) translateZ(0)`;
+                    card.style.filter = `brightness(${brightness})`;
+                } else {
+                    card.style.transform = 'scale(1) translateZ(0)';
+                    card.style.filter = 'brightness(1)';
+                }
+            });
+        });
+        ticking = false;
+    };
+
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(updateStack);
+            ticking = true;
+        }
+    }, { passive: true });
+}
